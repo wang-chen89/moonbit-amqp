@@ -3625,22 +3625,22 @@ function _M0IPB7FailurePC15debug5Debug8to__reprGRPB7FailureE(self) {
 function _M0IPC15error5ErrorPC15debug5Debug8to__repr(self) {
   return _M0FP15Error8to__repr(self);
 }
-function _M0IP211localreview4amqp10FrameErrorPC15debug5Debug8to__reprGRP211localreview4amqp10FrameErrorE(_x_49) {
-  let _arg_50;
+function _M0IP211localreview4amqp10FrameErrorPC15debug5Debug8to__reprGRP211localreview4amqp10FrameErrorE(_x_56) {
+  let _arg_57;
   _L: {
-    const _Invalid = _x_49;
-    const _$42$arg_50 = _Invalid._0;
-    _arg_50 = _$42$arg_50;
+    const _Invalid = _x_56;
+    const _$42$arg_57 = _Invalid._0;
+    _arg_57 = _$42$arg_57;
     break _L;
   }
-  return _M0MPC15debug4Repr4ctor("Invalid", [{ _0: undefined, _1: _M0IPC16string6StringPC15debug5Debug8to__repr(_arg_50) }]);
+  return _M0MPC15debug4Repr4ctor("Invalid", [{ _0: undefined, _1: _M0IPC16string6StringPC15debug5Debug8to__repr(_arg_57) }]);
 }
-function _M0IP211localreview4amqp7ContentPC15debug5Debug8to__repr(_x_47) {
-  const _bind = [{ _0: "channel", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_47.channel) }, { _0: "method_payload", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_47.method_payload) }, { _0: "header", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_47.header) }, { _0: "body", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_47.body) }];
+function _M0IP211localreview4amqp7ContentPC15debug5Debug8to__repr(_x_54) {
+  const _bind = [{ _0: "channel", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_54.channel) }, { _0: "method_payload", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_54.method_payload) }, { _0: "header", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_54.header) }, { _0: "body", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_54.body) }];
   return _M0MPC15debug4Repr6record(_M0MPB3Map3MapGsRPC15debug4ReprE(new _M0TPB9ArrayViewGUsRPC15debug4ReprEE(_bind, 0, 4), undefined));
 }
-function _M0IP211localreview4amqp5FramePC15debug5Debug8to__repr(_x_41) {
-  const _bind = [{ _0: "kind", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_41.kind) }, { _0: "channel", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_41.channel) }, { _0: "payload", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_41.payload) }];
+function _M0IP211localreview4amqp5FramePC15debug5Debug8to__repr(_x_48) {
+  const _bind = [{ _0: "kind", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_48.kind) }, { _0: "channel", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_48.channel) }, { _0: "payload", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_48.payload) }];
   return _M0MPC15debug4Repr6record(_M0MPB3Map3MapGsRPC15debug4ReprE(new _M0TPB9ArrayViewGUsRPC15debug4ReprEE(_bind, 0, 3), undefined));
 }
 function _M0FP211localreview4amqp8validate(frame, max_size) {

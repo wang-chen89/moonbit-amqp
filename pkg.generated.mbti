@@ -6,6 +6,8 @@ import {
 }
 
 // Values
+pub fn body_frames(Int, Bytes, Int) -> Array[Frame] raise FrameError
+
 pub fn protocol_header() -> Bytes
 
 // Errors
