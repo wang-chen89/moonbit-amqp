@@ -1,0 +1,49 @@
+{
+  "project": "amqp",
+  "checks": [
+    {
+      "command": "moon fmt",
+      "exit_code": 0,
+      "output": "Finished. moon: ran 11 tasks, now up to date\n",
+      "utc": "2026-09-09T18:52:39.053907+00:00"
+    },
+    {
+      "command": "moon info",
+      "exit_code": 0,
+      "output": "Finished. moon: ran 3 tasks, now up to date\n",
+      "utc": "2026-09-09T18:52:39.242672+00:00"
+    },
+    {
+      "command": "moon check --deny-warn",
+      "exit_code": 0,
+      "output": "Finished. moon: ran 4 tasks, now up to date\n",
+      "utc": "2026-09-09T18:52:39.620528+00:00"
+    },
+    {
+      "command": "moon test --deny-warn",
+      "exit_code": 0,
+      "output": "Total tests: 8, passed: 8, failed: 0.\n",
+      "utc": "2026-09-09T18:52:40.087455+00:00"
+    },
+    {
+      "command": "moon test --target js --deny-warn",
+      "exit_code": 0,
+      "output": "Total tests: 8, passed: 8, failed: 0.\n",
+      "utc": "2026-09-09T18:52:40.906780+00:00"
+    },
+    {
+      "command": "moon build --target js --deny-warn",
+      "exit_code": 0,
+      "output": "Finished. moon: ran 5 tasks, now up to date\n",
+      "utc": "2026-09-09T18:52:41.879865+00:00"
+    },
+    {
+      "command": "moon run cmd/main",
+      "exit_code": 0,
+      "output": "[{ kind: 1, channel: 1, payload: <Bytes: [0x00, 0x3c, 0x00, 0x28]> }]\n",
+      "utc": "2026-09-09T18:52:42.465734+00:00"
+    }
+  ],
+  "demo": "[{ kind: 1, channel: 1, payload: <Bytes: [0x00, 0x3c, 0x00, 0x28]> }]",
+  "source_lines": 394
+}

@@ -1,0 +1,48 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "localreview/amqp"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn protocol_header() -> Bytes
+
+// Errors
+pub suberror FrameError {
+  Invalid(String)
+} derive(@debug.Debug)
+
+// Types and methods
+pub struct Assembler {
+  // private fields
+}
+pub fn Assembler::finish(Self) -> Unit raise FrameError
+pub fn Assembler::new(max_body? : Int) -> Self raise FrameError
+pub fn Assembler::push(Self, Frame) -> Content? raise FrameError
+
+pub struct Content {
+  channel : Int
+  method_payload : Bytes
+  header : Bytes
+  body : Bytes
+} derive(Eq, @debug.Debug)
+
+pub struct Decoder {
+  // private fields
+} derive(@debug.Debug)
+pub fn Decoder::feed(Self, Bytes) -> Array[Frame] raise FrameError
+pub fn Decoder::finish(Self) -> Unit raise FrameError
+pub fn Decoder::new(max_size? : Int) -> Self raise FrameError
+
+pub(all) struct Frame {
+  kind : Int
+  channel : Int
+  payload : Bytes
+} derive(Eq, @debug.Debug)
+pub fn Frame::encode(Self, max_size? : Int) -> Bytes raise FrameError
+pub fn Frame::method_ids(Self) -> (Int, Int)?
+
+// Type aliases
+
+// Traits
