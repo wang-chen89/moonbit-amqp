@@ -1,70 +1,66 @@
-# AMQP 0-9-1 帧编解码
+# AMQP 0-9-1 编解码器
 
-有长度上限的 RabbitMQ 帧层增量解析。本地候选版 0.2.0，供比较和代码审查；尚未作为完整竞赛作品提交。
-
-## 运行
-
-安装 MoonBit 后在本目录执行：
+本地候选版 **0.3.0**。MoonBit 实现帧增量解析、64 种方法的参数编码/解码、RabbitMQ 字段表、Basic 消息属性，以及多通道消息组装。仓库独立，当前仅供本地审查。
 
 ```sh
-moon check
-moon test
+moon test --target js
 moon run cmd/main
+node tools/inspect.mjs --schema
+node tools/inspect.mjs --binary capture.bin
+node tools/inspect.mjs --file frames.hex --assemble
 ```
 
-也可在本目录运行 `./verify.ps1` 验证本项目。`pkg.generated.mbti` 是真实工具链生成的公共 API。命名空间 `localreview` 仅用于本地，正式发布前应替换为申请人的账号。
+不安装 MoonBit 也可使用已经编译的 Node.js CLI 和浏览器演示。`./start-review.ps1` 启动页面；浏览器输入 `inspect:` 加帧十六进制可查看方法和属性，`strict:` 加完整帧流可严格组装消息。二进制输入从帧头开始，不包含 AMQP 连接协议头。
 
-## 本版范围
+## 实际使用
 
-实现目标：协议头、帧类型、通道、长度、终止符、分片输入。
-
-未承诺：完整方法表、连接握手、消息确认和 broker 互通。
-
-## 来源与实现方式
-
-规格/算法参考：https://www.rabbitmq.com/resources/specs/amqp0-9-1.pdf。
-
-当前代码是本地新写的 MoonBit 实现，不声称是上游完整移植；未复制上游源代码、词库或测试集。测试输入为本项目新写。MIT 仅适用于本目录原创代码。将来如移植上游文件，需要另行保存其版权声明并核查许可证，不能直接沿用当前说明。
-
-## 审查
-
-先看 `cmd/main/main.mbt` 的实际使用，再看公共 API 与测试文件。联网兼容性、性能数据或官方验收未执行的部分不得从本地单元测试成功推断。
-
-## 下一阶段与明确限制
-
-增加连接/信道握手方法、content header 属性解析、RabbitMQ 集成测试；目前验证帧级结构与 Basic 内容帧顺序和消息长度，不把方法 payload 合法性视为已验证。
-
-本分装包自带 `web/index.html`（用 `start-review.ps1` 启动）。`cmd/web/main.mbt` 为薄适配层，网页调用编译后的真实 MoonBit 模块。
-
-## 独立分装使用
-
-本文件夹可以单独移动或建立仓库，不依赖其他候选项目。浏览器演示已编译，无须安装 MoonBit 即可试用（需要 Python 3）：
-
-```powershell
-./start-review.ps1
+```mbt
+let publish = @amqp.Method::new("basic.publish", [
+  Short(0), ShortString(""), ShortString("jobs"), Bit(true), Bit(false),
+])
+let frames = @amqp.content_frames(
+  publish, 1,
+  [("content-type", ShortString("text/plain")), ("delivery-mode", Octet(2))],
+  b"hello",
+)
+let assembler = @amqp.Assembler::new(strict_methods=true)
+for frame in frames {
+  if assembler.push(frame) is Some(content) {
+    println(content.basic_header())
+    println(content.body)
+  }
+}
+assembler.finish()
 ```
 
-打开 http://127.0.0.1:8774/web/ 。修改和测试源码需安装 MoonBit 与 Node.js，再运行 `./verify.ps1`。本机尚未将 MoonBit 加入 PATH 时，可传入 `-MoonPath`。独立包不捆绑编译器。
+该调用流程由 `codec_test.mbt` 的完整消息测试验证。安装时的导入名为 `localreview/amqp`；正式发布前由用户确定命名空间。
 
-仅含本项目源码和构建产物；没有上传仓库或发布包。`DUPLICATION.md`、`evidence/current-validation.json` 和本次分装清单 提供查重、测试和完整性资料。
+- `method_names` / `method_spec_by_name` 给出完整方法名、参数顺序和类型。包含 connection、channel、exchange、queue、basic、tx、confirm，以及 XML 中的 RabbitMQ 扩展。
+- `Method::encode/decode` 验证参数类型、数量、长度及连接/普通通道区分。连接方法必须使用通道 0；其它方法必须使用非零通道。
+- `encode_table/decode_table` 保留字段顺序、重复键、数值位宽、二进制值和浮点原始位。`LongString(Bytes)` 不强制文本转换。
+- `BasicHeader` 支持全部 14 个 Basic 属性。属性使用规格名称，例如 `content-type`、`delivery-mode`、`timestamp`。空字符串、零值与未提供字段可以区分。
+- `content_frames` 一次生成方法/属性/正文帧；`Assembler` 按通道组装并校验属性、正文长度和总缓冲限制。
 
-## 独立仓库工作流
+## 验证与成熟度
 
-本目录是该项目后续开发的唯一主仓库，旧批次目录及 ZIP 为历史审查快照。没有 Git remote，没有共享构建目录，没有上级 moon.work。
+本次 **80 项 JS 测试通过**，其中 **220 组 Pika 1.3.2 独立字节向量**覆盖 192 个方法用例、16 个属性组合、12 个共享字段表用例；另有审查引擎与 7 个 CLI 场景通过。证据见 `evidence/codec-focused-validation.json` 和 `evidence/pika-vectors.json`。
 
-真实 CLI 支持输入参数、文件和标准输入：
+这些验证证明已测试的编解码行为。尚无连接协商状态机、SASL 驱动、RPC 调度、TCP/TLS 客户端与真实 RabbitMQ 互通；不能据此认定追平完整客户端。当前编码 API 也不检查所有 broker 业务规则和保留字段语义。
 
-```powershell
-node tools/cli.mjs --help
-node tools/cli.mjs --file sample.txt --json
-```
+## 限制
 
-需要安装 MoonBit 后传 `-MoonPath` 或将 moon 加入 PATH；不依赖工作区之外的私有脚本。详见 [TESTING.md](TESTING.md) 和 [CONTRIBUTING.md](CONTRIBUTING.md)。
+帧最大 16 MiB（默认 128 KiB，含 8 字节封装），字段最大嵌套深度 32、最多 65536 个访问节点；短字符串按 UTF-8 字节计长、必须有效 UTF-8，最长 255 字节。Basic 属性未知标志和扩展标志字当前拒绝。
 
-## 本轮功能升级
+正文拆帧辅助函数限定 1 MiB，组装器默认正文总缓冲 8 MiB、最多 64 个未完成通道，待组装方法/头部另有 16 MiB 总上限。CLI 审查限制 1 MiB 二进制输入。它完整读取文件，尚非文件流式 I/O。
 
-按协商帧上限拆分消息体，完整帧长度包含 8 字节开销。
+字段表采用 RabbitMQ Go 客户端的标签习惯：`b/s/l` 为有符号整数，`B/u/i` 为无符号整数。Pika 的 `U/L` 标签及 `l` 的无符号解释不在本版兼容范围。对照测试明确只比较共享字段类型，不宣称两种方言等价。浮点以原始位 API 保留 NaN 和负零。
 
-尚无连接协商、认证、channel/RPC 状态机及真实 RabbitMQ 互操作。
+`Frame` / `Decoder` 保持底层帧 API，可以保留未知方法 payload；调用 `Method::decode` 才检查方法参数。`Assembler::new()` 默认保留旧行为，建议新应用使用 `strict_methods=true`；所有组装模式现在都会严格校验 Basic 头部。
 
-[可执行 API 示例](README.mbt.md)会随测试运行；[功能边界](FEATURES.md)和[测试说明](TESTING.md)用于独立审查。网页与 CLI 展示示例入口，新 API 的完整使用见可执行示例。
+## 来源与独立审查
+
+编解码代码和测试输入为本项目原创；**规格表是明确标注来源的移植数据**。`spec/amqp0-9-1.stripped.extended.xml` 来自 RabbitMQ 官方，按原 BSD 条款保留完整版权说明，`schema_generated.mbt` 由它生成。详见 [THIRD_PARTY.md](THIRD_PARTY.md)。本项目 MIT 许可不替代该数据的 BSD 条款。
+
+参考：[RabbitMQ 规格](https://www.rabbitmq.com/docs/specification)、[amqp091-go](https://github.com/rabbitmq/amqp091-go)。Pika 仅是独立验证工具，无运行期依赖。
+
+本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，本次未重复重打包。未上传、未发布、未添加远程仓库。

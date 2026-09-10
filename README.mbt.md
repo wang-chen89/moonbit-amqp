@@ -30,4 +30,4 @@ test "outbound body frames respect negotiated full frame size" {
 }
 ```
 
-限制：尚无连接协商、认证、channel/RPC 状态机及真实 RabbitMQ 互操作。
+0.3 另提供 64 种方法参数、字段表和 Basic 属性 API，完整消息流程见 README.md 与 codec_test.mbt。限制：尚无连接协商、认证、channel/RPC 状态机及真实 RabbitMQ 互操作。

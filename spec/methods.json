@@ -1,0 +1,1059 @@
+[
+  {
+    "class_id": 10,
+    "method_id": 10,
+    "name": "connection.start",
+    "fields": [
+      [
+        "version-major",
+        "octet"
+      ],
+      [
+        "version-minor",
+        "octet"
+      ],
+      [
+        "server-properties",
+        "table"
+      ],
+      [
+        "mechanisms",
+        "longstr"
+      ],
+      [
+        "locales",
+        "longstr"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 10,
+    "method_id": 11,
+    "name": "connection.start-ok",
+    "fields": [
+      [
+        "client-properties",
+        "table"
+      ],
+      [
+        "mechanism",
+        "shortstr"
+      ],
+      [
+        "response",
+        "longstr"
+      ],
+      [
+        "locale",
+        "shortstr"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 10,
+    "method_id": 20,
+    "name": "connection.secure",
+    "fields": [
+      [
+        "challenge",
+        "longstr"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 10,
+    "method_id": 21,
+    "name": "connection.secure-ok",
+    "fields": [
+      [
+        "response",
+        "longstr"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 10,
+    "method_id": 30,
+    "name": "connection.tune",
+    "fields": [
+      [
+        "channel-max",
+        "short"
+      ],
+      [
+        "frame-max",
+        "long"
+      ],
+      [
+        "heartbeat",
+        "short"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 10,
+    "method_id": 31,
+    "name": "connection.tune-ok",
+    "fields": [
+      [
+        "channel-max",
+        "short"
+      ],
+      [
+        "frame-max",
+        "long"
+      ],
+      [
+        "heartbeat",
+        "short"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 10,
+    "method_id": 40,
+    "name": "connection.open",
+    "fields": [
+      [
+        "virtual-host",
+        "shortstr"
+      ],
+      [
+        "reserved-1",
+        "shortstr"
+      ],
+      [
+        "reserved-2",
+        "bit"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 10,
+    "method_id": 41,
+    "name": "connection.open-ok",
+    "fields": [
+      [
+        "reserved-1",
+        "shortstr"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 10,
+    "method_id": 50,
+    "name": "connection.close",
+    "fields": [
+      [
+        "reply-code",
+        "short"
+      ],
+      [
+        "reply-text",
+        "shortstr"
+      ],
+      [
+        "class-id",
+        "short"
+      ],
+      [
+        "method-id",
+        "short"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 10,
+    "method_id": 51,
+    "name": "connection.close-ok",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 10,
+    "method_id": 60,
+    "name": "connection.blocked",
+    "fields": [
+      [
+        "reason",
+        "shortstr"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 10,
+    "method_id": 61,
+    "name": "connection.unblocked",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 10,
+    "method_id": 70,
+    "name": "connection.update-secret",
+    "fields": [
+      [
+        "new-secret",
+        "longstr"
+      ],
+      [
+        "reason",
+        "shortstr"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 10,
+    "method_id": 71,
+    "name": "connection.update-secret-ok",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 20,
+    "method_id": 10,
+    "name": "channel.open",
+    "fields": [
+      [
+        "reserved-1",
+        "shortstr"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 20,
+    "method_id": 11,
+    "name": "channel.open-ok",
+    "fields": [
+      [
+        "reserved-1",
+        "longstr"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 20,
+    "method_id": 20,
+    "name": "channel.flow",
+    "fields": [
+      [
+        "active",
+        "bit"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 20,
+    "method_id": 21,
+    "name": "channel.flow-ok",
+    "fields": [
+      [
+        "active",
+        "bit"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 20,
+    "method_id": 40,
+    "name": "channel.close",
+    "fields": [
+      [
+        "reply-code",
+        "short"
+      ],
+      [
+        "reply-text",
+        "shortstr"
+      ],
+      [
+        "class-id",
+        "short"
+      ],
+      [
+        "method-id",
+        "short"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 20,
+    "method_id": 41,
+    "name": "channel.close-ok",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 40,
+    "method_id": 10,
+    "name": "exchange.declare",
+    "fields": [
+      [
+        "reserved-1",
+        "short"
+      ],
+      [
+        "exchange",
+        "shortstr"
+      ],
+      [
+        "type",
+        "shortstr"
+      ],
+      [
+        "passive",
+        "bit"
+      ],
+      [
+        "durable",
+        "bit"
+      ],
+      [
+        "auto-delete",
+        "bit"
+      ],
+      [
+        "internal",
+        "bit"
+      ],
+      [
+        "no-wait",
+        "bit"
+      ],
+      [
+        "arguments",
+        "table"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 40,
+    "method_id": 11,
+    "name": "exchange.declare-ok",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 40,
+    "method_id": 20,
+    "name": "exchange.delete",
+    "fields": [
+      [
+        "reserved-1",
+        "short"
+      ],
+      [
+        "exchange",
+        "shortstr"
+      ],
+      [
+        "if-unused",
+        "bit"
+      ],
+      [
+        "no-wait",
+        "bit"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 40,
+    "method_id": 21,
+    "name": "exchange.delete-ok",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 40,
+    "method_id": 30,
+    "name": "exchange.bind",
+    "fields": [
+      [
+        "reserved-1",
+        "short"
+      ],
+      [
+        "destination",
+        "shortstr"
+      ],
+      [
+        "source",
+        "shortstr"
+      ],
+      [
+        "routing-key",
+        "shortstr"
+      ],
+      [
+        "no-wait",
+        "bit"
+      ],
+      [
+        "arguments",
+        "table"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 40,
+    "method_id": 31,
+    "name": "exchange.bind-ok",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 40,
+    "method_id": 40,
+    "name": "exchange.unbind",
+    "fields": [
+      [
+        "reserved-1",
+        "short"
+      ],
+      [
+        "destination",
+        "shortstr"
+      ],
+      [
+        "source",
+        "shortstr"
+      ],
+      [
+        "routing-key",
+        "shortstr"
+      ],
+      [
+        "no-wait",
+        "bit"
+      ],
+      [
+        "arguments",
+        "table"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 40,
+    "method_id": 51,
+    "name": "exchange.unbind-ok",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 50,
+    "method_id": 10,
+    "name": "queue.declare",
+    "fields": [
+      [
+        "reserved-1",
+        "short"
+      ],
+      [
+        "queue",
+        "shortstr"
+      ],
+      [
+        "passive",
+        "bit"
+      ],
+      [
+        "durable",
+        "bit"
+      ],
+      [
+        "exclusive",
+        "bit"
+      ],
+      [
+        "auto-delete",
+        "bit"
+      ],
+      [
+        "no-wait",
+        "bit"
+      ],
+      [
+        "arguments",
+        "table"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 50,
+    "method_id": 11,
+    "name": "queue.declare-ok",
+    "fields": [
+      [
+        "queue",
+        "shortstr"
+      ],
+      [
+        "message-count",
+        "long"
+      ],
+      [
+        "consumer-count",
+        "long"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 50,
+    "method_id": 20,
+    "name": "queue.bind",
+    "fields": [
+      [
+        "reserved-1",
+        "short"
+      ],
+      [
+        "queue",
+        "shortstr"
+      ],
+      [
+        "exchange",
+        "shortstr"
+      ],
+      [
+        "routing-key",
+        "shortstr"
+      ],
+      [
+        "no-wait",
+        "bit"
+      ],
+      [
+        "arguments",
+        "table"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 50,
+    "method_id": 21,
+    "name": "queue.bind-ok",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 50,
+    "method_id": 50,
+    "name": "queue.unbind",
+    "fields": [
+      [
+        "reserved-1",
+        "short"
+      ],
+      [
+        "queue",
+        "shortstr"
+      ],
+      [
+        "exchange",
+        "shortstr"
+      ],
+      [
+        "routing-key",
+        "shortstr"
+      ],
+      [
+        "arguments",
+        "table"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 50,
+    "method_id": 51,
+    "name": "queue.unbind-ok",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 50,
+    "method_id": 30,
+    "name": "queue.purge",
+    "fields": [
+      [
+        "reserved-1",
+        "short"
+      ],
+      [
+        "queue",
+        "shortstr"
+      ],
+      [
+        "no-wait",
+        "bit"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 50,
+    "method_id": 31,
+    "name": "queue.purge-ok",
+    "fields": [
+      [
+        "message-count",
+        "long"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 50,
+    "method_id": 40,
+    "name": "queue.delete",
+    "fields": [
+      [
+        "reserved-1",
+        "short"
+      ],
+      [
+        "queue",
+        "shortstr"
+      ],
+      [
+        "if-unused",
+        "bit"
+      ],
+      [
+        "if-empty",
+        "bit"
+      ],
+      [
+        "no-wait",
+        "bit"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 50,
+    "method_id": 41,
+    "name": "queue.delete-ok",
+    "fields": [
+      [
+        "message-count",
+        "long"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 60,
+    "method_id": 10,
+    "name": "basic.qos",
+    "fields": [
+      [
+        "prefetch-size",
+        "long"
+      ],
+      [
+        "prefetch-count",
+        "short"
+      ],
+      [
+        "global",
+        "bit"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 60,
+    "method_id": 11,
+    "name": "basic.qos-ok",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 60,
+    "method_id": 20,
+    "name": "basic.consume",
+    "fields": [
+      [
+        "reserved-1",
+        "short"
+      ],
+      [
+        "queue",
+        "shortstr"
+      ],
+      [
+        "consumer-tag",
+        "shortstr"
+      ],
+      [
+        "no-local",
+        "bit"
+      ],
+      [
+        "no-ack",
+        "bit"
+      ],
+      [
+        "exclusive",
+        "bit"
+      ],
+      [
+        "no-wait",
+        "bit"
+      ],
+      [
+        "arguments",
+        "table"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 60,
+    "method_id": 21,
+    "name": "basic.consume-ok",
+    "fields": [
+      [
+        "consumer-tag",
+        "shortstr"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 60,
+    "method_id": 30,
+    "name": "basic.cancel",
+    "fields": [
+      [
+        "consumer-tag",
+        "shortstr"
+      ],
+      [
+        "no-wait",
+        "bit"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 60,
+    "method_id": 31,
+    "name": "basic.cancel-ok",
+    "fields": [
+      [
+        "consumer-tag",
+        "shortstr"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 60,
+    "method_id": 40,
+    "name": "basic.publish",
+    "fields": [
+      [
+        "reserved-1",
+        "short"
+      ],
+      [
+        "exchange",
+        "shortstr"
+      ],
+      [
+        "routing-key",
+        "shortstr"
+      ],
+      [
+        "mandatory",
+        "bit"
+      ],
+      [
+        "immediate",
+        "bit"
+      ]
+    ],
+    "carries_content": true
+  },
+  {
+    "class_id": 60,
+    "method_id": 50,
+    "name": "basic.return",
+    "fields": [
+      [
+        "reply-code",
+        "short"
+      ],
+      [
+        "reply-text",
+        "shortstr"
+      ],
+      [
+        "exchange",
+        "shortstr"
+      ],
+      [
+        "routing-key",
+        "shortstr"
+      ]
+    ],
+    "carries_content": true
+  },
+  {
+    "class_id": 60,
+    "method_id": 60,
+    "name": "basic.deliver",
+    "fields": [
+      [
+        "consumer-tag",
+        "shortstr"
+      ],
+      [
+        "delivery-tag",
+        "longlong"
+      ],
+      [
+        "redelivered",
+        "bit"
+      ],
+      [
+        "exchange",
+        "shortstr"
+      ],
+      [
+        "routing-key",
+        "shortstr"
+      ]
+    ],
+    "carries_content": true
+  },
+  {
+    "class_id": 60,
+    "method_id": 70,
+    "name": "basic.get",
+    "fields": [
+      [
+        "reserved-1",
+        "short"
+      ],
+      [
+        "queue",
+        "shortstr"
+      ],
+      [
+        "no-ack",
+        "bit"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 60,
+    "method_id": 71,
+    "name": "basic.get-ok",
+    "fields": [
+      [
+        "delivery-tag",
+        "longlong"
+      ],
+      [
+        "redelivered",
+        "bit"
+      ],
+      [
+        "exchange",
+        "shortstr"
+      ],
+      [
+        "routing-key",
+        "shortstr"
+      ],
+      [
+        "message-count",
+        "long"
+      ]
+    ],
+    "carries_content": true
+  },
+  {
+    "class_id": 60,
+    "method_id": 72,
+    "name": "basic.get-empty",
+    "fields": [
+      [
+        "reserved-1",
+        "shortstr"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 60,
+    "method_id": 80,
+    "name": "basic.ack",
+    "fields": [
+      [
+        "delivery-tag",
+        "longlong"
+      ],
+      [
+        "multiple",
+        "bit"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 60,
+    "method_id": 90,
+    "name": "basic.reject",
+    "fields": [
+      [
+        "delivery-tag",
+        "longlong"
+      ],
+      [
+        "requeue",
+        "bit"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 60,
+    "method_id": 100,
+    "name": "basic.recover-async",
+    "fields": [
+      [
+        "requeue",
+        "bit"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 60,
+    "method_id": 110,
+    "name": "basic.recover",
+    "fields": [
+      [
+        "requeue",
+        "bit"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 60,
+    "method_id": 111,
+    "name": "basic.recover-ok",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 60,
+    "method_id": 120,
+    "name": "basic.nack",
+    "fields": [
+      [
+        "delivery-tag",
+        "longlong"
+      ],
+      [
+        "multiple",
+        "bit"
+      ],
+      [
+        "requeue",
+        "bit"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 90,
+    "method_id": 10,
+    "name": "tx.select",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 90,
+    "method_id": 11,
+    "name": "tx.select-ok",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 90,
+    "method_id": 20,
+    "name": "tx.commit",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 90,
+    "method_id": 21,
+    "name": "tx.commit-ok",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 90,
+    "method_id": 30,
+    "name": "tx.rollback",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 90,
+    "method_id": 31,
+    "name": "tx.rollback-ok",
+    "fields": [],
+    "carries_content": false
+  },
+  {
+    "class_id": 85,
+    "method_id": 10,
+    "name": "confirm.select",
+    "fields": [
+      [
+        "nowait",
+        "bit"
+      ]
+    ],
+    "carries_content": false
+  },
+  {
+    "class_id": 85,
+    "method_id": 11,
+    "name": "confirm.select-ok",
+    "fields": [],
+    "carries_content": false
+  }
+]

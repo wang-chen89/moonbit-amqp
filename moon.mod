@@ -1,9 +1,9 @@
 name = "localreview/amqp"
 
-version = "0.2.0"
+version = "0.3.0"
 
-license = "MIT"
+license = "MIT AND BSD-3-Clause"
 
 readme = "README.md"
 
-description = "有长度上限的 RabbitMQ 帧层增量解析"
+description = "AMQP 0-9-1 帧、64 种方法、字段表与 Basic 消息属性编解码"

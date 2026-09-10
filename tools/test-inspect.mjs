@@ -1,0 +1,43 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {spawnSync} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
+import {inspect_wire, schemas, run} from '../web/engine.mjs';
+
+const root = fileURLToPath(new URL('../', import.meta.url));
+const call = (args, input) => spawnSync(process.execPath, ['tools/inspect.mjs', ...args], {cwd: root, input, encoding: 'utf8', timeout: 10000});
+const vectors = JSON.parse(fs.readFileSync(new URL('../evidence/pika-vectors.json', import.meta.url)));
+const nack = vectors.vectors.find(v => v.name === 'basic.nack' && v.variant === 1).hex;
+assert.equal(JSON.parse(schemas()).length, 64);
+const result = JSON.parse(inspect_wire(nack, false));
+assert.equal(result[0].detail.name, 'basic.nack');
+assert.match(result[0].detail.arguments[0].value, /18446744073709551615/);
+assert.deepEqual(JSON.parse(run('inspect:' + nack)), result);
+const success = call(['--hex', nack]);
+assert.equal(success.status, 0, success.stderr);
+assert.deepEqual(JSON.parse(success.stdout), result);
+const stdin = call([], nack);
+assert.equal(stdin.status, 0, stdin.stderr);
+const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'moonbit-amqp-'));
+const binary = path.join(temporary, 'frames.bin');
+try {
+  fs.writeFileSync(binary, Buffer.from(nack, 'hex'));
+  const file = call(['--binary', binary]);
+  assert.equal(file.status, 0, file.stderr);
+  assert.deepEqual(JSON.parse(file.stdout), result);
+  const publish = '0100010000000d003c0028000000046a6f627301ce';
+  const header = '0200010000000e003c000000000000000000050000ce';
+  const body = '0300010000000568656c6c6fce';
+  const assembled = call(['--assemble', '--hex', publish + header + body]);
+  assert.equal(assembled.status, 0, assembled.stderr);
+  assert.equal(JSON.parse(assembled.stdout)[0].bodyHex, '68656c6c6f');
+  const incomplete = call(['--assemble', '--hex', publish + header]);
+  assert.equal(incomplete.status, 2);
+  const corrupt = call(['--hex', nack.slice(0, -2) + '00']);
+  assert.equal(corrupt.status, 2);
+  const args = call(['--hex', nack, '--binary', binary]);
+  assert.equal(args.status, 1);
+} finally { if (fs.existsSync(binary)) fs.unlinkSync(binary); fs.rmdirSync(temporary); }
+console.log('AMQP inspection: schema/engine plus 7 CLI scenarios passed');

@@ -20,16 +20,28 @@ priv struct Pending {
 pub struct Assembler {
   priv pending : Map[Int, Pending]
   priv max_body : Int
+  priv strict_methods : Bool
+  priv mut metadata : Int
   priv mut buffered : Int
   priv mut failed : Bool
 }
 
 ///|
-pub fn Assembler::new(max_body? : Int = 8388608) -> Assembler raise FrameError {
+pub fn Assembler::new(
+  max_body? : Int = 8388608,
+  strict_methods? : Bool = false,
+) -> Assembler raise FrameError {
   if max_body < 0 || max_body > 16777216 {
     raise Invalid("invalid body limit")
   }
-  { pending: Map([]), max_body, buffered: 0, failed: false, }
+  {
+    pending: Map([]),
+    max_body,
+    strict_methods,
+    metadata: 0,
+    buffered: 0,
+    failed: false,
+  }
 }
 
 ///|
@@ -49,6 +61,9 @@ pub fn Assembler::push(
     return None
   }
   if frame.kind == 1 {
+    if self.strict_methods {
+      ignore(Method::decode(frame))
+    }
     if self.pending.contains(frame.channel) {
       raise Invalid("method interrupts incomplete content")
     }
@@ -60,6 +75,10 @@ pub fn Assembler::push(
       if self.pending.length() >= 64 {
         raise Invalid("in-flight channel limit")
       }
+      if frame.payload.length() > 16777216 - self.metadata {
+        raise Invalid("buffered metadata limit")
+      }
+      self.metadata += frame.payload.length()
       self.pending[frame.channel] = {
         method_payload: frame.payload,
         header: None,
@@ -78,19 +97,18 @@ pub fn Assembler::push(
       raise Invalid("duplicate content header")
     }
     let bytes = frame.payload
-    if bytes[0] != 0 || bytes[1] != 60 || bytes[2] != 0 || bytes[3] != 0 {
-      raise Invalid("expected Basic class header with weight zero")
-    }
-    let mut size = 0UL
-    for i in 4..<12 {
-      size = (size << 8) | bytes[i].to_uint64()
-    }
+    let size = BasicHeader::decode(frame).body_size
     if size > self.max_body.to_uint64() {
       raise Invalid("declared body exceeds limit")
     }
     state.expected = size.to_int()
+    if bytes.length() > 16777216 - self.metadata {
+      raise Invalid("buffered metadata limit")
+    }
+    self.metadata += bytes.length()
     state.header = Some(bytes)
     if state.expected == 0 {
+      self.metadata -= state.method_payload.length() + bytes.length()
       self.pending.remove(frame.channel)
       return Some({
         channel: frame.channel,
@@ -121,6 +139,7 @@ pub fn Assembler::push(
   if state.body.length() == state.expected {
     let body = Bytes::from_array(state.body)
     self.buffered -= body.length()
+    self.metadata -= state.method_payload.length() + header.length()
     self.pending.remove(frame.channel)
     Some({
       channel: frame.channel,

@@ -1,5 +1,11 @@
 ///|
 pub fn run(input : String) -> String {
+  if input.has_prefix("inspect:") {
+    return inspect_wire(input[8:].to_owned(), false)
+  }
+  if input.has_prefix("strict:") {
+    return inspect_wire(input[7:].to_owned(), true)
+  }
   try {
     let assemble = input.has_prefix("assemble:")
     let data = unhex(if assemble { input[9:].to_owned() } else { input })
@@ -36,10 +42,10 @@ fn main {
 }
 
 ///|
-fn unhex(text : String) -> Bytes raise {
+fn unhex(text : String, max_length? : Int = 200000) -> Bytes raise {
   let out : Array[Byte] = []
   let mut high = -1
-  if text.length() > 200000 {
+  if text.length() > max_length {
     raise Failure("input too long")
   }
   for c in text.iter() {

@@ -6,7 +6,21 @@ import {
 }
 
 // Values
+pub fn basic_property_spec() -> Array[(String, ArgumentKind)]
+
 pub fn body_frames(Int, Bytes, Int) -> Array[Frame] raise FrameError
+
+pub fn content_frames(Method, Int, Array[(String, Argument)], Bytes, max_frame_size? : Int) -> Array[Frame] raise FrameError
+
+pub fn decode_table(Bytes) -> Array[(String, FieldValue)] raise FrameError
+
+pub fn encode_table(Array[(String, FieldValue)]) -> Bytes raise FrameError
+
+pub fn method_names() -> Array[String]
+
+pub fn method_spec(Int, Int) -> MethodSpec?
+
+pub fn method_spec_by_name(String) -> MethodSpec?
 
 pub fn protocol_header() -> Bytes
 
@@ -16,12 +30,41 @@ pub suberror FrameError {
 } derive(@debug.Debug)
 
 // Types and methods
+pub(all) enum Argument {
+  Bit(Bool)
+  Octet(Int)
+  Short(Int)
+  Long(UInt)
+  LongLong(UInt64)
+  ShortString(String)
+  LongString(Bytes)
+  Table(Array[(String, FieldValue)])
+} derive(Eq, @debug.Debug)
+
+pub(all) enum ArgumentKind {
+  BitKind
+  OctetKind
+  ShortKind
+  LongKind
+  LongLongKind
+  ShortStringKind
+  LongStringKind
+  TableKind
+} derive(Eq, @debug.Debug)
+
 pub struct Assembler {
   // private fields
 }
 pub fn Assembler::finish(Self) -> Unit raise FrameError
-pub fn Assembler::new(max_body? : Int) -> Self raise FrameError
+pub fn Assembler::new(max_body? : Int, strict_methods? : Bool) -> Self raise FrameError
 pub fn Assembler::push(Self, Frame) -> Content? raise FrameError
+
+pub(all) struct BasicHeader {
+  body_size : UInt64
+  properties : Array[(String, Argument)]
+} derive(Eq, @debug.Debug)
+pub fn BasicHeader::decode(Frame) -> Self raise FrameError
+pub fn BasicHeader::encode(Self, Int, max_size? : Int) -> Frame raise FrameError
 
 pub struct Content {
   channel : Int
@@ -29,6 +72,7 @@ pub struct Content {
   header : Bytes
   body : Bytes
 } derive(Eq, @debug.Debug)
+pub fn Content::basic_header(Self) -> BasicHeader raise FrameError
 
 pub struct Decoder {
   // private fields
@@ -37,6 +81,26 @@ pub fn Decoder::feed(Self, Bytes) -> Array[Frame] raise FrameError
 pub fn Decoder::finish(Self) -> Unit raise FrameError
 pub fn Decoder::new(max_size? : Int) -> Self raise FrameError
 
+pub(all) enum FieldValue {
+  Boolean(Bool)
+  Signed8(Int)
+  Unsigned8(Int)
+  Signed16(Int)
+  Unsigned16(Int)
+  Signed32(Int)
+  Unsigned32(UInt)
+  Signed64(Int64)
+  Float32Bits(UInt)
+  Float64Bits(UInt64)
+  Decimal(Int, Int)
+  LongString(Bytes)
+  ByteArray(Bytes)
+  Timestamp(UInt64)
+  ArrayValue(Array[FieldValue])
+  TableValue(Array[(String, FieldValue)])
+  Void
+} derive(Eq, @debug.Debug)
+
 pub(all) struct Frame {
   kind : Int
   channel : Int
@@ -44,6 +108,23 @@ pub(all) struct Frame {
 } derive(Eq, @debug.Debug)
 pub fn Frame::encode(Self, max_size? : Int) -> Bytes raise FrameError
 pub fn Frame::method_ids(Self) -> (Int, Int)?
+
+pub(all) struct Method {
+  class_id : Int
+  method_id : Int
+  arguments : Array[Argument]
+} derive(Eq, @debug.Debug)
+pub fn Method::decode(Frame) -> Self raise FrameError
+pub fn Method::encode(Self, Int, max_size? : Int) -> Frame raise FrameError
+pub fn Method::new(String, Array[Argument]) -> Self raise FrameError
+
+pub struct MethodSpec {
+  class_id : Int
+  method_id : Int
+  name : String
+  fields : Array[(String, ArgumentKind)]
+  carries_content : Bool
+} derive(Eq, @debug.Debug)
 
 // Type aliases
 
