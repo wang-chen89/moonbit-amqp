@@ -1,5 +1,7 @@
 import {
   "localreview/amqp" @lib,
+  "moonbitlang/core/json",
+  "moonbitlang/core/encoding/utf8",
 }
 
 supported_targets = "js"
@@ -8,6 +10,20 @@ pkgtype(kind: "executable")
 
 options(
   link: {
-    "js": { "exports": [ "run", "inspect_wire", "schemas" ], "format": "esm" },
+    "js": {
+      "exports": [
+        "run",
+        "inspect_wire",
+        "schemas",
+        "session_open",
+        "session_drop",
+        "session_feed",
+        "session_send",
+        "session_publish",
+        "session_heartbeat",
+        "session_finish",
+      ],
+      "format": "esm",
+    },
   },
 )

@@ -158,3 +158,16 @@ pub fn Assembler::finish(self : Assembler) -> Unit raise FrameError {
     raise Invalid("incomplete or failed content stream")
   }
 }
+
+///|
+fn Assembler::discard(self : Assembler, channel : Int) -> Unit {
+  if self.pending.get(channel) is Some(p) {
+    self.buffered -= p.body.length()
+    self.metadata -= p.method_payload.length() +
+      (match p.header {
+        Some(h) => h.length()
+        None => 0
+      })
+    self.pending.remove(channel)
+  }
+}

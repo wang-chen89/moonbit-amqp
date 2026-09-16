@@ -30,4 +30,4 @@ test "outbound body frames respect negotiated full frame size" {
 }
 ```
 
-0.3 另提供 64 种方法参数、字段表和 Basic 属性 API，完整消息流程见 README.md 与 codec_test.mbt。限制：尚无连接协商、认证、channel/RPC 状态机及真实 RabbitMQ 互操作。
+0.4 另提供 64 种方法参数、字段表、Basic 属性和 Session 会话 API；Node 宿主包含 TCP/TLS、RPC、心跳与消息确认。完整流程见 README.md、codec_test.mbt、session_test.mbt。已有 RabbitMQ 4.0.5 实测；尚缺自动恢复、更多认证、流式大消息与生产规模验证。

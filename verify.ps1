@@ -32,6 +32,8 @@ try {
   if ($LASTEXITCODE -ne 0) {throw 'inspection CLI test failed'}
   node tools/test-cli.mjs
   if ($LASTEXITCODE -ne 0) {throw 'CLI test failed'}
+  node tools/test-client.mjs
+  if ($LASTEXITCODE -ne 0) {throw 'client transport fixtures failed'}
   node tools/robustness.mjs
   if ($LASTEXITCODE -ne 0) {throw 'robustness failed'}
   node tools/benchmark.mjs

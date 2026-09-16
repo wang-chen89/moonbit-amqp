@@ -126,6 +126,27 @@ pub struct MethodSpec {
   carries_content : Bool
 } derive(Eq, @debug.Debug)
 
+pub struct Session {
+  // private fields
+}
+pub fn Session::feed(Self, Bytes) -> Array[SessionEvent] raise FrameError
+pub fn Session::finish(Self) -> Unit raise FrameError
+pub fn Session::heartbeat(Self) -> Bytes raise FrameError
+pub fn Session::limits(Self) -> (Int, Int, Int)
+pub fn Session::new(String, String, vhost? : String, channel_max? : Int, frame_max? : Int, heartbeat? : Int) -> Self raise FrameError
+pub fn Session::publish(Self, Int, String, String, Bytes, properties? : Array[(String, Argument)], mandatory? : Bool) -> Unit raise FrameError
+pub fn Session::send(Self, Int, Method) -> Unit raise FrameError
+pub fn Session::status(Self) -> String
+pub fn Session::take_output(Self) -> Array[Bytes]
+
+pub(all) enum SessionEvent {
+  Ready
+  Received(Int, Method)
+  Message(Content)
+  ChannelClosed(Int, Int, String)
+  Closed(Int, String)
+} derive(Eq, @debug.Debug)
+
 // Type aliases
 
 // Traits

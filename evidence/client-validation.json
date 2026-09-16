@@ -1,0 +1,32 @@
+{
+  "at": "2026-09-16T15:48:01.941Z",
+  "node": "v24.11.0",
+  "passed": 18,
+  "tests": [
+    "configuration rejects plaintext by default and invalid numeric values",
+    "fragmented handshake and graceful close",
+    "handshake timeout destroys socket",
+    "abort during handshake",
+    "RPC timeout rejects all channels and closes connection",
+    "abort terminates pending RPC",
+    "premature EOF with partial message rejects get",
+    "connection close rejects RPC and acknowledges peer",
+    "out-of-order single and cumulative publisher confirmations",
+    "publisher nack rejects only affected publish",
+    "future confirmation tag fails closed",
+    "unconfirmed publish timeout closes connection",
+    "missing broker heartbeat fails idle connection",
+    "bad frame terminator fails pending request",
+    "oversized frame rejected from header without waiting for body",
+    "invalid local publish leaves confirmation sequence usable",
+    "broker blocked event prevents publishing until unblocked",
+    "session bridge malformed table does not throw outside error result"
+  ],
+  "sources": {
+    "session.mbt": "3581f3819e5907a7dadb13e1bf232e27905c8089364b56d2fbc1ad683838b141",
+    "cmd/web/session.mbt": "9f649277c03c42ab8948f3f1e9e6f57dc546560cfcd85f0ac6ab45ae97fc8454",
+    "tools/client.mjs": "a3b849511023e66561d28065f7cc36ffd4ed9a5b567bfc690a22bf491a06f8cc",
+    "web/engine.mjs": "12282d0a723a0c92333298b862c7cb83c80b46c74c164e99f876acb13bec36c5",
+    "tools/test-client.mjs": "8be50ee53fd252b64e5827c7d8d9accec925f2810a77c6db4c9c169346becb15"
+  }
+}

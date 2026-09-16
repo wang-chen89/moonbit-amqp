@@ -1,7 +1,7 @@
 ///|
 pub struct Decoder {
   priv buffer : Array[Byte]
-  priv limit : Int
+  priv mut limit : Int
   priv mut expected : Int
   priv mut poisoned : Bool
 } derive(Debug)
@@ -12,6 +12,17 @@ pub fn Decoder::new(max_size? : Int = 131072) -> Decoder raise FrameError {
     raise Invalid("invalid frame limit")
   }
   { buffer: [], limit: max_size, expected: 7, poisoned: false, }
+}
+
+///|
+fn Decoder::set_limit(self : Decoder, limit : Int) -> Unit raise FrameError {
+  if limit < 4096 ||
+    limit > 16777216 ||
+    self.buffer.length() > limit ||
+    self.expected > limit {
+    raise Invalid("invalid negotiated frame limit")
+  }
+  self.limit = limit
 }
 
 ///|
