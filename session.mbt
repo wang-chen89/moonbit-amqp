@@ -25,6 +25,7 @@ pub struct Session {
   priv paused : Map[Int, Bool]
   priv mut blocked : Bool
   priv mut secret_update : Bool
+  priv sending : Map[Int, UInt64]
   priv output : Array[Bytes]
 }
 
@@ -87,6 +88,7 @@ pub fn Session::with_authentication(
     paused: Map([]),
     blocked: false,
     secret_update: false,
+    sending: Map([]),
     output: [protocol_header()],
   }
 }
@@ -105,6 +107,7 @@ fn Session::closed(self : Session) -> Unit {
   self.paused.clear()
   self.auth.clear()
   self.secret_update = false
+  self.sending.clear()
   self.state = "closed"
 }
 
@@ -140,6 +143,9 @@ pub fn Session::send(
   channel : Int,
   command : Method,
 ) -> Unit raise FrameError {
+  if self.sending.contains(channel) {
+    raise Invalid("method interrupts outgoing content")
+  }
   if self.state != "ready" {
     raise Invalid("connection is not ready")
   }
@@ -204,6 +210,9 @@ pub fn Session::publish(
     self.blocked ||
     self.paused.get(channel) == Some(true) {
     raise Invalid("publishing is unavailable or blocked")
+  }
+  if self.sending.contains(channel) {
+    raise Invalid("publication already in progress on channel")
   }
   let frames = content_frames(
     Method::new("basic.publish", [
@@ -422,6 +431,7 @@ pub fn Session::feed(
           self.emit("channel.close-ok", [], frame.channel)
           self.assembler.discard(frame.channel)
           self.channels.remove(frame.channel)
+          self.sending.remove(frame.channel)
           self.paused.remove(frame.channel)
           if args is [Short(code), ShortString(reason), ..] {
             events.push(ChannelClosed(frame.channel, code, reason))
@@ -439,6 +449,7 @@ pub fn Session::feed(
             if name == "channel.close-ok" {
               self.assembler.discard(frame.channel)
               self.channels.remove(frame.channel)
+              self.sending.remove(frame.channel)
               self.paused.remove(frame.channel)
               events.push(ChannelClosed(frame.channel, 200, "normal close"))
             }

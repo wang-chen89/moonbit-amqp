@@ -1,0 +1,239 @@
+{
+  "utc": "2026-09-19T07:58:11.761Z",
+  "node": "v24.11.0",
+  "passed": 7,
+  "tests": [
+    "buffered 2 MiB TCP matches pinned Go body and properties",
+    "stream 12 MiB TCP matches pinned Go body and properties",
+    "stream 16 MiB verified TLS matches pinned Go body and properties",
+    "12 MiB streamed transaction commits only after commit-ok and rollback discards",
+    "mandatory streamed unroutable body is returned before publisher confirmation",
+    "receiver keeps its explicit 8 MiB assembly limit for large returned content",
+    "broker 16 MiB size cap rejects 32 MiB on its channel while sibling remains usable"
+  ],
+  "nativeComparisons": 3,
+  "comparisons": [
+    {
+      "name": "buffered 2 MiB TCP",
+      "size": 2097152,
+      "matched": true,
+      "node": {
+        "bytes": 2097152,
+        "contentType": "application/octet-stream",
+        "correlationId": "stream-check",
+        "deliveryMode": 2,
+        "found": true,
+        "headers": {
+          "label": "中文",
+          "n": 42
+        },
+        "messageId": "large-message",
+        "sha256": "1e075c8d478ad21844e33e830a695ef03a4d2488b69ee275bd8947618bb1be1e"
+      },
+      "reference": {
+        "bytes": 2097152,
+        "contentType": "application/octet-stream",
+        "correlationId": "stream-check",
+        "deliveryMode": 2,
+        "found": true,
+        "headers": {
+          "label": "中文",
+          "n": 42
+        },
+        "messageId": "large-message",
+        "sha256": "1e075c8d478ad21844e33e830a695ef03a4d2488b69ee275bd8947618bb1be1e"
+      }
+    },
+    {
+      "name": "stream 12 MiB TCP",
+      "size": 12582912,
+      "matched": true,
+      "node": {
+        "bytes": 12582912,
+        "contentType": "application/octet-stream",
+        "correlationId": "stream-check",
+        "deliveryMode": 2,
+        "found": true,
+        "headers": {
+          "label": "中文",
+          "n": 42
+        },
+        "messageId": "large-message",
+        "sha256": "b6967a4c54cdab8a16907be0774af71e5db8198045f91933ebed106ddba22dfb"
+      },
+      "reference": {
+        "bytes": 12582912,
+        "contentType": "application/octet-stream",
+        "correlationId": "stream-check",
+        "deliveryMode": 2,
+        "found": true,
+        "headers": {
+          "label": "中文",
+          "n": 42
+        },
+        "messageId": "large-message",
+        "sha256": "b6967a4c54cdab8a16907be0774af71e5db8198045f91933ebed106ddba22dfb"
+      }
+    },
+    {
+      "name": "stream 16 MiB verified TLS",
+      "size": 16777216,
+      "matched": true,
+      "node": {
+        "bytes": 16777216,
+        "contentType": "application/octet-stream",
+        "correlationId": "stream-check",
+        "deliveryMode": 2,
+        "found": true,
+        "headers": {
+          "label": "中文",
+          "n": 42
+        },
+        "messageId": "large-message",
+        "sha256": "287507f403176f1f5b22b9a4d9cb49f7d7f88ac19e406b5ae87ce109564846bd"
+      },
+      "reference": {
+        "bytes": 16777216,
+        "contentType": "application/octet-stream",
+        "correlationId": "stream-check",
+        "deliveryMode": 2,
+        "found": true,
+        "headers": {
+          "label": "中文",
+          "n": 42
+        },
+        "messageId": "large-message",
+        "sha256": "287507f403176f1f5b22b9a4d9cb49f7d7f88ac19e406b5ae87ce109564846bd"
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "buffered 2 MiB TCP",
+      "limits": {
+        "channelMax": 16,
+        "frameMax": 4096,
+        "heartbeat": 2
+      },
+      "writeStats": {
+        "socketBufferedBytes": 0,
+        "maxObservedSocketBytes": 0,
+        "drainWaits": 0,
+        "streamingChannels": 0,
+        "deferredProtocolBytes": 0
+      },
+      "processMemory": {
+        "before": {
+          "rss": 53080064,
+          "heapTotal": 11018240,
+          "heapUsed": 8709128,
+          "external": 2498009,
+          "arrayBuffers": 24898
+        },
+        "peak": {
+          "rss": 101064704,
+          "external": 5332057
+        },
+        "samplePeriodMs": 10,
+        "note": "Whole Node process sample; includes bridge, GC and source buffers. Not an RSS bound or throughput comparison."
+      }
+    },
+    {
+      "name": "stream 12 MiB TCP",
+      "limits": {
+        "channelMax": 16,
+        "frameMax": 4096,
+        "heartbeat": 2
+      },
+      "writeStats": {
+        "socketBufferedBytes": 0,
+        "maxObservedSocketBytes": 0,
+        "drainWaits": 0,
+        "streamingChannels": 0,
+        "deferredProtocolBytes": 0
+      },
+      "processMemory": {
+        "before": {
+          "rss": 103469056,
+          "heapTotal": 52961280,
+          "heapUsed": 20583944,
+          "external": 7085940,
+          "arrayBuffers": 4582384
+        },
+        "peak": {
+          "rss": 103469056,
+          "external": 7085940
+        },
+        "samplePeriodMs": 10,
+        "note": "Whole Node process sample; includes bridge, GC and source buffers. Not an RSS bound or throughput comparison."
+      }
+    },
+    {
+      "name": "stream 16 MiB verified TLS",
+      "limits": {
+        "channelMax": 16,
+        "frameMax": 4096,
+        "heartbeat": 2
+      },
+      "writeStats": {
+        "socketBufferedBytes": 0,
+        "maxObservedSocketBytes": 16547,
+        "drainWaits": 1024,
+        "streamingChannels": 0,
+        "deferredProtocolBytes": 0
+      },
+      "processMemory": {
+        "before": {
+          "rss": 103473152,
+          "heapTotal": 49717248,
+          "heapUsed": 9642240,
+          "external": 2540100,
+          "arrayBuffers": 35741
+        },
+        "peak": {
+          "rss": 131244032,
+          "external": 3790342
+        },
+        "samplePeriodMs": 10,
+        "note": "Whole Node process sample; includes bridge, GC and source buffers. Not an RSS bound or throughput comparison."
+      }
+    }
+  ],
+  "sources": {
+    "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
+    "session.mbt": "cf5d7e4688b1a6f028ff9eedabb09f67c891be5f6187193191d0c236c4aae6e6",
+    "publish_stream.mbt": "60a37400a8bc0dbfe2b4f47448dc7d9b27f18af498573498e1ea421c9e1c7013",
+    "cmd/web/publish_stream.mbt": "13eb1ed3791310e67cc7210bcebf990819fa6f7135c7819f3a03f7e7238ee8fd",
+    "tools/client.mjs": "36ca96d093e88a7ad7819676f82717cf44c2bcf5f6cf97bead8f3f9ad01489af",
+    "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
+    "tools/recovery-channel.mjs": "1b17c3f6530a0b9d6ff06be3633c64730e70fec3a27c5958b8524831129d20ee",
+    "tools/stream-reference.go": "d5c6bd4bf2a91796ff3d50e0503110fa0e1ee027b90e2ee7960dcc6d2d1fbc16",
+    "tools/test-stream-native.mjs": "77daa107b823f7432217cd9840986ea097bf8d107db36c752e7220cad0efeb00",
+    "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
+    "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
+    "evidence/stream-reference-build.json": "ad1e9cfbaf6c2011305305bdd2d9bb752e4a59830e723805860070ae4925f5a8",
+    "web/engine.mjs": "5511694ff61a66950c7c4b0f065351d526667039b734efc2a4a59a988a34c1a1"
+  },
+  "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
+  "binarySha256": "ea1f1a9b03c4144df27343062f39e07337ada527a8a7ccc71217f369b23c98e0",
+  "brokerPackages": {
+    "rabbitmq-server_4.0.5-10ubuntu5_all.deb": "facf754e045a705aca30b82b7728ac7b3f123d2b7f7838575b246fe0bd2ad05e",
+    "libsctp1_1.0.21+dfsg-1build2_amd64.deb": "92924c463cf0e6630b1e9fd3969d45b21558f7ecbf0c9ef12c80523669f8a271",
+    "erlang-xmerl_1%3a27.3.4.6+dfsg-1_amd64.deb": "7480288faf6f4870a62e9de14c56cd4e6b92bebf4c26e1d35123bab10c92d1fc",
+    "erlang-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "f2769fae5be10c5c7048f2d1f62c5d41c9202c016b48138b039a6887c44c4757",
+    "erlang-syntax-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "06a238505a33eb31b4479cdcc003719bcf37cdff8922e0496296407bcafee2f4",
+    "erlang-ssl_1%3a27.3.4.6+dfsg-1_amd64.deb": "f194e4197bd209a2e3b219190f545c5fa3735369b6d8e36b8616a20dac767b64",
+    "erlang-snmp_1%3a27.3.4.6+dfsg-1_amd64.deb": "ce4c7681a5ee8d8c9f8fab0fc1b6297e2dab573f6991e24bc592770bd1e4cd4d",
+    "erlang-runtime-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "dfe9a6452a7073faf6be4e2f4ac4e5513458294d5949fa10040b77f5d522970a",
+    "erlang-public-key_1%3a27.3.4.6+dfsg-1_amd64.deb": "8cb55457e13ff6b00ff9ea80df4b13360dbb4df9c4bc1dbbbdc3ad4d9658ee8c",
+    "erlang-parsetools_1%3a27.3.4.6+dfsg-1_amd64.deb": "bd846ef7ca9d58f48ee54123a7138ec1812aa7aa813ebdffce21fc5fd6f45d78",
+    "erlang-os-mon_1%3a27.3.4.6+dfsg-1_amd64.deb": "b1cc339e3dfc237440069314dcdb082dc812cea57c1494679efbd642c22b9775",
+    "erlang-mnesia_1%3a27.3.4.6+dfsg-1_amd64.deb": "527c4881cb83a0c89e6d621adae20b4e301b8220311e59a839a443c4bf7edca6",
+    "erlang-inets_1%3a27.3.4.6+dfsg-1_amd64.deb": "f075fa56cd4464a63eb26d7d90d834a2b31446d9707c527029fa15915ae1f9ed",
+    "erlang-eldap_1%3a27.3.4.6+dfsg-1_amd64.deb": "4c40df00f11f0b459d0d5221b167e05e2eb57f63d82a61fed61541481093aa57",
+    "erlang-crypto_1%3a27.3.4.6+dfsg-1_amd64.deb": "1a2de05e72695135d4c091cbb7f74e5c291f3c763d4ced4b18e48d78a2a73d3a",
+    "erlang-base_1%3a27.3.4.6+dfsg-1_amd64.deb": "8e7ababa5b1ddbe72e135faa78d15755268dfbb7cdfc25a5a8144f3e2d5754df",
+    "erlang-asn1_1%3a27.3.4.6+dfsg-1_amd64.deb": "b2d3f1a35d642727631ff138070d5a4f410bb0066f67a1efbf11ad61dc51fa6d"
+  },
+  "scope": "Three actual Go/Node publications compared through pinned Go receiver, plus transaction/return/receive-limit broker cases. Outbound streaming only; upstream Go publish buffers the full body. No representative throughput parity claim."
+}

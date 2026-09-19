@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T07:17:38.072Z",
+  "utc": "2026-09-19T07:55:12.643Z",
   "scope": "Independently encoded TCP peer; actual RabbitMQ integration is separate.",
   "passed": 25,
   "tests": [
@@ -34,12 +34,12 @@
     "authentication.mbt": "09505b81f862c30d7f2bc24502188068475904ed5c858a8f38897060fa6397b6",
     "cmd/web/authentication.mbt": "5302c487cb36963947e2e25b6a75d63d998789b3222dc28b889bb506103cae4a",
     "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
-    "tools/client.mjs": "bd5c1d14d6c9c46964035b012c3406aecd9b7f0261a70910166aa6fc82ca2dd6",
+    "tools/client.mjs": "36ca96d093e88a7ad7819676f82717cf44c2bcf5f6cf97bead8f3f9ad01489af",
     "tools/recovery.mjs": "0f1ba3d8b640d318b317241967160e28af9b57c732043ed2f9ed307457e2578f",
-    "tools/recovery-channel.mjs": "40061a0e43cfeedda4151f28e7fcd86a0fe81e755ba668e5f2330d3e2e67b525",
+    "tools/recovery-channel.mjs": "1b17c3f6530a0b9d6ff06be3633c64730e70fec3a27c5958b8524831129d20ee",
     "tools/recovery-state.mjs": "78435fc7a882bfa4e7f349602db597d9778cf1f0558f7459475e8e562fff683e",
     "tools/recovery-peer.mjs": "2938b1f6187d9f322c0b47e0498dda341ccb863a7e797501ce14cc5088864190",
     "tools/test-recovery.mjs": "ea972fa91d9d97cd4cd456a95a52cc5705472bb52b7a1342ed335b75b179c009",
-    "web/engine.mjs": "1fcb6e5ce132384a9cd12a77da129d4bc87e178171be12adb263aaa08968c1df"
+    "web/engine.mjs": "5511694ff61a66950c7c4b0f065351d526667039b734efc2a4a59a988a34c1a1"
   }
 }

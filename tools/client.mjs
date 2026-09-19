@@ -4,6 +4,7 @@ import {EventEmitter} from 'node:events';
 import {randomUUID} from 'node:crypto';
 import * as core from '../web/engine.mjs';
 import {snapshotAuthentication,authenticationPlan,responseBytes} from './authentication.mjs';
+import {SendQueue,waitFor,aborted} from './outbound.mjs';
 
 function checked(text) {
   if (text.startsWith('ERROR:')) throw Error(text.slice(7));
@@ -30,6 +31,8 @@ export class Connection extends EventEmitter {
   #channels = new Map(); #closeWait; #limits; #maxBuffered; #timeout;
   #authProviders=[]; #authAbort=new AbortController(); #authenticationMechanism='';
   #secretUpdate;
+  #publishWrites; #streaming=new Map(); #deferredBytes=0;
+  #maxWritten=0; #drainWaits=0;
   static async connect(options = {}) {
     const connection = new Connection(options);
     await connection.#ready.promise;
@@ -46,6 +49,7 @@ export class Connection extends EventEmitter {
     integer(frameMax, 4096, 16777216, 'frameMax'); integer(channelMax, 1, 65535, 'channelMax');
     this.#timeout = integer(timeout, 1, 2147483647, 'timeout');
     this.#maxBuffered = integer(options.maxBufferedBytes ?? 33554432, 1048576, 134217728, 'maxBufferedBytes');
+    this.#publishWrites=new SendQueue(this.#maxBuffered,4096);
     if (signal?.aborted) throw signal.reason ?? Error('Aborted');
     const auth=authenticationPlan(options.sasl);this.#authProviders=auth.providers;
     const initial = JSON.parse(checked(core.session_open_auth(this.#key, JSON.stringify(auth.descriptors), vhost, options.locale??'en_US', channelMax, frameMax, heartbeat)));
@@ -80,25 +84,39 @@ export class Connection extends EventEmitter {
     }
   }
   get closed() { return this.#closed; }
+  get closing() { return this.#closing; }
   get limits() { const {channelMax, frameMax, heartbeat} = this.#limits; return {channelMax, frameMax, heartbeat}; }
   get timeout() { return this.#timeout; }
+  get maxBufferedBytes() { return this.#maxBuffered; }
+  get writeStats() { return {socketBufferedBytes:this.#socket.writableLength,maxObservedSocketBytes:this.#maxWritten,drainWaits:this.#drainWaits,streamingChannels:this.#streaming.size,deferredProtocolBytes:this.#deferredBytes}; }
   get authenticationMechanism() { return this.#authenticationMechanism; }
-  #write(hexFrames) {
+  #write(hexFrames,owner=0) {
     if (this.#closed) throw Error('Connection closed');
+    const writable=[];
+    for(const hex of hexFrames){
+      const channel=parseInt(hex.slice(2,6),16),closeOk=hex.startsWith('01')&&hex.slice(14,22)==='00140029';
+      if(channel!==owner&&this.#streaming.has(channel)&&!closeOk){
+        const size=hex.length/2;
+        if(size>this.#maxBuffered-this.#deferredBytes)throw Error('Deferred protocol output limit exceeded');
+        const active=this.#streaming.get(channel);active.frames.push(hex);active.bytes+=size;this.#deferredBytes+=size;
+      }else writable.push(hex);
+    }
+    hexFrames=writable;
     const bytes = hexFrames.reduce((n, x) => n + x.length / 2, 0);
     if (this.#socket.writableLength + bytes > this.#maxBuffered) {
       const e = Error('Outgoing buffer limit exceeded'); this._fail(e); throw e;
     }
     if (bytes) {
       this.#socket.write(Buffer.concat(hexFrames.map(hex => Buffer.from(hex, 'hex'))));
+      this.#maxWritten=Math.max(this.#maxWritten,this.#socket.writableLength);
       this.#lastWrite = performance.now();
     }
   }
-  #process(text) {
-    const result = JSON.parse(checked(text));
+  #process(text,owner=0) {
+    const result = typeof text==='string'?JSON.parse(checked(text)):text;
     this.#authenticationMechanism=result.authenticationMechanism;
     this.#limits = {channelMax: result.channelMax, frameMax: result.frameMax, heartbeat: result.heartbeat};
-    this.#write(result.output);
+    this.#write(result.output,owner);
     for (const e of result.events) {
       if(e.type==='authenticate') {
         const provider=this.#authProviders[e.index];
@@ -141,22 +159,77 @@ export class Connection extends EventEmitter {
         const channel = this.#channels.get(e.channel);
         if (!channel) throw Error('Response for unallocated channel');
         channel._receive(e);
-        if (e.type === 'channelClosed') this.#channels.delete(e.channel);
+        if (e.type === 'channelClosed') {
+          this.#channels.delete(e.channel);
+          const active=this.#streaming.get(e.channel);
+          if(active){this.#streaming.delete(e.channel);this.#deferredBytes-=active.bytes;active.bytes=0;active.frames=[];}
+        }
       }
     }
   }
   _send(channel, name, args) {
     if (this.#closed) throw Error('Connection closed');
-    this.#process(core.session_send(this.#key, channel, name, JSON.stringify(args)));
+    this.#process(core.session_send(this.#key, channel, name, typeof args==='string'?args:JSON.stringify(args)));
   }
-  _publish(channel, exchange, key, body, properties, mandatory) {
-    if (this.#closed) throw Error('Connection closed');
-    this.#process(core.session_publish(this.#key, channel, exchange, key, body.toString('hex'), JSON.stringify(properties), mandatory));
+  async #writable(signals) {
+    while(this.#socket.writableNeedDrain){
+      this.#drainWaits++;
+      let listener;const drained=new Promise(resolve=>{listener=resolve;this.#socket.once('drain',listener);});
+      try{await waitFor(drained,this.#timeout,[this.#authAbort.signal,...signals]);}finally{this.#socket.off('drain',listener);}
+    }
+    if(this.#closed)throw Error('Connection closed');
+    for(const signal of signals)if(signal?.aborted)throw aborted(signal);
+  }
+  _sendQueued(channel,name,args,beforeSend,signals=[]) {
+    return this.#publishWrites.run(async()=>{await this.#writable(signals);beforeSend?.();this._send(channel,name,args);},{signal:signals[0]});
+  }
+  async _publishStream(channel,exchange,key,source,size,properties,mandatory,signals,onStart) {
+    let iterator,started=false,completed=false,remaining=size;
+    const physical=this.#channels.get(channel);
+    const active={physical,frames:[],bytes:0};
+    const activeSignals=[this.#authAbort.signal,...signals];
+    const write=action=>this.#publishWrites.run(async()=>{await this.#writable(activeSignals);action();});
+    try {
+      for(const signal of activeSignals)if(signal?.aborted)throw aborted(signal);
+      iterator=source[Symbol.asyncIterator]?.()??source[Symbol.iterator]?.();
+      if(!iterator||typeof iterator.next!=='function')throw TypeError('Source must be an iterable of byte chunks');
+      await write(()=>{
+        const result=JSON.parse(checked(core.session_publish_start(this.#key,channel,exchange,key,String(size),properties,mandatory)));
+        onStart();started=true;this.#streaming.set(channel,active);this.#process(result,channel);
+      });
+      let empty=0,pieces=0;
+      while(true){
+        const part=await waitFor(Promise.resolve().then(()=>iterator.next()),this.#timeout,activeSignals);
+        if(!part||typeof part!=='object')throw TypeError('Invalid iterator result');
+        if(part.done){if(remaining!==0n)throw Error('Body source ended before declared size');break;}
+        if(!(part.value instanceof Uint8Array))throw TypeError('Body source must yield byte chunks');
+        const chunk=part.value;
+        if(chunk.length===0){if(++empty>1024)throw Error('Too many empty body chunks');continue;}
+        empty=0;
+        if(BigInt(chunk.length)>remaining)throw Error('Body source exceeds declared size');
+        for(let offset=0;offset<chunk.length;){
+          const count=Math.min(65536,this.#limits.frameMax-8,chunk.length-offset);
+          const hex=Buffer.from(chunk.buffer,chunk.byteOffset+offset,count).toString('hex');
+          await write(()=>this.#process(core.session_publish_body(this.#key,channel,hex),channel));
+          remaining-=BigInt(count);offset+=count;
+          // A writable kernel buffer must not starve incoming confirms/heartbeats.
+          if(++pieces%16===0)await waitFor(new Promise(resolve=>setImmediate(resolve)),this.#timeout,activeSignals);
+        }
+      }
+      await write(()=>{});completed=true;
+    }catch(error){if(started&&!physical.closed)this._fail(error);throw error;}
+    finally{
+      if(this.#streaming.get(channel)===active){this.#streaming.delete(channel);this.#deferredBytes-=active.bytes;}
+      if(!this.#closed&&this.#channels.get(channel)===physical&&!physical.closed&&active.frames.length){try{this.#write(active.frames);}catch(error){this._fail(error);throw error;}}
+      if(!completed&&iterator?.return)Promise.resolve().then(()=>iterator.return()).catch(()=>{});
+      if(!completed&&started&&typeof source.destroy==='function'){source.once?.('error',()=>{});source.destroy();}
+    }
   }
   _fail(error) { this.#terminate(error, false); }
   #terminate(error, graceful) {
     if (this.#closed) return;
     this.#closed = true;
+    this.#publishWrites.close(error);this.#streaming.clear();this.#deferredBytes=0;
     this.#authAbort.abort(error);this.#authProviders=[];
     clearTimeout(this.#connectTimer); clearInterval(this.#timer);
     this.#signal?.removeEventListener('abort', this.#abort);
@@ -194,8 +267,9 @@ export class Connection extends EventEmitter {
     if (this.#closed) return;
     if (this.#closing) return this.#closeWait.promise;
     this.#closing = true; this.#closeWait = deferred();
+    this.#closeWait.promise.catch(()=>{});
     const timer = setTimeout(() => this._fail(Error('Close timeout')), this.#timeout);
-    try { this._send(0, 'connection.close', [200, 'normal close', 0, 0]); await this.#closeWait.promise; }
+    try { await Promise.all([...this.#channels.values()].map(ch=>ch._flushOutput()));await this._sendQueued(0, 'connection.close', [200, 'normal close', 0, 0]); await this.#closeWait.promise; }
     catch (error) { this.#closeWait.promise.catch(() => {}); this._fail(error); throw error; }
     finally { clearTimeout(timer); }
   }
@@ -205,17 +279,23 @@ export class Connection extends EventEmitter {
 export class Channel extends EventEmitter {
   #connection; #pending; #closed = false; #consumers = new Map(); #id;
   #mode = 'normal'; #nextConfirm = 1n; #confirms = new Map();
-  constructor(connection, id) { super(); this.#connection = connection; this.#id = id; }
+  #sends; #sendAbort=new AbortController(); #publications=0;
+  constructor(connection, id) { super(); this.#connection = connection; this.#id = id; this.#sends=new SendQueue(connection.maxBufferedBytes); }
   get id() { return this.#id; }
   get closed() { return this.#closed; }
+  async _flushOutput() { if(this.#closed)return;await this.#sends.idle();await Promise.allSettled([...this.#confirms.values()].map(p=>p.promise)); }
   _rpc(name, args, expected, apply = e => e.args) {
     if (this.#closed) return Promise.reject(Error('Channel closed'));
+    if (this.#connection.closing) return Promise.reject(Error('Connection closing'));
     if (this.#pending) return Promise.reject(Error('One RPC may be outstanding per channel; await it or use another channel'));
     const p = deferred();
-    const timer = setTimeout(() => this.#connection._fail(Error(`RPC timeout: ${name}`)), this.#connection.timeout);
-    this.#pending = {...p, expected, apply, timer};
-    try { this.#connection._send(this.id, name, args); }
-    catch (e) { clearTimeout(timer); this.#pending = undefined; p.reject(e); }
+    const pending={...p,expected,apply};this.#pending=pending;
+    try {
+      const encoded=JSON.stringify(args);
+      this.#sends.run(()=>this.#connection._sendQueued(this.id,name,encoded,()=>{pending.timer=setTimeout(()=>this.#connection._fail(Error(`RPC timeout: ${name}`)),this.#connection.timeout);},[this.#sendAbort.signal])).catch(e=>{
+        clearTimeout(pending.timer);if(this.#pending===pending)this.#pending=undefined;p.reject(e);
+      });
+    }catch(e){this.#pending=undefined;p.reject(e);}
     return p.promise;
   }
   #notify(callback, message) {
@@ -248,7 +328,7 @@ export class Channel extends EventEmitter {
       this.#notify(callback, delivery(e));
     } else if (e.name === 'basic.cancel') {
       const tag = e.args['consumer-tag'];
-      if (!e.args['no-wait']) this.#connection._send(this.id, 'basic.cancel-ok', [tag]);
+      if (!e.args['no-wait']) this.#oneWay('basic.cancel-ok', [tag],true);
       const callback = this.#consumers.get(tag); this.#consumers.delete(tag);
       if (callback) this.#notify(callback, null);
       this.emit('cancel', tag);
@@ -260,6 +340,7 @@ export class Channel extends EventEmitter {
   _terminate(error) {
     if (this.#closed) return;
     this.#closed = true;
+    this.#sendAbort.abort(error);this.#sends.close(error);
     if (this.#pending) { clearTimeout(this.#pending.timer); this.#pending.reject(error); this.#pending = undefined; }
     for (const p of this.#confirms.values()) { clearTimeout(p.timer); p.reject(error); }
     this.#confirms.clear(); this.#consumers.clear(); this.emit('close', error);
@@ -286,9 +367,10 @@ export class Channel extends EventEmitter {
     });
   }
   cancel(consumerTag) { return this._rpc('basic.cancel', [consumerTag, false], ['basic.cancel-ok'], e => { this.#consumers.delete(e.args['consumer-tag']); }); }
-  ack(deliveryTag, multiple = false) { if (this.#closed) throw Error('Channel closed'); this.#connection._send(this.id, 'basic.ack', [String(deliveryTag), multiple]); }
-  nack(deliveryTag, {multiple = false, requeue = true} = {}) { if (this.#closed) throw Error('Channel closed'); this.#connection._send(this.id, 'basic.nack', [String(deliveryTag), multiple, requeue]); }
-  reject(deliveryTag, requeue = true) { if (this.#closed) throw Error('Channel closed'); this.#connection._send(this.id, 'basic.reject', [String(deliveryTag), requeue]); }
+  #oneWay(name,args,internal=false){if(this.#closed)throw Error('Channel closed');if(!internal&&this.#connection.closing)throw Error('Connection closing');const encoded=JSON.stringify(args);const sent=this.#sends.run(()=>this.#connection._sendQueued(this.id,name,encoded,undefined,[this.#sendAbort.signal]));sent.catch(error=>{if(!this.#closed)this.#connection._fail(error);});return sent;}
+  ack(deliveryTag, multiple = false) { return this.#oneWay('basic.ack', [String(deliveryTag), multiple]); }
+  nack(deliveryTag, {multiple = false, requeue = true} = {}) { return this.#oneWay('basic.nack', [String(deliveryTag), multiple, requeue]); }
+  reject(deliveryTag, requeue = true) { return this.#oneWay('basic.reject', [String(deliveryTag), requeue]); }
   recover(requeue = true) { return this._rpc('basic.recover', [requeue], ['basic.recover-ok']); }
   async confirmSelect() {
     if (this.#mode === 'confirm') return;
@@ -306,26 +388,37 @@ export class Channel extends EventEmitter {
   }
   txCommit() { if (this.#mode !== 'transaction') return Promise.reject(Error('Not in transaction mode')); return this._rpc('tx.commit', [], ['tx.commit-ok']); }
   txRollback() { if (this.#mode !== 'transaction') return Promise.reject(Error('Not in transaction mode')); return this._rpc('tx.rollback', [], ['tx.rollback-ok']); }
-  publish(exchange, routingKey, body, {properties = {}, mandatory = false} = {}) {
-    if (this.#closed || this.#mode === 'selecting') return Promise.reject(Error('Channel unavailable'));
-    if (!(typeof body === 'string' || body instanceof Uint8Array)) return Promise.reject(TypeError('Body must be string or bytes'));
-    const bytes = Buffer.from(body);
-    if (bytes.length > 1048576) return Promise.reject(Error('Message body limit: 1 MiB'));
-    if (this.#confirms.size >= 1024) return Promise.reject(Error('Unconfirmed publish limit: 1024'));
-    const p = this.#mode === 'confirm' ? deferred() : undefined;
-    const seq = this.#nextConfirm;
-    if (p) {
-      p.timer = setTimeout(() => this.#connection._fail(Error(`Publisher confirm timeout: ${seq}`)), this.#connection.timeout);
-      this.#confirms.set(seq, p);
-    }
-    try {
-      this.#connection._publish(this.id, exchange, routingKey, bytes, properties, mandatory);
-      if (p) this.#nextConfirm++;
-    } catch (e) {
-      if (p) { clearTimeout(p.timer); this.#confirms.delete(seq); p.reject(e); return p.promise; }
-      return Promise.reject(e);
-    }
-    return p?.promise ?? Promise.resolve();
+  publish(exchange,routingKey,body,options={}) {
+    try{
+      if(!(typeof body==='string'||body instanceof Uint8Array))throw TypeError('Body must be string or bytes');
+      const length=typeof body==='string'?Buffer.byteLength(body):body.byteLength;
+      if(length>this.#connection.maxBufferedBytes)throw Error('Buffered body limit; use publishStream');
+      const bytes=Buffer.from(body);
+      return this.#publication(exchange,routingKey,[bytes],BigInt(bytes.length),options,bytes.length);
+    }catch(error){return Promise.reject(error);}
+  }
+  publishStream(exchange,routingKey,source,bodySize,options={}) {
+    try{
+      if(typeof bodySize!=='bigint'&&(!Number.isSafeInteger(bodySize)||bodySize<0))throw TypeError('Invalid declared body size');
+      const size=BigInt(bodySize);if(size<0n||size>0xffffffffffffffffn)throw TypeError('Invalid declared body size');
+      if(!source||!(typeof source[Symbol.asyncIterator]==='function'||typeof source[Symbol.iterator]==='function'))throw TypeError('Source must be an iterable of byte chunks');
+      return this.#publication(exchange,routingKey,source,size,options,0);
+    }catch(error){return Promise.reject(error);}
+  }
+  #publication(exchange,key,source,size,{properties={},mandatory=false,signal}={},bytes) {
+    if(this.#closed||this.#connection.closing||this.#mode==='selecting')return Promise.reject(Error('Channel unavailable'));
+    if(this.#publications>=1024)return Promise.reject(Error('Unconfirmed or queued publish limit: 1024'));
+    const encoded=JSON.stringify(properties),confirm=this.#mode==='confirm';let pending,seq;
+    this.#publications++;
+    const sending=this.#sends.run(async()=>{
+      await this.#connection._publishStream(this.id,exchange,key,source,size,encoded,mandatory,[this.#sendAbort.signal,signal],()=>{
+        if(confirm){seq=this.#nextConfirm++;pending=deferred();pending.promise.catch(()=>{});this.#confirms.set(seq,pending);}
+      });
+      if(pending&&this.#confirms.has(seq))pending.timer=setTimeout(()=>this.#connection._fail(Error(`Publisher confirm timeout: ${seq}`)),this.#connection.timeout);
+    },{bytes,signal});
+    return sending.then(()=>pending?.promise).catch(error=>{
+      if(pending){clearTimeout(pending.timer);this.#confirms.delete(seq);pending.reject(error);}throw error;
+    }).finally(()=>{this.#publications--;});
   }
   close() { return this._rpc('channel.close', [200, 'normal close', 0, 0], ['channelClosed']); }
 }

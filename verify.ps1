@@ -34,6 +34,8 @@ try {
   if ($LASTEXITCODE -ne 0) {throw 'CLI test failed'}
   node tools/test-client.mjs
   if ($LASTEXITCODE -ne 0) {throw 'client transport fixtures failed'}
+  node tools/test-stream.mjs
+  if ($LASTEXITCODE -ne 0) {throw 'streaming publication fixtures failed'}
   node tools/test-recovery.mjs
   if ($LASTEXITCODE -ne 0) {throw 'client recovery fixtures failed'}
   node tools/test-authentication.mjs

@@ -1,0 +1,19 @@
+PASS buffered 2 MiB TCP matches pinned Go body and properties
+PASS stream 12 MiB TCP matches pinned Go body and properties
+file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/client.mjs:302
+      const error = Error(`AMQP channel closed ${e.code}: ${e.reason}`); error.code = e.code;
+                    ^
+
+Error: AMQP channel closed 406: PRECONDITION_FAILED - message size 33554432 is larger than configured max size 16777216
+    at Channel._receive (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/client.mjs:302:21)
+    at #process (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/client.mjs:162:17)
+    at TLSSocket.<anonymous> (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/client.mjs:68:68)
+    at TLSSocket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+    at Readable.push (node:internal/streams/readable:390:5)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:189:23) {
+  code: 406
+}
+
+Node.js v24.11.0

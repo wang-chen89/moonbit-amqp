@@ -22,6 +22,8 @@ options(
         "session_feed",
         "session_send",
         "session_publish",
+        "session_publish_start",
+        "session_publish_body",
         "session_heartbeat",
         "session_finish",
       ],

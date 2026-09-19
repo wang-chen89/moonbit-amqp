@@ -1,0 +1,7 @@
+PASS consumer channel restores auto-delete queue and routing declared on its sibling
+PASS owned queue recovery restores bindings and exchanges declared by another channel
+PASS transient mode restores cross-channel dependencies
+PASS deleted server-named queue is regenerated once and aliases route through restored exchanges
+PASS surviving server-named queue and sibling consumer are not replaced
+PASS two concurrent channel failures serialize dependency recovery without duplicate queue regeneration
+6 real RabbitMQ channel dependency groups passed

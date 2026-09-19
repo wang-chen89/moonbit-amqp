@@ -190,7 +190,7 @@ node tools/test-autodelete-native.mjs
 最终证据 `autodelete-upgrade.json` 绑定本版源码和检查结果；早期 manifest 与首次失败观察保留历史含义。只运行本机 Windows Node/WSL broker，未建立跨版本、跨平台、集群/长期或原生吞吐性能追平；其余 19 项本轮未重测。
 
 
-## 0.9 跨通道恢复依赖验证
+## 0.9 跨通道恢复依赖验证（0.10 继续回归）
 
 `node tools/test-channel-deps.mjs` 的 8 组独立线路测试检查真实输出帧：消费专用通道的跨通道依赖顺序、兄弟通道绑定、无关路由隔离、相关交换机的完整出站路由、transient/none 策略、循环图和未知外部队列。普通 verify 和 CI 配置加入此脚本；远程 CI 没有执行。
 
@@ -201,3 +201,23 @@ node tools/test-autodelete-native.mjs
 两项均是明确改进而非匹配：队列由健康通道声明时，原库恢复消费者失败（404）；队列由失败通道声明但路由来自健康通道时，原库恢复队列/消费者却漏掉自动删除的交换机和路由。当前 Node 两者都恢复确认消息投递。`channel-deps-native.json` 的 matched=0、explainedImprovements=2 保留这一区别。既有原库认证、更新、自动删除对照结果继续单独呈现，不把新增改善当成全量上游一致。
 
 最终清单 `channel-deps-upgrade.json` 绑定当前源码/报告。依赖图只覆盖此连接登记的实体；无法凭空发现其它连接的拓扑或恢复未知外部队列。尚未覆盖所有交错、长期断网/集群、多版本/平台或原生吞吐性能。完整 20 项追平目标保持未完成。
+
+## 0.10 发送端流式正文与背压
+
+`publish_stream_test.mbt` 新增 6 组核心状态/编码测试：完整 UInt64 长度、元数据失败原子性、空正文、同通道顺序、无效块不消耗长度、协商帧上限、多通道交错、流控及通道关闭后复用。JS 和 Wasm-GC 各 115 项通过。
+
+`node tools/test-stream.mjs` 使用独立手写 AMQP peer，正文逐帧 SHA-256，不调用本库解析器且不拼接整个正文。22 组覆盖 12 MiB/4 KiB 分帧、2 MiB 缓冲 API、32 MiB 暂停接收、源暂停与跨通道进展、同通道发布/RPC/ack 顺序、确认计时、无效长度/块、源异常/超时、排队/进行中取消、队列字节/任务数上限、flow/cancel 协议回复、通道关闭/编号复用、断线恢复不重放，以及正常连接关闭排空。慢速组同时断言数据源停止继续生成、socket 待写字节未超配置上限；报告实际读入量和 drain 次数，不把这些数字当作跨机器性能保证。`verify.ps1` 和 CI 配置都加入该脚本，远程 CI 没有运行。
+
+`tools/stream-reference.go` 只调用固定 amqp091-go 的发布/接收 API，通过原版 Go 客户端实际收取 Node 发出的正文，再发布同一字节规律和属性进行比较。原库没有被改造成流式源，它的 Publish 仍持有整个 `[]byte`。按上述固定提交/replace 方法编译，设置 `AMQP_STREAM_REFERENCE`，运行：
+
+```powershell
+node tools/test-stream-native.mjs
+```
+
+7 组真实 RabbitMQ 流程中，3 组分别比较 2 MiB 缓冲 TCP、12 MiB 流式 TCP、16 MiB 校验服务器证书的 TLS：收到的字节数、SHA-256、ContentType、MessageId、CorrelationId、DeliveryMode、中文和整数 headers 全部一致。其余检查 12 MiB 事务在提交前不可见、提交后正确/回滚后丢弃，64 KiB mandatory 退回，大退回的本地接收上限，以及 broker 拒绝 32 MiB 后兄弟通道仍可用。
+
+首次 32 MiB TLS 成功断言触发 RabbitMQ 406：测试发行版默认 `max_message_size` 为 16 MiB。`stream-broker-size-initial.txt` 保留首次记录，最终测试明确验证该拒绝，并以 16 MiB 核对 TLS 成功路径；没有提高服务器配置来隐藏默认限制。发送端 32 MiB 成功及背压由独立线路 peer 检查。旧 `stream-client-initial.txt` 记录的是原有测试仍要求大于 1 MiB 失败；现按显式缓冲上限测试，并新增 2 MiB 成功对照。
+
+接收/退回仍是完整组装，正文默认 8 MiB，CLI stdin 仍限 1 MiB；发送端进展不代表这些边界已消除。socket 遵循 [Node 24.11 writable/drain 契约](https://nodejs.org/download/release/v24.11.0/docs/api/stream.html#event-drain)。源拥有的块、编码临时对象、GC、内核/TLS 缓冲不计入 `maxBufferedBytes`，报告的进程 RSS/external 只是本次整体采样。没有原生吞吐、长时间并发压力、多平台或多版本验收。
+
+现有认证/更新/恢复/自动删除/依赖、真实 broker 和原库对照均在本版源指纹下重新核验，历史已披露差异继续保留。最终 `stream-upgrade.json` 绑定源码、报告和验证计数；各层重叠，不相加作为全量上游案例数。其它 19 个项目本轮未重跑。

@@ -1,0 +1,76 @@
+{
+  "utc": "2026-09-19T07:55:10.600Z",
+  "node": "v24.11.0",
+  "passed": 22,
+  "tests": [
+    "pre-aborted waits observe later input rejection and queue close suppresses deferred work",
+    "12 MiB lazy binary source hashes correctly using negotiated 4096 byte frames",
+    "buffered publish above the previous 1 MiB limit snapshots caller bytes",
+    "slow reader backpressure bounds socket buffers and producer read-ahead",
+    "same-channel body, ack, buffered publication and RPC retain call order",
+    "waiting source does not block another channel and confirm timeout begins after body",
+    "invalid metadata and sizes never consume a confirm sequence or close connection",
+    "short source rejects and closes incomplete connection",
+    "long source rejects and closes incomplete connection",
+    "non-byte chunk rejects and closes incomplete connection",
+    "source exception rejects and closes incomplete connection",
+    "source progress timeout rejects and closes incomplete connection",
+    "queued abort never opens its source and leaves later confirmation sequence intact",
+    "abort after header rejects queued operations and calls iterator return",
+    "per-channel buffered queue cap rejects without sequence gaps",
+    "flow reply and server consumer cancellation wait behind the current body",
+    "broker channel close during source wait preserves healthy sibling",
+    "interrupted recoverable stream is rejected once and never replayed",
+    "graceful connection close drains prior publications and fire-and-forget acknowledgements",
+    "stalled socket drain times out and closes the partial connection",
+    "broker closure cancels queued channel work before its numeric id is reused",
+    "bounded operation queue allows graceful draining when at capacity"
+  ],
+  "observations": [
+    {
+      "name": "12 MiB fragmented",
+      "ch": 1,
+      "bytes": 12582912,
+      "frames": 3264,
+      "peer": 1,
+      "size": "12582912",
+      "header": "003c00000000000000c000008000186170706c69636174696f6e2f6f637465742d73747265616d",
+      "sha256": "b6967a4c54cdab8a16907be0774af71e5db8198045f91933ebed106ddba22dfb",
+      "seq": 1,
+      "writeStats": {
+        "socketBufferedBytes": 0,
+        "maxObservedSocketBytes": 0,
+        "drainWaits": 0,
+        "streamingChannels": 0,
+        "deferredProtocolBytes": 0
+      }
+    },
+    {
+      "name": "32 MiB paused receiver",
+      "producerBytesBeforeResume": 524288,
+      "totalBytes": 33554432,
+      "writeStats": {
+        "socketBufferedBytes": 0,
+        "maxObservedSocketBytes": 65544,
+        "drainWaits": 418,
+        "streamingChannels": 0,
+        "deferredProtocolBytes": 0
+      }
+    }
+  ],
+  "sources": {
+    "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
+    "session.mbt": "cf5d7e4688b1a6f028ff9eedabb09f67c891be5f6187193191d0c236c4aae6e6",
+    "publish_stream.mbt": "60a37400a8bc0dbfe2b4f47448dc7d9b27f18af498573498e1ea421c9e1c7013",
+    "publish_stream_test.mbt": "967420c566722e4a5990a68987a51144fd7031224343552ceffde5f5bca3b1f0",
+    "cmd/web/publish_stream.mbt": "13eb1ed3791310e67cc7210bcebf990819fa6f7135c7819f3a03f7e7238ee8fd",
+    "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
+    "tools/client.mjs": "36ca96d093e88a7ad7819676f82717cf44c2bcf5f6cf97bead8f3f9ad01489af",
+    "tools/recovery-channel.mjs": "1b17c3f6530a0b9d6ff06be3633c64730e70fec3a27c5958b8524831129d20ee",
+    "tools/recovery.mjs": "0f1ba3d8b640d318b317241967160e28af9b57c732043ed2f9ed307457e2578f",
+    "tools/stream-peer.mjs": "89ca85d566cd939aa4f15206b31b02fa74f712df036a39088d0ca140948ab5bf",
+    "tools/test-stream.mjs": "a777946698ffbbcef993f6dde250b23f5ca16537281c29a39a49b5d4e5e8e653",
+    "web/engine.mjs": "5511694ff61a66950c7c4b0f065351d526667039b734efc2a4a59a988a34c1a1"
+  },
+  "scope": "Independent wire fixtures; outbound streaming only. Source-owned chunk storage excluded from sender buffer bound."
+}

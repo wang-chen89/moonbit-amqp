@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T07:17:41.646Z",
+  "utc": "2026-09-19T07:54:50.622Z",
   "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "binarySha256": "aa86ff4ea25a91dbf33cef4d5bdc9dd71b226c6a3c639f7072091b6e73cf63a8",
   "passed": 9,
@@ -113,16 +113,16 @@
   "sources": {
     "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
     "authentication.mbt": "09505b81f862c30d7f2bc24502188068475904ed5c858a8f38897060fa6397b6",
-    "session.mbt": "70bf526c7f60a2d9fec59886235ff9182f4f57c8e6d782bc95b07d5b55111a8d",
+    "session.mbt": "cf5d7e4688b1a6f028ff9eedabb09f67c891be5f6187193191d0c236c4aae6e6",
     "cmd/web/authentication.mbt": "5302c487cb36963947e2e25b6a75d63d998789b3222dc28b889bb506103cae4a",
     "cmd/web/session.mbt": "3beb76807437fe21e95b088235579c3072307b18d05bb407b931811331d1a4bd",
     "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
-    "tools/client.mjs": "bd5c1d14d6c9c46964035b012c3406aecd9b7f0261a70910166aa6fc82ca2dd6",
+    "tools/client.mjs": "36ca96d093e88a7ad7819676f82717cf44c2bcf5f6cf97bead8f3f9ad01489af",
     "tools/recovery-peer.mjs": "2938b1f6187d9f322c0b47e0498dda341ccb863a7e797501ce14cc5088864190",
     "tools/authentication-reference.go": "7deaab2b1ec34f5a36f9c618b23fcb979869a9537918c427dc4c25ff14fa4dde",
     "tools/test-auth-native.mjs": "c04753990b4f4b426d462056e42926175a033d3e91b4fa17449ba7fe97cefdc4",
     "evidence/auth-reference-build.json": "5366c55ba0ea4a7c3ae933ece38b67d39058319dc6749305a0796e036f54124a",
-    "web/engine.mjs": "1fcb6e5ce132384a9cd12a77da129d4bc87e178171be12adb263aaa08968c1df"
+    "web/engine.mjs": "5511694ff61a66950c7c4b0f065351d526667039b734efc2a4a59a988a34c1a1"
   },
   "scope": "Native Go and Node connect independently to the same hand-encoded peer. Compare selected mechanism, response bytes (AMQPLAIN table order normalized) and locale, or common negotiation rejection. This is not a real broker test."
 }

@@ -1,0 +1,34 @@
+PASS configuration rejects plaintext by default and invalid numeric values
+PASS fragmented handshake and graceful close
+PASS handshake timeout destroys socket
+PASS abort during handshake
+PASS RPC timeout rejects all channels and closes connection
+PASS abort terminates pending RPC
+PASS premature EOF with partial message rejects get
+PASS connection close rejects RPC and acknowledges peer
+PASS out-of-order single and cumulative publisher confirmations
+PASS publisher nack rejects only affected publish
+PASS future confirmation tag fails closed
+PASS unconfirmed publish timeout closes connection
+PASS missing broker heartbeat fails idle connection
+PASS bad frame terminator fails pending request
+PASS oversized frame rejected from header without waiting for body
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Missing expected rejection.
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-client.mjs:118:3
+    at async fixture (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-client.mjs:68:7)
+    at async test (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-client.mjs:71:35)
+    at async file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-client.mjs:114:1 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: undefined,
+  expected: /body limit/,
+  operator: 'rejects',
+  diff: 'simple'
+}
+
+Node.js v24.11.0

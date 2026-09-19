@@ -1,0 +1,23 @@
+PASS TCP PLAIN handshake negotiates channel/frame/heartbeat limits
+PASS independent channels allow concurrent RPCs
+PASS confirmed fragmented binary publish properties and 64-bit timestamp
+PASS empty get returns null after consumer ack
+PASS batched confirms settle every in-flight publish
+PASS bounded publish-confirm timing sample verifies every message
+PASS mandatory unroutable return carries body before confirm
+PASS nack requeues with redelivery then reject discards
+PASS qos consume ack cancel and callback failure isolation
+PASS server consumer cancel notification after queue deletion
+PASS exchange declare bind route unbind delete
+PASS transactions commit and rollback on separate channel
+PASS channel exception preserves connection and other channels
+PASS same-channel concurrent RPC rejected without desynchronization
+PASS heartbeats keep idle connection usable beyond negotiated timeout
+PASS bad password rejects handshake
+PASS missing vhost rejects handshake
+PASS TLS verifies server certificate and exchanges a message
+PASS TLS rejects untrusted certificate
+PASS TLS rejects wrong hostname even with trusted CA
+PASS broker CLI roundtrip publish get and empty queue
+PASS orderly channel and connection close
+RabbitMQ integration: 22 passed

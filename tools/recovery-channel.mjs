@@ -125,6 +125,10 @@ export class RecoveringChannel extends Lifecycle {
     try { return this._active().publish(exchange,exchange===''?this.#connection.resolveQueue(key):key,body,options); }
     catch(error) { return Promise.reject(error); }
   }
+  publishStream(exchange,key,source,bodySize,options={}) {
+    try{return this._active().publishStream(exchange,exchange===''?this.#connection.resolveQueue(key):key,source,bodySize,options);}
+    catch(error){return Promise.reject(error);}
+  }
   #delivery(message,raw,generation) {
     if (raw !== this.#physical || raw.closed || generation !== this.#generation || this.closed) return undefined;
     if (!message) return null;
@@ -171,9 +175,9 @@ export class RecoveringChannel extends Lifecycle {
     if(tag<=this.#offset||tag>this.#lastTag)throw Error('Stale or unknown delivery tag');
     return String(tag-this.#offset);
   }
-  ack(tag,multiple=false) { this.#physical.ack(this.#tag(tag,multiple),multiple); }
-  nack(tag,{multiple=false,requeue=true}={}) { this.#physical.nack(this.#tag(tag,multiple),{multiple,requeue}); }
-  reject(tag,requeue=true) { this.#physical.reject(this.#tag(tag),requeue); }
+  ack(tag,multiple=false) { return this.#physical.ack(this.#tag(tag,multiple),multiple); }
+  nack(tag,{multiple=false,requeue=true}={}) { return this.#physical.nack(this.#tag(tag,multiple),{multiple,requeue}); }
+  reject(tag,requeue=true) { return this.#physical.reject(this.#tag(tag),requeue); }
   recover(requeue=true) { return this.#call('recover',[requeue]); }
   async close() {
     if(this.closed)return;

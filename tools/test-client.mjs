@@ -112,7 +112,7 @@ await test('oversized frame rejected from header without waiting for body',()=>f
   if(e.cls===50){s.write(cat(Buffer.from([1]),u16(e.ch),u32(8185)));return true;}
 }},async({open})=>{const c=await open(),ch=await c.openChannel();await assert.rejects(ch.declareQueue(),/exceeds limit/);}));
 await test('invalid local publish leaves confirmation sequence usable',()=>fixture({onMessage:(m,s)=>s.write(ack(m.ch,1))},async({open})=>{
-  const c=await open(),ch=await c.openChannel();await ch.confirmSelect();
+  const c=await open({maxBufferedBytes:1048576}),ch=await c.openChannel();await ch.confirmSelect();
   await assert.rejects(ch.publish('','q','x',{properties:{headers:{broken:{$type:'int64'}}}}),/missing field/);
   await assert.rejects(ch.publish('','q','x',{properties:{headers:{bits:{$type:'float32-bits',value:1.5}}}}),/uint32/);
   await assert.rejects(ch.publish('','q',Buffer.alloc(1048577)),/body limit/);

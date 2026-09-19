@@ -1,0 +1,7 @@
+PASS real TCP reconnect restores cross-channel exchanges, exchange binding, server-named queue, queue binding, QoS and consumer
+PASS unacknowledged named-queue message is redelivered and old delivery tag is rejected
+PASS real 404 channel failure preserves connection and sibling channel while restoring affected channel
+PASS transaction recovery starts a new transaction and does not commit pre-disconnect work
+PASS closing during broker outage cancels recovery without later reconnect
+PASS TLS recovery repeats peer certificate and hostname validation and restores exclusive queue
+6 real RabbitMQ recovery groups passed

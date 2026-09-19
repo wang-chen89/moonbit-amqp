@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T07:18:58.402Z",
+  "utc": "2026-09-19T07:55:28.118Z",
   "reference": "Official amqp091-go, unmodified pinned source",
   "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "source": "https://github.com/rabbitmq/amqp091-go/tree/a0195c6baf35db642d13651cb28938f899062e7c",
@@ -63,6 +63,6 @@
     "tools/test-recovery-native.mjs": "fc54eb925a094bfed58b8697859c200ed158261bbdaf2adc327f0ceb86575405",
     "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
-    "evidence/rabbitmq-recovery.json": "e29a7f255fd9491452bf8f55ef5077f680c0e7786f32fa064018d8b4e0e13a0f"
+    "evidence/rabbitmq-recovery.json": "0d793ac0619524caa72611949bbe614c5dcf265261da7a075ddc409da684e928"
   }
 }
