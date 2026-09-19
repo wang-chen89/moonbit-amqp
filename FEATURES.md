@@ -11,6 +11,7 @@
 | 接收端流式正文 | 可选连接模式，get/consume/return 的异步字节流、完整长度验证、字节/分片水位、丢弃、确认保护和恢复就绪 Promise | 5 核心组、25 故障组、8 真实 broker 组，含 3 个 Go 大正文/属性对照；普通 Buffer 模式仍限 8 MiB；同连接慢流会阻塞其它通道 |
 | 会话与网络 | MoonBit start/tune/open/close、vhost、通道/流控；Node TCP/TLS、心跳、超时/取消 | 11 组新增核心会话测试；18 组网络故障场景 |
 | 发布与消费 | QoS、get/consume/cancel、ack/nack/reject、确认、mandatory 退回、事务、交换机/队列 | 22 项 RabbitMQ 4.0.5 流程含 TLS、实际 CLI 和有界计时样例；通道故障隔离 |
+| noWait 方法 | 11 个宿主方法支持不占回复槽位的有序发送，消费预登记/取消迟到投递处理，拓扑选项恢复 | 17 线路/恢复组、15 原库方法报文字节一致、8 broker 业务/恢复结果一致；Confirm(true) 等待差异单列，其他 Go 场景使用 Confirm(false)；本地完成不证明 broker 接受 |
 | 认证 | PLAIN/AMQPLAIN/EXTERNAL、客户端优先选择/locale、自定义静态或异步初始响应、重连重新协商、mTLS CLI | 30 个原库响应、9 个原库协商、12 组宿主故障和 10 组 RabbitMQ/证书/重连/CLI；不做 SASLprep，PLAIN NUL 验证有意更严格 |
 | 连接内凭证更新 | connection.update-secret/确认配对、独立等待、超时/关闭处理和恢复不重放；应用提供器支持新令牌重连 | 5 核心组、10 故障组、10 真实 OAuth 组；原库 6 报文/6 broker 结果一致；过期替代令牌先确认后拒绝的边界保留 |
 | 可选恢复 | 稳定连接/通道对象，有限重连、拓扑顺序重建、队列别名、QoS/消费/确认/事务恢复；旧确认标签拒绝 | 25 组独立线路故障、6 组 RabbitMQ、1 个固定 Go 原库重复断线场景；全部恢复语义未追平 |
@@ -21,6 +22,8 @@
 | 自动删除恢复 | 取消最后消费者、queue.delete、queue/exchange.unbind、exchange.delete 触发关联清理；跨通道与未完成操作防护、循环图、别名、显式通道关闭和 broker cancel | 13 故障组、2 真实生命周期组；10 Go/Node 真实重连场景中 9 一致，1 空解绑差异明确保留 |
 
 ## 仍需完善
+
+[API-COMPATIBILITY.md](API-COMPATIBILITY.md) 逐项映射固定参考库的 106 个公开名函数/方法声明，并给出可用对应接口或缺口。该数字不是独立能力数或完成比例，不包括所有结构字段、常量和接口。仍缺消费者独立取消、QoS 字节参数、noLocal/immediate 选项、主动 flow、确认事件/序号/独立等待句柄、URI/自定义传输、连接元数据以及恢复查询/策略的完整接口与行为验证。
 
 尚缺上游恢复/API 全量边界、外部拓扑与并发恢复的完整验证、更多真实身份提供器与认证失败策略验证、完整客户端扩展、端到端资源/性能调优和生产规模背压压力验证。Node 每通道只允许一个 RPC，确认发布可并行。未测代表性吞吐、长时间运行、不同操作系统网络宿主或多版本 broker。JS/Wasm-GC 核心均通过 120 项；Node 网络实测平台为 Windows 24 + WSL RabbitMQ。方法层是线路格式校验，不执行全部域断言、保留字段和 broker 业务规则。
 

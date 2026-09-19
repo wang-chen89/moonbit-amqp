@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T09:02:27.473Z",
+  "utc": "2026-09-19T09:28:05.641Z",
   "node": "v24.11.0",
   "passed": 25,
   "tests": [
@@ -32,7 +32,7 @@
   "observations": [
     {
       "name": "12 MiB held consumer",
-      "senderBytesBeforeResume": 318864,
+      "senderBytesBeforeResume": 384272,
       "bufferedBodyBytes": 0,
       "maxObservedBodyBytes": 61320,
       "bufferedChunks": 0,
@@ -69,11 +69,11 @@
     "receive_stream_test.mbt": "49c36575d466f0fb66254d86f921932615b6ac51b841a2855691875c5c2da9d5",
     "cmd/web/session.mbt": "461bca58fe6295a404e98487ec8869daa8aa5e452a744c714699d780bdb7a58b",
     "cmd/web/authentication.mbt": "9c57e3bcbad42ef3f9a417eafadf12c99829dbfcb453df4683076d7567c4d3e4",
-    "tools/client.mjs": "4c46851a8c9ccb9816b668e694aa394814202043a9130e4f9d1b40108d28b57b",
+    "tools/client.mjs": "6fa65b5ff4eda286cd700f9f30d24fc2f4b92c4b210d0e3158c8495fb5606d54",
     "tools/inbound.mjs": "472f83ff6abb1d1516ad46254f4a90219170630bf1506bb917fd35b1688e341f",
     "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
-    "tools/recovery.mjs": "d74b466f5d48174578d5a621565925f658adb1d6fa6c9a62101eb1f1a547d09c",
-    "tools/recovery-channel.mjs": "977dc31c61ca4ef96a2085770e9147dd9058bdbcb1768061492f5a83547a1f36",
+    "tools/recovery.mjs": "f9bb94945bc9dc9fa95c624ee692c8d5859a744591f51c51252deb1b2861a427",
+    "tools/recovery-channel.mjs": "e48ee92fea9c577dc65c63cb1121f86aca236df53b95507910388192b666f1ef",
     "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
     "tools/receive-peer.mjs": "39bc524b5d683a189c692d60b9dd8cc2cf509616e46bd5c03e6640c750b30516",
     "tools/test-receive-stream.mjs": "5f188a52e168e6145687379209250ca83a69e8edab27db0635bd780e332bb0e9",

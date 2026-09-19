@@ -1,0 +1,196 @@
+Finished. moon: ran 1 task, now up to date
+Finished. moon: ran 2 tasks, now up to date
+Finished. moon: ran 2 tasks, now up to date
+Total tests: 120, passed: 120, failed: 0.
+Total tests: 120, passed: 120, failed: 0.
+Finished. moon: no work to do
+[{ kind: 1, channel: 1, payload: <Bytes: [0x00, 0x3c, 0x00, 0x28]> }]
+amqp: standalone engine passed
+AMQP inspection: schema/engine plus 7 CLI scenarios passed
+amqp: CLI input/file/stdin/error/exit-status checks passed
+PASS configuration rejects plaintext by default and invalid numeric values
+PASS fragmented handshake and graceful close
+PASS handshake timeout destroys socket
+PASS abort during handshake
+PASS RPC timeout rejects all channels and closes connection
+PASS abort terminates pending RPC
+PASS premature EOF with partial message rejects get
+PASS connection close rejects RPC and acknowledges peer
+PASS out-of-order single and cumulative publisher confirmations
+PASS publisher nack rejects only affected publish
+PASS future confirmation tag fails closed
+PASS unconfirmed publish timeout closes connection
+PASS missing broker heartbeat fails idle connection
+PASS bad frame terminator fails pending request
+PASS oversized frame rejected from header without waiting for body
+PASS invalid local publish leaves confirmation sequence usable
+PASS broker blocked event prevents publishing until unblocked
+PASS session bridge malformed table does not throw outside error result
+Client fixtures: 18 passed
+PASS pre-aborted waits observe later input rejection and queue close suppresses deferred work
+PASS 12 MiB lazy binary source hashes correctly using negotiated 4096 byte frames
+PASS buffered publish above the previous 1 MiB limit snapshots caller bytes
+PASS slow reader backpressure bounds socket buffers and producer read-ahead
+PASS same-channel body, ack, buffered publication and RPC retain call order
+PASS waiting source does not block another channel and confirm timeout begins after body
+PASS invalid metadata and sizes never consume a confirm sequence or close connection
+PASS short source rejects and closes incomplete connection
+PASS long source rejects and closes incomplete connection
+PASS non-byte chunk rejects and closes incomplete connection
+PASS source exception rejects and closes incomplete connection
+PASS source progress timeout rejects and closes incomplete connection
+PASS queued abort never opens its source and leaves later confirmation sequence intact
+PASS abort after header rejects queued operations and calls iterator return
+PASS per-channel buffered queue cap rejects without sequence gaps
+PASS flow reply and server consumer cancellation wait behind the current body
+PASS broker channel close during source wait preserves healthy sibling
+PASS interrupted recoverable stream is rejected once and never replayed
+PASS graceful connection close drains prior publications and fire-and-forget acknowledgements
+PASS stalled socket drain times out and closes the partial connection
+PASS broker closure cancels queued channel work before its numeric id is reused
+PASS bounded operation queue allows graceful draining when at capacity
+22 streaming fixture groups passed
+PASS stream mode validates options before dialing
+PASS 12 MiB get exposes header early and paused consumer bounds read-ahead
+PASS empty streamed get and get-empty preserve distinct results
+PASS ack nack reject and cumulative ack reject incomplete delivery locally
+PASS discard drains a large body and permits later acknowledgements and RPC
+PASS breaking iteration drains remaining bytes before iterator return completes
+PASS overrun fails the whole feed without exposing a successful get
+PASS duplicate header fails the whole feed without exposing a successful get
+PASS method during body fails the whole feed without exposing a successful get
+PASS truncated UInt64 declared body rejects completion and current iterator
+PASS missing body progress times out without allocating declared length
+PASS unread large body times out while socket is paused
+PASS completed buffered stream remains readable after connection destruction
+PASS partial channel closure rejects only its body and preserves sibling
+PASS normal connection close releases paused input and rejects incomplete body
+PASS large mandatory return is streamed while publisher confirmation waits behind body
+PASS two simultaneous consumer channels share a bounded incoming budget
+PASS recovery delivers stream headers early so large bodies cannot deadlock restoration
+PASS explicit channel close releases paused body without closing its sibling
+PASS overrun in a later socket read rejects an already exposed stream
+PASS consumer callback error discards its unread source and keeps connection usable
+PASS application backpressure pauses receive heartbeat deadline and resumes normally
+PASS reading completed body buffers does not hide absent broker heartbeats
+PASS unobserved mandatory return is discarded for plain and recovering connections
+PASS one-byte body fragments hit the shared object-count watermark before the byte limit
+25 incoming streaming fixture groups passed
+PASS strict arguments and resource settings fail before network use
+PASS input file preflight rejects missing directories and body limit
+PASS regular file publication 12582912 bytes waits for confirm and matches hash
+PASS regular file publication 0 bytes waits for confirm and matches hash
+PASS unknown stdin is spooled before connecting and then streamed
+PASS stdin spool limit and idle timeout remove temporary files
+PASS known-length stdin streams exactly with no spool
+PASS known stdin length mismatch 4096/4095 never reports success
+PASS known stdin length mismatch 4096/4097 never reports success
+PASS publisher nack is an error
+PASS large mandatory return drains and produces failure despite broker confirm
+PASS file get 0 bytes installs full body before ack
+PASS file get 12582912 bytes installs full body before ack
+PASS partial delivery exposes no destination and sends no ack
+PASS existing output is preserved before connecting
+PASS raced destination is preserved and message remains unacknowledged
+PASS failed cut receive leaves no file and no acknowledgement
+PASS failed overrun receive leaves no file and no acknowledgement
+PASS failed timeout receive leaves no file and no acknowledgement
+PASS failed limit receive leaves no file and no acknowledgement
+PASS raw output is exact binary and metadata stays on stderr
+PASS blocked raw output times out without acknowledgement
+PASS empty raw and file gets distinguish absence from a zero-byte body
+23 broker file CLI fixture groups passed
+PASS all no-wait operations send proper flags without reply slots or timers
+PASS default operations still wait for their normal responses
+PASS no-wait request preserves an unrelated pending RPC reply slot
+PASS later broker rejection closes only the offending no-wait channel
+PASS no-wait request remains behind the complete same-channel body
+PASS no-wait consumer accepts immediate delivery in buffer mode
+PASS no-wait consumer accepts immediate delivery in stream mode
+PASS cancel no-wait drops late buffered delivery without ack
+PASS cancel no-wait drops late large streamed delivery without ack
+PASS invalid noWait is rejected locally by every option-bearing method
+PASS local encoding failure leaves no false consumer registration or dead connection
+PASS consumer cap bounds no-wait registrations and cancellation releases capacity
+PASS anonymous no-wait queue exposes no invented name or counts
+PASS named recovery retains no-wait topology and consumer flags
+PASS binding removal identity is independent of wait policy during recovery
+PASS no-wait cancel and deletes remove recovery intent and auto-delete dependents
+PASS failed no-wait metadata does not enter recovery topology
+17 no-wait fixture groups passed
+PASS recovery configuration validation precedes connection creation
+PASS ordered cross-channel topology and server-named queue aliases survive repeated disconnects
+PASS deliveries received during recovery wait for readiness and stale tags never reach new channel
+PASS unconfirmed publications reject and are not silently republished after recovery
+PASS soft channel error recovers that channel without disconnecting a healthy sibling
+PASS deleted topology, unbound routes and cancelled consumers are not resurrected
+PASS transient mode preserves subscriptions but skips durable declarations
+PASS disabled topology still restores channel QoS and transaction mode
+PASS skippable topology failure reopens channel before restoring remaining entities
+PASS topology error callback can refuse skipping and exhaust retry budget
+PASS connection failure during topology replay retries the complete recovery sequence
+PASS explicit close cancels retry delay without creating another socket
+PASS AbortSignal cancels a reconnect handshake and releases the wait
+PASS ready wait cancellation is local and callback errors do not stop recovery listeners
+PASS topology stores an independent argument snapshot and enforces a bounded registry
+PASS pending non-idempotent RPC rejects instead of being replayed after reconnect
+PASS failure of the last topology entity still leaves a usable reopened channel
+PASS skipping a failed consumer restores earlier subscriptions after reopening its channel
+PASS broker consumer cancellation removes its recovery entry
+PASS closing a channel during connection recovery cannot resurrect or leak the opening channel
+PASS connection recovery supersedes an older channel retry without a duplicate open
+PASS server-named queue aliases also work for later passive declarations
+PASS closing connection from a channel ready listener cannot resurrect it
+PASS closing connection from stateChange suppresses stale readiness notifications
+PASS a channel recovery notification permits a new topology RPC
+25 recovery fixture groups passed
+PASS authentication rejects malformed candidates and redacts malformed bridge credentials
+PASS client preference and locale are transmitted with exact PLAIN bytes
+PASS AMQPLAIN preserves embedded zero bytes and UTF-8 without PLAIN delimiters
+PASS selected async provider runs once and unselected providers are never evaluated
+PASS unsupported mechanism or locale does not call a secret provider or send credentials
+PASS provider rejection fails the handshake without writing an initial response
+PASS invalid or oversized provider results cannot escape through the bridge
+PASS handshake timeout aborts a pending provider and suppresses its late result
+PASS explicit AbortSignal cancels authentication before any late response can be sent
+PASS recovery retains original candidates and reselects against the new broker offer
+PASS custom provider refreshes once per selected recovery handshake
+PASS failed selected authentication is not silently retried with another mechanism
+12 authentication fixture groups passed
+PASS credential update transmits exact binary longstr and UTF-8 reason while ordinary channel RPC proceeds
+PASS credential replies do not emit unblocked or swallow real flow control events
+PASS overlapping credential updates reject without disturbing the accepted request
+PASS invalid local reason or oversized frame leaves the credential exchange usable
+PASS missing credential acknowledgement times out the whole connection and all pending work
+PASS server rejection preserves its reply code and terminates the pending credential exchange
+PASS connection close and signal cancellation both release a pending credential update
+PASS unrequested credential acknowledgement fails closed
+PASS disconnect during credential update rejects it without replay on the recovered connection
+PASS successful update changes only the live connection, keeping application-owned reconnect credentials
+10 credential update fixture groups passed
+PASS last consumer cancellation forgets the queue and full exchange chain before reconnect
+PASS consumer tags are channel scoped and all channels participate in last-consumer tracking
+PASS never-consumed queues and never-bound exchanges survive no-op cancellation and unbind
+PASS argument-distinct bindings and bindings from other channels retain their source until the last removal
+PASS exchange unbinding removes only the auto-delete source, preserving an unbound destination
+PASS explicit deletion cascades through a cyclic exchange graph without recursive looping
+PASS failed deletion does not erase the desired topology
+PASS a pending cross-channel consumer prevents premature auto-deletion before its acknowledgement
+PASS a pending binding prevents the last acknowledged unbind from prematurely deleting its source
+PASS explicit channel close forgets its last auto-delete consumer but preserves an unused queue
+PASS broker cancellation cascades and repeated cancellation cannot resurrect records
+PASS server-named queue aliases are removed after cancellation following recovery
+PASS consumer acknowledgement immediately followed by broker cancellation cannot leave a stale recovery consumer
+13 auto-delete fixture groups passed
+PASS consumer-only channel replays sibling-owned routing before subscription without reopening sibling
+PASS owned queue seeds recovery of binding and exchange dependencies registered on another channel
+PASS unrelated sibling components are not replayed or used as temporary recovery channels
+PASS all outgoing routes from a dependent exchange are restored, including routes to another queue
+PASS transient mode filters declarations after selecting cross-channel dependencies
+PASS disabled topology recovery still avoids declarations and consumer replay
+PASS cyclic routes terminate and are declared only once per selected entity
+PASS unrecorded external queue is consumed without guessing its declaration options
+8 channel dependency fixture groups passed
+30 stored native authentication vectors in four backend groups verified
+amqp: 307 bounded inputs, no uncaught runtime failure
+{"project":"amqp","utc":"2026-09-19T09:28:35.148Z","runtime":"v24.11.0","platform":"win32","cpu":"Intel(R) Core(TM) i7-14700HX","input_utf8_bytes":122,"samples":30,"warmup":5,"median_ms":0.10560000000000258,"p95_ms":0.32809999999999917,"max_ms":0.48790000000000333,"scope":"JS warm execution of documented example; no cross-project or upstream performance claim"}

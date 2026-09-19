@@ -1,0 +1,117 @@
+{
+  "utc": "2026-09-19T09:40:09.676Z",
+  "node": "v24.11.0",
+  "passed": 17,
+  "tests": [
+    "all no-wait operations send proper flags without reply slots or timers",
+    "default operations still wait for their normal responses",
+    "no-wait request preserves an unrelated pending RPC reply slot",
+    "later broker rejection closes only the offending no-wait channel",
+    "no-wait request remains behind the complete same-channel body",
+    "no-wait consumer accepts immediate delivery in buffer mode",
+    "no-wait consumer accepts immediate delivery in stream mode",
+    "cancel no-wait drops late buffered delivery without ack",
+    "cancel no-wait drops late large streamed delivery without ack",
+    "invalid noWait is rejected locally by every option-bearing method",
+    "local encoding failure leaves no false consumer registration or dead connection",
+    "consumer cap bounds no-wait registrations and cancellation releases capacity",
+    "anonymous no-wait queue exposes no invented name or counts",
+    "named recovery retains no-wait topology and consumer flags",
+    "binding removal identity is independent of wait policy during recovery",
+    "no-wait cancel and deletes remove recovery intent and auto-delete dependents",
+    "failed no-wait metadata does not enter recovery topology"
+  ],
+  "wire": [
+    {
+      "cls": 40,
+      "id": 10,
+      "args": "000006736f75726365066469726563741000000000"
+    },
+    {
+      "cls": 40,
+      "id": 10,
+      "args": "000006736f75726365066469726563741100000000"
+    },
+    {
+      "cls": 40,
+      "id": 10,
+      "args": "00000b64657374696e6174696f6e066469726563741000000000"
+    },
+    {
+      "cls": 50,
+      "id": 10,
+      "args": "00000571756575651000000000"
+    },
+    {
+      "cls": 50,
+      "id": 10,
+      "args": "00000571756575651100000000"
+    },
+    {
+      "cls": 40,
+      "id": 30,
+      "args": "00000b64657374696e6174696f6e06736f75726365036b65790100000000"
+    },
+    {
+      "cls": 50,
+      "id": 20,
+      "args": "00000571756575650b64657374696e6174696f6e036b65790100000000"
+    },
+    {
+      "cls": 60,
+      "id": 20,
+      "args": "000005717565756508636f6e73756d65720800000000"
+    },
+    {
+      "cls": 60,
+      "id": 30,
+      "args": "08636f6e73756d657201"
+    },
+    {
+      "cls": 50,
+      "id": 30,
+      "args": "000005717565756501"
+    },
+    {
+      "cls": 40,
+      "id": 40,
+      "args": "00000b64657374696e6174696f6e06736f75726365036b65790100000000"
+    },
+    {
+      "cls": 50,
+      "id": 40,
+      "args": "000005717565756504"
+    },
+    {
+      "cls": 40,
+      "id": 20,
+      "args": "00000b64657374696e6174696f6e02"
+    },
+    {
+      "cls": 40,
+      "id": 20,
+      "args": "000006736f7572636502"
+    },
+    {
+      "cls": 85,
+      "id": 10,
+      "args": "01"
+    }
+  ],
+  "sources": {
+    "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
+    "tools/client.mjs": "6fa65b5ff4eda286cd700f9f30d24fc2f4b92c4b210d0e3158c8495fb5606d54",
+    "tools/recovery.mjs": "f9bb94945bc9dc9fa95c624ee692c8d5859a744591f51c51252deb1b2861a427",
+    "tools/recovery-channel.mjs": "e48ee92fea9c577dc65c63cb1121f86aca236df53b95507910388192b666f1ef",
+    "tools/recovery-state.mjs": "78435fc7a882bfa4e7f349602db597d9778cf1f0558f7459475e8e562fff683e",
+    "tools/inbound.mjs": "472f83ff6abb1d1516ad46254f4a90219170630bf1506bb917fd35b1688e341f",
+    "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
+    "tools/nowait-peer.mjs": "0b4deee8decf362d9b05d3a45ac80ce6b07d7eb89e289e7f243fc0f3e33c8028",
+    "tools/recovery-peer.mjs": "2938b1f6187d9f322c0b47e0498dda341ccb863a7e797501ce14cc5088864190",
+    "tools/receive-peer.mjs": "39bc524b5d683a189c692d60b9dd8cc2cf509616e46bd5c03e6640c750b30516",
+    "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
+    "tools/test-nowait.mjs": "b8ddadca09640e5f57dfcce245526e875337db2eb4e61aa84873526d8890a4cf",
+    "web/engine.mjs": "56e93f45cc106b5a630d95d36b372c1dcb929b4f6df49322d762d1cca9c4cc9e"
+  },
+  "scope": "Independent peer with no replies for no-wait methods. Exact bit/argument capture, pending RPC isolation, content ordering, immediate/late delivery, resource limits, delayed rejection and recovery registration; not full upstream API parity."
+}

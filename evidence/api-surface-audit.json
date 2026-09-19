@@ -1,0 +1,876 @@
+{
+  "utc": "2026-09-19T09:31:16.383816+00:00",
+  "referenceCommit": "a0195c6baf35db642d13651cb28938f899062e7c",
+  "scope": "Syntactic exported-name functions/methods on exported receiver types in root non-test Go files. Includes conditional Fuzz; excludes unexported receivers and does not inventory struct fields, constants, interfaces or generated behavior. No full compatibility or coverage percentage claim.",
+  "declarationCount": 106,
+  "referenceFileSHA256": {
+    "allocator.go": "f3d458234fe4ec66617fe44bf7155837f067f5ee7e4f8eeaff865d22c48ecdee",
+    "auth.go": "59f775766959f3cc0371e3054c47ea4b9a19e658b7c96d707a2cf09a0e1c44fc",
+    "channel.go": "25f3ed64c80b591d2d2f03f46debb608199a5c0e11a9f104e9d2c2d5346eee2e",
+    "confirms.go": "c20fc95fabb36905b53423fcdc9ffd0c9132e283dccbd53e2d8378beda3a2aa6",
+    "connection.go": "29683a2abf2046d6abfc4d2e8d86c1c0aaaf36d73054dea14183e9d04942a66b",
+    "consumers.go": "62e9dedb9aab553a8c0fcf3aa2eaf7da0c3981dfa1840a2fb6172a40144ca3f4",
+    "delivery.go": "2870a2d46196c5de3cb0602efc40e1f73efc925d3eb5a81b45f0b447d68a8fb6",
+    "doc.go": "28c635be58e81ec7aa42f198b67900a5388a4bb56d852fdc0b23ae2d238c4f25",
+    "fuzz.go": "1384b8cea17caed7630c3d0c3e5d72dc389d0ae4fca0756a5b42fa3cb5843e2a",
+    "lifecycle.go": "34581164995be1953beb40068a7f37c0136fc675064ac546434a9a8b826658b6",
+    "log.go": "f9607b2578ca43c2a970dcfbe2b5d32aff6e138c75de2b5680fc528bbc9b669a",
+    "read.go": "1e3aa3a7bf6868b81d8dcdb4230e1f8cbeb65a8247b40846d3c2711db49cb56c",
+    "recovery.go": "89aa2b21e3942ba56748cb4990fa9452b6a8212b6923e1c78399d93de4be753c",
+    "return.go": "ac34b91679df073fa42775df5a07d62075569394ca2f2f1d5e8e1a5c585bc50c",
+    "spec091.go": "9979839df158c1d981732cf625c76faa6aaf9d13d38ab654c70494640bf065dd",
+    "types.go": "1ab6056762fb4c8e1059d7a7d433f35a6e7b89883a1633579b07a132cab9d253",
+    "uri.go": "3bad09c42637fbbbed989fd751df7f75a2b8c3d6469657f39f81c8a42b1ccded",
+    "write.go": "2411072bc3b3fb6df2539989db4530785a015767f513570216e972a97a3f5202"
+  },
+  "declarations": [
+    {
+      "name": "PlainAuth.String",
+      "file": "auth.go",
+      "line": 27,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "PlainAuth.Mechanism",
+      "file": "auth.go",
+      "line": 32,
+      "buildConstraint": "",
+      "hostEquivalent": "sasl 提供器 / Authentication",
+      "boundary": "有限认证响应/协商对照；表示形式与对象 API 不同"
+    },
+    {
+      "name": "PlainAuth.Response",
+      "file": "auth.go",
+      "line": 37,
+      "buildConstraint": "",
+      "hostEquivalent": "sasl 提供器 / Authentication",
+      "boundary": "有限认证响应/协商对照；表示形式与对象 API 不同"
+    },
+    {
+      "name": "AMQPlainAuth.String",
+      "file": "auth.go",
+      "line": 48,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "AMQPlainAuth.Mechanism",
+      "file": "auth.go",
+      "line": 53,
+      "buildConstraint": "",
+      "hostEquivalent": "sasl 提供器 / Authentication",
+      "boundary": "有限认证响应/协商对照；表示形式与对象 API 不同"
+    },
+    {
+      "name": "AMQPlainAuth.Response",
+      "file": "auth.go",
+      "line": 58,
+      "buildConstraint": "",
+      "hostEquivalent": "sasl 提供器 / Authentication",
+      "boundary": "有限认证响应/协商对照；表示形式与对象 API 不同"
+    },
+    {
+      "name": "ExternalAuth.Mechanism",
+      "file": "auth.go",
+      "line": 71,
+      "buildConstraint": "",
+      "hostEquivalent": "sasl 提供器 / Authentication",
+      "boundary": "有限认证响应/协商对照；表示形式与对象 API 不同"
+    },
+    {
+      "name": "ExternalAuth.Response",
+      "file": "auth.go",
+      "line": 76,
+      "buildConstraint": "",
+      "hostEquivalent": "sasl 提供器 / Authentication",
+      "boundary": "有限认证响应/协商对照；表示形式与对象 API 不同"
+    },
+    {
+      "name": "TopologyConfiguration.Clone",
+      "file": "channel.go",
+      "line": 194,
+      "buildConstraint": "",
+      "hostEquivalent": "恢复对象内部 topology",
+      "boundary": "部分；没有等价的只读配置快照/Clone API，不建议依赖内部可变 Map"
+    },
+    {
+      "name": "Channel.Close",
+      "file": "channel.go",
+      "line": 653,
+      "buildConstraint": "",
+      "hostEquivalent": "close / closed / openChannel",
+      "boundary": "有入口；关闭、编号重用和恢复已有有限验证"
+    },
+    {
+      "name": "Channel.IsClosed",
+      "file": "channel.go",
+      "line": 687,
+      "buildConstraint": "",
+      "hostEquivalent": "close / closed / openChannel",
+      "boundary": "有入口；关闭、编号重用和恢复已有有限验证"
+    },
+    {
+      "name": "Channel.NotifyStateChange",
+      "file": "channel.go",
+      "line": 695,
+      "buildConstraint": "",
+      "hostEquivalent": "恢复对象 stateChange / ready / recovered",
+      "boundary": "部分；普通物理对象无同形状态事件"
+    },
+    {
+      "name": "Channel.NotifyClose",
+      "file": "channel.go",
+      "line": 712,
+      "buildConstraint": "",
+      "hostEquivalent": "close / return / cancel / blocked / unblocked 事件",
+      "boundary": "事件接口不同于 Go channel；监听者阻塞/关闭语义不相同"
+    },
+    {
+      "name": "Channel.NotifyRecoveryCancel",
+      "file": "channel.go",
+      "line": 730,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "Channel.NotifyFlow",
+      "file": "channel.go",
+      "line": 788,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "Channel.NotifyReturn",
+      "file": "channel.go",
+      "line": 809,
+      "buildConstraint": "",
+      "hostEquivalent": "close / return / cancel / blocked / unblocked 事件",
+      "boundary": "事件接口不同于 Go channel；监听者阻塞/关闭语义不相同"
+    },
+    {
+      "name": "Channel.NotifyCancel",
+      "file": "channel.go",
+      "line": 829,
+      "buildConstraint": "",
+      "hostEquivalent": "close / return / cancel / blocked / unblocked 事件",
+      "boundary": "事件接口不同于 Go channel；监听者阻塞/关闭语义不相同"
+    },
+    {
+      "name": "Channel.NotifyConfirm",
+      "file": "channel.go",
+      "line": 848,
+      "buildConstraint": "",
+      "hostEquivalent": "每次发布 Promise",
+      "boundary": "部分；尚缺独立确认订阅，不能将 Promise 当作完全相同的通知契约"
+    },
+    {
+      "name": "Channel.NotifyPublish",
+      "file": "channel.go",
+      "line": 893,
+      "buildConstraint": "",
+      "hostEquivalent": "每次发布 Promise",
+      "boundary": "部分；尚缺独立确认订阅，不能将 Promise 当作完全相同的通知契约"
+    },
+    {
+      "name": "Channel.Qos",
+      "file": "channel.go",
+      "line": 941,
+      "buildConstraint": "",
+      "hostEquivalent": "qos(count, global)",
+      "boundary": "部分；尚缺 prefetchSize 参数，限额/恢复语义未全量验证"
+    },
+    {
+      "name": "Channel.Cancel",
+      "file": "channel.go",
+      "line": 990,
+      "buildConstraint": "",
+      "hostEquivalent": "cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject",
+      "boundary": "有入口；有限线路与 broker 对照，不代表全部交错"
+    },
+    {
+      "name": "Channel.QueueDeclare",
+      "file": "channel.go",
+      "line": 1070,
+      "buildConstraint": "",
+      "hostEquivalent": "declareQueue / passive",
+      "boundary": "有入口；含 noWait 的有限 broker 对照，非全量域断言验证"
+    },
+    {
+      "name": "Channel.QueueDeclarePassive",
+      "file": "channel.go",
+      "line": 1123,
+      "buildConstraint": "",
+      "hostEquivalent": "declareQueue / passive",
+      "boundary": "有入口；含 noWait 的有限 broker 对照，非全量域断言验证"
+    },
+    {
+      "name": "Channel.QueueInspect",
+      "file": "channel.go",
+      "line": 1170,
+      "buildConstraint": "",
+      "hostEquivalent": "declareQueue / passive",
+      "boundary": "有入口；含 noWait 的有限 broker 对照，非全量域断言验证"
+    },
+    {
+      "name": "Channel.QueueBind",
+      "file": "channel.go",
+      "line": 1231,
+      "buildConstraint": "",
+      "hostEquivalent": "队列/交换机对应操作",
+      "boundary": "有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体"
+    },
+    {
+      "name": "Channel.QueueUnbind",
+      "file": "channel.go",
+      "line": 1262,
+      "buildConstraint": "",
+      "hostEquivalent": "队列/交换机对应操作",
+      "boundary": "有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体"
+    },
+    {
+      "name": "Channel.QueuePurge",
+      "file": "channel.go",
+      "line": 1298,
+      "buildConstraint": "",
+      "hostEquivalent": "队列/交换机对应操作",
+      "boundary": "有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体"
+    },
+    {
+      "name": "Channel.QueueDelete",
+      "file": "channel.go",
+      "line": 1328,
+      "buildConstraint": "",
+      "hostEquivalent": "队列/交换机对应操作",
+      "boundary": "有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体"
+    },
+    {
+      "name": "Channel.Consume",
+      "file": "channel.go",
+      "line": 1403,
+      "buildConstraint": "",
+      "hostEquivalent": "consume(queue, callback, options)",
+      "boundary": "部分；支持 noWait，尚缺 noLocal，回调与 Go delivery channel 契约不同"
+    },
+    {
+      "name": "Channel.ConsumeWithContext",
+      "file": "channel.go",
+      "line": 1510,
+      "buildConstraint": "",
+      "hostEquivalent": "consume",
+      "boundary": "尚缺消费者生命周期的独立取消 signal/context 入口"
+    },
+    {
+      "name": "Channel.ExchangeDeclare",
+      "file": "channel.go",
+      "line": 1624,
+      "buildConstraint": "",
+      "hostEquivalent": "队列/交换机对应操作",
+      "boundary": "有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体"
+    },
+    {
+      "name": "Channel.ExchangeDeclarePassive",
+      "file": "channel.go",
+      "line": 1663,
+      "buildConstraint": "",
+      "hostEquivalent": "队列/交换机对应操作",
+      "boundary": "有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体"
+    },
+    {
+      "name": "Channel.ExchangeDelete",
+      "file": "channel.go",
+      "line": 1697,
+      "buildConstraint": "",
+      "hostEquivalent": "队列/交换机对应操作",
+      "boundary": "有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体"
+    },
+    {
+      "name": "Channel.ExchangeBind",
+      "file": "channel.go",
+      "line": 1743,
+      "buildConstraint": "",
+      "hostEquivalent": "队列/交换机对应操作",
+      "boundary": "有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体"
+    },
+    {
+      "name": "Channel.ExchangeUnbind",
+      "file": "channel.go",
+      "line": 1784,
+      "buildConstraint": "",
+      "hostEquivalent": "队列/交换机对应操作",
+      "boundary": "有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体"
+    },
+    {
+      "name": "Channel.Publish",
+      "file": "channel.go",
+      "line": 1844,
+      "buildConstraint": "",
+      "hostEquivalent": "publish / publishStream 的 Promise",
+      "boundary": "部分；可等待确认/取消，但缺 immediate、独立确认句柄与原库全部 context 语义"
+    },
+    {
+      "name": "Channel.PublishWithContext",
+      "file": "channel.go",
+      "line": 1886,
+      "buildConstraint": "",
+      "hostEquivalent": "publish / publishStream 的 Promise",
+      "boundary": "部分；可等待确认/取消，但缺 immediate、独立确认句柄与原库全部 context 语义"
+    },
+    {
+      "name": "Channel.PublishWithDeferredConfirm",
+      "file": "channel.go",
+      "line": 1901,
+      "buildConstraint": "",
+      "hostEquivalent": "publish / publishStream 的 Promise",
+      "boundary": "部分；可等待确认/取消，但缺 immediate、独立确认句柄与原库全部 context 语义"
+    },
+    {
+      "name": "Channel.PublishWithDeferredConfirmWithContext",
+      "file": "channel.go",
+      "line": 1956,
+      "buildConstraint": "",
+      "hostEquivalent": "publish / publishStream 的 Promise",
+      "boundary": "部分；可等待确认/取消，但缺 immediate、独立确认句柄与原库全部 context 语义"
+    },
+    {
+      "name": "Channel.Get",
+      "file": "channel.go",
+      "line": 1982,
+      "buildConstraint": "",
+      "hostEquivalent": "cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject",
+      "boundary": "有入口；有限线路与 broker 对照，不代表全部交错"
+    },
+    {
+      "name": "Channel.Tx",
+      "file": "channel.go",
+      "line": 2013,
+      "buildConstraint": "",
+      "hostEquivalent": "cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject",
+      "boundary": "有入口；有限线路与 broker 对照，不代表全部交错"
+    },
+    {
+      "name": "Channel.TxCommit",
+      "file": "channel.go",
+      "line": 2026,
+      "buildConstraint": "",
+      "hostEquivalent": "cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject",
+      "boundary": "有入口；有限线路与 broker 对照，不代表全部交错"
+    },
+    {
+      "name": "Channel.TxRollback",
+      "file": "channel.go",
+      "line": 2039,
+      "buildConstraint": "",
+      "hostEquivalent": "cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject",
+      "boundary": "有入口；有限线路与 broker 对照，不代表全部交错"
+    },
+    {
+      "name": "Channel.Flow",
+      "file": "channel.go",
+      "line": 2068,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "Channel.Confirm",
+      "file": "channel.go",
+      "line": 2099,
+      "buildConstraint": "",
+      "hostEquivalent": "confirmSelect({noWait})",
+      "boundary": "有入口且有意差异：原库 Confirm(true) 等待被抑制回复，本版真正不等待；单独计数"
+    },
+    {
+      "name": "Channel.Recover",
+      "file": "channel.go",
+      "line": 2130,
+      "buildConstraint": "",
+      "hostEquivalent": "cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject",
+      "boundary": "有入口；有限线路与 broker 对照，不代表全部交错"
+    },
+    {
+      "name": "Channel.Ack",
+      "file": "channel.go",
+      "line": 2146,
+      "buildConstraint": "",
+      "hostEquivalent": "cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject",
+      "boundary": "有入口；有限线路与 broker 对照，不代表全部交错"
+    },
+    {
+      "name": "Channel.Nack",
+      "file": "channel.go",
+      "line": 2163,
+      "buildConstraint": "",
+      "hostEquivalent": "cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject",
+      "boundary": "有入口；有限线路与 broker 对照，不代表全部交错"
+    },
+    {
+      "name": "Channel.Reject",
+      "file": "channel.go",
+      "line": 2181,
+      "buildConstraint": "",
+      "hostEquivalent": "cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject",
+      "boundary": "有入口；有限线路与 broker 对照，不代表全部交错"
+    },
+    {
+      "name": "Channel.GetNextPublishSeqNo",
+      "file": "channel.go",
+      "line": 2193,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "Channel.Reconnect",
+      "file": "channel.go",
+      "line": 2289,
+      "buildConstraint": "",
+      "hostEquivalent": "自动恢复 / waitForReady",
+      "boundary": "部分；没有用户显式重连入口"
+    },
+    {
+      "name": "Channel.TopologyConfiguration",
+      "file": "channel.go",
+      "line": 2521,
+      "buildConstraint": "",
+      "hostEquivalent": "恢复对象内部 topology",
+      "boundary": "部分；没有等价的只读配置快照/Clone API，不建议依赖内部可变 Map"
+    },
+    {
+      "name": "DeferredConfirmation.Done",
+      "file": "confirms.go",
+      "line": 218,
+      "buildConstraint": "",
+      "hostEquivalent": "发布 Promise",
+      "boundary": "部分；没有单独的 Done/Acked/WaitContext 句柄，取消含义也不同"
+    },
+    {
+      "name": "DeferredConfirmation.Acked",
+      "file": "confirms.go",
+      "line": 225,
+      "buildConstraint": "",
+      "hostEquivalent": "发布 Promise",
+      "boundary": "部分；没有单独的 Done/Acked/WaitContext 句柄，取消含义也不同"
+    },
+    {
+      "name": "DeferredConfirmation.Wait",
+      "file": "confirms.go",
+      "line": 236,
+      "buildConstraint": "",
+      "hostEquivalent": "发布 Promise",
+      "boundary": "部分；没有单独的 Done/Acked/WaitContext 句柄，取消含义也不同"
+    },
+    {
+      "name": "DeferredConfirmation.WaitContext",
+      "file": "confirms.go",
+      "line": 244,
+      "buildConstraint": "",
+      "hostEquivalent": "发布 Promise",
+      "boundary": "部分；没有单独的 Done/Acked/WaitContext 句柄，取消含义也不同"
+    },
+    {
+      "name": "NewConnectionProperties",
+      "file": "connection.go",
+      "line": 109,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "DefaultDial",
+      "file": "connection.go",
+      "line": 210,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "Dial",
+      "file": "connection.go",
+      "line": 235,
+      "buildConstraint": "",
+      "hostEquivalent": "connect(options)",
+      "boundary": "部分；有 TCP/TLS/EXTERNAL 配置，尚缺 URL 解析等价入口和全部配置项"
+    },
+    {
+      "name": "DialTLS",
+      "file": "connection.go",
+      "line": 249,
+      "buildConstraint": "",
+      "hostEquivalent": "connect(options)",
+      "boundary": "部分；有 TCP/TLS/EXTERNAL 配置，尚缺 URL 解析等价入口和全部配置项"
+    },
+    {
+      "name": "DialTLS_ExternalAuth",
+      "file": "connection.go",
+      "line": 268,
+      "buildConstraint": "",
+      "hostEquivalent": "connect(options)",
+      "boundary": "部分；有 TCP/TLS/EXTERNAL 配置，尚缺 URL 解析等价入口和全部配置项"
+    },
+    {
+      "name": "DialConfig",
+      "file": "connection.go",
+      "line": 281,
+      "buildConstraint": "",
+      "hostEquivalent": "connect(options)",
+      "boundary": "部分；有 TCP/TLS/EXTERNAL 配置，尚缺 URL 解析等价入口和全部配置项"
+    },
+    {
+      "name": "Open",
+      "file": "connection.go",
+      "line": 381,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "Connection.UpdateSecret",
+      "file": "connection.go",
+      "line": 413,
+      "buildConstraint": "",
+      "hostEquivalent": "updateSecret",
+      "boundary": "有入口；原版报文和 OAuth broker 有限对照"
+    },
+    {
+      "name": "Connection.LocalAddr",
+      "file": "connection.go",
+      "line": 427,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "Connection.RemoteAddr",
+      "file": "connection.go",
+      "line": 439,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "Connection.ConnectionState",
+      "file": "connection.go",
+      "line": 451,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "Connection.NotifyStateChange",
+      "file": "connection.go",
+      "line": 464,
+      "buildConstraint": "",
+      "hostEquivalent": "恢复对象 stateChange / ready / recovered",
+      "boundary": "部分；普通物理对象无同形状态事件"
+    },
+    {
+      "name": "Connection.NotifyClose",
+      "file": "connection.go",
+      "line": 481,
+      "buildConstraint": "",
+      "hostEquivalent": "close / return / cancel / blocked / unblocked 事件",
+      "boundary": "事件接口不同于 Go channel；监听者阻塞/关闭语义不相同"
+    },
+    {
+      "name": "Connection.NotifyRecoveryCancel",
+      "file": "connection.go",
+      "line": 502,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "Connection.NotifyBlocked",
+      "file": "connection.go",
+      "line": 538,
+      "buildConstraint": "",
+      "hostEquivalent": "close / return / cancel / blocked / unblocked 事件",
+      "boundary": "事件接口不同于 Go channel；监听者阻塞/关闭语义不相同"
+    },
+    {
+      "name": "Connection.Close",
+      "file": "connection.go",
+      "line": 610,
+      "buildConstraint": "",
+      "hostEquivalent": "close / closed / openChannel",
+      "boundary": "有入口；关闭、编号重用和恢复已有有限验证"
+    },
+    {
+      "name": "Connection.CloseDeadline",
+      "file": "connection.go",
+      "line": 645,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "Connection.IsClosed",
+      "file": "connection.go",
+      "line": 684,
+      "buildConstraint": "",
+      "hostEquivalent": "close / closed / openChannel",
+      "boundary": "有入口；关闭、编号重用和恢复已有有限验证"
+    },
+    {
+      "name": "Connection.Channel",
+      "file": "connection.go",
+      "line": 1156,
+      "buildConstraint": "",
+      "hostEquivalent": "close / closed / openChannel",
+      "boundary": "有入口；关闭、编号重用和恢复已有有限验证"
+    },
+    {
+      "name": "Connection.Reconnect",
+      "file": "connection.go",
+      "line": 1546,
+      "buildConstraint": "",
+      "hostEquivalent": "自动恢复 / waitForReady",
+      "boundary": "部分；没有用户显式重连入口"
+    },
+    {
+      "name": "Connection.IsRecoveryEnabled",
+      "file": "connection.go",
+      "line": 1760,
+      "buildConstraint": "",
+      "hostEquivalent": "connect 的 recovery 选项",
+      "boundary": "配置能力部分对应；无全部同形只读查询入口"
+    },
+    {
+      "name": "Connection.IsTopologyRecoveryEnabled",
+      "file": "connection.go",
+      "line": 1781,
+      "buildConstraint": "",
+      "hostEquivalent": "connect 的 recovery 选项",
+      "boundary": "配置能力部分对应；无全部同形只读查询入口"
+    },
+    {
+      "name": "Connection.IsConnectionRecoveryEnabled",
+      "file": "connection.go",
+      "line": 1800,
+      "buildConstraint": "",
+      "hostEquivalent": "connect 的 recovery 选项",
+      "boundary": "配置能力部分对应；无全部同形只读查询入口"
+    },
+    {
+      "name": "Connection.MaxRetryCount",
+      "file": "connection.go",
+      "line": 1808,
+      "buildConstraint": "",
+      "hostEquivalent": "connect 的 recovery 选项",
+      "boundary": "配置能力部分对应；无全部同形只读查询入口"
+    },
+    {
+      "name": "Connection.RetryInterval",
+      "file": "connection.go",
+      "line": 1816,
+      "buildConstraint": "",
+      "hostEquivalent": "connect 的 recovery 选项",
+      "boundary": "配置能力部分对应；无全部同形只读查询入口"
+    },
+    {
+      "name": "Delivery.Ack",
+      "file": "delivery.go",
+      "line": 123,
+      "buildConstraint": "",
+      "hostEquivalent": "channel.ack/nack/reject(message.args.delivery-tag)",
+      "boundary": "能力通过通道提供；消息不是绑定确认方法的 Go Delivery 对象"
+    },
+    {
+      "name": "Delivery.Reject",
+      "file": "delivery.go",
+      "line": 143,
+      "buildConstraint": "",
+      "hostEquivalent": "channel.ack/nack/reject(message.args.delivery-tag)",
+      "boundary": "能力通过通道提供；消息不是绑定确认方法的 Go Delivery 对象"
+    },
+    {
+      "name": "Delivery.Nack",
+      "file": "delivery.go",
+      "line": 168,
+      "buildConstraint": "",
+      "hostEquivalent": "channel.ack/nack/reject(message.args.delivery-tag)",
+      "boundary": "能力通过通道提供；消息不是绑定确认方法的 Go Delivery 对象"
+    },
+    {
+      "name": "Fuzz",
+      "file": "fuzz.go",
+      "line": 13,
+      "buildConstraint": "//go:build gofuzz",
+      "hostEquivalent": "原库构建标签下的模糊测试入口",
+      "boundary": "不是普通运行期入口；本版已有独立有界异常输入工具，未声称相同 fuzz 契约"
+    },
+    {
+      "name": "LifeCycleState.String",
+      "file": "lifecycle.go",
+      "line": 22,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "StateChanged.String",
+      "file": "lifecycle.go",
+      "line": 52,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "SetLogger",
+      "file": "log.go",
+      "line": 15,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "NullLogger.Printf",
+      "file": "log.go",
+      "line": 21,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "TopologyRecoveryEntityType.String",
+      "file": "recovery.go",
+      "line": 23,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "TopologyRecoveryEntity.Error",
+      "file": "recovery.go",
+      "line": 68,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "TopologyRecoveryEntity.Unwrap",
+      "file": "recovery.go",
+      "line": 84,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "ReconnectionConfig.Clone",
+      "file": "recovery.go",
+      "line": 109,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "DefaultConnectionRecovery.OnConnectionClose",
+      "file": "recovery.go",
+      "line": 249,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "DefaultConnectionRecovery.OnChannelClose",
+      "file": "recovery.go",
+      "line": 271,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "DefaultTopologyRecovery.RecoverTopology",
+      "file": "recovery.go",
+      "line": 305,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "Error.Error",
+      "file": "types.go",
+      "line": 113,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "Error.Recoverable",
+      "file": "types.go",
+      "line": 119,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "Error.Temporary",
+      "file": "types.go",
+      "line": 137,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "Error.GoString",
+      "file": "types.go",
+      "line": 156,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "Table.Validate",
+      "file": "types.go",
+      "line": 442,
+      "buildConstraint": "",
+      "hostEquivalent": "MoonBit 字段表编码校验",
+      "boundary": "部分；字段类型方言和验证契约仍有明确差异"
+    },
+    {
+      "name": "Table.SetClientConnectionName",
+      "file": "types.go",
+      "line": 450,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "ParseURI",
+      "file": "uri.go",
+      "line": 81,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "URI.PlainAuth",
+      "file": "uri.go",
+      "line": 179,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "URI.AMQPlainAuth",
+      "file": "uri.go",
+      "line": 188,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    },
+    {
+      "name": "URI.String",
+      "file": "uri.go",
+      "line": 195,
+      "buildConstraint": "",
+      "hostEquivalent": "无等价公开入口",
+      "boundary": "待补齐或逐项验证；不是已完成能力"
+    }
+  ]
+}

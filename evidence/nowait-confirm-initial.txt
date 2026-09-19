@@ -1,0 +1,29 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: panic: Exception (501) Reason: "read tcp 127.0.0.1:50456->127.0.0.1:50453: i/o timeout"
+
+goroutine 1 [running]:
+main.check(...)
+	/mnt/c/Users/uiwcv/Documents/Codex/2026-09-10/ban/work/amqp-reference/nowait-oracle/main.go:5
+main.main()
+	/mnt/c/Users/uiwcv/Documents/Codex/2026-09-10/ban/work/amqp-reference/nowait-oracle/main.go:16 +0x2ac5
+
+
+2 !== 0
+
+    at native (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-nowait-native.mjs:17:76)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-nowait-native.mjs:21:2
+    at async fixture (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/recovery-peer.mjs:73:7)
+    at async file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-nowait-native.mjs:20:1 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 2,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.11.0

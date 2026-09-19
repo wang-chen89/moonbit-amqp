@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-19T09:04:57.785Z",
+  "at": "2026-09-19T09:29:06.612Z",
   "node": "v24.11.0",
   "platform": "win32",
   "oracle": "RabbitMQ 4.0.5-10ubuntu5 on Erlang/OTP 27, Ubuntu distribution packages, unmodified binaries",
@@ -35,9 +35,9 @@
     "warmupBatches": 4,
     "measuredBatches": 16,
     "messages": 128,
-    "medianBatchMs": 44.014399999998204,
-    "p95BatchMs": 44.456200000000536,
-    "confirmedMessagesPerSecond": 181.83295574583693,
+    "medianBatchMs": 44.091599999999744,
+    "p95BatchMs": 45.29880000000048,
+    "confirmedMessagesPerSecond": 181.80382344803482,
     "scope": "one Windows Node/WSL loopback run; nonpersistent messages, exclusive classic queue; not a production or upstream throughput comparison"
   },
   "packages": {
@@ -66,7 +66,7 @@
     "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
     "session.mbt": "2f5aa1cfe6e89655598d4ef75a1badb658f6c6f3e679284e87d4f57818db471e",
     "cmd/web/session.mbt": "461bca58fe6295a404e98487ec8869daa8aa5e452a744c714699d780bdb7a58b",
-    "tools/client.mjs": "4c46851a8c9ccb9816b668e694aa394814202043a9130e4f9d1b40108d28b57b",
+    "tools/client.mjs": "6fa65b5ff4eda286cd700f9f30d24fc2f4b92c4b210d0e3158c8495fb5606d54",
     "tools/broker.mjs": "3906562cee29a765dfa3f0c23c25574a5593b807461bde59471ba0abc55b2fa0",
     "web/engine.mjs": "56e93f45cc106b5a630d95d36b372c1dcb929b4f6df49322d762d1cca9c4cc9e",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",

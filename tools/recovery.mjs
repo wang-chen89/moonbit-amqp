@@ -189,12 +189,12 @@ export class RecoveringConnection extends Lifecycle {
         });
       for(const b of this.topology.exchangeBindings.values()) {
         if(mode==='all'||[b.source,b.destination].some(n=>this.topology.exchanges.get(n)?.options.autoDelete))
-          await run('exchange-binding',b.destination,b,ch=>ch.bindExchange(b.destination,b.source,b.routingKey,b.args));
+          await run('exchange-binding',b.destination,b,ch=>ch.bindExchange(b.destination,b.source,b.routingKey,b.args,b.options));
       }
       for(const b of this.topology.bindings.values()) {
         const q=this.topology.queue(b.queue),e=this.topology.exchanges.get(b.exchange);
         if(mode==='all'||q&&this.topology.wanted(q,mode)||e?.options.autoDelete)
-          await run('queue-binding',b.queue,b,ch=>ch.bindQueue(this.resolveQueue(b.queue),b.exchange,b.routingKey,b.args));
+          await run('queue-binding',b.queue,b,ch=>ch.bindQueue(this.resolveQueue(b.queue),b.exchange,b.routingKey,b.args,b.options));
       }
     } finally { if(spare&&!spare.closed)await spare.close(); }
   }

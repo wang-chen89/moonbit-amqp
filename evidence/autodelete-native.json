@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T08:37:43.219Z",
+  "utc": "2026-09-19T09:29:54.580Z",
   "cases": 10,
   "matched": 9,
   "explainedDifferences": 1,
@@ -647,10 +647,10 @@
   },
   "sources": {
     "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
-    "tools/recovery.mjs": "d74b466f5d48174578d5a621565925f658adb1d6fa6c9a62101eb1f1a547d09c",
-    "tools/recovery-channel.mjs": "977dc31c61ca4ef96a2085770e9147dd9058bdbcb1768061492f5a83547a1f36",
+    "tools/recovery.mjs": "f9bb94945bc9dc9fa95c624ee692c8d5859a744591f51c51252deb1b2861a427",
+    "tools/recovery-channel.mjs": "e48ee92fea9c577dc65c63cb1121f86aca236df53b95507910388192b666f1ef",
     "tools/recovery-state.mjs": "78435fc7a882bfa4e7f349602db597d9778cf1f0558f7459475e8e562fff683e",
-    "tools/client.mjs": "4c46851a8c9ccb9816b668e694aa394814202043a9130e4f9d1b40108d28b57b",
+    "tools/client.mjs": "6fa65b5ff4eda286cd700f9f30d24fc2f4b92c4b210d0e3158c8495fb5606d54",
     "tools/autodelete-reference.go": "2ce1349229c3df548b0689dc3bcb50ec43a53de0ec4e40e2bb3841f1ad28fbc9",
     "tools/autodelete-scenarios.json": "4d5461e34ac5773ab86784b957b5a5c044fa6ff827966aa88a06e15127d9e3c5",
     "tools/test-autodelete-native.mjs": "cccd17ff04899893abacb490a73031e066a24302c7d1b34a64f56deb8c1fe96d",

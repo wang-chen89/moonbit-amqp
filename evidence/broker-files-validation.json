@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T09:02:51.947Z",
+  "utc": "2026-09-19T09:28:29.403Z",
   "node": "v24.11.0",
   "platform": "win32",
   "passed": 23,
@@ -36,7 +36,7 @@
     "tools/broker-output-worker.mjs": "6043be63dfdfb3482218a0d14bd15785ae16a62ea11d1d355d8a2b843fb8dbce",
     "tools/broker-test-process.mjs": "22ced655b539ac84ee4b893ccb96b4263c219cfc1a16220bdf82ac2f854de1ff",
     "tools/test-broker-files.mjs": "5b8b125f18d8c3bb038263175ced37377bd6d5dd3db0d592b59ac3bd53356137",
-    "tools/client.mjs": "4c46851a8c9ccb9816b668e694aa394814202043a9130e4f9d1b40108d28b57b",
+    "tools/client.mjs": "6fa65b5ff4eda286cd700f9f30d24fc2f4b92c4b210d0e3158c8495fb5606d54",
     "tools/inbound.mjs": "472f83ff6abb1d1516ad46254f4a90219170630bf1506bb917fd35b1688e341f",
     "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
     "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",

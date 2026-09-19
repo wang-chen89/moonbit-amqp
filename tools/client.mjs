@@ -333,6 +333,16 @@ export class Channel extends EventEmitter {
     }catch(e){this.#pending=undefined;p.reject(e);}
     return p.promise;
   }
+  #request(name,args,expected,noWait,local,apply){
+    if(typeof noWait!=='boolean')return Promise.reject(TypeError('Invalid noWait'));
+    if(!noWait)return this._rpc(name,args,expected,apply);
+    try{
+      if(this.#closed||this.#connection.closing)throw Error('Channel unavailable');
+      const encoded=JSON.stringify(args);
+      // No reply slot or RPC timer: a later broker rejection is a channel close.
+      return this.#sends.run(()=>this.#connection._sendQueued(this.id,name,encoded,undefined,[this.#sendAbort.signal])).then(()=>local());
+    }catch(error){return Promise.reject(error);}
+  }
   #notify(callback, message) {
     // User callback failures do not corrupt framing or leave a rejected Promise unobserved.
     Promise.resolve().then(() => callback(message)).catch(e => {if(message?.type==='messageStart')message.body.discard().catch(()=>{});this.emit('callbackError', e);});
@@ -359,8 +369,10 @@ export class Channel extends EventEmitter {
       if(!this.emit('return', delivery(e))&&e.type==='messageStart')e.body.discard().catch(()=>{});
     } else if (e.name === 'basic.deliver') {
       const callback = this.#consumers.get(e.args['consumer-tag']);
-      if (!callback) throw Error('Delivery for unknown consumer');
-      this.#notify(callback, delivery(e));
+      if(callback)this.#notify(callback, delivery(e));
+      // Like the reference client, discard deliveries for a removed consumer.
+      // A no-wait cancel can leave frames already in flight; never ack them.
+      else if(e.type==='messageStart')e.body.discard().catch(()=>{});
     } else if (e.name === 'basic.cancel') {
       const tag = e.args['consumer-tag'];
       if (!e.args['no-wait']) this.#oneWay('basic.cancel-ok', [tag],true);
@@ -381,38 +393,42 @@ export class Channel extends EventEmitter {
     for (const p of this.#confirms.values()) { clearTimeout(p.timer); p.reject(error); }
     this.#confirms.clear(); this.#consumers.clear(); this.emit('close', error);
   }
-  declareQueue(queue = '', {passive = false, durable = false, exclusive = false, autoDelete = false, arguments: args = {}} = {}) {
-    return this._rpc('queue.declare', [0, queue, passive, durable, exclusive, autoDelete, false, args], ['queue.declare-ok']);
+  declareQueue(queue = '', {passive = false, durable = false, exclusive = false, autoDelete = false, noWait = false, arguments: args = {}} = {}) {
+    return this.#request('queue.declare', [0, queue, passive, durable, exclusive, autoDelete, noWait, args], ['queue.declare-ok'],noWait,()=>({queue,'message-count':0,'consumer-count':0}));
   }
-  deleteQueue(queue, {ifUnused = false, ifEmpty = false} = {}) { return this._rpc('queue.delete', [0, queue, ifUnused, ifEmpty, false], ['queue.delete-ok']); }
-  purgeQueue(queue) { return this._rpc('queue.purge', [0, queue, false], ['queue.purge-ok']); }
-  bindQueue(queue, exchange, routingKey = '', args = {}) { return this._rpc('queue.bind', [0, queue, exchange, routingKey, false, args], ['queue.bind-ok']); }
+  deleteQueue(queue, {ifUnused = false, ifEmpty = false, noWait = false} = {}) { return this.#request('queue.delete', [0, queue, ifUnused, ifEmpty, noWait], ['queue.delete-ok'],noWait,()=>({'message-count':0})); }
+  purgeQueue(queue,{noWait=false}={}) { return this.#request('queue.purge', [0, queue, noWait], ['queue.purge-ok'],noWait,()=>({'message-count':0})); }
+  bindQueue(queue, exchange, routingKey = '', args = {},{noWait=false}={}) { return this.#request('queue.bind', [0, queue, exchange, routingKey, noWait, args], ['queue.bind-ok'],noWait,()=>({})); }
   unbindQueue(queue, exchange, routingKey = '', args = {}) { return this._rpc('queue.unbind', [0, queue, exchange, routingKey, args], ['queue.unbind-ok']); }
-  declareExchange(exchange, type = 'direct', {passive = false, durable = false, autoDelete = false, internal = false, arguments: args = {}} = {}) {
-    return this._rpc('exchange.declare', [0, exchange, type, passive, durable, autoDelete, internal, false, args], ['exchange.declare-ok']);
+  declareExchange(exchange, type = 'direct', {passive = false, durable = false, autoDelete = false, internal = false, noWait = false, arguments: args = {}} = {}) {
+    return this.#request('exchange.declare', [0, exchange, type, passive, durable, autoDelete, internal, noWait, args], ['exchange.declare-ok'],noWait,()=>({}));
   }
-  deleteExchange(exchange, {ifUnused = false} = {}) { return this._rpc('exchange.delete', [0, exchange, ifUnused, false], ['exchange.delete-ok']); }
-  bindExchange(destination, source, routingKey = '', args = {}) { return this._rpc('exchange.bind', [0, destination, source, routingKey, false, args], ['exchange.bind-ok']); }
-  unbindExchange(destination, source, routingKey = '', args = {}) { return this._rpc('exchange.unbind', [0, destination, source, routingKey, false, args], ['exchange.unbind-ok']); }
+  deleteExchange(exchange, {ifUnused = false,noWait=false} = {}) { return this.#request('exchange.delete', [0, exchange, ifUnused, noWait], ['exchange.delete-ok'],noWait,()=>({})); }
+  bindExchange(destination, source, routingKey = '', args = {},{noWait=false}={}) { return this.#request('exchange.bind', [0, destination, source, routingKey, noWait, args], ['exchange.bind-ok'],noWait,()=>({})); }
+  unbindExchange(destination, source, routingKey = '', args = {},{noWait=false}={}) { return this.#request('exchange.unbind', [0, destination, source, routingKey, noWait, args], ['exchange.unbind-ok'],noWait,()=>({})); }
   qos(prefetchCount, global = false) { return this._rpc('basic.qos', [0, prefetchCount, global], ['basic.qos-ok']); }
   get(queue, {noAck = false} = {}) { return this._rpc('basic.get', [0, queue, noAck], ['basic.get-ok', 'basic.get-empty'], e => e.name === 'basic.get-empty' ? null : delivery(e)); }
-  consume(queue, callback, {consumerTag = randomUUID(), noAck = false, exclusive = false, arguments: args = {}} = {}) {
+  consume(queue, callback, {consumerTag = randomUUID(), noAck = false, exclusive = false, noWait=false, arguments: args = {}} = {}) {
     if (typeof callback !== 'function' || !consumerTag || this.#consumers.has(consumerTag)) return Promise.reject(TypeError('Invalid callback or duplicate/empty consumer tag'));
-    return this._rpc('basic.consume', [0, queue, consumerTag, false, noAck, exclusive, false, args], ['basic.consume-ok'], e => {
+    if(this.#consumers.size>=1024)return Promise.reject(Error('Consumer limit: 1024'));
+    if(typeof noWait!=='boolean')return Promise.reject(TypeError('Invalid noWait'));
+    if(noWait)this.#consumers.set(consumerTag,callback);
+    return this.#request('basic.consume', [0, queue, consumerTag, false, noAck, exclusive, noWait, args], ['basic.consume-ok'],noWait,()=>consumerTag, e => {
       const tag = e.args['consumer-tag']; this.#consumers.set(tag, callback); return tag;
-    });
+    }).catch(error=>{if(noWait&&this.#consumers.get(consumerTag)===callback)this.#consumers.delete(consumerTag);throw error;});
   }
-  cancel(consumerTag) { return this._rpc('basic.cancel', [consumerTag, false], ['basic.cancel-ok'], e => { this.#consumers.delete(e.args['consumer-tag']); }); }
+  cancel(consumerTag,{noWait=false}={}) { return this.#request('basic.cancel', [consumerTag, noWait], ['basic.cancel-ok'],noWait,()=>{this.#consumers.delete(consumerTag);}, e => { this.#consumers.delete(e.args['consumer-tag']); }); }
   #oneWay(name,args,internal=false){if(this.#closed)throw Error('Channel closed');if(!internal&&this.#connection.closing)throw Error('Connection closing');const encoded=JSON.stringify(args);const sent=this.#sends.run(()=>this.#connection._sendQueued(this.id,name,encoded,undefined,[this.#sendAbort.signal]));sent.catch(error=>{if(!this.#closed)this.#connection._fail(error);});return sent;}
   ack(deliveryTag, multiple = false) { this.#connection._assertIncomingComplete(this.id,deliveryTag,multiple);return this.#oneWay('basic.ack', [String(deliveryTag), multiple]); }
   nack(deliveryTag, {multiple = false, requeue = true} = {}) { this.#connection._assertIncomingComplete(this.id,deliveryTag,multiple);return this.#oneWay('basic.nack', [String(deliveryTag), multiple, requeue]); }
   reject(deliveryTag, requeue = true) { this.#connection._assertIncomingComplete(this.id,deliveryTag);return this.#oneWay('basic.reject', [String(deliveryTag), requeue]); }
   recover(requeue = true) { return this._rpc('basic.recover', [requeue], ['basic.recover-ok']); }
-  async confirmSelect() {
+  async confirmSelect({noWait=false}={}) {
+    if(typeof noWait!=='boolean')throw TypeError('Invalid noWait');
     if (this.#mode === 'confirm') return;
     if (this.#mode !== 'normal') throw Error('Confirm and transaction modes are exclusive');
     this.#mode = 'selecting';
-    try { await this._rpc('confirm.select', [false], ['confirm.select-ok'], () => { this.#mode = 'confirm'; }); }
+    try { await this.#request('confirm.select', [noWait], ['confirm.select-ok'],noWait,()=>{this.#mode='confirm';}, () => { this.#mode = 'confirm'; }); }
     catch (e) { this.#mode = 'normal'; throw e; }
   }
   async txSelect() {

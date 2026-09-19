@@ -1,0 +1,412 @@
+{
+  "utc": "2026-09-19T09:27:13.007Z",
+  "node": "v24.11.0",
+  "wireCases": 15,
+  "wire": [
+    {
+      "index": 0,
+      "matched": true,
+      "actual": {
+        "cls": 40,
+        "id": 10,
+        "args": "000006736f75726365066469726563741000000000"
+      },
+      "reference": {
+        "cls": 40,
+        "id": 10,
+        "args": "000006736f75726365066469726563741000000000"
+      }
+    },
+    {
+      "index": 1,
+      "matched": true,
+      "actual": {
+        "cls": 40,
+        "id": 10,
+        "args": "000006736f75726365066469726563741100000000"
+      },
+      "reference": {
+        "cls": 40,
+        "id": 10,
+        "args": "000006736f75726365066469726563741100000000"
+      }
+    },
+    {
+      "index": 2,
+      "matched": true,
+      "actual": {
+        "cls": 40,
+        "id": 10,
+        "args": "00000b64657374696e6174696f6e066469726563741000000000"
+      },
+      "reference": {
+        "cls": 40,
+        "id": 10,
+        "args": "00000b64657374696e6174696f6e066469726563741000000000"
+      }
+    },
+    {
+      "index": 3,
+      "matched": true,
+      "actual": {
+        "cls": 50,
+        "id": 10,
+        "args": "00000571756575651000000000"
+      },
+      "reference": {
+        "cls": 50,
+        "id": 10,
+        "args": "00000571756575651000000000"
+      }
+    },
+    {
+      "index": 4,
+      "matched": true,
+      "actual": {
+        "cls": 50,
+        "id": 10,
+        "args": "00000571756575651100000000"
+      },
+      "reference": {
+        "cls": 50,
+        "id": 10,
+        "args": "00000571756575651100000000"
+      }
+    },
+    {
+      "index": 5,
+      "matched": true,
+      "actual": {
+        "cls": 40,
+        "id": 30,
+        "args": "00000b64657374696e6174696f6e06736f75726365036b65790100000000"
+      },
+      "reference": {
+        "cls": 40,
+        "id": 30,
+        "args": "00000b64657374696e6174696f6e06736f75726365036b65790100000000"
+      }
+    },
+    {
+      "index": 6,
+      "matched": true,
+      "actual": {
+        "cls": 50,
+        "id": 20,
+        "args": "00000571756575650b64657374696e6174696f6e036b65790100000000"
+      },
+      "reference": {
+        "cls": 50,
+        "id": 20,
+        "args": "00000571756575650b64657374696e6174696f6e036b65790100000000"
+      }
+    },
+    {
+      "index": 7,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 20,
+        "args": "000005717565756508636f6e73756d65720800000000"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 20,
+        "args": "000005717565756508636f6e73756d65720800000000"
+      }
+    },
+    {
+      "index": 8,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 30,
+        "args": "08636f6e73756d657201"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 30,
+        "args": "08636f6e73756d657201"
+      }
+    },
+    {
+      "index": 9,
+      "matched": true,
+      "actual": {
+        "cls": 50,
+        "id": 30,
+        "args": "000005717565756501"
+      },
+      "reference": {
+        "cls": 50,
+        "id": 30,
+        "args": "000005717565756501"
+      }
+    },
+    {
+      "index": 10,
+      "matched": true,
+      "actual": {
+        "cls": 40,
+        "id": 40,
+        "args": "00000b64657374696e6174696f6e06736f75726365036b65790100000000"
+      },
+      "reference": {
+        "cls": 40,
+        "id": 40,
+        "args": "00000b64657374696e6174696f6e06736f75726365036b65790100000000"
+      }
+    },
+    {
+      "index": 11,
+      "matched": true,
+      "actual": {
+        "cls": 50,
+        "id": 40,
+        "args": "000005717565756504"
+      },
+      "reference": {
+        "cls": 50,
+        "id": 40,
+        "args": "000005717565756504"
+      }
+    },
+    {
+      "index": 12,
+      "matched": true,
+      "actual": {
+        "cls": 40,
+        "id": 20,
+        "args": "00000b64657374696e6174696f6e02"
+      },
+      "reference": {
+        "cls": 40,
+        "id": 20,
+        "args": "00000b64657374696e6174696f6e02"
+      }
+    },
+    {
+      "index": 13,
+      "matched": true,
+      "actual": {
+        "cls": 40,
+        "id": 20,
+        "args": "000006736f7572636502"
+      },
+      "reference": {
+        "cls": 40,
+        "id": 20,
+        "args": "000006736f7572636502"
+      }
+    },
+    {
+      "index": 14,
+      "matched": true,
+      "actual": {
+        "cls": 85,
+        "id": 10,
+        "args": "01"
+      },
+      "reference": {
+        "cls": 85,
+        "id": 10,
+        "args": "01"
+      }
+    }
+  ],
+  "passed": 8,
+  "tests": [
+    "operations",
+    "consumer",
+    "anonymous",
+    "missing-queue",
+    "missing-exchange",
+    "delete-if-empty",
+    "cancel-requeue",
+    "recovery"
+  ],
+  "nativeComparisons": 8,
+  "comparisons": [
+    {
+      "name": "operations",
+      "matched": true,
+      "actual": {
+        "declaredCount": 0,
+        "passiveCount": 0,
+        "observedCount": 1,
+        "body": "routed",
+        "purgeCount": 0,
+        "afterPurge": 0,
+        "unboundEmpty": true,
+        "deleteCount": 0
+      },
+      "reference": {
+        "afterPurge": 0,
+        "body": "routed",
+        "declaredCount": 0,
+        "deleteCount": 0,
+        "observedCount": 1,
+        "passiveCount": 0,
+        "purgeCount": 0,
+        "unboundEmpty": true
+      }
+    },
+    {
+      "name": "consumer",
+      "matched": true,
+      "actual": {
+        "before": "before",
+        "consumersAfterCancel": 0,
+        "afterCancel": "get-after-cancel"
+      },
+      "reference": {
+        "afterCancel": "get-after-cancel",
+        "before": "before",
+        "consumersAfterCancel": 0
+      }
+    },
+    {
+      "name": "anonymous",
+      "matched": true,
+      "actual": {
+        "declaredName": "",
+        "declaredCount": 0,
+        "body": "anonymous"
+      },
+      "reference": {
+        "body": "anonymous",
+        "declaredCount": 0,
+        "declaredName": ""
+      }
+    },
+    {
+      "name": "missing-queue",
+      "matched": true,
+      "actual": {
+        "accepted": true,
+        "code": 404,
+        "connectionOpen": true
+      },
+      "reference": {
+        "accepted": true,
+        "code": 404,
+        "connectionOpen": true
+      }
+    },
+    {
+      "name": "missing-exchange",
+      "matched": true,
+      "actual": {
+        "accepted": true,
+        "code": 404,
+        "connectionOpen": true
+      },
+      "reference": {
+        "accepted": true,
+        "code": 404,
+        "connectionOpen": true
+      }
+    },
+    {
+      "name": "delete-if-empty",
+      "matched": true,
+      "actual": {
+        "deleteCount": 0,
+        "code": 406,
+        "retained": true,
+        "body": "retained"
+      },
+      "reference": {
+        "body": "retained",
+        "code": 406,
+        "deleteCount": 0,
+        "retained": true
+      }
+    },
+    {
+      "name": "cancel-requeue",
+      "matched": true,
+      "actual": {
+        "retained": true,
+        "body": "late"
+      },
+      "reference": {
+        "body": "late",
+        "retained": true
+      }
+    },
+    {
+      "name": "recovery",
+      "matched": true,
+      "actual": {
+        "before": "before",
+        "after": "after",
+        "consumersAfterCancel": 0,
+        "afterCancel": "get-after-cancel"
+      },
+      "reference": {
+        "after": "after",
+        "afterCancel": "get-after-cancel",
+        "before": "before",
+        "consumersAfterCancel": 0
+      }
+    }
+  ],
+  "explainedDifferences": 1,
+  "differences": [
+    {
+      "name": "confirm-no-wait",
+      "matched": false,
+      "reference": {
+        "completed": false,
+        "connectionOpen": true
+      },
+      "actual": {
+        "completed": true,
+        "connectionOpen": true,
+        "publicationConfirmed": true
+      },
+      "explanation": "Pinned Go confirmSelect.wait() returns true despite the wire Nowait bit. RabbitMQ suppresses the reply; Go did not return within a 300 ms observation and was closed explicitly. Node completes locally and receives a real publisher confirmation."
+    }
+  ],
+  "sources": {
+    "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
+    "tools/client.mjs": "6fa65b5ff4eda286cd700f9f30d24fc2f4b92c4b210d0e3158c8495fb5606d54",
+    "tools/recovery.mjs": "f9bb94945bc9dc9fa95c624ee692c8d5859a744591f51c51252deb1b2861a427",
+    "tools/recovery-channel.mjs": "e48ee92fea9c577dc65c63cb1121f86aca236df53b95507910388192b666f1ef",
+    "tools/recovery-state.mjs": "78435fc7a882bfa4e7f349602db597d9778cf1f0558f7459475e8e562fff683e",
+    "tools/inbound.mjs": "472f83ff6abb1d1516ad46254f4a90219170630bf1506bb917fd35b1688e341f",
+    "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
+    "tools/nowait-reference.go": "538f6130d2d2522bbd38ac03398524c15b0f7764766dc23523c620730c50bfbe",
+    "tools/test-nowait-native.mjs": "873b040669403c726a221fd82cdcfb713b28ace9c4322422282d5a409ccea346",
+    "tools/nowait-peer.mjs": "0b4deee8decf362d9b05d3a45ac80ce6b07d7eb89e289e7f243fc0f3e33c8028",
+    "tools/recovery-peer.mjs": "2938b1f6187d9f322c0b47e0498dda341ccb863a7e797501ce14cc5088864190",
+    "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
+    "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
+    "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
+    "evidence/nowait-reference-build.json": "00130425d62c8d2fafa0d65ee67947f5460ef8342f112017687767e015bff215",
+    "web/engine.mjs": "56e93f45cc106b5a630d95d36b372c1dcb929b4f6df49322d762d1cca9c4cc9e"
+  },
+  "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
+  "binarySha256": "0b56348198660ba9d035cf3f41ca1f61d2b8909c4e2e886e3da158bd5fdc9bfa",
+  "brokerPackages": {
+    "rabbitmq-server_4.0.5-10ubuntu5_all.deb": "facf754e045a705aca30b82b7728ac7b3f123d2b7f7838575b246fe0bd2ad05e",
+    "libsctp1_1.0.21+dfsg-1build2_amd64.deb": "92924c463cf0e6630b1e9fd3969d45b21558f7ecbf0c9ef12c80523669f8a271",
+    "erlang-xmerl_1%3a27.3.4.6+dfsg-1_amd64.deb": "7480288faf6f4870a62e9de14c56cd4e6b92bebf4c26e1d35123bab10c92d1fc",
+    "erlang-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "f2769fae5be10c5c7048f2d1f62c5d41c9202c016b48138b039a6887c44c4757",
+    "erlang-syntax-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "06a238505a33eb31b4479cdcc003719bcf37cdff8922e0496296407bcafee2f4",
+    "erlang-ssl_1%3a27.3.4.6+dfsg-1_amd64.deb": "f194e4197bd209a2e3b219190f545c5fa3735369b6d8e36b8616a20dac767b64",
+    "erlang-snmp_1%3a27.3.4.6+dfsg-1_amd64.deb": "ce4c7681a5ee8d8c9f8fab0fc1b6297e2dab573f6991e24bc592770bd1e4cd4d",
+    "erlang-runtime-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "dfe9a6452a7073faf6be4e2f4ac4e5513458294d5949fa10040b77f5d522970a",
+    "erlang-public-key_1%3a27.3.4.6+dfsg-1_amd64.deb": "8cb55457e13ff6b00ff9ea80df4b13360dbb4df9c4bc1dbbbdc3ad4d9658ee8c",
+    "erlang-parsetools_1%3a27.3.4.6+dfsg-1_amd64.deb": "bd846ef7ca9d58f48ee54123a7138ec1812aa7aa813ebdffce21fc5fd6f45d78",
+    "erlang-os-mon_1%3a27.3.4.6+dfsg-1_amd64.deb": "b1cc339e3dfc237440069314dcdb082dc812cea57c1494679efbd642c22b9775",
+    "erlang-mnesia_1%3a27.3.4.6+dfsg-1_amd64.deb": "527c4881cb83a0c89e6d621adae20b4e301b8220311e59a839a443c4bf7edca6",
+    "erlang-inets_1%3a27.3.4.6+dfsg-1_amd64.deb": "f075fa56cd4464a63eb26d7d90d834a2b31446d9707c527029fa15915ae1f9ed",
+    "erlang-eldap_1%3a27.3.4.6+dfsg-1_amd64.deb": "4c40df00f11f0b459d0d5221b167e05e2eb57f63d82a61fed61541481093aa57",
+    "erlang-crypto_1%3a27.3.4.6+dfsg-1_amd64.deb": "1a2de05e72695135d4c091cbb7f74e5c291f3c763d4ced4b18e48d78a2a73d3a",
+    "erlang-base_1%3a27.3.4.6+dfsg-1_amd64.deb": "8e7ababa5b1ddbe72e135faa78d15755268dfbb7cdfc25a5a8144f3e2d5754df",
+    "erlang-asn1_1%3a27.3.4.6+dfsg-1_amd64.deb": "b2d3f1a35d642727631ff138070d5a4f410bb0066f67a1efbf11ad61dc51fa6d"
+  },
+  "scope": "15 independent-peer wire frames and 8 real broker scenarios match. Go uses Confirm(false) in those broker scenarios to isolate its separately reported Confirm(true) waiting difference; Node uses no-wait confirms. Named recovery, delayed errors, anonymous queue and cancellation/requeue covered. No complete API or throughput parity claim."
+}

@@ -101,29 +101,31 @@ export class RecoveringChannel extends Lifecycle {
     const key=this._queue(queue);
     return this.#call('deleteQueue',[this._resolved(queue),snapshot(options)],value=>{this.#connection._removeQueue(key);return value;},true);
   }
-  purgeQueue(queue) { return this.#call('purgeQueue',[this._resolved(queue)]); }
-  async bindQueue(queue,exchange,routingKey='',args={}) {
+  purgeQueue(queue,options={}) { return this.#call('purgeQueue',[this._resolved(queue),snapshot(options)]); }
+  async bindQueue(queue,exchange,routingKey='',args={},options={}) {
     const entry={queue:this._queue(queue),exchange,routingKey,args:snapshot(args),owner:this.id};
     const key=identity({...entry,owner:0});
+    entry.options=snapshot(options);
     this._active(true);const release=this.#connection.topology.pendingBinding(exchange);
-    try {return await this.#record('bindQueue',[this._resolved(queue),exchange,routingKey,entry.args],value=>{this.#connection.topology.bindings.set(key,entry);return value;},this.#connection.topology.bindings.has(key)?0:1);}finally{release();}
+    try {return await this.#record('bindQueue',[this._resolved(queue),exchange,routingKey,entry.args,entry.options],value=>{this.#connection.topology.bindings.set(key,entry);return value;},this.#connection.topology.bindings.has(key)?0:1);}finally{release();}
   }
   unbindQueue(queue,exchange,routingKey='',args={}) {
     const entry={queue:this._queue(queue),exchange,routingKey,args:snapshot(args),owner:0};
     return this.#call('unbindQueue',[this._resolved(queue),exchange,routingKey,entry.args],value=>{this.#connection.topology.removeBinding(identity(entry));return value;},true);
   }
-  async bindExchange(destination,source,routingKey='',args={}) {
+  async bindExchange(destination,source,routingKey='',args={},options={}) {
     const entry={destination,source,routingKey,args:snapshot(args),owner:this.id};
     const key=identity({...entry,owner:0});
+    entry.options=snapshot(options);
     this._active(true);const release=this.#connection.topology.pendingBinding(source);
-    try {return await this.#record('bindExchange',[destination,source,routingKey,entry.args],value=>{this.#connection.topology.exchangeBindings.set(key,entry);return value;},this.#connection.topology.exchangeBindings.has(key)?0:1);}finally{release();}
+    try {return await this.#record('bindExchange',[destination,source,routingKey,entry.args,entry.options],value=>{this.#connection.topology.exchangeBindings.set(key,entry);return value;},this.#connection.topology.exchangeBindings.has(key)?0:1);}finally{release();}
   }
-  unbindExchange(destination,source,routingKey='',args={}) {
+  unbindExchange(destination,source,routingKey='',args={},options={}) {
     const entry={destination,source,routingKey,args:snapshot(args),owner:0};
-    return this.#call('unbindExchange',[destination,source,routingKey,entry.args],value=>{this.#connection.topology.removeBinding(identity(entry),true);return value;},true);
+    return this.#call('unbindExchange',[destination,source,routingKey,entry.args,snapshot(options)],value=>{this.#connection.topology.removeBinding(identity(entry),true);return value;},true);
   }
   qos(count,global=false) { return this.#call('qos',[count,global],value=>{this.#qos.set(global,count);return value;},true); }
-  async confirmSelect() { await this.#call('confirmSelect',[],()=>{this.#mode='confirm';},true); }
+  async confirmSelect(options={}) { await this.#call('confirmSelect',[snapshot(options)],()=>{this.#mode='confirm';},true); }
   async txSelect() { await this.#call('txSelect',[],()=>{this.#mode='transaction';},true); }
   txCommit() { return this.#call('txCommit',[]); }
   txRollback() { return this.#call('txRollback',[]); }
@@ -157,7 +159,7 @@ export class RecoveringChannel extends Lifecycle {
     try {return await this.#call('consume',[this._resolved(queue),m=>this.#notify(callback,m,raw,generation),options],tag=>{entry.options.consumerTag=tag;if(!entry.cancelled)this.#consumers.set(tag,entry);return tag;},true);}
     finally {this.#pendingConsumers.delete(requestedTag);this.#connection._consumerSettled(entry.queue);}
   }
-  cancel(tag) { return this.#call('cancel',[tag],value=>{const entry=this.#consumers.get(tag);this.#consumers.delete(tag);if(entry)this.#connection._consumerGone(entry.queue);return value;},true); }
+  cancel(tag,options={}) { return this.#call('cancel',[tag,snapshot(options)],value=>{const entry=this.#consumers.get(tag);this.#consumers.delete(tag);if(entry)this.#connection._consumerGone(entry.queue);return value;},true); }
   async _restoreConsumers() {
     const skipped=new Set();
     while(true) {

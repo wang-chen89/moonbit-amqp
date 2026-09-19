@@ -238,7 +238,7 @@ node tools/test-stream-native.mjs
 
 心跳依据 [RabbitMQ 心跳说明](https://www.rabbitmq.com/docs/heartbeats)，最终运行采用同一 RabbitMQ 4.0.5 发行包；该网页的当前版本不替代固定测试版本证据。完整 verify、旧真实 broker/原库对照及新报告由 `receive-upgrade.json` 绑定。CLI stdin 的 1 MiB 限制、完整 API/恢复交错、跨版本/平台、集群/长期和代表性性能仍待补齐。所有操作仅在本地，其他 19 项本轮未重测。
 
-## 0.12 大文件消息 CLI
+## 0.12 大文件消息 CLI（历史版本，0.13 继续回归）
 
 `node tools/test-broker-files.mjs` 启动真实 Node CLI 子进程，与独立手写 AMQP peer 通信；23 组验证命令/资源参数、文件类型/长度、12 MiB 及空文件发布、未知长度 stdin 暂存前不连接、已知长度 stdin 的短/长错误、nack、大 mandatory return、原子无覆盖安装、安装时才允许 ack、零字节/空队列、目标竞争创建、截断/越界/超时/限额、原始二进制输出和堵塞 stdout。每组检查受控退出后的暂存文件清理。源指纹包括 CLI、文件 helper、输出父子进程、测试子进程 helper 和核心引擎。该脚本已进入 verify 和 CI 配置，未运行远程 CI。
 
@@ -249,3 +249,17 @@ node tools/test-stream-native.mjs
 这个选择依据 [Node 24.11 进程 I/O 的平台差异](https://nodejs.org/download/release/v24.11.0/docs/api/process.html#a-note-on-process-io) 与 [文件系统 API](https://nodejs.org/download/release/v24.11.0/docs/api/fs.html)。保存使用目标目录的临时文件、sync、close、link；不覆盖目标，无硬链接支持则失败。受控失败会清理暂存文件，强制杀进程、断电、磁盘故障和任意文件系统的持久性没有完整验证。stdout 已输出前缀无法撤回，文件保存与 ack 之间仍有重复交付窗口。
 
 核心与客户端未改动；完整 verify 仍为 JS/Wasm-GC 各 120 项，既有网络/发送/接收/恢复/认证/更新/自动删除/依赖与 307 异常输入保留。改变的旧 CLI broker 路径重新实测；源码未变的原库/真实 broker 报告按源哈希核验后沿用，不能声称这些报告本轮全部重跑。最终 `broker-files-upgrade.json` 绑定全部源码及证据，历史报告和初始失败保留；本轮没有原生吞吐或进程内存性能验收。完整 20 项追平目标仍未完成，其他 19 项没有重跑。
+
+## 0.13 noWait 方法与恢复
+
+`node tools/test-nowait.mjs` 的 17 组独立 TCP 线路测试验证 15 条方法帧的标志位、默认等待、与未结束 RPC 隔离、异步 broker 通道拒绝、同通道大正文排队、立即消费、缓冲/流式迟到投递丢弃、严格布尔验证、编码失败撤销回调、1024 消费者上限、匿名队列占位结果、恢复重放、绑定身份不受 wait 选项影响，以及删除/取消后的恢复登记清理。peer 手写解析 no-wait 位并抑制回复，不使用生产编解码器。verify 和 CI 配置包含该脚本；远程 CI 未运行。核心仍为 JS/Wasm-GC 各 120 项。
+
+`tools/nowait-reference.go` 只调用固定原版 Go 客户端，仍为提交 `a0195c6baf35db642d13651cb28938f899062e7c`，72 个文件逐字核验未修改；构建指纹见 `nowait-reference-build.json`。按前述 replace 编译方式构建 adapter，设置 `AMQP_NOWAIT_REFERENCE`、`RABBITMQ_ROOT` 后执行 `node tools/test-nowait-native.mjs`。Go 与 Node 各自连接独立 peer，15 条方法的类号/方法号/完整参数字节一致。随后使用相同 17 个发行包启动隔离 RabbitMQ 4.0.5：8 个场景比较队列计数占位/实际计数、purge/delete、交换机路由与解绑、consume/cancel、匿名空名称、缺失队列/交换机的延迟 404、非空删除 406、取消后关闭通道重投，以及断线后命名拓扑/消费者恢复，结果相同。
+
+另有一项明确差异：固定 Go `Confirm(true)` 发出的 no-wait 位正确，但 `spec091.go` 的 `confirmSelect.wait()` 无条件返回 true，仍在等待方法回复。原版 RabbitMQ 4.0.5 的 [confirm.select 处理](https://raw.githubusercontent.com/rabbitmq/rabbitmq-server/v4.0.5/deps/rabbit/src/rabbit_channel.erl) 在 no-wait=true 时抑制回复。最终 bounded 探测观察 Go 在连接仍打开时持续等待 300 ms，然后显式关闭；Node 则完成选择并成功确认发布/取回真实消息。`nowait-native.json` 将其记为 explainedDifferences=1，不计为 matched。其余 8 个 Go broker 场景明确使用 `Confirm(false)`，以隔离该参考实现限制；这些比较的是所列操作结果，不是全部会话帧一致。`nowait-confirm-initial.txt` 保留首次 peer 下参考程序等到心跳超时的观察。
+
+无等待完成只证明本地发送；服务器错误可能稍后关闭通道，恢复登记只是发送意图。声明、purge/delete 的零计数不能当作真实计数；匿名无等待返回空名称，不具备生成名追踪能力。无等待消费提前登记，取消后在途投递丢弃但不确认，取消本身不重投未确认消息。确认模式恢复仍正常等待。测试没有涵盖所有回调重入、匿名恢复及拓扑拒绝交错。
+
+`api-surface-audit.json` 对已固定的 18 个根目录非测试 Go 文件记录哈希与 106 个公开名函数/方法声明位置；包括条件编译 Fuzz，不含非公开接收者的方法、所有结构字段/常量/接口。人工对应项见 `API-COMPATIBILITY.md`，仅用于明确剩余工作，不据此声称覆盖百分比或全接口兼容。
+
+当前客户端/恢复源码变化后，旧网络/恢复/认证/更新/自动删除/依赖/收发流/CLI 故障组，真实 broker 与原生 Go 对照均已重跑；30 个已存认证响应仍按源哈希和两后端测试验证。307 异常输入通过，当前文档样例及真实 broker 样本计时保留，未测代表性原生吞吐、长期、多平台或多版本性能。最终 `nowait-upgrade.json` 绑定当前源码/证据，保留历次初始观察与差异；其它 19 项本轮未重测，20 项完整追平目标仍未完成。

@@ -1,0 +1,118 @@
+# 原库接口对应与剩余差距 · 0.13
+
+基准为已核验的 amqp091-go 提交 `a0195c6baf35db642d13651cb28938f899062e7c`。下表来自根目录非测试 Go 源文件的 106 条导出命名函数/方法声明，排除非导出接收者，包含构建标签下的 Fuzz。它不是 106 项独立功能，也不涵盖所有结构体字段、常量、接口或运行行为；不能据此计算“追平百分比”。逐条源位置、构建标签和文件 SHA-256 见 [接口清单](evidence/api-surface-audit.json)。
+
+“有入口”仅指已有对应操作及所注明的有限验证，不代表完整兼容。当前优先差距包括：独立消费者取消、QoS size/noLocal/immediate 等参数、独立确认事件/句柄/序号、flow 入口及通知、连接属性/地址/TLS 状态/自定义传输/URL、显式重连与可读拓扑快照，以及完整恢复/长期/多版本/性能验证。
+
+0.13 为 11 个宿主方法补 noWait 选项，队列与交换机被动声明复用原方法选项。15 条原库报文逐字节一致；8 个真实 broker 场景结果一致。另有一个明确差异：固定 Go 的 Confirm(true) 仍等待 RabbitMQ 按 no-wait 抑制的回复，本实现不等待且能继续获得发布确认。该项单独记录，未计为行为一致。
+
+| 原库声明 | 本版入口/对应能力 | 边界 |
+|---|---|---|
+| `PlainAuth.String` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `PlainAuth.Mechanism` | sasl 提供器 / Authentication | 有限认证响应/协商对照；表示形式与对象 API 不同 |
+| `PlainAuth.Response` | sasl 提供器 / Authentication | 有限认证响应/协商对照；表示形式与对象 API 不同 |
+| `AMQPlainAuth.String` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `AMQPlainAuth.Mechanism` | sasl 提供器 / Authentication | 有限认证响应/协商对照；表示形式与对象 API 不同 |
+| `AMQPlainAuth.Response` | sasl 提供器 / Authentication | 有限认证响应/协商对照；表示形式与对象 API 不同 |
+| `ExternalAuth.Mechanism` | sasl 提供器 / Authentication | 有限认证响应/协商对照；表示形式与对象 API 不同 |
+| `ExternalAuth.Response` | sasl 提供器 / Authentication | 有限认证响应/协商对照；表示形式与对象 API 不同 |
+| `TopologyConfiguration.Clone` | 恢复对象内部 topology | 部分；没有等价的只读配置快照/Clone API，不建议依赖内部可变 Map |
+| `Channel.Close` | close / closed / openChannel | 有入口；关闭、编号重用和恢复已有有限验证 |
+| `Channel.IsClosed` | close / closed / openChannel | 有入口；关闭、编号重用和恢复已有有限验证 |
+| `Channel.NotifyStateChange` | 恢复对象 stateChange / ready / recovered | 部分；普通物理对象无同形状态事件 |
+| `Channel.NotifyClose` | close / return / cancel / blocked / unblocked 事件 | 事件接口不同于 Go channel；监听者阻塞/关闭语义不相同 |
+| `Channel.NotifyRecoveryCancel` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `Channel.NotifyFlow` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `Channel.NotifyReturn` | close / return / cancel / blocked / unblocked 事件 | 事件接口不同于 Go channel；监听者阻塞/关闭语义不相同 |
+| `Channel.NotifyCancel` | close / return / cancel / blocked / unblocked 事件 | 事件接口不同于 Go channel；监听者阻塞/关闭语义不相同 |
+| `Channel.NotifyConfirm` | 每次发布 Promise | 部分；尚缺独立确认订阅，不能将 Promise 当作完全相同的通知契约 |
+| `Channel.NotifyPublish` | 每次发布 Promise | 部分；尚缺独立确认订阅，不能将 Promise 当作完全相同的通知契约 |
+| `Channel.Qos` | qos(count, global) | 部分；尚缺 prefetchSize 参数，限额/恢复语义未全量验证 |
+| `Channel.Cancel` | cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject | 有入口；有限线路与 broker 对照，不代表全部交错 |
+| `Channel.QueueDeclare` | declareQueue / passive | 有入口；含 noWait 的有限 broker 对照，非全量域断言验证 |
+| `Channel.QueueDeclarePassive` | declareQueue / passive | 有入口；含 noWait 的有限 broker 对照，非全量域断言验证 |
+| `Channel.QueueInspect` | declareQueue / passive | 有入口；含 noWait 的有限 broker 对照，非全量域断言验证 |
+| `Channel.QueueBind` | 队列/交换机对应操作 | 有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体 |
+| `Channel.QueueUnbind` | 队列/交换机对应操作 | 有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体 |
+| `Channel.QueuePurge` | 队列/交换机对应操作 | 有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体 |
+| `Channel.QueueDelete` | 队列/交换机对应操作 | 有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体 |
+| `Channel.Consume` | consume(queue, callback, options) | 部分；支持 noWait，尚缺 noLocal，回调与 Go delivery channel 契约不同 |
+| `Channel.ConsumeWithContext` | consume | 尚缺消费者生命周期的独立取消 signal/context 入口 |
+| `Channel.ExchangeDeclare` | 队列/交换机对应操作 | 有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体 |
+| `Channel.ExchangeDeclarePassive` | 队列/交换机对应操作 | 有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体 |
+| `Channel.ExchangeDelete` | 队列/交换机对应操作 | 有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体 |
+| `Channel.ExchangeBind` | 队列/交换机对应操作 | 有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体 |
+| `Channel.ExchangeUnbind` | 队列/交换机对应操作 | 有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体 |
+| `Channel.Publish` | publish / publishStream 的 Promise | 部分；可等待确认/取消，但缺 immediate、独立确认句柄与原库全部 context 语义 |
+| `Channel.PublishWithContext` | publish / publishStream 的 Promise | 部分；可等待确认/取消，但缺 immediate、独立确认句柄与原库全部 context 语义 |
+| `Channel.PublishWithDeferredConfirm` | publish / publishStream 的 Promise | 部分；可等待确认/取消，但缺 immediate、独立确认句柄与原库全部 context 语义 |
+| `Channel.PublishWithDeferredConfirmWithContext` | publish / publishStream 的 Promise | 部分；可等待确认/取消，但缺 immediate、独立确认句柄与原库全部 context 语义 |
+| `Channel.Get` | cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject | 有入口；有限线路与 broker 对照，不代表全部交错 |
+| `Channel.Tx` | cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject | 有入口；有限线路与 broker 对照，不代表全部交错 |
+| `Channel.TxCommit` | cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject | 有入口；有限线路与 broker 对照，不代表全部交错 |
+| `Channel.TxRollback` | cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject | 有入口；有限线路与 broker 对照，不代表全部交错 |
+| `Channel.Flow` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `Channel.Confirm` | confirmSelect({noWait}) | 有入口且有意差异：原库 Confirm(true) 等待被抑制回复，本版真正不等待；单独计数 |
+| `Channel.Recover` | cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject | 有入口；有限线路与 broker 对照，不代表全部交错 |
+| `Channel.Ack` | cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject | 有入口；有限线路与 broker 对照，不代表全部交错 |
+| `Channel.Nack` | cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject | 有入口；有限线路与 broker 对照，不代表全部交错 |
+| `Channel.Reject` | cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject | 有入口；有限线路与 broker 对照，不代表全部交错 |
+| `Channel.GetNextPublishSeqNo` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `Channel.Reconnect` | 自动恢复 / waitForReady | 部分；没有用户显式重连入口 |
+| `Channel.TopologyConfiguration` | 恢复对象内部 topology | 部分；没有等价的只读配置快照/Clone API，不建议依赖内部可变 Map |
+| `DeferredConfirmation.Done` | 发布 Promise | 部分；没有单独的 Done/Acked/WaitContext 句柄，取消含义也不同 |
+| `DeferredConfirmation.Acked` | 发布 Promise | 部分；没有单独的 Done/Acked/WaitContext 句柄，取消含义也不同 |
+| `DeferredConfirmation.Wait` | 发布 Promise | 部分；没有单独的 Done/Acked/WaitContext 句柄，取消含义也不同 |
+| `DeferredConfirmation.WaitContext` | 发布 Promise | 部分；没有单独的 Done/Acked/WaitContext 句柄，取消含义也不同 |
+| `NewConnectionProperties` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `DefaultDial` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `Dial` | connect(options) | 部分；有 TCP/TLS/EXTERNAL 配置，尚缺 URL 解析等价入口和全部配置项 |
+| `DialTLS` | connect(options) | 部分；有 TCP/TLS/EXTERNAL 配置，尚缺 URL 解析等价入口和全部配置项 |
+| `DialTLS_ExternalAuth` | connect(options) | 部分；有 TCP/TLS/EXTERNAL 配置，尚缺 URL 解析等价入口和全部配置项 |
+| `DialConfig` | connect(options) | 部分；有 TCP/TLS/EXTERNAL 配置，尚缺 URL 解析等价入口和全部配置项 |
+| `Open` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `Connection.UpdateSecret` | updateSecret | 有入口；原版报文和 OAuth broker 有限对照 |
+| `Connection.LocalAddr` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `Connection.RemoteAddr` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `Connection.ConnectionState` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `Connection.NotifyStateChange` | 恢复对象 stateChange / ready / recovered | 部分；普通物理对象无同形状态事件 |
+| `Connection.NotifyClose` | close / return / cancel / blocked / unblocked 事件 | 事件接口不同于 Go channel；监听者阻塞/关闭语义不相同 |
+| `Connection.NotifyRecoveryCancel` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `Connection.NotifyBlocked` | close / return / cancel / blocked / unblocked 事件 | 事件接口不同于 Go channel；监听者阻塞/关闭语义不相同 |
+| `Connection.Close` | close / closed / openChannel | 有入口；关闭、编号重用和恢复已有有限验证 |
+| `Connection.CloseDeadline` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `Connection.IsClosed` | close / closed / openChannel | 有入口；关闭、编号重用和恢复已有有限验证 |
+| `Connection.Channel` | close / closed / openChannel | 有入口；关闭、编号重用和恢复已有有限验证 |
+| `Connection.Reconnect` | 自动恢复 / waitForReady | 部分；没有用户显式重连入口 |
+| `Connection.IsRecoveryEnabled` | connect 的 recovery 选项 | 配置能力部分对应；无全部同形只读查询入口 |
+| `Connection.IsTopologyRecoveryEnabled` | connect 的 recovery 选项 | 配置能力部分对应；无全部同形只读查询入口 |
+| `Connection.IsConnectionRecoveryEnabled` | connect 的 recovery 选项 | 配置能力部分对应；无全部同形只读查询入口 |
+| `Connection.MaxRetryCount` | connect 的 recovery 选项 | 配置能力部分对应；无全部同形只读查询入口 |
+| `Connection.RetryInterval` | connect 的 recovery 选项 | 配置能力部分对应；无全部同形只读查询入口 |
+| `Delivery.Ack` | channel.ack/nack/reject(message.args.delivery-tag) | 能力通过通道提供；消息不是绑定确认方法的 Go Delivery 对象 |
+| `Delivery.Reject` | channel.ack/nack/reject(message.args.delivery-tag) | 能力通过通道提供；消息不是绑定确认方法的 Go Delivery 对象 |
+| `Delivery.Nack` | channel.ack/nack/reject(message.args.delivery-tag) | 能力通过通道提供；消息不是绑定确认方法的 Go Delivery 对象 |
+| `Fuzz` | 原库构建标签下的模糊测试入口 | 不是普通运行期入口；本版已有独立有界异常输入工具，未声称相同 fuzz 契约 |
+| `LifeCycleState.String` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `StateChanged.String` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `SetLogger` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `NullLogger.Printf` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `TopologyRecoveryEntityType.String` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `TopologyRecoveryEntity.Error` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `TopologyRecoveryEntity.Unwrap` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `ReconnectionConfig.Clone` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `DefaultConnectionRecovery.OnConnectionClose` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `DefaultConnectionRecovery.OnChannelClose` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `DefaultTopologyRecovery.RecoverTopology` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `Error.Error` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `Error.Recoverable` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `Error.Temporary` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `Error.GoString` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `Table.Validate` | MoonBit 字段表编码校验 | 部分；字段类型方言和验证契约仍有明确差异 |
+| `Table.SetClientConnectionName` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `ParseURI` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `URI.PlainAuth` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `URI.AMQPlainAuth` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `URI.String` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+
+此外，Go Config 的自定义 Properties/Dial、服务端属性、若干默认值和无限制参数约定尚未完整对齐。当前资源上限、Promise/回调、文本/字节表示及异常形态均有本地契约，不能只按方法名称宣布兼容。Go 的日志与 String/Error 辅助方法可用目标语言惯用形式设计，但仍需逐项确定可观察行为。所有 20 项完整追平目标保持未完成。
