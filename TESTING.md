@@ -119,7 +119,7 @@ replace github.com/rabbitmq/amqp091-go => ../amqp091-go-a0195c6baf35
 `waitForReady` 默认 30000 ms，超时或局部 signal 取消只拒绝该 Promise。成功的被动声明不更改恢复登记；明确关闭通道停止该通道/消费者恢复，连接仍可恢复此前成功创建的拓扑。对于服务器隐式删除 autoDelete 的完整级联，当前尚未完全模拟。没有覆盖所有回调重入、多版本/多 OS、SASL/认证切换、集群及生产性能；不能宣称已追平。
 
 
-## 0.6 认证验证与复现
+## 0.6 认证验证与复现（历史基线）
 
 最终 `verify.ps1`：JS/Wasm-GC 各 104 项（原有 91，加 9 个认证契约组及 4 个原库向量组），18 组网络故障、25 组恢复故障、12 组认证故障，原有 CLI/引擎/307 异常输入通过。`tools/generate-auth-vectors.py --check` 验证保存的 30 个原库响应对应当前后端 fixture。其它 19 项未重跑，远程 CI 未运行。
 
@@ -150,3 +150,18 @@ node tools/test-rabbitmq-auth.mjs
 严格边界：PLAIN 的 NUL 拒绝比原库 Response 更严格；locale 必须在公告列表中，而原库直接发送客户端值；候选最多 32、响应最多 1 MiB/配置帧上限/JSON 总限长为本地资源约束。这些不隐藏为无条件 API 等价。SASLprep 不是固定 Go 原库行为，非 ASCII 凭证逐字节对照验证未做归一化。多轮挑战同样不是固定原库支持能力。
 
 本轮性能沿用当前源码下的本机确认样例和恢复延时，尚无原生吞吐比较/生产峰值证明。connection.update-secret、OAuth 令牌刷新、完整恢复/流式/背压、跨版本/平台和长期测试仍未完成。
+
+
+## 0.7 凭证更新验证
+
+当前完整 verify：JS/Wasm-GC 各 109 项（原有 104 加 5 个 credential update 状态组），旧 18 网络/25 恢复/12 认证组和新 10 更新故障组通过；30 个已存原库认证响应、CLI/引擎/307 异常输入继续通过。新增 TCP 夹具检查二进制 longstr/UTF-8 reason、通道/流控分离、重复请求、错误输入后继续工作、超时/关闭/取消/拒绝、意外确认、断线不重放和不暗改重连凭证。
+
+按前节准备 broker 后运行 `node tools/test-rabbitmq-oauth.mjs`：10 组使用发行包原版 rabbitmq_auth_backend_oauth2，配置独立的一次性 RSA 公钥，测试签发器在本机生成 RS256 JWT。覆盖有效消息、同连接/通道跨过旧 token 到期、权限收回/再授权、坏签名/audience/用户名/到期、TLS 与应用提供器更新后的恢复。没有远程 OAuth 服务、OIDC 发现或 JWKS 下载；这些是服务器/应用集成，未冒充已测试。
+
+`tools/secret-reference.go` 是原创原库调用程序。用前节相同固定 Go 原库 replace 配置建立独立模块编译；本地 Go 1.26.0/windows-amd64 指纹见 `evidence/secret-reference-build.json`，72 个 Go 原库文件逐字节未改。设置 `AMQP_SECRET_REFERENCE` 后执行 `node tools/test-secret-native.mjs`。前六项让 Go/Node 各自连接独立 TCP peer 比对更新字段的完整字节，包括空响应、二进制、Unicode 和 255 字节 reason；后六项两种实现连接同一个真实 OAuth broker，比较更新是否确认、后续确认发布/消费是否成功以及 AMQP 错误码。
+
+固定 RabbitMQ 4.0.5 的过期替代 token：update-secret-ok 返回后，下一授权操作被 403 拒绝；固定 Go 原库和本实现一致。首次“更新必须立即拒绝”的断言失败记录保存在 `oauth-initial-observation.json`；检查该版本 OAuth backend 源码后增加业务操作探测，没有删去失败情形或把它算为成功授权。错误签名/audience/用户名更新则是 530。详见 `secret-native.json` 和 `rabbitmq-oauth.json`。
+
+当前源码重新执行既有 22 基础/6 恢复/10 认证 broker 组、9 原库认证协商和单个原库恢复轨迹。测试结束检查自有 broker 进程/临时目录清理，保留包缓存。旧清单和首次观察带有原来哈希，不代表当前源码；新 `secret-upgrade.json` 绑定最终文件。
+
+所有层次存在覆盖重叠，不能相加成唯一上游用例数。性能只包括当前本机确认样例/恢复延时，不含生产负载或原生吞吐对照。其它 19 项未在本轮重跑，完整追平目标仍未完成。

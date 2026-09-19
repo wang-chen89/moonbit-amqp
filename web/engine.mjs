@@ -891,7 +891,7 @@ function _M0DTPC16result6ResultGRP211localreview4amqp7SessionRP211localreview4am
   this._0 = param0;
 }
 _M0DTPC16result6ResultGRP211localreview4amqp7SessionRP211localreview4amqp10FrameErrorE2Ok.prototype.$tag = 1;
-function _M0TP211localreview4amqp7Session(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13) {
+function _M0TP211localreview4amqp7Session(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13, param14) {
   this.decoder = param0;
   this.assembler = param1;
   this.state = param2;
@@ -905,7 +905,8 @@ function _M0TP211localreview4amqp7Session(param0, param1, param2, param3, param4
   this.channels = param10;
   this.paused = param11;
   this.blocked = param12;
-  this.output = param13;
+  this.secret_update = param13;
+  this.output = param14;
 }
 function _M0TPB9ArrayViewGUisEE(param0, param1, param2) {
   this.buf = param0;
@@ -12473,7 +12474,7 @@ function _M0MP211localreview4amqp7Session28with__authentication_2einner(authenti
   const _bind$4 = [];
   const _tmp$7 = _M0MPB3Map3MapGisE(new _M0TPB9ArrayViewGUisEE(_bind$4, 0, 0), undefined);
   const _bind$5 = [];
-  return new _M0DTPC16result6ResultGRP211localreview4amqp7SessionRP211localreview4amqp10FrameErrorE2Ok(new _M0TP211localreview4amqp7Session(_tmp$3, _tmp$5, "start", _tmp$6, "", locale, vhost, channel_max, frame_max, heartbeat, _tmp$7, _M0MPB3Map3MapGibE(new _M0TPB9ArrayViewGUibEE(_bind$5, 0, 0), undefined), false, [_M0FP211localreview4amqp16protocol__header()]));
+  return new _M0DTPC16result6ResultGRP211localreview4amqp7SessionRP211localreview4amqp10FrameErrorE2Ok(new _M0TP211localreview4amqp7Session(_tmp$3, _tmp$5, "start", _tmp$6, "", locale, vhost, channel_max, frame_max, heartbeat, _tmp$7, _M0MPB3Map3MapGibE(new _M0TPB9ArrayViewGUibEE(_bind$5, 0, 0), undefined), false, false, [_M0FP211localreview4amqp16protocol__header()]));
 }
 function _M0MP211localreview4amqp7Session11new_2einner(username, password, vhost, channel_max, frame_max, heartbeat) {
   const _bind$2 = _M0MP211localreview4amqp14Authentication5plain(username, password);
@@ -12547,6 +12548,7 @@ function _M0MP211localreview4amqp7Session6closed(self) {
   _M0MPB3Map5clearGisE(self.channels);
   _M0MPB3Map5clearGibE(self.paused);
   _M0MPC15array5Array5clearGRP211localreview4amqp14AuthenticationE(self.auth);
+  self.secret_update = false;
   self.state = "closed";
 }
 function _M0MP211localreview4amqp7Session6limits(self) {
@@ -13810,7 +13812,7 @@ function _M0MP211localreview4amqp7Session4send(self, channel, command) {
     spec = _spec;
   }
   const name = spec.name;
-  if (!_M0MPC15array5Array8containsGsE(["connection.close", "channel.open", "channel.close", "exchange.declare", "exchange.delete", "exchange.bind", "exchange.unbind", "queue.declare", "queue.bind", "queue.unbind", "queue.delete", "queue.purge", "basic.qos", "basic.consume", "basic.cancel", "basic.cancel-ok", "basic.get", "basic.ack", "basic.reject", "basic.nack", "basic.recover", "basic.recover-async", "tx.select", "tx.commit", "tx.rollback", "confirm.select"], name)) {
+  if (!_M0MPC15array5Array8containsGsE(["connection.close", "connection.update-secret", "channel.open", "channel.close", "exchange.declare", "exchange.delete", "exchange.bind", "exchange.unbind", "queue.declare", "queue.bind", "queue.unbind", "queue.delete", "queue.purge", "basic.qos", "basic.consume", "basic.cancel", "basic.cancel-ok", "basic.get", "basic.ack", "basic.reject", "basic.nack", "basic.recover", "basic.recover-async", "tx.select", "tx.commit", "tx.rollback", "confirm.select"], name)) {
     return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("unsupported client command"));
   }
   const _bind$3 = _M0MP211localreview4amqp6Method14encode_2einner(command, channel, self.frame_limit);
@@ -13832,23 +13834,30 @@ function _M0MP211localreview4amqp7Session4send(self, channel, command) {
   if (name === "connection.close") {
     self.state = "closing";
   } else {
-    if (channel < 1 || channel > self.channel_limit) {
-      return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid or unavailable channel"));
+    if (name === "connection.update-secret") {
+      if (self.secret_update) {
+        return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("credential update is already pending"));
+      }
+      self.secret_update = true;
     } else {
-      if (name === "channel.open") {
-        if (_M0MPB3Map8containsGisE(self.channels, channel)) {
-          return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("channel already allocated"));
-        }
-        _M0MPB3Map3setGisE(self.channels, channel, "opening");
+      if (channel < 1 || channel > self.channel_limit) {
+        return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid or unavailable channel"));
       } else {
-        if (_M0IP016_24default__implPB2Eq10not__equalGOsE(_M0MPB3Map3getGisE(self.channels, channel), "open")) {
-          return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("channel is not open"));
-        }
-        if (spec.carries_content) {
-          return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("use publish for content"));
-        }
-        if (name === "channel.close") {
-          _M0MPB3Map3setGisE(self.channels, channel, "closing");
+        if (name === "channel.open") {
+          if (_M0MPB3Map8containsGisE(self.channels, channel)) {
+            return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("channel already allocated"));
+          }
+          _M0MPB3Map3setGisE(self.channels, channel, "opening");
+        } else {
+          if (_M0IP016_24default__implPB2Eq10not__equalGOsE(_M0MPB3Map3getGisE(self.channels, channel), "open")) {
+            return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("channel is not open"));
+          }
+          if (spec.carries_content) {
+            return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("use publish for content"));
+          }
+          if (name === "channel.close") {
+            _M0MPB3Map3setGisE(self.channels, channel, "closing");
+          }
         }
       }
     }
@@ -15417,8 +15426,12 @@ function _M0MP211localreview4amqp7Session4feed(self, input) {
                   if (name === "connection.unblocked") {
                     self.blocked = false;
                   } else {
-                    _err = new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("unexpected connection method");
-                    break _L;
+                    if (name === "connection.update-secret-ok" && self.secret_update) {
+                      self.secret_update = false;
+                    } else {
+                      _err = new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("unexpected connection method");
+                      break _L;
+                    }
                   }
                 }
                 _M0MPC15array5Array4pushGRP211localreview4amqp8ArgumentE(events, new _M0DTP211localreview4amqp12SessionEvent8Received(0, command));

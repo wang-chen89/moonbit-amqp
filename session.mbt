@@ -24,6 +24,7 @@ pub struct Session {
   priv channels : Map[Int, String]
   priv paused : Map[Int, Bool]
   priv mut blocked : Bool
+  priv mut secret_update : Bool
   priv output : Array[Bytes]
 }
 
@@ -85,6 +86,7 @@ pub fn Session::with_authentication(
     channels: Map([]),
     paused: Map([]),
     blocked: false,
+    secret_update: false,
     output: [protocol_header()],
   }
 }
@@ -102,6 +104,7 @@ fn Session::closed(self : Session) -> Unit {
   self.channels.clear()
   self.paused.clear()
   self.auth.clear()
+  self.secret_update = false
   self.state = "closed"
 }
 
@@ -146,12 +149,12 @@ pub fn Session::send(
   }
   let name = spec.name
   if ![
-      "connection.close", "channel.open", "channel.close", "exchange.declare", "exchange.delete",
-      "exchange.bind", "exchange.unbind", "queue.declare", "queue.bind", "queue.unbind",
-      "queue.delete", "queue.purge", "basic.qos", "basic.consume", "basic.cancel",
-      "basic.cancel-ok", "basic.get", "basic.ack", "basic.reject", "basic.nack",
-      "basic.recover", "basic.recover-async", "tx.select", "tx.commit", "tx.rollback",
-      "confirm.select",
+      "connection.close", "connection.update-secret", "channel.open", "channel.close",
+      "exchange.declare", "exchange.delete", "exchange.bind", "exchange.unbind",
+      "queue.declare", "queue.bind", "queue.unbind", "queue.delete", "queue.purge",
+      "basic.qos", "basic.consume", "basic.cancel", "basic.cancel-ok", "basic.get",
+      "basic.ack", "basic.reject", "basic.nack", "basic.recover", "basic.recover-async",
+      "tx.select", "tx.commit", "tx.rollback", "confirm.select",
     ].contains(name) {
     raise Invalid("unsupported client command")
   }
@@ -160,6 +163,11 @@ pub fn Session::send(
     .encode(max_size=self.frame_limit)
   if name == "connection.close" {
     self.state = "closing"
+  } else if name == "connection.update-secret" {
+    if self.secret_update {
+      raise Invalid("credential update is already pending")
+    }
+    self.secret_update = true
   } else if channel < 1 || channel > self.channel_limit {
     raise Invalid("invalid or unavailable channel")
   } else if name == "channel.open" {
@@ -399,6 +407,8 @@ pub fn Session::feed(
             self.blocked = true
           } else if name == "connection.unblocked" {
             self.blocked = false
+          } else if name == "connection.update-secret-ok" && self.secret_update {
+            self.secret_update = false
           } else {
             raise Invalid("unexpected connection method")
           }

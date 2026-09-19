@@ -29,6 +29,7 @@ export class Connection extends EventEmitter {
   #connectTimer; #closed = false; #closing = false; #lastRead = performance.now(); #lastWrite = 0;
   #channels = new Map(); #closeWait; #limits; #maxBuffered; #timeout;
   #authProviders=[]; #authAbort=new AbortController(); #authenticationMechanism='';
+  #secretUpdate;
   static async connect(options = {}) {
     const connection = new Connection(options);
     await connection.#ready.promise;
@@ -129,7 +130,13 @@ export class Connection extends EventEmitter {
         else this.#closeWait?.reject(error);
         this.#terminate(error, true);
       } else if (e.channel === 0) {
-        this.emit(e.name === 'connection.blocked' ? 'blocked' : 'unblocked', e.args);
+        if(e.name==='connection.update-secret-ok') {
+          if(!this.#secretUpdate)throw Error('Unexpected credential update reply');
+          const pending=this.#secretUpdate;this.#secretUpdate=undefined;
+          clearTimeout(pending.timer);pending.resolve();
+        } else if(e.name==='connection.blocked'||e.name==='connection.unblocked') {
+          this.emit(e.name === 'connection.blocked' ? 'blocked' : 'unblocked', e.args);
+        } else throw Error('Unexpected connection method');
       } else {
         const channel = this.#channels.get(e.channel);
         if (!channel) throw Error('Response for unallocated channel');
@@ -154,6 +161,7 @@ export class Connection extends EventEmitter {
     clearTimeout(this.#connectTimer); clearInterval(this.#timer);
     this.#signal?.removeEventListener('abort', this.#abort);
     this.#ready.reject(error); this.#closeWait?.reject(error);
+    if(this.#secretUpdate){clearTimeout(this.#secretUpdate.timer);this.#secretUpdate.reject(error);this.#secretUpdate=undefined;}
     for (const ch of this.#channels.values()) ch._terminate(error);
     this.#channels.clear(); core.session_drop(this.#key);
     if (graceful) this.#socket.end(); else this.#socket.destroy();
@@ -167,6 +175,20 @@ export class Connection extends EventEmitter {
     const ch = new Channel(this, id); this.#channels.set(id, ch);
     try { await ch._rpc('channel.open', [''], ['channel.open-ok']); return ch; }
     catch (e) { this.#channels.delete(id); throw e; }
+  }
+  updateSecret(secret,reason='Credential refreshed') {
+    try {
+      if(this.#closed||this.#closing)throw Error('Connection is closing or closed');
+      if(this.#secretUpdate)throw Error('One credential update may be outstanding; await it first');
+      const bytes=responseBytes(secret);
+      if(typeof reason!=='string'||!reason.isWellFormed()||Buffer.byteLength(reason)>255)throw TypeError('Invalid credential update reason');
+      const pending=deferred();
+      pending.timer=setTimeout(()=>this._fail(Error('Credential update timeout; outcome may be unknown')),this.#timeout);
+      this.#secretUpdate=pending;
+      try {this._send(0,'connection.update-secret',[bytes.toString('hex'),reason]);}
+      catch(error){clearTimeout(pending.timer);this.#secretUpdate=undefined;pending.reject(error);}
+      return pending.promise;
+    } catch(error) {return Promise.reject(error);}
   }
   async close() {
     if (this.#closed) return;

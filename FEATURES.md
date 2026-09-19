@@ -10,13 +10,14 @@
 | 会话与网络 | MoonBit start/tune/open/close、vhost、通道/流控；Node TCP/TLS、心跳、超时/取消 | 11 组新增核心会话测试；18 组网络故障场景 |
 | 发布与消费 | QoS、get/consume/cancel、ack/nack/reject、确认、mandatory 退回、事务、交换机/队列 | 22 项 RabbitMQ 4.0.5 流程含 TLS、实际 CLI 和有界计时样例；通道故障隔离 |
 | 认证 | PLAIN/AMQPLAIN/EXTERNAL、客户端优先选择/locale、自定义静态或异步初始响应、重连重新协商、mTLS CLI | 30 个原库响应、9 个原库协商、12 组宿主故障和 10 组 RabbitMQ/证书/重连/CLI；不做 SASLprep，PLAIN NUL 验证有意更严格 |
+| 连接内凭证更新 | connection.update-secret/确认配对、独立等待、超时/关闭处理和恢复不重放；应用提供器支持新令牌重连 | 5 核心组、10 故障组、10 真实 OAuth 组；原库 6 报文/6 broker 结果一致；过期替代令牌先确认后拒绝的边界保留 |
 | 可选恢复 | 稳定连接/通道对象，有限重连、拓扑顺序重建、队列别名、QoS/消费/确认/事务恢复；旧确认标签拒绝 | 25 组独立线路故障、6 组 RabbitMQ、1 个固定 Go 原库重复断线场景；全部恢复语义未追平 |
 | 可运行入口 | MoonBit API、Node 消息客户端/CLI、浏览器 inspect/strict 模式、线路文件 CLI | 7 个 CLI 场景通过，未执行视觉审查 |
 | 资源处理 | 深度/节点/字节上限；组装正文及元数据总上限；错误后终止状态 | 畸形长度、截断、错误通道、类型与嵌套压力输入 |
 
 ## 仍需完善
 
-尚缺隐式 auto-delete 的完整关联删除、上游恢复/API 全量边界、connection.update-secret、完整 OAuth 凭证更新、流式大正文、完整客户端扩展和生产规模背压。Node 每通道只允许一个 RPC，确认发布可并行。未测生产吞吐、长时间运行、不同操作系统网络宿主或多版本 broker。JS/Wasm-GC 核心均通过 104 项；Node 网络实测平台为 Windows 24 + WSL RabbitMQ。方法层是线路格式校验，不执行全部域断言、保留字段和 broker 业务规则。
+尚缺隐式 auto-delete 的完整关联删除、上游恢复/API 全量边界、更多真实身份提供器与认证失败策略验证、流式大正文、完整客户端扩展和生产规模背压。Node 每通道只允许一个 RPC，确认发布可并行。未测生产吞吐、长时间运行、不同操作系统网络宿主或多版本 broker。JS/Wasm-GC 核心均通过 109 项；Node 网络实测平台为 Windows 24 + WSL RabbitMQ。方法层是线路格式校验，不执行全部域断言、保留字段和 broker 业务规则。
 
 字段表保持 RabbitMQ 方言。Pika U/L 与其无符号 l 不兼容，不能用共享向量通过来掩盖差异。短字符串必须合法 UTF-8，长字符串可为任意字节；未知类型标签不能安全跳过，直接报错。相同字段名按有序条目保留，由上层决定映射语义。
 

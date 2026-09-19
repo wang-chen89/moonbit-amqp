@@ -7,6 +7,8 @@ import base64, hashlib, json, os, shlex, signal, socket, subprocess, sys, tempfi
 
 root = Path(sys.argv[1]).resolve()
 authentication = '--auth' in sys.argv[2:]
+oauth = '--oauth' in sys.argv[2:]
+if authentication and oauth: raise ValueError('Choose one broker test profile')
 erlang = root/'usr/lib/erlang'
 erts = next(erlang.glob('erts-*'))/'bin'
 rabbit = (root/'usr/lib/rabbitmq/bin/rabbitmq-server').resolve()
@@ -75,7 +77,14 @@ log.file = false
 ''')
     if authentication:
         config.write_text(config.read_text().replace('ssl_options.verify = verify_none','ssl_options.verify = verify_peer')+f'\nssl_options.cacertfile = {ca}\nssl_cert_login_from = common_name\nauth_mechanisms.1 = EXTERNAL\nauth_mechanisms.2 = AMQPLAIN\nauth_mechanisms.3 = PLAIN\n')
-    (base/'enabled_plugins').write_text('[rabbitmq_auth_mechanism_ssl].\n' if authentication else '[].\n')
+    oauth_files = {}
+    if oauth:
+        signing_key, public_key = base/'oauth.key', base/'oauth.pub'
+        subprocess.run(['openssl','genpkey','-algorithm','RSA','-pkeyopt','rsa_keygen_bits:2048','-out',str(signing_key)],check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+        subprocess.run(['openssl','pkey','-in',str(signing_key),'-pubout','-out',str(public_key)],check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+        config.write_text(config.read_text()+f'\nauth_backends.1 = oauth2\nauth_mechanisms.1 = PLAIN\nauth_oauth2.resource_server_id = localreview\nauth_oauth2.signing_keys.local-test = {public_key}\nauth_oauth2.default_key = local-test\nauth_oauth2.algorithms.1 = RS256\n')
+        oauth_files={'signingKey':base64.b64encode(signing_key.read_bytes()).decode(),'publicKey':base64.b64encode(public_key.read_bytes()).decode()}
+    (base/'enabled_plugins').write_text('[rabbitmq_auth_backend_oauth2].\n' if oauth else '[rabbitmq_auth_mechanism_ssl].\n' if authentication else '[].\n')
     env = dict(os.environ)
     env.update(PATH=str(base/'bin')+':'+str(erts)+':'+env['PATH'],
         LD_LIBRARY_PATH=str(root/'usr/lib/x86_64-linux-gnu'),
@@ -103,7 +112,7 @@ log.file = false
         if not ready:
             log.flush(); log.seek(0); raise RuntimeError('RabbitMQ startup failed: '+log.read()[-12000:])
         hashes = {p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (root.parent/'packages').glob('*.deb')}
-        print('READY '+json.dumps({'port':port,'tlsPort':tls_port,'certificate':base64.b64encode(cert.read_bytes()).decode(),'packages':hashes,'authentication':auth_files}),flush=True)
+        print('READY '+json.dumps({'port':port,'tlsPort':tls_port,'certificate':base64.b64encode(cert.read_bytes()).decode(),'packages':hashes,'authentication':auth_files,'oauth':oauth_files}),flush=True)
         sys.stdin.readline()
     finally:
         stop(server); stop(epmd); log.close()

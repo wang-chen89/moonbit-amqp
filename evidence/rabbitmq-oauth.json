@@ -1,8 +1,9 @@
 {
-  "utc": "2026-09-19T06:40:24.068Z",
+  "utc": "2026-09-19T06:40:59.026Z",
   "node": "v24.11.0",
   "platform": "win32",
   "broker": "RabbitMQ 4.0.5-10ubuntu5 / Erlang OTP 27",
+  "plugin": "Unmodified bundled rabbitmq_auth_backend_oauth2",
   "packages": {
     "rabbitmq-server_4.0.5-10ubuntu5_all.deb": "facf754e045a705aca30b82b7728ac7b3f123d2b7f7838575b246fe0bd2ad05e",
     "libsctp1_1.0.21+dfsg-1build2_amd64.deb": "92924c463cf0e6630b1e9fd3969d45b21558f7ecbf0c9ef12c80523669f8a271",
@@ -22,64 +23,71 @@
     "erlang-base_1%3a27.3.4.6+dfsg-1_amd64.deb": "8e7ababa5b1ddbe72e135faa78d15755268dfbb7cdfc25a5a8144f3e2d5754df",
     "erlang-asn1_1%3a27.3.4.6+dfsg-1_amd64.deb": "b2d3f1a35d642727631ff138070d5a4f410bb0066f67a1efbf11ad61dc51fa6d"
   },
-  "passed": 6,
+  "passed": 10,
   "tests": [
-    "real TCP reconnect restores cross-channel exchanges, exchange binding, server-named queue, queue binding, QoS and consumer",
-    "unacknowledged named-queue message is redelivered and old delivery tag is rejected",
-    "real 404 channel failure preserves connection and sibling channel while restoring affected channel",
-    "transaction recovery starts a new transaction and does not commit pre-disconnect work",
-    "closing during broker outage cancels recovery without later reconnect",
-    "TLS recovery repeats peer certificate and hostname validation and restores exclusive queue"
+    "real RS256 OAuth token authenticates and permits a confirmed message",
+    "updating token keeps the connection and channel usable beyond the original expiry",
+    "new token scopes restrict new channel operations until a later permission renewal",
+    "OAuth rejects bad signature during credential update",
+    "OAuth rejects wrong audience during credential update",
+    "OAuth rejects changed subject during credential update",
+    "RabbitMQ 4.0 acknowledges an expired replacement but refuses the next authorized operation",
+    "an already expired initial token is refused",
+    "verified TLS carries a successful OAuth credential update and message",
+    "application token provider supplies renewed credentials to both live update and recovery"
   ],
   "observations": [
     {
-      "stage": "cycle",
-      "cycle": 0,
-      "body": "payload-0",
-      "confirmed": true
+      "scenario": "renewal",
+      "updated": true,
+      "sameChannel": true,
+      "afterOriginalExpiry": true
     },
     {
-      "stage": "recovered",
-      "cycle": 1,
-      "renamed": true
+      "scenario": "scopes",
+      "deniedCode": 403,
+      "restored": true
     },
     {
-      "stage": "cycle",
-      "cycle": 1,
-      "body": "payload-1",
-      "confirmed": true
+      "scenario": "bad signature",
+      "rejected": true,
+      "code": 530
     },
     {
-      "stage": "recovered",
-      "cycle": 2,
-      "renamed": true
+      "scenario": "wrong audience",
+      "rejected": true,
+      "code": 530
     },
     {
-      "stage": "cycle",
-      "cycle": 2,
-      "body": "payload-2",
-      "confirmed": true
+      "scenario": "changed subject",
+      "rejected": true,
+      "code": 530
+    },
+    {
+      "scenario": "expired replacement",
+      "updateAcknowledged": true,
+      "operationRejected": true,
+      "code": 403
+    },
+    {
+      "scenario": "provider-recovery",
+      "providerCalls": 2,
+      "afterOriginalExpiry": true
     }
   ],
-  "recoveryLatenciesMs": [
-    22.162599999999657,
-    19.274200000000747,
-    16.099299999999857,
-    15.45129999999972
-  ],
-  "performanceScope": "Single-process local recovery observations, not throughput or sustained production performance evidence.",
   "sources": {
     "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
-    "authentication.mbt": "09505b81f862c30d7f2bc24502188068475904ed5c858a8f38897060fa6397b6",
-    "cmd/web/authentication.mbt": "5302c487cb36963947e2e25b6a75d63d998789b3222dc28b889bb506103cae4a",
-    "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
+    "session.mbt": "70bf526c7f60a2d9fec59886235ff9182f4f57c8e6d782bc95b07d5b55111a8d",
     "tools/client.mjs": "bd5c1d14d6c9c46964035b012c3406aecd9b7f0261a70910166aa6fc82ca2dd6",
+    "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
     "tools/recovery.mjs": "2589f045d03bab79b9189aa6d9c4ce75658eff3418ff403b139274d96f1687ab",
     "tools/recovery-channel.mjs": "3aaaa62ff33e78d240d1f65e19c88ac42d474918e540bda2a578cf186da2ee89",
     "tools/recovery-state.mjs": "b890609d50b6bce5d6444f4b051d2004ed0746fd51fb995e895e65b36b615e27",
-    "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
-    "tools/test-rabbitmq-recovery.mjs": "991dbe8505942c2c217f35637d0ce6dea7de2b07bd22b65bf75906740be575f9",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
+    "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
+    "tools/oauth-test-token.mjs": "fa73c50d0f67741d65d783a1c0990cc285ea62306f14e2806d6ce4fbdc6cc02f",
+    "tools/test-rabbitmq-oauth.mjs": "6243e4a9b8d0c189f5a28e50f652e6fb8f344f2362bf0d2084003de2d090ab70",
     "web/engine.mjs": "1fcb6e5ce132384a9cd12a77da129d4bc87e178171be12adb263aaa08968c1df"
-  }
+  },
+  "scope": "Disposable RS256 static-key OAuth broker, verified TLS, update/expiry/scopes/rejections and provider-driven recovery. The test issuer signs local tokens; no OIDC discovery, remote JWKS, authorization-server exchange or production identity provider is exercised. No token or private key is retained."
 }

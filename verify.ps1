@@ -38,6 +38,8 @@ try {
   if ($LASTEXITCODE -ne 0) {throw 'client recovery fixtures failed'}
   node tools/test-authentication.mjs
   if ($LASTEXITCODE -ne 0) {throw 'authentication fixtures failed'}
+  node tools/test-secret-update.mjs
+  if ($LASTEXITCODE -ne 0) {throw 'credential update fixtures failed'}
   python tools/generate-auth-vectors.py --check
   if ($LASTEXITCODE -ne 0) {throw 'stored authentication vectors failed'}
   node tools/robustness.mjs

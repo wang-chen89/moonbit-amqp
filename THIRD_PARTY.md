@@ -55,3 +55,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 0.6 的认证对照继续使用同一固定 Go 原库；`tools/authentication-reference.go` 为原创调用程序，原库的 auth.go/connection.go 等 72 个文件未修改。保存原生 Response 与独立握手结果，AMQPLAIN 表的字段顺序单独归一化。认证生产代码独立编写，固定原库不做 SASLprep；没有复制第三方 Unicode 表或规范化实现。真实证书认证调用 RabbitMQ 4.0.5 包内原版 SSL 机制插件。配置依据为 [RabbitMQ 认证机制](https://www.rabbitmq.com/docs/access-control#mechanisms) 与 [TLS 文档](https://www.rabbitmq.com/docs/ssl)，实际兼容结论限定为所测发行包。
+
+
+0.7 继续使用相同未修改 Go 参考；`tools/secret-reference.go` 与本机 JWT 测试签发器为原创测试工具。真实 OAuth backend 为 Ubuntu RabbitMQ 4.0.5 包内原版插件，未分发其源码/二进制。过期更新边界另外核对 [v4.0.5 backend 源码](https://github.com/rabbitmq/rabbitmq-server/blob/v4.0.5/deps/rabbitmq_auth_backend_oauth2/src/rabbit_auth_backend_oauth2.erl)，配置参照 [OAuth backend 文档](https://www.rabbitmq.com/docs/oauth2)；版本行为以实际对照为准。

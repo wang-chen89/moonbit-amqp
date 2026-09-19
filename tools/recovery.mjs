@@ -38,6 +38,12 @@ export class RecoveringConnection extends Lifecycle {
   get timeout() { return this.#physical?.timeout??this.#options.timeout??10000; }
   get authenticationMechanism() { return this.#physical?.authenticationMechanism; }
   resolveQueue(name) { return this.topology.resolve(name); }
+  async updateSecret(secret,reason='Credential refreshed') {
+    if(this.state!=='open'||this.#physical?.closed)throw Error('Connection recovery in progress or closed');
+    const raw=this.#physical;
+    await raw.updateSecret(secret,reason);
+    if(this.state!=='open'||raw!==this.#physical)throw Error('Credential update interrupted by recovery; outcome may be unknown');
+  }
   _active(channel,topology=false) {
     if(this.state!=='open'||this.#physical?.closed||channel?.state!=='open'||channel?._raw?.closed)throw Error('Recovery in progress or connection/channel closed');
     if(topology&&this.#channelTasks.size)throw Error('Topology recovery in progress');

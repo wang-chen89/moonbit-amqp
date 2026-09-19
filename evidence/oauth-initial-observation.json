@@ -1,0 +1,15 @@
+{
+  "utc": "2026-09-19T06:29:53.184021+00:00",
+  "broker": "RabbitMQ 4.0.5-10ubuntu5",
+  "status": "initial expectation disproved",
+  "scenario": "expired replacement token",
+  "expected": "updateSecret rejects",
+  "observed": "updateSecret resolved; assertion Missing expected rejection",
+  "scope": "Earlier scenarios passed; execution stopped at this assertion. Follow-up must test authorization after the acknowledged expired token and compare the native reference.",
+  "sources": {
+    "tools/test-rabbitmq-oauth.mjs": "813337b6729088b8208949feff7c0e185a173d6cfd784c8ab64a3672db266701",
+    "tools/client.mjs": "bd5c1d14d6c9c46964035b012c3406aecd9b7f0261a70910166aa6fc82ca2dd6",
+    "session.mbt": "29c00f22ae86f37d7839ca262b48f11a96f82eba2db52146ae8bdfd0b32b7a6f",
+    "web/engine.mjs": "1fcb6e5ce132384a9cd12a77da129d4bc87e178171be12adb263aaa08968c1df"
+  }
+}
