@@ -1,0 +1,188 @@
+{
+  "utc": "2026-09-19T16:39:05.464951+00:00",
+  "initialAudit": {
+    "utc": "2026-09-19T16:37:50.990706+00:00",
+    "ownedRuntimeProcesses": [
+      {
+        "pid": 27595,
+        "name": "epmd"
+      },
+      {
+        "pid": 27596,
+        "name": "rabbitmq-server"
+      },
+      {
+        "pid": 27600,
+        "name": "beam.smp"
+      },
+      {
+        "pid": 27626,
+        "name": "memsup"
+      },
+      {
+        "pid": 27627,
+        "name": "cpu_sup"
+      },
+      {
+        "pid": 27628,
+        "name": "inet_gethost"
+      },
+      {
+        "pid": 27629,
+        "name": "inet_gethost"
+      },
+      {
+        "pid": 27690,
+        "name": "epmd"
+      },
+      {
+        "pid": 27691,
+        "name": "rabbitmq-server"
+      },
+      {
+        "pid": 27695,
+        "name": "beam.smp"
+      },
+      {
+        "pid": 27721,
+        "name": "memsup"
+      },
+      {
+        "pid": 27722,
+        "name": "cpu_sup"
+      },
+      {
+        "pid": 27726,
+        "name": "inet_gethost"
+      },
+      {
+        "pid": 27727,
+        "name": "inet_gethost"
+      },
+      {
+        "pid": 27745,
+        "name": "epmd"
+      }
+    ],
+    "temporaryBrokerDirectories": [
+      "/tmp/moonbit-rabbitmq-m1n12n13",
+      "/tmp/moonbit-rabbitmq-4ks0qz6f",
+      "/tmp/moonbit-rabbitmq-74y57clc"
+    ],
+    "cleanupVerified": false,
+    "scope": "Only the owned extracted RabbitMQ runtime and temporary test instances; downloaded package cache is retained."
+  },
+  "stoppedOwnedProcesses": {
+    "27595": {
+      "group": 27595,
+      "base": "/tmp/moonbit-rabbitmq-74y57clc",
+      "name": "epmd"
+    },
+    "27596": {
+      "group": 27596,
+      "base": "/tmp/moonbit-rabbitmq-74y57clc",
+      "name": "rabbitmq-server"
+    },
+    "27600": {
+      "group": 27596,
+      "base": "/tmp/moonbit-rabbitmq-74y57clc",
+      "name": "beam.smp"
+    },
+    "27605": {
+      "group": 27605,
+      "base": "/tmp/moonbit-rabbitmq-74y57clc",
+      "name": "erl_child_setup"
+    },
+    "27624": {
+      "group": 27624,
+      "base": "/tmp/moonbit-rabbitmq-74y57clc",
+      "name": "sh"
+    },
+    "27626": {
+      "group": 27626,
+      "base": "/tmp/moonbit-rabbitmq-74y57clc",
+      "name": "memsup"
+    },
+    "27627": {
+      "group": 27627,
+      "base": "/tmp/moonbit-rabbitmq-74y57clc",
+      "name": "cpu_sup"
+    },
+    "27628": {
+      "group": 27628,
+      "base": "/tmp/moonbit-rabbitmq-74y57clc",
+      "name": "inet_gethost"
+    },
+    "27629": {
+      "group": 27628,
+      "base": "/tmp/moonbit-rabbitmq-74y57clc",
+      "name": "inet_gethost"
+    },
+    "27683": {
+      "group": 27683,
+      "base": "/tmp/moonbit-rabbitmq-74y57clc",
+      "name": "sh"
+    },
+    "27690": {
+      "group": 27690,
+      "base": "/tmp/moonbit-rabbitmq-4ks0qz6f",
+      "name": "epmd"
+    },
+    "27691": {
+      "group": 27691,
+      "base": "/tmp/moonbit-rabbitmq-4ks0qz6f",
+      "name": "rabbitmq-server"
+    },
+    "27695": {
+      "group": 27691,
+      "base": "/tmp/moonbit-rabbitmq-4ks0qz6f",
+      "name": "beam.smp"
+    },
+    "27700": {
+      "group": 27700,
+      "base": "/tmp/moonbit-rabbitmq-4ks0qz6f",
+      "name": "erl_child_setup"
+    },
+    "27719": {
+      "group": 27719,
+      "base": "/tmp/moonbit-rabbitmq-4ks0qz6f",
+      "name": "sh"
+    },
+    "27721": {
+      "group": 27721,
+      "base": "/tmp/moonbit-rabbitmq-4ks0qz6f",
+      "name": "memsup"
+    },
+    "27722": {
+      "group": 27722,
+      "base": "/tmp/moonbit-rabbitmq-4ks0qz6f",
+      "name": "cpu_sup"
+    },
+    "27726": {
+      "group": 27726,
+      "base": "/tmp/moonbit-rabbitmq-4ks0qz6f",
+      "name": "inet_gethost"
+    },
+    "27727": {
+      "group": 27726,
+      "base": "/tmp/moonbit-rabbitmq-4ks0qz6f",
+      "name": "inet_gethost"
+    },
+    "27738": {
+      "group": 27738,
+      "base": "/tmp/moonbit-rabbitmq-4ks0qz6f",
+      "name": "sh"
+    },
+    "27745": {
+      "group": 27745,
+      "base": "/tmp/moonbit-rabbitmq-m1n12n13",
+      "name": "epmd"
+    }
+  },
+  "removedDirectories": [
+    "/tmp/moonbit-rabbitmq-4ks0qz6f",
+    "/tmp/moonbit-rabbitmq-74y57clc",
+    "/tmp/moonbit-rabbitmq-m1n12n13"
+  ],
+  "scope": "Explicit cleanup of three interrupted earlier test instances after their exec handles disappeared. Process environment, group membership and temporary paths checked; no system service or package cache touched."
+}

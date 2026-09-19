@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T09:29:36.247Z",
+  "utc": "2026-09-19T09:54:10.087Z",
   "node": "v24.11.0",
   "passed": 7,
   "tests": [
@@ -124,15 +124,15 @@
       },
       "processMemory": {
         "before": {
-          "rss": 58212352,
-          "heapTotal": 11304960,
-          "heapUsed": 8782968,
-          "external": 2498009,
-          "arrayBuffers": 24898
+          "rss": 58773504,
+          "heapTotal": 10780672,
+          "heapUsed": 8793008,
+          "external": 2498022,
+          "arrayBuffers": 24911
         },
         "peak": {
-          "rss": 92401664,
-          "external": 5250177
+          "rss": 88637440,
+          "external": 5135545
         },
         "samplePeriodMs": 10,
         "note": "Whole Node process sample; includes bridge, GC and source buffers. Not an RSS bound or throughput comparison."
@@ -154,15 +154,15 @@
       },
       "processMemory": {
         "before": {
-          "rss": 94625792,
-          "heapTotal": 52199424,
-          "heapUsed": 17717120,
-          "external": 7004076,
-          "arrayBuffers": 4500520
+          "rss": 91074560,
+          "heapTotal": 46956544,
+          "heapUsed": 9924352,
+          "external": 6742044,
+          "arrayBuffers": 4238488
         },
         "peak": {
-          "rss": 104898560,
-          "external": 7004076
+          "rss": 104493056,
+          "external": 6742044
         },
         "samplePeriodMs": 10,
         "note": "Whole Node process sample; includes bridge, GC and source buffers. Not an RSS bound or throughput comparison."
@@ -184,15 +184,15 @@
       },
       "processMemory": {
         "before": {
-          "rss": 103055360,
-          "heapTotal": 52101120,
-          "heapUsed": 9744880,
+          "rss": 104669184,
+          "heapTotal": 45547520,
+          "heapUsed": 9734512,
           "external": 2540100,
           "arrayBuffers": 35741
         },
         "peak": {
-          "rss": 133038080,
-          "external": 3782142
+          "rss": 105902080,
+          "external": 3208695
         },
         "samplePeriodMs": 10,
         "note": "Whole Node process sample; includes bridge, GC and source buffers. Not an RSS bound or throughput comparison."
@@ -201,18 +201,18 @@
   ],
   "sources": {
     "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
-    "session.mbt": "2f5aa1cfe6e89655598d4ef75a1badb658f6c6f3e679284e87d4f57818db471e",
-    "publish_stream.mbt": "60a37400a8bc0dbfe2b4f47448dc7d9b27f18af498573498e1ea421c9e1c7013",
-    "cmd/web/publish_stream.mbt": "13eb1ed3791310e67cc7210bcebf990819fa6f7135c7819f3a03f7e7238ee8fd",
-    "tools/client.mjs": "6fa65b5ff4eda286cd700f9f30d24fc2f4b92c4b210d0e3158c8495fb5606d54",
+    "session.mbt": "83a95ee1ccb550399ccc0db9f08b3a1ab1e467098b53e467332ae741b503f48b",
+    "publish_stream.mbt": "7bea19d02cf97ae7d24997595a0d9cc2855544a59906ad4b4ef8db88ef2e5501",
+    "cmd/web/publish_stream.mbt": "78bd1662496a37dd89512596ffbc99d083fd39605dc3eeaa02fe42ffa3f7248a",
+    "tools/client.mjs": "ce5d316951d7b6e65541d681b3fa9c6ba76b83e2ed4bab9b1c7b8b318faeafd6",
     "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
-    "tools/recovery-channel.mjs": "e48ee92fea9c577dc65c63cb1121f86aca236df53b95507910388192b666f1ef",
+    "tools/recovery-channel.mjs": "a4ae32515d14cf147ef389368ba9fcf12e7f2e1f243b145863350285c0073d34",
     "tools/stream-reference.go": "d5c6bd4bf2a91796ff3d50e0503110fa0e1ee027b90e2ee7960dcc6d2d1fbc16",
     "tools/test-stream-native.mjs": "77daa107b823f7432217cd9840986ea097bf8d107db36c752e7220cad0efeb00",
     "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
     "evidence/stream-reference-build.json": "ad1e9cfbaf6c2011305305bdd2d9bb752e4a59830e723805860070ae4925f5a8",
-    "web/engine.mjs": "56e93f45cc106b5a630d95d36b372c1dcb929b4f6df49322d762d1cca9c4cc9e"
+    "web/engine.mjs": "28381c963d442f191df87990728372343c97c8d0bceae2ea6efe6b1fa9225f36"
   },
   "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "binarySha256": "ea1f1a9b03c4144df27343062f39e07337ada527a8a7ccc71217f369b23c98e0",

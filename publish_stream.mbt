@@ -9,6 +9,7 @@ pub fn Session::publish_start(
   body_size : UInt64,
   properties? : Array[(String, Argument)] = [],
   mandatory? : Bool = false,
+  immediate? : Bool = false,
 ) -> Unit raise FrameError {
   if self.state != "ready" ||
     self.channels.get(channel) != Some("open") ||
@@ -24,7 +25,7 @@ pub fn Session::publish_start(
     ShortString(exchange),
     ShortString(routing_key),
     Bit(mandatory),
-    Bit(false),
+    Bit(immediate),
   ])
   let first = command
     .encode(channel, max_size=self.frame_limit)

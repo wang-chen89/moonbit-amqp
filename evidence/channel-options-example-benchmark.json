@@ -1,0 +1,14 @@
+{
+  "project": "amqp",
+  "utc": "2026-09-19T09:53:16.218Z",
+  "runtime": "v24.11.0",
+  "platform": "win32",
+  "cpu": "Intel(R) Core(TM) i7-14700HX",
+  "input_utf8_bytes": 122,
+  "samples": 30,
+  "warmup": 5,
+  "median_ms": 0.06649999999999778,
+  "p95_ms": 0.15740000000000265,
+  "max_ms": 0.1991000000000014,
+  "scope": "JS warm execution of documented example; no cross-project or upstream performance claim"
+}

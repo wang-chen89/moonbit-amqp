@@ -336,6 +336,22 @@ pub fn session_publish(
   properties : String,
   mandatory : Bool,
 ) -> String {
+  session_publish_flags(
+    key, channel, exchange, routing_key, body, properties, mandatory, false,
+  )
+}
+
+///|
+pub fn session_publish_flags(
+  key : String,
+  channel : Int,
+  exchange : String,
+  routing_key : String,
+  body : String,
+  properties : String,
+  mandatory : Bool,
+  immediate : Bool,
+) -> String {
   try {
     if properties.length() > 2097152 {
       raise Failure("property size limit")
@@ -356,6 +372,7 @@ pub fn session_publish(
       unhex(body, max_length=2097152),
       properties=props,
       mandatory~,
+      immediate~,
     )
     result(s, [])
   } catch {

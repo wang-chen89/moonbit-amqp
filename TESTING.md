@@ -250,7 +250,7 @@ node tools/test-stream-native.mjs
 
 核心与客户端未改动；完整 verify 仍为 JS/Wasm-GC 各 120 项，既有网络/发送/接收/恢复/认证/更新/自动删除/依赖与 307 异常输入保留。改变的旧 CLI broker 路径重新实测；源码未变的原库/真实 broker 报告按源哈希核验后沿用，不能声称这些报告本轮全部重跑。最终 `broker-files-upgrade.json` 绑定全部源码及证据，历史报告和初始失败保留；本轮没有原生吞吐或进程内存性能验收。完整 20 项追平目标仍未完成，其他 19 项没有重跑。
 
-## 0.13 noWait 方法与恢复
+## 0.13 noWait 方法与恢复（历史版本，0.14 继续回归）
 
 `node tools/test-nowait.mjs` 的 17 组独立 TCP 线路测试验证 15 条方法帧的标志位、默认等待、与未结束 RPC 隔离、异步 broker 通道拒绝、同通道大正文排队、立即消费、缓冲/流式迟到投递丢弃、严格布尔验证、编码失败撤销回调、1024 消费者上限、匿名队列占位结果、恢复重放、绑定身份不受 wait 选项影响，以及删除/取消后的恢复登记清理。peer 手写解析 no-wait 位并抑制回复，不使用生产编解码器。verify 和 CI 配置包含该脚本；远程 CI 未运行。核心仍为 JS/Wasm-GC 各 120 项。
 
@@ -263,3 +263,17 @@ node tools/test-stream-native.mjs
 `api-surface-audit.json` 对已固定的 18 个根目录非测试 Go 文件记录哈希与 106 个公开名函数/方法声明位置；包括条件编译 Fuzz，不含非公开接收者的方法、所有结构字段/常量/接口。人工对应项见 `API-COMPATIBILITY.md`，仅用于明确剩余工作，不据此声称覆盖百分比或全接口兼容。
 
 当前客户端/恢复源码变化后，旧网络/恢复/认证/更新/自动删除/依赖/收发流/CLI 故障组，真实 broker 与原生 Go 对照均已重跑；30 个已存认证响应仍按源哈希和两后端测试验证。307 异常输入通过，当前文档样例及真实 broker 样本计时保留，未测代表性原生吞吐、长期、多平台或多版本性能。最终 `nowait-upgrade.json` 绑定当前源码/证据，保留历次初始观察与差异；其它 19 项本轮未重测，20 项完整追平目标仍未完成。
+
+## 0.14 通道选项与双向 flow
+
+`channel_options_test.mbt` 增加 2 个核心组，JS/Wasm-GC 各 122 项：四种 mandatory/immediate 组合在普通/流式正文中一致且保留默认字节；主动接收方向 flow、被动发布方向 flow、内容帧顺序与暂停/恢复相互独立。MoonBit 公共 API 仅给 publish/publish_start 增加可选 immediate，编译生成接口 diff 已核对。两个旧 JS 桥接入口保留原参数，增加两个带 flags 的入口。
+
+`node tools/test-channel-options.mjs` 的 15 组独立线路测试包含 UInt32/UInt16 范围与参数位、非法参数不发帧/不迭代源、不同通道隔离、交叉 flow 请求、与 pending RPC 隔离、流式正文前后的命令和自动回复顺序、实际 flow-ok 值、通道拒绝、超时/取消，以及恢复前参数快照和 QoS/消费者顺序。另检查 noLocal 的 wait/noWait 位、immediate 的确认语义和新旧桥接调用约定。测试已加入 verify 和 CI 配置，远程 CI 未运行。
+
+`tools/channel-options-reference.go` 调用相同固定提交的未修改 Go 客户端，72 个源码文件逐字核验；构建指纹见 `channel-options-reference-build.json`。设置 `AMQP_CHANNEL_OPTIONS_REFERENCE`、`RABBITMQ_ROOT` 后运行 `node tools/test-channel-options-native.mjs`。18 条完整方法报文（含最大合法 UInt32 size）、1 组 flow 通知与自动回复序列，以及 9 个真实 broker 场景分别比较，计数之间不代表独立的全量上游案例。
+
+固定 RabbitMQ 4.0.5 下，size=1/4294967295、flow(false)、普通/流式 immediate 发布都以 540 关闭连接，Go 与 Node 相同；另外建立检查连接，确认 immediate 消息没有存入队列。flow(true) 后可以正常发布/取回；noLocal=true 的等待/无等待消费者仍收到本连接发布的消息，重连后也一样。行为与该固定版本的 [服务端方法处理](https://raw.githubusercontent.com/rabbitmq/rabbitmq-server/v4.0.5/deps/rabbit/src/rabbit_channel.erl) 对应，未将“参数发送正确”当作 broker 实现支持，也未在客户端过滤本地消息。
+
+两个 peer 对照差异单列、不计 matched：Go 只验证 QoS 非负，65536/4294967296 转成线路整数后为 0/0；本版拒绝。Go 在服务器 flow(false) 后通知应用但仍允许 Publish，本版核心阻止新发布并可在 flow(true) 后继续；这是既有核心保护，本版补通知入口并补原生证据。发往服务器的主动 flow 控制投递方向，不会停掉本地发布，也不在恢复配置中重放。真实 RabbitMQ 不实现暂停请求，不能用本轮 broker 测试宣称已验证某个其它服务器的完整暂停投递效果。
+
+已有网络、发送/接收、文件 CLI、noWait、恢复、认证、凭证更新、自动删除与跨通道依赖回归及原库对照继续核验，历史差异保留；307 异常输入与文档样例通过。最终清单 `channel-options-upgrade.json` 绑定当前源与报告。尚缺完整消费者取消/确认通知/元数据与 URI 等 API、恢复交错、长期/集群、多平台/多版本及代表性原生性能；其余 19 项本轮没有重跑，全部追平目标保持未完成。

@@ -1,0 +1,130 @@
+{
+  "utc": "2026-09-19T09:53:12.664Z",
+  "node": "v24.11.0",
+  "passed": 15,
+  "tests": [
+    "all wire options retain UInt32 QoS and independent consume and publish flag bits",
+    "invalid flags and QoS ranges fail locally before source iteration or wire output",
+    "server flow notices pause new publications only on their channel and resume them",
+    "crossed flow requests keep delivery control replies separate from publisher notices",
+    "unsolicited flow does not consume the reply slot of a pending QoS RPC",
+    "flow command waits behind all frames of the same-channel source",
+    "server flow during a streamed body is notified now and acknowledged after the body",
+    "negative flow reply returns effective state without disabling outgoing messages",
+    "flow broker channel rejection is reported and sibling stays usable",
+    "missing flow response times out and terminates the connection",
+    "connection cancellation rejects pending flow without leaking its wait",
+    "recovery restores QoS size and noLocal snapshots before consumers but does not replay flow",
+    "failed local QoS does not overwrite a successfully recorded recovery setting",
+    "immediate option preserves confirms with both buffered and streamed sources",
+    "legacy bridge exports keep their calling convention and new flags exports agree"
+  ],
+  "wire": [
+    {
+      "cls": 60,
+      "id": 10,
+      "args": "00010000000700"
+    },
+    {
+      "cls": 60,
+      "id": 10,
+      "args": "ffffffffffff01"
+    },
+    {
+      "cls": 60,
+      "id": 10,
+      "args": "00000000000000"
+    },
+    {
+      "cls": 60,
+      "id": 20,
+      "args": "000001710263300600000000"
+    },
+    {
+      "cls": 60,
+      "id": 20,
+      "args": "000001710263310700000000"
+    },
+    {
+      "cls": 60,
+      "id": 20,
+      "args": "000001710263320e00000000"
+    },
+    {
+      "cls": 60,
+      "id": 20,
+      "args": "000001710263330f00000000"
+    },
+    {
+      "cls": 20,
+      "id": 20,
+      "args": "00"
+    },
+    {
+      "cls": 20,
+      "id": 20,
+      "args": "01"
+    },
+    {
+      "cls": 60,
+      "id": 40,
+      "args": "000000017100"
+    },
+    {
+      "cls": 60,
+      "id": 40,
+      "args": "000000017101"
+    },
+    {
+      "cls": 60,
+      "id": 40,
+      "args": "000000017102"
+    },
+    {
+      "cls": 60,
+      "id": 40,
+      "args": "000000017103"
+    },
+    {
+      "cls": 60,
+      "id": 40,
+      "args": "000000017100"
+    },
+    {
+      "cls": 60,
+      "id": 40,
+      "args": "000000017101"
+    },
+    {
+      "cls": 60,
+      "id": 40,
+      "args": "000000017102"
+    },
+    {
+      "cls": 60,
+      "id": 40,
+      "args": "000000017103"
+    },
+    {
+      "cls": 60,
+      "id": 10,
+      "args": "00000000000200"
+    }
+  ],
+  "sources": {
+    "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
+    "tools/client.mjs": "ce5d316951d7b6e65541d681b3fa9c6ba76b83e2ed4bab9b1c7b8b318faeafd6",
+    "tools/recovery.mjs": "f9bb94945bc9dc9fa95c624ee692c8d5859a744591f51c51252deb1b2861a427",
+    "tools/recovery-channel.mjs": "a4ae32515d14cf147ef389368ba9fcf12e7f2e1f243b145863350285c0073d34",
+    "tools/recovery-state.mjs": "78435fc7a882bfa4e7f349602db597d9778cf1f0558f7459475e8e562fff683e",
+    "tools/inbound.mjs": "472f83ff6abb1d1516ad46254f4a90219170630bf1506bb917fd35b1688e341f",
+    "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
+    "tools/channel-options-peer.mjs": "c541edf7df493dc489c5fdee86cac5437868fff4bb1ed92b70432235e34842ae",
+    "tools/nowait-peer.mjs": "0b4deee8decf362d9b05d3a45ac80ce6b07d7eb89e289e7f243fc0f3e33c8028",
+    "tools/recovery-peer.mjs": "2938b1f6187d9f322c0b47e0498dda341ccb863a7e797501ce14cc5088864190",
+    "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
+    "tools/test-channel-options.mjs": "ede5787ca84ff928a4a0dde6afe3247ec44633466c5b1b24e69bfbc5c2faf643",
+    "web/engine.mjs": "28381c963d442f191df87990728372343c97c8d0bceae2ea6efe6b1fa9225f36"
+  },
+  "scope": "Independent AMQP peer validates QoS width, consume/publish flags, both flow directions, source/RPC ordering, timeout/cancel, recovery snapshots and additive bridge compatibility; not full API or broker support."
+}

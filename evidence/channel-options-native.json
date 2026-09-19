@@ -1,372 +1,437 @@
 {
-  "utc": "2026-09-19T16:22:39.591Z",
+  "utc": "2026-09-19T09:52:05.578Z",
   "node": "v24.11.0",
-  "wireCases": 15,
+  "wireCases": 18,
   "wire": [
     {
       "index": 0,
       "matched": true,
       "actual": {
-        "cls": 40,
+        "cls": 60,
         "id": 10,
-        "args": "000006736f75726365066469726563741000000000"
+        "args": "00010000000700"
       },
       "reference": {
-        "cls": 40,
+        "cls": 60,
         "id": 10,
-        "args": "000006736f75726365066469726563741000000000"
+        "args": "00010000000700"
       }
     },
     {
       "index": 1,
       "matched": true,
       "actual": {
-        "cls": 40,
+        "cls": 60,
         "id": 10,
-        "args": "000006736f75726365066469726563741100000000"
+        "args": "ffffffffffff01"
       },
       "reference": {
-        "cls": 40,
+        "cls": 60,
         "id": 10,
-        "args": "000006736f75726365066469726563741100000000"
+        "args": "ffffffffffff01"
       }
     },
     {
       "index": 2,
       "matched": true,
       "actual": {
-        "cls": 40,
+        "cls": 60,
         "id": 10,
-        "args": "00000b64657374696e6174696f6e066469726563741000000000"
+        "args": "00000000000000"
       },
       "reference": {
-        "cls": 40,
+        "cls": 60,
         "id": 10,
-        "args": "00000b64657374696e6174696f6e066469726563741000000000"
+        "args": "00000000000000"
       }
     },
     {
       "index": 3,
       "matched": true,
       "actual": {
-        "cls": 50,
-        "id": 10,
-        "args": "00000571756575651000000000"
+        "cls": 60,
+        "id": 20,
+        "args": "000001710263300600000000"
       },
       "reference": {
-        "cls": 50,
-        "id": 10,
-        "args": "00000571756575651000000000"
+        "cls": 60,
+        "id": 20,
+        "args": "000001710263300600000000"
       }
     },
     {
       "index": 4,
       "matched": true,
       "actual": {
-        "cls": 50,
-        "id": 10,
-        "args": "00000571756575651100000000"
+        "cls": 60,
+        "id": 20,
+        "args": "000001710263310700000000"
       },
       "reference": {
-        "cls": 50,
-        "id": 10,
-        "args": "00000571756575651100000000"
+        "cls": 60,
+        "id": 20,
+        "args": "000001710263310700000000"
       }
     },
     {
       "index": 5,
       "matched": true,
       "actual": {
-        "cls": 40,
-        "id": 30,
-        "args": "00000b64657374696e6174696f6e06736f75726365036b65790100000000"
+        "cls": 60,
+        "id": 20,
+        "args": "000001710263320e00000000"
       },
       "reference": {
-        "cls": 40,
-        "id": 30,
-        "args": "00000b64657374696e6174696f6e06736f75726365036b65790100000000"
+        "cls": 60,
+        "id": 20,
+        "args": "000001710263320e00000000"
       }
     },
     {
       "index": 6,
       "matched": true,
       "actual": {
-        "cls": 50,
+        "cls": 60,
         "id": 20,
-        "args": "00000571756575650b64657374696e6174696f6e036b65790100000000"
+        "args": "000001710263330f00000000"
       },
       "reference": {
-        "cls": 50,
+        "cls": 60,
         "id": 20,
-        "args": "00000571756575650b64657374696e6174696f6e036b65790100000000"
+        "args": "000001710263330f00000000"
       }
     },
     {
       "index": 7,
       "matched": true,
       "actual": {
-        "cls": 60,
+        "cls": 20,
         "id": 20,
-        "args": "000005717565756508636f6e73756d65720800000000"
+        "args": "00"
       },
       "reference": {
-        "cls": 60,
+        "cls": 20,
         "id": 20,
-        "args": "000005717565756508636f6e73756d65720800000000"
+        "args": "00"
       }
     },
     {
       "index": 8,
       "matched": true,
       "actual": {
-        "cls": 60,
-        "id": 30,
-        "args": "08636f6e73756d657201"
+        "cls": 20,
+        "id": 20,
+        "args": "01"
       },
       "reference": {
-        "cls": 60,
-        "id": 30,
-        "args": "08636f6e73756d657201"
+        "cls": 20,
+        "id": 20,
+        "args": "01"
       }
     },
     {
       "index": 9,
       "matched": true,
       "actual": {
-        "cls": 50,
-        "id": 30,
-        "args": "000005717565756501"
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
       },
       "reference": {
-        "cls": 50,
-        "id": 30,
-        "args": "000005717565756501"
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
       }
     },
     {
       "index": 10,
       "matched": true,
       "actual": {
-        "cls": 40,
+        "cls": 60,
         "id": 40,
-        "args": "00000b64657374696e6174696f6e06736f75726365036b65790100000000"
+        "args": "000000017101"
       },
       "reference": {
-        "cls": 40,
+        "cls": 60,
         "id": 40,
-        "args": "00000b64657374696e6174696f6e06736f75726365036b65790100000000"
+        "args": "000000017101"
       }
     },
     {
       "index": 11,
       "matched": true,
       "actual": {
-        "cls": 50,
+        "cls": 60,
         "id": 40,
-        "args": "000005717565756504"
+        "args": "000000017102"
       },
       "reference": {
-        "cls": 50,
+        "cls": 60,
         "id": 40,
-        "args": "000005717565756504"
+        "args": "000000017102"
       }
     },
     {
       "index": 12,
       "matched": true,
       "actual": {
-        "cls": 40,
-        "id": 20,
-        "args": "00000b64657374696e6174696f6e02"
+        "cls": 60,
+        "id": 40,
+        "args": "000000017103"
       },
       "reference": {
-        "cls": 40,
-        "id": 20,
-        "args": "00000b64657374696e6174696f6e02"
+        "cls": 60,
+        "id": 40,
+        "args": "000000017103"
       }
     },
     {
       "index": 13,
       "matched": true,
       "actual": {
-        "cls": 40,
-        "id": 20,
-        "args": "000006736f7572636502"
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
       },
       "reference": {
-        "cls": 40,
-        "id": 20,
-        "args": "000006736f7572636502"
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
       }
     },
     {
       "index": 14,
       "matched": true,
       "actual": {
-        "cls": 85,
-        "id": 10,
-        "args": "01"
+        "cls": 60,
+        "id": 40,
+        "args": "000000017101"
       },
       "reference": {
-        "cls": 85,
+        "cls": 60,
+        "id": 40,
+        "args": "000000017101"
+      }
+    },
+    {
+      "index": 15,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017102"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017102"
+      }
+    },
+    {
+      "index": 16,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017103"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017103"
+      }
+    },
+    {
+      "index": 17,
+      "matched": true,
+      "actual": {
+        "cls": 60,
         "id": 10,
-        "args": "01"
+        "args": "00000000000200"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 10,
+        "args": "00000000000200"
       }
     }
   ],
-  "passed": 8,
+  "noticeComparisons": [
+    {
+      "matched": true,
+      "actual": {
+        "values": [
+          false,
+          true
+        ]
+      },
+      "reference": {
+        "values": [
+          false,
+          true
+        ]
+      },
+      "flowOkBits": [
+        0,
+        1
+      ]
+    }
+  ],
+  "passed": 9,
   "tests": [
-    "operations",
-    "consumer",
-    "anonymous",
-    "missing-queue",
-    "missing-exchange",
-    "delete-if-empty",
-    "cancel-requeue",
+    "qos-size",
+    "qos-max",
+    "flow-true",
+    "flow-false",
+    "immediate",
+    "immediate-stream",
+    "no-local",
+    "no-local-nowait",
     "recovery"
   ],
-  "nativeComparisons": 8,
+  "nativeComparisons": 9,
   "comparisons": [
     {
-      "name": "operations",
+      "name": "qos-size",
       "matched": true,
       "actual": {
-        "declaredCount": 0,
-        "passiveCount": 0,
-        "observedCount": 1,
-        "body": "routed",
-        "purgeCount": 0,
-        "afterPurge": 0,
-        "unboundEmpty": true,
-        "deleteCount": 0
+        "code": 540,
+        "connectionOpen": false
       },
       "reference": {
-        "afterPurge": 0,
-        "body": "routed",
-        "declaredCount": 0,
-        "deleteCount": 0,
-        "observedCount": 1,
-        "passiveCount": 0,
-        "purgeCount": 0,
-        "unboundEmpty": true
+        "code": 540,
+        "connectionOpen": false
       }
     },
     {
-      "name": "consumer",
+      "name": "qos-max",
       "matched": true,
       "actual": {
-        "before": "before",
-        "consumersAfterCancel": 0,
-        "afterCancel": "get-after-cancel"
+        "code": 540,
+        "connectionOpen": false
       },
       "reference": {
-        "afterCancel": "get-after-cancel",
-        "before": "before",
-        "consumersAfterCancel": 0
+        "code": 540,
+        "connectionOpen": false
       }
     },
     {
-      "name": "anonymous",
+      "name": "flow-true",
       "matched": true,
       "actual": {
-        "declaredName": "",
-        "declaredCount": 0,
-        "body": "anonymous"
+        "active": true,
+        "found": true,
+        "body": "active"
       },
       "reference": {
-        "body": "anonymous",
-        "declaredCount": 0,
-        "declaredName": ""
+        "active": true,
+        "body": "active",
+        "found": true
       }
     },
     {
-      "name": "missing-queue",
+      "name": "flow-false",
       "matched": true,
       "actual": {
-        "accepted": true,
-        "code": 404,
+        "code": 540,
+        "connectionOpen": false
+      },
+      "reference": {
+        "code": 540,
+        "connectionOpen": false
+      }
+    },
+    {
+      "name": "immediate",
+      "matched": true,
+      "actual": {
+        "code": 540,
+        "connectionOpen": false,
+        "messageStored": false
+      },
+      "reference": {
+        "code": 540,
+        "connectionOpen": false,
+        "messageStored": false
+      }
+    },
+    {
+      "name": "immediate-stream",
+      "matched": true,
+      "actual": {
+        "code": 540,
+        "connectionOpen": false,
+        "messageStored": false
+      },
+      "reference": {
+        "code": 540,
+        "connectionOpen": false,
+        "messageStored": false
+      }
+    },
+    {
+      "name": "no-local",
+      "matched": true,
+      "actual": {
+        "body": "local-before",
         "connectionOpen": true
       },
       "reference": {
-        "accepted": true,
-        "code": 404,
+        "body": "local-before",
         "connectionOpen": true
       }
     },
     {
-      "name": "missing-exchange",
+      "name": "no-local-nowait",
       "matched": true,
       "actual": {
-        "accepted": true,
-        "code": 404,
+        "body": "local-before",
         "connectionOpen": true
       },
       "reference": {
-        "accepted": true,
-        "code": 404,
+        "body": "local-before",
         "connectionOpen": true
-      }
-    },
-    {
-      "name": "delete-if-empty",
-      "matched": true,
-      "actual": {
-        "deleteCount": 0,
-        "code": 406,
-        "retained": true,
-        "body": "retained"
-      },
-      "reference": {
-        "body": "retained",
-        "code": 406,
-        "deleteCount": 0,
-        "retained": true
-      }
-    },
-    {
-      "name": "cancel-requeue",
-      "matched": true,
-      "actual": {
-        "retained": true,
-        "body": "late"
-      },
-      "reference": {
-        "body": "late",
-        "retained": true
       }
     },
     {
       "name": "recovery",
       "matched": true,
       "actual": {
-        "before": "before",
-        "after": "after",
-        "consumersAfterCancel": 0,
-        "afterCancel": "get-after-cancel"
+        "body": "local-before",
+        "after": "local-after",
+        "connectionOpen": true
       },
       "reference": {
-        "after": "after",
-        "afterCancel": "get-after-cancel",
-        "before": "before",
-        "consumersAfterCancel": 0
+        "after": "local-after",
+        "body": "local-before",
+        "connectionOpen": true
       }
     }
   ],
-  "explainedDifferences": 1,
+  "explainedDifferences": 2,
   "differences": [
     {
-      "name": "confirm-no-wait",
+      "name": "qos-out-of-wire-range",
       "matched": false,
       "reference": {
-        "completed": false,
-        "connectionOpen": true
+        "accepted": true
       },
       "actual": {
-        "completed": true,
-        "connectionOpen": true,
-        "publicationConfirmed": true
+        "accepted": false
       },
-      "explanation": "Pinned Go confirmSelect.wait() returns true despite the wire Nowait bit. RabbitMQ suppresses the reply; Go did not return within a 300 ms observation and was closed explicitly. Node completes locally and receives a real publisher confirmation."
+      "referenceWire": "00000000000000",
+      "explanation": "Pinned Go only rejects negative integers and truncates count/size to uint16/uint32. Node rejects values outside the wire ranges before sending."
+    },
+    {
+      "name": "automatic-publisher-pause",
+      "matched": false,
+      "reference": {
+        "published": true
+      },
+      "actual": {
+        "published": false
+      },
+      "explanation": "Pinned Go notifies the application but still allows Publish while paused. The MoonBit Session enforces server channel.flow(false) for new publications; Node exposes the notification as well."
     }
   ],
   "sources": {
@@ -377,18 +442,19 @@
     "tools/recovery-state.mjs": "78435fc7a882bfa4e7f349602db597d9778cf1f0558f7459475e8e562fff683e",
     "tools/inbound.mjs": "472f83ff6abb1d1516ad46254f4a90219170630bf1506bb917fd35b1688e341f",
     "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
-    "tools/nowait-reference.go": "538f6130d2d2522bbd38ac03398524c15b0f7764766dc23523c620730c50bfbe",
-    "tools/test-nowait-native.mjs": "873b040669403c726a221fd82cdcfb713b28ace9c4322422282d5a409ccea346",
+    "tools/channel-options-reference.go": "5b77dd9cb0f512c761d8a3052f0911d07a7da4e787ad07c95b44fd9343ff4481",
+    "tools/test-channel-options-native.mjs": "878b4395f91102b5949a66068204517b0026039561c5830477ded4b842319d0c",
+    "tools/channel-options-peer.mjs": "c541edf7df493dc489c5fdee86cac5437868fff4bb1ed92b70432235e34842ae",
     "tools/nowait-peer.mjs": "0b4deee8decf362d9b05d3a45ac80ce6b07d7eb89e289e7f243fc0f3e33c8028",
     "tools/recovery-peer.mjs": "2938b1f6187d9f322c0b47e0498dda341ccb863a7e797501ce14cc5088864190",
     "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
     "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
-    "evidence/nowait-reference-build.json": "00130425d62c8d2fafa0d65ee67947f5460ef8342f112017687767e015bff215",
+    "evidence/channel-options-reference-build.json": "e7210228aeb19fd905531b1708d215fe3337f201111e99a0d046bdf055ca704b",
     "web/engine.mjs": "28381c963d442f191df87990728372343c97c8d0bceae2ea6efe6b1fa9225f36"
   },
   "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
-  "binarySha256": "0b56348198660ba9d035cf3f41ca1f61d2b8909c4e2e886e3da158bd5fdc9bfa",
+  "binarySha256": "4086e58b738a913b2e6f23aeddf2ac2e4b96044cbaf6fd8cbb37ed1d4e9665ab",
   "brokerPackages": {
     "rabbitmq-server_4.0.5-10ubuntu5_all.deb": "facf754e045a705aca30b82b7728ac7b3f123d2b7f7838575b246fe0bd2ad05e",
     "libsctp1_1.0.21+dfsg-1build2_amd64.deb": "92924c463cf0e6630b1e9fd3969d45b21558f7ecbf0c9ef12c80523669f8a271",
@@ -408,5 +474,5 @@
     "erlang-base_1%3a27.3.4.6+dfsg-1_amd64.deb": "8e7ababa5b1ddbe72e135faa78d15755268dfbb7cdfc25a5a8144f3e2d5754df",
     "erlang-asn1_1%3a27.3.4.6+dfsg-1_amd64.deb": "b2d3f1a35d642727631ff138070d5a4f410bb0066f67a1efbf11ad61dc51fa6d"
   },
-  "scope": "15 independent-peer wire frames and 8 real broker scenarios match. Go uses Confirm(false) in those broker scenarios to isolate its separately reported Confirm(true) waiting difference; Node uses no-wait confirms. Named recovery, delayed errors, anonymous queue and cancellation/requeue covered. No complete API or throughput parity claim."
+  "scope": "18 exact method frames, one flow notification/reply sequence and nine real broker results including unsupported options and recovery. Two explicit local range/pause differences, not matches. RabbitMQ does not enforce noLocal isolation, rejects nonzero size/immediate/flow(false). No multiversion or throughput parity."
 }

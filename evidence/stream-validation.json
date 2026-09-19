@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T09:27:53.958Z",
+  "utc": "2026-09-19T09:52:43.642Z",
   "node": "v24.11.0",
   "passed": 22,
   "tests": [
@@ -47,12 +47,12 @@
     },
     {
       "name": "32 MiB paused receiver",
-      "producerBytesBeforeResume": 524288,
+      "producerBytesBeforeResume": 589824,
       "totalBytes": 33554432,
       "writeStats": {
         "socketBufferedBytes": 0,
         "maxObservedSocketBytes": 65544,
-        "drainWaits": 414,
+        "drainWaits": 397,
         "streamingChannels": 0,
         "deferredProtocolBytes": 0
       }
@@ -60,17 +60,17 @@
   ],
   "sources": {
     "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
-    "session.mbt": "2f5aa1cfe6e89655598d4ef75a1badb658f6c6f3e679284e87d4f57818db471e",
-    "publish_stream.mbt": "60a37400a8bc0dbfe2b4f47448dc7d9b27f18af498573498e1ea421c9e1c7013",
+    "session.mbt": "83a95ee1ccb550399ccc0db9f08b3a1ab1e467098b53e467332ae741b503f48b",
+    "publish_stream.mbt": "7bea19d02cf97ae7d24997595a0d9cc2855544a59906ad4b4ef8db88ef2e5501",
     "publish_stream_test.mbt": "967420c566722e4a5990a68987a51144fd7031224343552ceffde5f5bca3b1f0",
-    "cmd/web/publish_stream.mbt": "13eb1ed3791310e67cc7210bcebf990819fa6f7135c7819f3a03f7e7238ee8fd",
+    "cmd/web/publish_stream.mbt": "78bd1662496a37dd89512596ffbc99d083fd39605dc3eeaa02fe42ffa3f7248a",
     "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
-    "tools/client.mjs": "6fa65b5ff4eda286cd700f9f30d24fc2f4b92c4b210d0e3158c8495fb5606d54",
-    "tools/recovery-channel.mjs": "e48ee92fea9c577dc65c63cb1121f86aca236df53b95507910388192b666f1ef",
+    "tools/client.mjs": "ce5d316951d7b6e65541d681b3fa9c6ba76b83e2ed4bab9b1c7b8b318faeafd6",
+    "tools/recovery-channel.mjs": "a4ae32515d14cf147ef389368ba9fcf12e7f2e1f243b145863350285c0073d34",
     "tools/recovery.mjs": "f9bb94945bc9dc9fa95c624ee692c8d5859a744591f51c51252deb1b2861a427",
     "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
     "tools/test-stream.mjs": "a777946698ffbbcef993f6dde250b23f5ca16537281c29a39a49b5d4e5e8e653",
-    "web/engine.mjs": "56e93f45cc106b5a630d95d36b372c1dcb929b4f6df49322d762d1cca9c4cc9e"
+    "web/engine.mjs": "28381c963d442f191df87990728372343c97c8d0bceae2ea6efe6b1fa9225f36"
   },
   "scope": "Independent wire fixtures; outbound streaming only. Source-owned chunk storage excluded from sender buffer bound."
 }

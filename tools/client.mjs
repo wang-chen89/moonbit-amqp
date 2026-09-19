@@ -216,7 +216,7 @@ export class Connection extends EventEmitter {
   _sendQueued(channel,name,args,beforeSend,signals=[]) {
     return this.#publishWrites.run(async()=>{await this.#writable(signals);beforeSend?.();this._send(channel,name,args);},{signal:signals[0]});
   }
-  async _publishStream(channel,exchange,key,source,size,properties,mandatory,signals,onStart) {
+  async _publishStream(channel,exchange,key,source,size,properties,mandatory,immediate,signals,onStart) {
     let iterator,started=false,completed=false,remaining=size;
     const physical=this.#channels.get(channel);
     const active={physical,frames:[],bytes:0};
@@ -227,7 +227,7 @@ export class Connection extends EventEmitter {
       iterator=source[Symbol.asyncIterator]?.()??source[Symbol.iterator]?.();
       if(!iterator||typeof iterator.next!=='function')throw TypeError('Source must be an iterable of byte chunks');
       await write(()=>{
-        const result=JSON.parse(checked(core.session_publish_start(this.#key,channel,exchange,key,String(size),properties,mandatory)));
+        const result=JSON.parse(checked(core.session_publish_start_flags(this.#key,channel,exchange,key,String(size),properties,mandatory,immediate)));
         onStart();started=true;this.#streaming.set(channel,active);this.#process(result,channel);
       });
       let empty=0,pieces=0;
@@ -379,10 +379,12 @@ export class Channel extends EventEmitter {
       const callback = this.#consumers.get(tag); this.#consumers.delete(tag);
       if (callback) this.#notify(callback, null);
       this.emit('cancel', tag);
+    } else if(e.name==='channel.flow') {
+      this.emit('flow',e.args.active);
     } else if (this.#pending?.expected.includes(e.name)) {
       const p = this.#pending; this.#pending = undefined; clearTimeout(p.timer);
       try { p.resolve(p.apply(e)); } catch (error) { p.reject(error); throw error; }
-    } else if (e.name !== 'channel.flow') throw Error(`Unexpected method ${e.name}`);
+    } else throw Error(`Unexpected method ${e.name}`);
   }
   _terminate(error) {
     if (this.#closed) return;
@@ -406,14 +408,25 @@ export class Channel extends EventEmitter {
   deleteExchange(exchange, {ifUnused = false,noWait=false} = {}) { return this.#request('exchange.delete', [0, exchange, ifUnused, noWait], ['exchange.delete-ok'],noWait,()=>({})); }
   bindExchange(destination, source, routingKey = '', args = {},{noWait=false}={}) { return this.#request('exchange.bind', [0, destination, source, routingKey, noWait, args], ['exchange.bind-ok'],noWait,()=>({})); }
   unbindExchange(destination, source, routingKey = '', args = {},{noWait=false}={}) { return this.#request('exchange.unbind', [0, destination, source, routingKey, noWait, args], ['exchange.unbind-ok'],noWait,()=>({})); }
-  qos(prefetchCount, global = false) { return this._rpc('basic.qos', [0, prefetchCount, global], ['basic.qos-ok']); }
+  qos(prefetchCount, global = false, {prefetchSize=0}={}) {
+    try {
+      integer(prefetchCount,0,65535,'prefetchCount');integer(prefetchSize,0,4294967295,'prefetchSize');
+      if(typeof global!=='boolean')throw TypeError('Invalid global');
+      return this._rpc('basic.qos', [prefetchSize, prefetchCount, global], ['basic.qos-ok']);
+    }catch(error){return Promise.reject(error);}
+  }
+  flow(active) {
+    if(typeof active!=='boolean')return Promise.reject(TypeError('Invalid active'));
+    return this._rpc('channel.flow',[active],['channel.flow-ok'],e=>e.args.active);
+  }
   get(queue, {noAck = false} = {}) { return this._rpc('basic.get', [0, queue, noAck], ['basic.get-ok', 'basic.get-empty'], e => e.name === 'basic.get-empty' ? null : delivery(e)); }
-  consume(queue, callback, {consumerTag = randomUUID(), noAck = false, exclusive = false, noWait=false, arguments: args = {}} = {}) {
+  consume(queue, callback, {consumerTag = randomUUID(), noAck = false, exclusive = false, noWait=false, noLocal=false, arguments: args = {}} = {}) {
     if (typeof callback !== 'function' || !consumerTag || this.#consumers.has(consumerTag)) return Promise.reject(TypeError('Invalid callback or duplicate/empty consumer tag'));
     if(this.#consumers.size>=1024)return Promise.reject(Error('Consumer limit: 1024'));
     if(typeof noWait!=='boolean')return Promise.reject(TypeError('Invalid noWait'));
+    if(typeof noLocal!=='boolean')return Promise.reject(TypeError('Invalid noLocal'));
     if(noWait)this.#consumers.set(consumerTag,callback);
-    return this.#request('basic.consume', [0, queue, consumerTag, false, noAck, exclusive, noWait, args], ['basic.consume-ok'],noWait,()=>consumerTag, e => {
+    return this.#request('basic.consume', [0, queue, consumerTag, noLocal, noAck, exclusive, noWait, args], ['basic.consume-ok'],noWait,()=>consumerTag, e => {
       const tag = e.args['consumer-tag']; this.#consumers.set(tag, callback); return tag;
     }).catch(error=>{if(noWait&&this.#consumers.get(consumerTag)===callback)this.#consumers.delete(consumerTag);throw error;});
   }
@@ -457,13 +470,14 @@ export class Channel extends EventEmitter {
       return this.#publication(exchange,routingKey,source,size,options,0);
     }catch(error){return Promise.reject(error);}
   }
-  #publication(exchange,key,source,size,{properties={},mandatory=false,signal}={},bytes) {
+  #publication(exchange,key,source,size,{properties={},mandatory=false,immediate=false,signal}={},bytes) {
+    if(typeof mandatory!=='boolean'||typeof immediate!=='boolean')return Promise.reject(TypeError('Invalid publish flags'));
     if(this.#closed||this.#connection.closing||this.#mode==='selecting')return Promise.reject(Error('Channel unavailable'));
     if(this.#publications>=1024)return Promise.reject(Error('Unconfirmed or queued publish limit: 1024'));
     const encoded=JSON.stringify(properties),confirm=this.#mode==='confirm';let pending,seq;
     this.#publications++;
     const sending=this.#sends.run(async()=>{
-      await this.#connection._publishStream(this.id,exchange,key,source,size,encoded,mandatory,[this.#sendAbort.signal,signal],()=>{
+      await this.#connection._publishStream(this.id,exchange,key,source,size,encoded,mandatory,immediate,[this.#sendAbort.signal,signal],()=>{
         if(confirm){seq=this.#nextConfirm++;pending=deferred();pending.promise.catch(()=>{});this.#confirms.set(seq,pending);}
       });
       if(pending&&this.#confirms.has(seq))pending.timer=setTimeout(()=>this.#connection._fail(Error(`Publisher confirm timeout: ${seq}`)),this.#connection.timeout);

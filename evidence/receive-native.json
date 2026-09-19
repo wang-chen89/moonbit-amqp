@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T09:30:07.991Z",
+  "utc": "2026-09-19T16:21:51.119Z",
   "node": "v24.11.0",
   "passed": 8,
   "tests": [
@@ -132,15 +132,15 @@
       },
       "processMemory": {
         "initial": {
-          "rss": 79536128,
-          "heapTotal": 28344320,
-          "heapUsed": 8203592,
-          "external": 3087615,
-          "arrayBuffers": 286916
+          "rss": 72564736,
+          "heapTotal": 28082176,
+          "heapUsed": 8228944,
+          "external": 2760035,
+          "arrayBuffers": 286924
         },
         "peak": {
-          "rss": 236167168,
-          "external": 5003529
+          "rss": 152305664,
+          "external": 4119145
         },
         "note": "Whole Node process observation, not an RSS guarantee or upstream throughput comparison."
       }
@@ -177,15 +177,15 @@
       },
       "processMemory": {
         "initial": {
-          "rss": 230793216,
-          "heapTotal": 181706752,
-          "heapUsed": 87496600,
-          "external": 4408804,
-          "arrayBuffers": 1904445
+          "rss": 151015424,
+          "heapTotal": 99774464,
+          "heapUsed": 53303480,
+          "external": 3786444,
+          "arrayBuffers": 1282085
         },
         "peak": {
-          "rss": 232144896,
-          "external": 4706422
+          "rss": 153427968,
+          "external": 4002166
         },
         "note": "Whole Node process observation, not an RSS guarantee or upstream throughput comparison."
       }
@@ -193,21 +193,21 @@
   ],
   "sources": {
     "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
-    "session.mbt": "2f5aa1cfe6e89655598d4ef75a1badb658f6c6f3e679284e87d4f57818db471e",
+    "session.mbt": "83a95ee1ccb550399ccc0db9f08b3a1ab1e467098b53e467332ae741b503f48b",
     "receive_stream.mbt": "189d08894d96e52044c93f958c135efba5e2c5a8d969264b9a22099681d7f1c0",
-    "cmd/web/session.mbt": "461bca58fe6295a404e98487ec8869daa8aa5e452a744c714699d780bdb7a58b",
+    "cmd/web/session.mbt": "77a46d26771f0f9afc04283bcf301353985c1f61e159b357d5fd20642e9ab5fb",
     "cmd/web/authentication.mbt": "9c57e3bcbad42ef3f9a417eafadf12c99829dbfcb453df4683076d7567c4d3e4",
-    "tools/client.mjs": "6fa65b5ff4eda286cd700f9f30d24fc2f4b92c4b210d0e3158c8495fb5606d54",
+    "tools/client.mjs": "ce5d316951d7b6e65541d681b3fa9c6ba76b83e2ed4bab9b1c7b8b318faeafd6",
     "tools/inbound.mjs": "472f83ff6abb1d1516ad46254f4a90219170630bf1506bb917fd35b1688e341f",
     "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
-    "tools/recovery-channel.mjs": "e48ee92fea9c577dc65c63cb1121f86aca236df53b95507910388192b666f1ef",
+    "tools/recovery-channel.mjs": "a4ae32515d14cf147ef389368ba9fcf12e7f2e1f243b145863350285c0073d34",
     "tools/recovery.mjs": "f9bb94945bc9dc9fa95c624ee692c8d5859a744591f51c51252deb1b2861a427",
     "tools/receive-reference.go": "0e0db50f1abe3ee383c6825f89ee1f2f508ea0d4f092abe318b72f0763bac19c",
     "tools/test-receive-native.mjs": "f3c64f30888ab984150e9297cd4bcf1f88bf21c69503ff544679f30ee2d908c6",
     "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
     "evidence/receive-reference-build.json": "0fac38895af8f0124999844277fc0a8e465d162c262342bd5d433b92c22012ca",
-    "web/engine.mjs": "56e93f45cc106b5a630d95d36b372c1dcb929b4f6df49322d762d1cca9c4cc9e"
+    "web/engine.mjs": "28381c963d442f191df87990728372343c97c8d0bceae2ea6efe6b1fa9225f36"
   },
   "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "binarySha256": "a016335103c37cb250e6f5efc2ce1165b87f149346f78fe66917afb97e00cbf1",

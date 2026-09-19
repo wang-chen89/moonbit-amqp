@@ -20,6 +20,7 @@ export class RecoveringChannel extends Lifecycle {
     this.#deliveries=[];this.#deliveryBytes=0;
     raw.on('return', message => { if (this.#physical === raw) {if(message.type==='messageStart'&&!this.listenerCount('return'))message.body.discard().catch(()=>{});notice(this,'return',message);} });
     raw.on('callbackError', error => notice(this,'callbackError',error));
+    raw.on('flow', active => { if(this.#physical===raw)notice(this,'flow',active); });
     raw.on('cancel', tag => {
       if (this.#physical !== raw) return;
       const entry=this.#consumers.get(tag)??this.#pendingConsumers.get(tag);this.#consumers.delete(tag);
@@ -30,7 +31,7 @@ export class RecoveringChannel extends Lifecycle {
     raw.on('close', error => {
       if (this.#physical === raw && !this.closed) this.#connection._channelLost(this,error);
     });
-    for (const [global,count] of this.#qos) await raw.qos(count,global);
+    for (const [global,{count,options}] of this.#qos) await raw.qos(count,global,options);
     if (this.#mode === 'confirm') await raw.confirmSelect();
     if (this.#mode === 'transaction') await raw.txSelect();
     if(raw.closed||claim!==this.#opening||this.closed||this.#connection.closed)throw Error('Channel closed or superseded while opening');
@@ -124,7 +125,8 @@ export class RecoveringChannel extends Lifecycle {
     const entry={destination,source,routingKey,args:snapshot(args),owner:0};
     return this.#call('unbindExchange',[destination,source,routingKey,entry.args,snapshot(options)],value=>{this.#connection.topology.removeBinding(identity(entry),true);return value;},true);
   }
-  qos(count,global=false) { return this.#call('qos',[count,global],value=>{this.#qos.set(global,count);return value;},true); }
+  qos(count,global=false,options={}) { const saved=snapshot(options);return this.#call('qos',[count,global,saved],value=>{this.#qos.set(global,{count,options:saved});return value;},true); }
+  flow(active) { return this.#call('flow',[active]); }
   async confirmSelect(options={}) { await this.#call('confirmSelect',[snapshot(options)],()=>{this.#mode='confirm';},true); }
   async txSelect() { await this.#call('txSelect',[],()=>{this.#mode='transaction';},true); }
   txCommit() { return this.#call('txCommit',[]); }

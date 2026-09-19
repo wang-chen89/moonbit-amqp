@@ -1,0 +1,16 @@
+PASS all wire options retain UInt32 QoS and independent consume and publish flag bits
+PASS invalid flags and QoS ranges fail locally before source iteration or wire output
+PASS server flow notices pause new publications only on their channel and resume them
+PASS crossed flow requests keep delivery control replies separate from publisher notices
+PASS unsolicited flow does not consume the reply slot of a pending QoS RPC
+PASS flow command waits behind all frames of the same-channel source
+PASS server flow during a streamed body is notified now and acknowledged after the body
+PASS negative flow reply returns effective state without disabling outgoing messages
+PASS flow broker channel rejection is reported and sibling stays usable
+PASS missing flow response times out and terminates the connection
+PASS connection cancellation rejects pending flow without leaking its wait
+PASS recovery restores QoS size and noLocal snapshots before consumers but does not replay flow
+PASS failed local QoS does not overwrite a successfully recorded recovery setting
+PASS immediate option preserves confirms with both buffered and streamed sources
+PASS legacy bridge exports keep their calling convention and new flags exports agree
+15 channel option fixture groups passed

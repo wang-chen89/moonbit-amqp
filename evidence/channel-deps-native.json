@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T09:29:33.464Z",
+  "utc": "2026-09-19T16:21:37.208Z",
   "cases": 2,
   "matched": 0,
   "explainedImprovements": 2,
@@ -131,9 +131,9 @@
     "tools/test-channel-deps-native.mjs": "72ef9e3811f58405b8a043be58416f6d2b0a8f416c84b9fb9708835ed4fbe8de",
     "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
-    "tools/client.mjs": "6fa65b5ff4eda286cd700f9f30d24fc2f4b92c4b210d0e3158c8495fb5606d54",
-    "web/engine.mjs": "56e93f45cc106b5a630d95d36b372c1dcb929b4f6df49322d762d1cca9c4cc9e",
-    "evidence/rabbitmq-channel-deps.json": "ce7b1cf94c32bc778dc56a7836eb64c27544e30f4f61afa76f80d40e1eb1852e",
+    "tools/client.mjs": "ce5d316951d7b6e65541d681b3fa9c6ba76b83e2ed4bab9b1c7b8b318faeafd6",
+    "web/engine.mjs": "28381c963d442f191df87990728372343c97c8d0bceae2ea6efe6b1fa9225f36",
+    "evidence/rabbitmq-channel-deps.json": "0e2e5681a94d8bb9855f7ab16e946e45a17f91f9754a21bf49cc63c8f9738b73",
     "evidence/channel-deps-reference-build.json": "cee9ecb156d6cd3904d8c50ea9ccc1c409d60823cb384a8899230d8f169eac25"
   },
   "scope": "Two real single-channel recovery boundary comparisons. Explicit improvements over pinned Go behavior, not matching-conformance cases or a claim of full upstream parity."

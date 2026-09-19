@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T09:31:16.383816+00:00",
+  "utc": "2026-09-19T16:36:50.791583+00:00",
   "referenceCommit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "scope": "Syntactic exported-name functions/methods on exported receiver types in root non-test Go files. Includes conditional Fuzz; excludes unexported receivers and does not inventory struct fields, constants, interfaces or generated behavior. No full compatibility or coverage percentage claim.",
   "declarationCount": 106,
@@ -141,8 +141,8 @@
       "file": "channel.go",
       "line": 788,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "flow 事件",
+      "boundary": "服务器请求自动回复；已有核心在 false 后拒绝新发布，原库仅通知，差异单列"
     },
     {
       "name": "Channel.NotifyReturn",
@@ -181,8 +181,8 @@
       "file": "channel.go",
       "line": 941,
       "buildConstraint": "",
-      "hostEquivalent": "qos(count, global)",
-      "boundary": "部分；尚缺 prefetchSize 参数，限额/恢复语义未全量验证"
+      "hostEquivalent": "qos(count, global, {prefetchSize})",
+      "boundary": "有入口；合法 UInt16/UInt32 报文已对照，拒绝越界而原库截断；RabbitMQ 4.0.5 拒绝非零 size"
     },
     {
       "name": "Channel.Cancel",
@@ -254,7 +254,7 @@
       "line": 1403,
       "buildConstraint": "",
       "hostEquivalent": "consume(queue, callback, options)",
-      "boundary": "部分；支持 noWait，尚缺 noLocal，回调与 Go delivery channel 契约不同"
+      "boundary": "支持 noWait/noLocal；固定 RabbitMQ 接受 noLocal 但仍投递本连接消息，回调与 Go delivery channel 契约不同"
     },
     {
       "name": "Channel.ConsumeWithContext",
@@ -310,7 +310,7 @@
       "line": 1844,
       "buildConstraint": "",
       "hostEquivalent": "publish / publishStream 的 Promise",
-      "boundary": "部分；可等待确认/取消，但缺 immediate、独立确认句柄与原库全部 context 语义"
+      "boundary": "支持 mandatory/immediate、可等待确认/取消；仍缺独立确认句柄与原库全部 context 语义"
     },
     {
       "name": "Channel.PublishWithContext",
@@ -318,7 +318,7 @@
       "line": 1886,
       "buildConstraint": "",
       "hostEquivalent": "publish / publishStream 的 Promise",
-      "boundary": "部分；可等待确认/取消，但缺 immediate、独立确认句柄与原库全部 context 语义"
+      "boundary": "支持 mandatory/immediate、可等待确认/取消；仍缺独立确认句柄与原库全部 context 语义"
     },
     {
       "name": "Channel.PublishWithDeferredConfirm",
@@ -326,7 +326,7 @@
       "line": 1901,
       "buildConstraint": "",
       "hostEquivalent": "publish / publishStream 的 Promise",
-      "boundary": "部分；可等待确认/取消，但缺 immediate、独立确认句柄与原库全部 context 语义"
+      "boundary": "支持 mandatory/immediate、可等待确认/取消；仍缺独立确认句柄与原库全部 context 语义"
     },
     {
       "name": "Channel.PublishWithDeferredConfirmWithContext",
@@ -334,7 +334,7 @@
       "line": 1956,
       "buildConstraint": "",
       "hostEquivalent": "publish / publishStream 的 Promise",
-      "boundary": "部分；可等待确认/取消，但缺 immediate、独立确认句柄与原库全部 context 语义"
+      "boundary": "支持 mandatory/immediate、可等待确认/取消；仍缺独立确认句柄与原库全部 context 语义"
     },
     {
       "name": "Channel.Get",
@@ -373,8 +373,8 @@
       "file": "channel.go",
       "line": 2068,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "flow(active)",
+      "boundary": "有入口，返回实际 flow-ok 布尔值；不在恢复配置重放；固定 RabbitMQ 只接受 true"
     },
     {
       "name": "Channel.Confirm",

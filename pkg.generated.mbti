@@ -145,9 +145,9 @@ pub fn Session::finish(Self) -> Unit raise FrameError
 pub fn Session::heartbeat(Self) -> Bytes raise FrameError
 pub fn Session::limits(Self) -> (Int, Int, Int)
 pub fn Session::new(String, String, vhost? : String, channel_max? : Int, frame_max? : Int, heartbeat? : Int, stream_bodies? : Bool) -> Self raise FrameError
-pub fn Session::publish(Self, Int, String, String, Bytes, properties? : Array[(String, Argument)], mandatory? : Bool) -> Unit raise FrameError
+pub fn Session::publish(Self, Int, String, String, Bytes, properties? : Array[(String, Argument)], mandatory? : Bool, immediate? : Bool) -> Unit raise FrameError
 pub fn Session::publish_body(Self, Int, Bytes) -> Unit raise FrameError
-pub fn Session::publish_start(Self, Int, String, String, UInt64, properties? : Array[(String, Argument)], mandatory? : Bool) -> Unit raise FrameError
+pub fn Session::publish_start(Self, Int, String, String, UInt64, properties? : Array[(String, Argument)], mandatory? : Bool, immediate? : Bool) -> Unit raise FrameError
 pub fn Session::respond_authentication(Self, Bytes) -> Unit raise FrameError
 pub fn Session::send(Self, Int, Method) -> Unit raise FrameError
 pub fn Session::status(Self) -> String

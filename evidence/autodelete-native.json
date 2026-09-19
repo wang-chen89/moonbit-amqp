@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T09:29:54.580Z",
+  "utc": "2026-09-19T16:22:10.709Z",
   "cases": 10,
   "matched": 9,
   "explainedDifferences": 1,
@@ -648,16 +648,16 @@
   "sources": {
     "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
     "tools/recovery.mjs": "f9bb94945bc9dc9fa95c624ee692c8d5859a744591f51c51252deb1b2861a427",
-    "tools/recovery-channel.mjs": "e48ee92fea9c577dc65c63cb1121f86aca236df53b95507910388192b666f1ef",
+    "tools/recovery-channel.mjs": "a4ae32515d14cf147ef389368ba9fcf12e7f2e1f243b145863350285c0073d34",
     "tools/recovery-state.mjs": "78435fc7a882bfa4e7f349602db597d9778cf1f0558f7459475e8e562fff683e",
-    "tools/client.mjs": "6fa65b5ff4eda286cd700f9f30d24fc2f4b92c4b210d0e3158c8495fb5606d54",
+    "tools/client.mjs": "ce5d316951d7b6e65541d681b3fa9c6ba76b83e2ed4bab9b1c7b8b318faeafd6",
     "tools/autodelete-reference.go": "2ce1349229c3df548b0689dc3bcb50ec43a53de0ec4e40e2bb3841f1ad28fbc9",
     "tools/autodelete-scenarios.json": "4d5461e34ac5773ab86784b957b5a5c044fa6ff827966aa88a06e15127d9e3c5",
     "tools/test-autodelete-native.mjs": "cccd17ff04899893abacb490a73031e066a24302c7d1b34a64f56deb8c1fe96d",
     "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
     "evidence/autodelete-reference-build.json": "7b6e8a402bf827b98b3e2a4692c771de49136c5039b863a5678749553d26dea1",
-    "web/engine.mjs": "56e93f45cc106b5a630d95d36b372c1dcb929b4f6df49322d762d1cca9c4cc9e"
+    "web/engine.mjs": "28381c963d442f191df87990728372343c97c8d0bceae2ea6efe6b1fa9225f36"
   },
   "scope": "Ten identical operation scenarios in unmodified pinned Go and Node: nine matches, one explicit never-bound no-op unbind bookkeeping difference. Before/after recovery snapshots, intermediate cross-channel checkpoints, confirmed survivor and passive broker probes; not full API conformance."
 }

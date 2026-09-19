@@ -167,7 +167,7 @@ pub fn Session::send(
   let name = spec.name
   if ![
       "connection.close", "connection.update-secret", "channel.open", "channel.close",
-      "exchange.declare", "exchange.delete", "exchange.bind", "exchange.unbind",
+      "channel.flow", "exchange.declare", "exchange.delete", "exchange.bind", "exchange.unbind",
       "queue.declare", "queue.bind", "queue.unbind", "queue.delete", "queue.purge",
       "basic.qos", "basic.consume", "basic.cancel", "basic.cancel-ok", "basic.get",
       "basic.ack", "basic.reject", "basic.nack", "basic.recover", "basic.recover-async",
@@ -215,6 +215,7 @@ pub fn Session::publish(
   body : Bytes,
   properties? : Array[(String, Argument)] = [],
   mandatory? : Bool = false,
+  immediate? : Bool = false,
 ) -> Unit raise FrameError {
   if self.state != "ready" ||
     self.channels.get(channel) != Some("open") ||
@@ -231,7 +232,7 @@ pub fn Session::publish(
       ShortString(exchange),
       ShortString(routing_key),
       Bit(mandatory),
-      Bit(false),
+      Bit(immediate),
     ]),
     channel,
     properties,
