@@ -1,0 +1,17 @@
+{
+  "utc": "2026-09-19T07:02:18.805795+00:00",
+  "status": "regression reproduced before fix",
+  "exitCode": 1,
+  "scenario": "A single read delivers basic.consume-ok immediately followed by basic.cancel before the logical consume promise resumes",
+  "observed": "Cancelled consumer is inserted into the recovery registry after its cancellation event; queue count remains 1 instead of 0",
+  "logSha256": "50709ee11fb815926ad3e324fe1d02b0959ed122b0783a94d9998d466774c4b6",
+  "sources": {
+    "tools/recovery-channel.mjs": "8990900aa91c60380010a2b98a0e6e0eb4444593a50559fb1fb0ea6383e85838",
+    "tools/recovery.mjs": "eaff61d90ba3fd735ddee010ca8b4607871ed1627ceef5c6ae4a201090324d2a",
+    "tools/recovery-state.mjs": "c153711088a310607ead36dd8f6fc036f5b97290ea832d4a480ab094cc76d746",
+    "tools/test-autodelete.mjs": "d14314e680cd4592049dd1f58d1bb8fcbd56cd6c17e07592083af51d7c289381",
+    "tools/client.mjs": "bd5c1d14d6c9c46964035b012c3406aecd9b7f0261a70910166aa6fc82ca2dd6",
+    "web/engine.mjs": "1fcb6e5ce132384a9cd12a77da129d4bc87e178171be12adb263aaa08968c1df"
+  },
+  "scope": "Historical failing execution before the pending-consumer cancellation fix, not a current success report"
+}

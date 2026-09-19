@@ -30,6 +30,7 @@ jobs:
       - run: node tools/test-recovery.mjs
       - run: node tools/test-authentication.mjs
       - run: node tools/test-secret-update.mjs
+      - run: node tools/test-autodelete.mjs
       - run: python3 tools/generate-auth-vectors.py --check
       - run: node tools/robustness.mjs
       - run: node tools/benchmark.mjs

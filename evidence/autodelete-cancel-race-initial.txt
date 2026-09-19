@@ -1,0 +1,35 @@
+PASS last consumer cancellation forgets the queue and full exchange chain before reconnect
+PASS consumer tags are channel scoped and all channels participate in last-consumer tracking
+PASS never-consumed queues and never-bound exchanges survive no-op cancellation and unbind
+PASS argument-distinct bindings and bindings from other channels retain their source until the last removal
+PASS exchange unbinding removes only the auto-delete source, preserving an unbound destination
+PASS explicit deletion cascades through a cyclic exchange graph without recursive looping
+PASS failed deletion does not erase the desired topology
+PASS a pending cross-channel consumer prevents premature auto-deletion before its acknowledgement
+PASS a pending binding prevents the last acknowledged unbind from prematurely deleting its source
+PASS explicit channel close forgets its last auto-delete consumer but preserves an unused queue
+PASS broker cancellation cascades and repeated cancellation cannot resurrect records
+PASS server-named queue aliases are removed after cancellation following recovery
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+1 !== 0
+
+    at empty (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-autodelete.mjs:13:26)
+    at test.onMethod (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-autodelete.mjs:69:176)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async fixture (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/recovery-peer.mjs:73:7)
+    at async test (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-autodelete.mjs:11:45)
+    at async file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-autodelete.mjs:68:1 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.11.0

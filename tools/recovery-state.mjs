@@ -52,6 +52,7 @@ export const identity = value => JSON.stringify(canonical(value));
 export class Topology {
   exchanges = new Map(); queues = new Map(); bindings = new Map(); exchangeBindings = new Map();
   #pending = 0;
+  #pendingSources = new Map(); #cascadeCandidates = new Map();
   constructor(limit) { this.limit = limit; }
   reserve(extra = 1) {
     if (this.exchanges.size + this.queues.size + this.bindings.size + this.exchangeBindings.size + this.#pending + extra > this.limit) throw Error('Recovery topology limit reached');
@@ -63,16 +64,52 @@ export class Topology {
   }
   key(name) { return this.queue(name)?.key ?? name; }
   resolve(name) { return this.queue(name)?.current ?? name; }
+  pendingBinding(source) {
+    this.#pendingSources.set(source,(this.#pendingSources.get(source)??0)+1);
+    let released=false;
+    return () => {
+      if(released)return;released=true;
+      const remaining=this.#pendingSources.get(source)-1;
+      if(remaining)this.#pendingSources.set(source,remaining);else this.#pendingSources.delete(source);
+      this.#cascade([]);
+    };
+  }
+  #cascade(sources) {
+    const remember=name=>{const e=this.exchanges.get(name);if(e?.options.autoDelete)this.#cascadeCandidates.set(name,e);};
+    sources.forEach(remember);
+    for(const [name,entry] of this.#cascadeCandidates) {
+      if(this.exchanges.get(name)!==entry) {this.#cascadeCandidates.delete(name);continue;}
+      if([...this.bindings.values()].some(b=>b.exchange===name)||[...this.exchangeBindings.values()].some(b=>b.source===name)) {
+        this.#cascadeCandidates.delete(name);continue;
+      }
+      if(this.#pendingSources.has(name))continue;
+      this.#cascadeCandidates.delete(name);
+      // Iterative worklist handles long chains and cycles without recursive stack growth.
+      this.#eraseExchange(name).forEach(remember);
+    }
+  }
+  removeBinding(key,exchangeBinding=false) {
+    const bindings=exchangeBinding?this.exchangeBindings:this.bindings,entry=bindings.get(key);
+    if(!entry)return;
+    bindings.delete(key);this.#cascade([exchangeBinding?entry.source:entry.exchange]);
+  }
   removeQueue(name) {
     const key = this.key(name); this.queues.delete(key);
-    for (const [id,b] of this.bindings) if (b.queue === key) this.bindings.delete(id);
+    const sources=[];
+    for (const [id,b] of this.bindings) if (b.queue === key) {this.bindings.delete(id);sources.push(b.exchange);}
+    this.#cascade(sources);
     return key;
   }
-  removeExchange(name) {
+  #eraseExchange(name) {
     this.exchanges.delete(name);
     for (const [id,b] of this.bindings) if (b.exchange === name) this.bindings.delete(id);
-    for (const [id,b] of this.exchangeBindings) if (b.source === name || b.destination === name) this.exchangeBindings.delete(id);
+    const sources=[];
+    for (const [id,b] of this.exchangeBindings) if (b.source === name || b.destination === name) {
+      this.exchangeBindings.delete(id);if(b.destination===name)sources.push(b.source);
+    }
+    return sources;
   }
+  removeExchange(name) { this.#cascade(this.#eraseExchange(name)); }
   wanted(entity, mode) { return mode === 'all' || (mode === 'transient' && (entity.options.exclusive || entity.options.autoDelete)); }
-  clear() { this.exchanges.clear(); this.queues.clear(); this.bindings.clear(); this.exchangeBindings.clear(); }
+  clear() { this.exchanges.clear(); this.queues.clear(); this.bindings.clear(); this.exchangeBindings.clear(); this.#cascadeCandidates.clear(); }
 }

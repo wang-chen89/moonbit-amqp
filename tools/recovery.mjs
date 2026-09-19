@@ -9,6 +9,7 @@ export class RecoveringConnection extends Lifecycle {
   #options; #dial; #physical; #channels=new Map(); #nextId=1;
   #lifetime=new AbortController(); #external; #abort; #task; #closing;
   #channelTasks=new Map(); #channelSerial=Promise.resolve(); #skipped=[];
+  #cancelledQueues=new Map();
   static async connect(options,dial) {
     const connection=new RecoveringConnection(options,dial);
     try { connection.#install(await dial(connection.#options));connection._state('open');return connection; }
@@ -68,7 +69,18 @@ export class RecoveringConnection extends Lifecycle {
     catch(error) { this.#channels.delete(channel.id);channel._stop(error);throw error; }
   }
   _removeChannel(channel) { this.#channels.delete(channel.id); }
-  _removeQueue(name) { const key=this.topology.removeQueue(name);for(const ch of this.#channels.values())ch._removeQueue(key); }
+  _removeQueue(name) { const key=this.topology.removeQueue(name);this.#cancelledQueues.delete(key);for(const ch of this.#channels.values())ch._removeQueue(key); }
+  _consumerGone(key) {
+    const queue=this.topology.queue(key);
+    if(!queue?.options.autoDelete)return;
+    this.#cancelledQueues.set(queue.key,queue);this._consumerSettled(queue.key);
+  }
+  _consumerSettled(key) {
+    const queue=this.#cancelledQueues.get(key);if(!queue)return;
+    if(this.topology.queue(key)!==queue){this.#cancelledQueues.delete(key);return;}
+    if([...this.#channels.values()].some(ch=>ch._hasConsumer(key)))return;
+    this._removeQueue(key);
+  }
   _channelLost(channel,error) {
     if(channel.closed||this.closed||this.state==='closing')return;
     if(channel.state==='connecting')return;
@@ -189,7 +201,7 @@ export class RecoveringConnection extends Lifecycle {
     // State first prevents close callbacks from scheduling another recovery.
     this._state('closed',error);this.#lifetime.abort(error);this.#physical?.destroy(error);
     for(const ch of this.#channels.values())ch._stop(error);
-    this.#channels.clear();this.topology.clear();
+    this.#channels.clear();this.#cancelledQueues.clear();this.topology.clear();
   }
   destroy(error=Error('Connection destroyed by application')) { this.#stop(error); }
   close() {

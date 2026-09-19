@@ -116,7 +116,7 @@ replace github.com/rabbitmq/amqp091-go => ../amqp091-go-a0195c6baf35
 
 公开恢复事件：connection/channel `stateChange {from,to,error}`、`ready`、`recovering {attempt,error}`、`recovered {attempt}`、`close(error)`；连接 recovered 额外包含 `skipped`。连接额外发送 `queueNameChanged {queue,previous,current}`、`topologyError {type,name,channel,error}`，保留 blocked/unblocked；通道保留 return/cancel/callbackError。状态为 connecting/open/reconnecting/closing/closed，closed 是终态。通道 `id` 是稳定逻辑标识，不保证等于恢复后的线上 channel number。下划线成员、topology 登记对象为模块内部实现，应用不能修改。
 
-`waitForReady` 默认 30000 ms，超时或局部 signal 取消只拒绝该 Promise。成功的被动声明不更改恢复登记；明确关闭通道停止该通道/消费者恢复，连接仍可恢复此前成功创建的拓扑。对于服务器隐式删除 autoDelete 的完整级联，当前尚未完全模拟。没有覆盖所有回调重入、多版本/多 OS、SASL/认证切换、集群及生产性能；不能宣称已追平。
+`waitForReady` 默认 30000 ms，超时或局部 signal 取消只拒绝该 Promise。成功的被动声明不更改恢复登记；明确关闭通道停止该通道/消费者恢复，连接仍可恢复此前成功创建的拓扑。此为 0.5 历史边界，0.8 的关联删除补充见末节。没有覆盖所有回调重入、多版本/多 OS、SASL/认证切换、集群及生产性能；不能宣称已追平。
 
 
 ## 0.6 认证验证与复现（历史基线）
@@ -152,7 +152,7 @@ node tools/test-rabbitmq-auth.mjs
 本轮性能沿用当前源码下的本机确认样例和恢复延时，尚无原生吞吐比较/生产峰值证明。connection.update-secret、OAuth 令牌刷新、完整恢复/流式/背压、跨版本/平台和长期测试仍未完成。
 
 
-## 0.7 凭证更新验证
+## 0.7 凭证更新验证（历史版本，0.8 继续回归）
 
 当前完整 verify：JS/Wasm-GC 各 109 项（原有 104 加 5 个 credential update 状态组），旧 18 网络/25 恢复/12 认证组和新 10 更新故障组通过；30 个已存原库认证响应、CLI/引擎/307 异常输入继续通过。新增 TCP 夹具检查二进制 longstr/UTF-8 reason、通道/流控分离、重复请求、错误输入后继续工作、超时/关闭/取消/拒绝、意外确认、断线不重放和不暗改重连凭证。
 
@@ -165,3 +165,26 @@ node tools/test-rabbitmq-auth.mjs
 当前源码重新执行既有 22 基础/6 恢复/10 认证 broker 组、9 原库认证协商和单个原库恢复轨迹。测试结束检查自有 broker 进程/临时目录清理，保留包缓存。旧清单和首次观察带有原来哈希，不代表当前源码；新 `secret-upgrade.json` 绑定最终文件。
 
 所有层次存在覆盖重叠，不能相加成唯一上游用例数。性能只包括当前本机确认样例/恢复延时，不含生产负载或原生吞吐对照。其它 19 项未在本轮重跑，完整追平目标仍未完成。
+
+
+## 0.8 自动删除恢复验证
+
+第 13 组复现过一个真实的客户端调度缺陷：同一批 TCP 数据内的 consume-ok/cancel 在逻辑 consume Promise 续体之前处理，已取消消费者随后被错误登记。修复让取消同时标记未完成消费，续体不会再登记它。`autodelete-cancel-race-initial.json` 与对应日志保留修复前源码指纹和失败断言；当前 13 组通过记录是修复后的证据。
+
+完整 verify 增加 `node tools/test-autodelete.mjs`。13 组独立 TCP peer 验证最后消费者、跨通道同名标签、未使用实体、参数不同的绑定、源/目标区别、循环图、失败删除、未完成消费/绑定、显式通道关闭、服务端取消和恢复后队列别名。原有核心仍为两个后端各 109 项；其余网络/认证/凭据更新回归继续执行，不把新增宿主组算成 MoonBit 核心测试。
+
+真实集成使用此前相同的 17 个发行包、原版 RabbitMQ 4.0.5 与隔离临时 broker：
+
+```powershell
+node tools/test-rabbitmq-autodelete.mjs
+# AMQP_AUTODELETE_REFERENCE 指向以下原版 Go adapter 编译得到的可执行文件
+node tools/test-autodelete-native.mjs
+```
+
+`tools/autodelete-reference.go` 仅解释测试操作并调用固定 Go 原库，不复制其拓扑/恢复算法。按前节 replace 固定提交的方法建立模块，编译 SHA 及 72 个未修改原库文件清单见 `evidence/autodelete-reference-build.json`。`autodelete-scenarios.json` 的同一组操作分别送入 Go/Node；对比变更后和真实断线恢复后的拓扑、跨通道中间检查点，并通过独立非恢复连接的被动声明检查 broker 实体是否存在（0 或 404）。存活队列上的确认发布与取消息证明恢复后可用。
+
+10 个场景有 9 个完全一致；第 10 个故意覆盖空解绑从未绑定的交换机：Go 从登记表中移除交换机，本实现保持登记；broker 两边均保留该交换机。报告 `autodelete-native.json` 将它记作 explainedDifferences=1，不计为 matched。该区别遵循 broker 的“曾有绑定才自动删除”边界，未声称逐行为等同。外部连接的未知绑定/消费者不能由本地登记表推断。
+
+另有 2 个本实现的真实生命周期组：显式关闭最后消费者通道，以及管理连接删除队列后收到 broker cancel。两者重连后队列/交换机均返回 404，未使用的自动删除队列仍存在并能确认发布/取消息。它们不是原库对照组。CI 配置包含新 fixture，但远程 CI 未执行。
+
+最终证据 `autodelete-upgrade.json` 绑定本版源码和检查结果；早期 manifest 与首次失败观察保留历史含义。只运行本机 Windows Node/WSL broker，未建立跨版本、跨平台、集群/长期或原生吞吐性能追平；其余 19 项本轮未重测。

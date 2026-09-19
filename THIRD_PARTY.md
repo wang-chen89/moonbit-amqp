@@ -58,3 +58,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 0.7 继续使用相同未修改 Go 参考；`tools/secret-reference.go` 与本机 JWT 测试签发器为原创测试工具。真实 OAuth backend 为 Ubuntu RabbitMQ 4.0.5 包内原版插件，未分发其源码/二进制。过期更新边界另外核对 [v4.0.5 backend 源码](https://github.com/rabbitmq/rabbitmq-server/blob/v4.0.5/deps/rabbitmq_auth_backend_oauth2/src/rabbit_auth_backend_oauth2.erl)，配置参照 [OAuth backend 文档](https://www.rabbitmq.com/docs/oauth2)；版本行为以实际对照为准。
+
+
+0.8 自动删除恢复依据：RabbitMQ [队列生命周期](https://www.rabbitmq.com/docs/queues)、[交换机自动删除](https://www.rabbitmq.com/docs/exchanges) 与 [交换机间绑定的源方向](https://www.rabbitmq.com/docs/e2e)。固定 Go 原库的 connection.go/channel.go/recovery_test.go 用于只读行为核对和原生执行；新增 adapter 为本地测试程序，未拷贝其实现。空解绑从未绑定交换机的原库登记差异有单独证据。

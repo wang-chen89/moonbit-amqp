@@ -5,6 +5,7 @@ export class RecoveringChannel extends Lifecycle {
   #connection; #physical; #generation = 0; #offset = 0n; #lastTag = 0n;
   #opening = 0;
   #lastQueue = ''; #mode = 'normal'; #qos = new Map(); #consumers = new Map();
+  #pendingConsumers = new Map();
   #deliveries = []; #deliveryBytes = 0;
   constructor(connection, id) { super(); this.#connection = connection; this.id = id; }
   get _raw() { return this.#physical; }
@@ -21,7 +22,10 @@ export class RecoveringChannel extends Lifecycle {
     raw.on('callbackError', error => notice(this,'callbackError',error));
     raw.on('cancel', tag => {
       if (this.#physical !== raw) return;
-      this.#consumers.delete(tag); notice(this,'cancel',tag);
+      const entry=this.#consumers.get(tag)??this.#pendingConsumers.get(tag);this.#consumers.delete(tag);
+      if(entry)entry.cancelled=true;
+      if(entry)this.#connection._consumerGone(entry.queue);
+      notice(this,'cancel',tag);
     });
     raw.on('close', error => {
       if (this.#physical === raw && !this.closed) this.#connection._channelLost(this,error);
@@ -52,7 +56,11 @@ export class RecoveringChannel extends Lifecycle {
     }
     this.#deliveries.push({callback,message:value,generation});
   }
-  _removeQueue(key) { for(const [tag,c] of this.#consumers) if(c.queue === key)this.#consumers.delete(tag); }
+  _removeQueue(key) {
+    for(const [tag,c] of this.#consumers) if(c.queue===key)this.#consumers.delete(tag);
+    for(const c of this.#pendingConsumers.values())if(c.queue===key)c.cancelled=true;
+  }
+  _hasConsumer(key) { return [...this.#consumers.values(),...this.#pendingConsumers.values()].some(c=>c.queue===key); }
   _queue(name) { return this.#connection.topology.key(name || this.#lastQueue); }
   _resolved(name) { return this.#connection.topology.resolve(this._queue(name)); }
   async #call(method, args, after, topology = false) {
@@ -88,23 +96,25 @@ export class RecoveringChannel extends Lifecycle {
     return this.#call('deleteQueue',[this._resolved(queue),snapshot(options)],value=>{this.#connection._removeQueue(key);return value;},true);
   }
   purgeQueue(queue) { return this.#call('purgeQueue',[this._resolved(queue)]); }
-  bindQueue(queue,exchange,routingKey='',args={}) {
+  async bindQueue(queue,exchange,routingKey='',args={}) {
     const entry={queue:this._queue(queue),exchange,routingKey,args:snapshot(args),owner:this.id};
     const key=identity({...entry,owner:0});
-    return this.#record('bindQueue',[this._resolved(queue),exchange,routingKey,entry.args],value=>{this.#connection.topology.bindings.set(key,entry);return value;},this.#connection.topology.bindings.has(key)?0:1);
+    this._active(true);const release=this.#connection.topology.pendingBinding(exchange);
+    try {return await this.#record('bindQueue',[this._resolved(queue),exchange,routingKey,entry.args],value=>{this.#connection.topology.bindings.set(key,entry);return value;},this.#connection.topology.bindings.has(key)?0:1);}finally{release();}
   }
   unbindQueue(queue,exchange,routingKey='',args={}) {
     const entry={queue:this._queue(queue),exchange,routingKey,args:snapshot(args),owner:0};
-    return this.#call('unbindQueue',[this._resolved(queue),exchange,routingKey,entry.args],value=>{this.#connection.topology.bindings.delete(identity(entry));return value;},true);
+    return this.#call('unbindQueue',[this._resolved(queue),exchange,routingKey,entry.args],value=>{this.#connection.topology.removeBinding(identity(entry));return value;},true);
   }
-  bindExchange(destination,source,routingKey='',args={}) {
+  async bindExchange(destination,source,routingKey='',args={}) {
     const entry={destination,source,routingKey,args:snapshot(args),owner:this.id};
     const key=identity({...entry,owner:0});
-    return this.#record('bindExchange',[destination,source,routingKey,entry.args],value=>{this.#connection.topology.exchangeBindings.set(key,entry);return value;},this.#connection.topology.exchangeBindings.has(key)?0:1);
+    this._active(true);const release=this.#connection.topology.pendingBinding(source);
+    try {return await this.#record('bindExchange',[destination,source,routingKey,entry.args],value=>{this.#connection.topology.exchangeBindings.set(key,entry);return value;},this.#connection.topology.exchangeBindings.has(key)?0:1);}finally{release();}
   }
   unbindExchange(destination,source,routingKey='',args={}) {
     const entry={destination,source,routingKey,args:snapshot(args),owner:0};
-    return this.#call('unbindExchange',[destination,source,routingKey,entry.args],value=>{this.#connection.topology.exchangeBindings.delete(identity(entry));return value;},true);
+    return this.#call('unbindExchange',[destination,source,routingKey,entry.args],value=>{this.#connection.topology.removeBinding(identity(entry),true);return value;},true);
   }
   qos(count,global=false) { return this.#call('qos',[count,global],value=>{this.#qos.set(global,count);return value;},true); }
   async confirmSelect() { await this.#call('confirmSelect',[],()=>{this.#mode='confirm';},true); }
@@ -129,13 +139,15 @@ export class RecoveringChannel extends Lifecycle {
   async consume(queue,callback,options={}) {
     if(typeof callback !== 'function')return Promise.reject(TypeError('Invalid consumer callback'));
     options={...snapshot(options),consumerTag:options.consumerTag??randomUUID()};
-    if(!options.consumerTag || this.#consumers.has(options.consumerTag))return Promise.reject(TypeError('Duplicate or empty consumer tag'));
-    if(this.#consumers.size>=1024)return Promise.reject(Error('Recovery consumer limit reached'));
+    if(!options.consumerTag || this.#consumers.has(options.consumerTag)||this.#pendingConsumers.has(options.consumerTag))return Promise.reject(TypeError('Duplicate or empty consumer tag'));
+    if(this.#consumers.size+this.#pendingConsumers.size>=1024)return Promise.reject(Error('Recovery consumer limit reached'));
     const entry={queue:this._queue(queue),callback,options};
     const raw=this._active(true),generation=this.#generation;
-    return this.#call('consume',[this._resolved(queue),m=>this.#notify(callback,m,raw,generation),options],tag=>{entry.options.consumerTag=tag;this.#consumers.set(tag,entry);return tag;},true);
+    const requestedTag=options.consumerTag;this.#pendingConsumers.set(requestedTag,entry);
+    try {return await this.#call('consume',[this._resolved(queue),m=>this.#notify(callback,m,raw,generation),options],tag=>{entry.options.consumerTag=tag;if(!entry.cancelled)this.#consumers.set(tag,entry);return tag;},true);}
+    finally {this.#pendingConsumers.delete(requestedTag);this.#connection._consumerSettled(entry.queue);}
   }
-  cancel(tag) { return this.#call('cancel',[tag],value=>{this.#consumers.delete(tag);return value;},true); }
+  cancel(tag) { return this.#call('cancel',[tag],value=>{const entry=this.#consumers.get(tag);this.#consumers.delete(tag);if(entry)this.#connection._consumerGone(entry.queue);return value;},true); }
   async _restoreConsumers() {
     const skipped=new Set();
     while(true) {
@@ -165,7 +177,9 @@ export class RecoveringChannel extends Lifecycle {
   recover(requeue=true) { return this.#call('recover',[requeue]); }
   async close() {
     if(this.closed)return;
-    const raw=this.#physical;this._stop(Error('Channel closed by application'));this.#connection._removeChannel(this);
+    const raw=this.#physical,queues=new Set([...this.#consumers.values()].map(c=>c.queue));
+    this._stop(Error('Channel closed by application'));this.#connection._removeChannel(this);
+    for(const key of queues)this.#connection._consumerGone(key);
     if(raw&&!raw.closed) {
       try { await raw.close(); }
       catch(error) { if(!raw.closed)this.#connection._raw.destroy(Error('Channel close interrupted an outstanding recovery RPC',{cause:error})); }
