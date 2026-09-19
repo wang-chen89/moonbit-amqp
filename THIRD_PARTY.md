@@ -61,3 +61,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 0.8 自动删除恢复依据：RabbitMQ [队列生命周期](https://www.rabbitmq.com/docs/queues)、[交换机自动删除](https://www.rabbitmq.com/docs/exchanges) 与 [交换机间绑定的源方向](https://www.rabbitmq.com/docs/e2e)。固定 Go 原库的 connection.go/channel.go/recovery_test.go 用于只读行为核对和原生执行；新增 adapter 为本地测试程序，未拷贝其实现。空解绑从未绑定交换机的原库登记差异有单独证据。
+
+
+0.9 单通道恢复参考固定 Go 提交的 [recoverConnectionTopology](https://github.com/rabbitmq/amqp091-go/blob/a0195c6baf35db642d13651cb28938f899062e7c/connection.go) 与 [Channel.Reconnect](https://github.com/rabbitmq/amqp091-go/blob/a0195c6baf35db642d13651cb28938f899062e7c/channel.go)。本地只读核对后用未修改原库执行两个边界；新适配器不复制其算法。本实现的跨通道依赖图改进与原库差异明确记录。

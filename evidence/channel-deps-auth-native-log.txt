@@ -1,0 +1,10 @@
+PASS native client PLAIN preference
+PASS native client AMQPLAIN preference
+PASS native later supported EXTERNAL candidate
+PASS native binary custom initial response
+PASS native empty custom initial response
+PASS native unsupported custom candidate before PLAIN
+PASS native custom locale
+PASS native no common mechanism
+PASS native mechanism names are not substring matches
+9 native authentication negotiations matched

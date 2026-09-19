@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-19T07:03:41.763Z",
+  "at": "2026-09-19T07:17:56.211Z",
   "node": "v24.11.0",
   "platform": "win32",
   "oracle": "RabbitMQ 4.0.5-10ubuntu5 on Erlang/OTP 27, Ubuntu distribution packages, unmodified binaries",
@@ -35,9 +35,9 @@
     "warmupBatches": 4,
     "measuredBatches": 16,
     "messages": 128,
-    "medianBatchMs": 4.572400000000016,
-    "p95BatchMs": 10.190799999999854,
-    "confirmedMessagesPerSecond": 1624.5036062710954,
+    "medianBatchMs": 3.906600000000253,
+    "p95BatchMs": 12.008499999999913,
+    "confirmedMessagesPerSecond": 1776.3912057533096,
     "scope": "one Windows Node/WSL loopback run; nonpersistent messages, exclusive classic queue; not a production or upstream throughput comparison"
   },
   "packages": {

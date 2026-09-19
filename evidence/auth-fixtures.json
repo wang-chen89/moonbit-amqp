@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T07:03:25.078Z",
+  "utc": "2026-09-19T07:17:38.465Z",
   "passed": 12,
   "tests": [
     "authentication rejects malformed candidates and redacts malformed bridge credentials",
@@ -23,7 +23,7 @@
     "cmd/web/session.mbt": "3beb76807437fe21e95b088235579c3072307b18d05bb407b931811331d1a4bd",
     "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
     "tools/client.mjs": "bd5c1d14d6c9c46964035b012c3406aecd9b7f0261a70910166aa6fc82ca2dd6",
-    "tools/recovery.mjs": "eaff61d90ba3fd735ddee010ca8b4607871ed1627ceef5c6ae4a201090324d2a",
+    "tools/recovery.mjs": "0f1ba3d8b640d318b317241967160e28af9b57c732043ed2f9ed307457e2578f",
     "tools/recovery-peer.mjs": "2938b1f6187d9f322c0b47e0498dda341ccb863a7e797501ce14cc5088864190",
     "tools/test-authentication.mjs": "277175c3f26d03e2672a8d2b51ebc50514d2e9bcb5bd6f2e429656993afb422e",
     "web/engine.mjs": "1fcb6e5ce132384a9cd12a77da129d4bc87e178171be12adb263aaa08968c1df"

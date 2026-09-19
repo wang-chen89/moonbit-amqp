@@ -64,6 +64,29 @@ export class Topology {
   }
   key(name) { return this.queue(name)?.key ?? name; }
   resolve(name) { return this.queue(name)?.current ?? name; }
+  recoveryComponent(owner,consumerQueues) {
+    // Recorded ownership selects roots, not the boundary of AMQP dependencies.
+    // Walk both ends of routing edges: recreating an exchange loses all its
+    // outgoing routes, including those registered by a healthy sibling channel.
+    const selected=new Set(),seen=new Set(),pending=[],edges=new Map();
+    const vertex=(kind,name)=>kind+':'+name;
+    const include=key=>{if(!seen.has(key)){seen.add(key);pending.push(key);}};
+    const edge=(entry,left,right)=>{
+      for(const key of [left,right]){if(!edges.has(key))edges.set(key,[]);edges.get(key).push({entry,left,right});}
+      if(entry.owner===owner){include(left);include(right);}
+    };
+    for(const b of this.bindings.values())edge(b,vertex('q',b.queue),vertex('e',b.exchange));
+    for(const b of this.exchangeBindings.values())edge(b,vertex('e',b.source),vertex('e',b.destination));
+    for(const e of this.exchanges.values())if(e.owner===owner)include(vertex('e',e.name));
+    for(const q of this.queues.values())if(q.owner===owner)include(vertex('q',q.key));
+    for(const name of consumerQueues)include(vertex('q',this.key(name)));
+    for(let index=0;index<pending.length;index++) {
+      const key=pending[index],name=key.slice(2),entity=key.startsWith('q:')?this.queues.get(name):this.exchanges.get(name);
+      if(entity)selected.add(entity);
+      for(const e of edges.get(key)??[]){selected.add(e.entry);include(e.left);include(e.right);}
+    }
+    return selected;
+  }
   pendingBinding(source) {
     this.#pendingSources.set(source,(this.#pendingSources.get(source)??0)+1);
     let released=false;

@@ -1,0 +1,26 @@
+PASS recovery configuration validation precedes connection creation
+PASS ordered cross-channel topology and server-named queue aliases survive repeated disconnects
+PASS deliveries received during recovery wait for readiness and stale tags never reach new channel
+PASS unconfirmed publications reject and are not silently republished after recovery
+PASS soft channel error recovers that channel without disconnecting a healthy sibling
+PASS deleted topology, unbound routes and cancelled consumers are not resurrected
+PASS transient mode preserves subscriptions but skips durable declarations
+PASS disabled topology still restores channel QoS and transaction mode
+PASS skippable topology failure reopens channel before restoring remaining entities
+PASS topology error callback can refuse skipping and exhaust retry budget
+PASS connection failure during topology replay retries the complete recovery sequence
+PASS explicit close cancels retry delay without creating another socket
+PASS AbortSignal cancels a reconnect handshake and releases the wait
+PASS ready wait cancellation is local and callback errors do not stop recovery listeners
+PASS topology stores an independent argument snapshot and enforces a bounded registry
+PASS pending non-idempotent RPC rejects instead of being replayed after reconnect
+PASS failure of the last topology entity still leaves a usable reopened channel
+PASS skipping a failed consumer restores earlier subscriptions after reopening its channel
+PASS broker consumer cancellation removes its recovery entry
+PASS closing a channel during connection recovery cannot resurrect or leak the opening channel
+PASS connection recovery supersedes an older channel retry without a duplicate open
+PASS server-named queue aliases also work for later passive declarations
+PASS closing connection from a channel ready listener cannot resurrect it
+PASS closing connection from stateChange suppresses stale readiness notifications
+PASS a channel recovery notification permits a new topology RPC
+25 recovery fixture groups passed

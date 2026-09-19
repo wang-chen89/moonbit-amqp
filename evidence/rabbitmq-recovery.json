@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T07:03:47.448Z",
+  "utc": "2026-09-19T07:18:08.775Z",
   "node": "v24.11.0",
   "platform": "win32",
   "broker": "RabbitMQ 4.0.5-10ubuntu5 / Erlang OTP 27",
@@ -62,10 +62,10 @@
     }
   ],
   "recoveryLatenciesMs": [
-    23.69959999999992,
-    18.59730000000036,
-    16.07380000000012,
-    9.613800000000083
+    28.518700000000536,
+    20.918400000000474,
+    19.82220000000052,
+    15.010599999999613
   ],
   "performanceScope": "Single-process local recovery observations, not throughput or sustained production performance evidence.",
   "sources": {
@@ -74,9 +74,9 @@
     "cmd/web/authentication.mbt": "5302c487cb36963947e2e25b6a75d63d998789b3222dc28b889bb506103cae4a",
     "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
     "tools/client.mjs": "bd5c1d14d6c9c46964035b012c3406aecd9b7f0261a70910166aa6fc82ca2dd6",
-    "tools/recovery.mjs": "eaff61d90ba3fd735ddee010ca8b4607871ed1627ceef5c6ae4a201090324d2a",
+    "tools/recovery.mjs": "0f1ba3d8b640d318b317241967160e28af9b57c732043ed2f9ed307457e2578f",
     "tools/recovery-channel.mjs": "40061a0e43cfeedda4151f28e7fcd86a0fe81e755ba668e5f2330d3e2e67b525",
-    "tools/recovery-state.mjs": "c153711088a310607ead36dd8f6fc036f5b97290ea832d4a480ab094cc76d746",
+    "tools/recovery-state.mjs": "78435fc7a882bfa4e7f349602db597d9778cf1f0558f7459475e8e562fff683e",
     "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
     "tools/test-rabbitmq-recovery.mjs": "991dbe8505942c2c217f35637d0ce6dea7de2b07bd22b65bf75906740be575f9",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",

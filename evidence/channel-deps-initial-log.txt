@@ -1,0 +1,21 @@
+file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/recovery.mjs:148
+    if(current())throw Error(`Channel recovery exhausted: ${error.message}`,{cause:error});
+                       ^
+
+Error: Channel recovery exhausted: AMQP channel closed 404: NOT_FOUND - no queue 'q-eee44545-2da9-4ddd-abc7-717f02d4182e' in vhost '/'
+    at #restoreChannel (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/recovery.mjs:148:24)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  [cause]: Error: AMQP channel closed 404: NOT_FOUND - no queue 'q-eee44545-2da9-4ddd-abc7-717f02d4182e' in vhost '/'
+      at Channel._receive (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/client.mjs:227:21)
+      at #process (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/client.mjs:143:17)
+      at Socket.<anonymous> (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/client.mjs:64:68)
+      at Socket.emit (node:events:508:28)
+      at addChunk (node:internal/streams/readable:559:12)
+      at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+      at Readable.push (node:internal/streams/readable:390:5)
+      at TCP.onStreamRead (node:internal/stream_base_commons:189:23) {
+    code: 404
+  }
+}
+
+Node.js v24.11.0

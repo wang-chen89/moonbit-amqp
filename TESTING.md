@@ -167,7 +167,7 @@ node tools/test-rabbitmq-auth.mjs
 所有层次存在覆盖重叠，不能相加成唯一上游用例数。性能只包括当前本机确认样例/恢复延时，不含生产负载或原生吞吐对照。其它 19 项未在本轮重跑，完整追平目标仍未完成。
 
 
-## 0.8 自动删除恢复验证
+## 0.8 自动删除恢复验证（历史版本，0.9 继续回归）
 
 第 13 组复现过一个真实的客户端调度缺陷：同一批 TCP 数据内的 consume-ok/cancel 在逻辑 consume Promise 续体之前处理，已取消消费者随后被错误登记。修复让取消同时标记未完成消费，续体不会再登记它。`autodelete-cancel-race-initial.json` 与对应日志保留修复前源码指纹和失败断言；当前 13 组通过记录是修复后的证据。
 
@@ -188,3 +188,16 @@ node tools/test-autodelete-native.mjs
 另有 2 个本实现的真实生命周期组：显式关闭最后消费者通道，以及管理连接删除队列后收到 broker cancel。两者重连后队列/交换机均返回 404，未使用的自动删除队列仍存在并能确认发布/取消息。它们不是原库对照组。CI 配置包含新 fixture，但远程 CI 未执行。
 
 最终证据 `autodelete-upgrade.json` 绑定本版源码和检查结果；早期 manifest 与首次失败观察保留历史含义。只运行本机 Windows Node/WSL broker，未建立跨版本、跨平台、集群/长期或原生吞吐性能追平；其余 19 项本轮未重测。
+
+
+## 0.9 跨通道恢复依赖验证
+
+`node tools/test-channel-deps.mjs` 的 8 组独立线路测试检查真实输出帧：消费专用通道的跨通道依赖顺序、兄弟通道绑定、无关路由隔离、相关交换机的完整出站路由、transient/none 策略、循环图和未知外部队列。普通 verify 和 CI 配置加入此脚本；远程 CI 没有执行。
+
+`node tools/test-rabbitmq-channel-deps.mjs` 的 6 组真实 RabbitMQ 流程以不存在的队列触发通道 404：兄弟通道声明全部依赖、失败通道仅声明队列、transient 模式、服务端队列名替换、仍被健康通道消费的生成队列名保留，以及两个通道同时故障。每组保持同一 TCP 连接，检查健康通道对象/代数未变、旧未确认标签仍能 ack、健康消费者继续收到确认消息，并验证目标消费者在原路由上重新接收确认消息。修复前第一个场景连续 404 耗尽恢复的记录位于 `channel-deps-initial.json` 和对应日志。
+
+`tools/channel-deps-reference.go` 是原版 Go API 的测试适配器，仍固定相同的 72 文件原库快照。按既有 replace 编译方法生成程序，指纹见 `channel-deps-reference-build.json`。设置 `AMQP_CHANNEL_DEPS_REFERENCE`，执行 `node tools/test-channel-deps-native.mjs`：以独立 broker 被动声明和 consumer-count 检查原库的两项限制，再对应当前 Node 的前两组真实流程。
+
+两项均是明确改进而非匹配：队列由健康通道声明时，原库恢复消费者失败（404）；队列由失败通道声明但路由来自健康通道时，原库恢复队列/消费者却漏掉自动删除的交换机和路由。当前 Node 两者都恢复确认消息投递。`channel-deps-native.json` 的 matched=0、explainedImprovements=2 保留这一区别。既有原库认证、更新、自动删除对照结果继续单独呈现，不把新增改善当成全量上游一致。
+
+最终清单 `channel-deps-upgrade.json` 绑定当前源码/报告。依赖图只覆盖此连接登记的实体；无法凭空发现其它连接的拓扑或恢复未知外部队列。尚未覆盖所有交错、长期断网/集群、多版本/平台或原生吞吐性能。完整 20 项追平目标保持未完成。

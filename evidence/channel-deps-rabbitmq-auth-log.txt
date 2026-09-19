@@ -1,0 +1,11 @@
+PASS real AMQPLAIN authenticates and confirms a message over TCP
+PASS real AMQPLAIN over verified TLS succeeds without a client certificate
+PASS real EXTERNAL maps a trusted client certificate to demo without a password
+PASS EXTERNAL rejects missing client certificate
+PASS EXTERNAL rejects a trusted certificate mapped to a nonexistent broker user
+PASS mutual TLS rejects a client certificate outside the broker trust root
+PASS EXTERNAL still verifies the server hostname
+PASS real AMQPLAIN reauthenticates across two forced reconnects
+PASS real EXTERNAL reauthenticates across two forced reconnects
+PASS broker CLI performs AMQPLAIN and certificate EXTERNAL message roundtrips
+10 real RabbitMQ authentication groups passed

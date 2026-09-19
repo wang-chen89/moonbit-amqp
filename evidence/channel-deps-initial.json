@@ -1,0 +1,17 @@
+{
+  "utc": "2026-09-19T07:09:48.217Z",
+  "passedBeforeFailure": 0,
+  "tests": [],
+  "error": "Channel recovery exhausted: AMQP channel closed 404: NOT_FOUND - no queue 'q-eee44545-2da9-4ddd-abc7-717f02d4182e' in vhost '/'",
+  "sources": {
+    "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
+    "tools/client.mjs": "bd5c1d14d6c9c46964035b012c3406aecd9b7f0261a70910166aa6fc82ca2dd6",
+    "tools/recovery.mjs": "eaff61d90ba3fd735ddee010ca8b4607871ed1627ceef5c6ae4a201090324d2a",
+    "tools/recovery-channel.mjs": "40061a0e43cfeedda4151f28e7fcd86a0fe81e755ba668e5f2330d3e2e67b525",
+    "tools/recovery-state.mjs": "c153711088a310607ead36dd8f6fc036f5b97290ea832d4a480ab094cc76d746",
+    "tools/test-rabbitmq-channel-deps.mjs": "091cd231eedd8a514e2ab655f3d50b00a488942a844b0983ed4244a613ef76f9",
+    "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
+    "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
+    "web/engine.mjs": "1fcb6e5ce132384a9cd12a77da129d4bc87e178171be12adb263aaa08968c1df"
+  }
+}

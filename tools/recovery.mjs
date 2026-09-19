@@ -163,7 +163,8 @@ export class RecoveringConnection extends Lifecycle {
       if(ch) { if(ch._raw.closed)await ch._open(this.#physical);return ch._raw; }
       if(!spare||spare.closed)spare=await this.#physical.openChannel();return spare;
     };
-    const selected=entry=>(!only||entry.owner===only.id);
+    const component=only?this.topology.recoveryComponent(only.id,[...only._consumers.values()].map(c=>c.queue)):undefined;
+    const selected=entry=>(!component||component.has(entry));
     const run=async(type,name,entry,action)=>{
       if(!selected(entry))return;
       try { await action(await rawFor(entry)); }
