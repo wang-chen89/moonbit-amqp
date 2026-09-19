@@ -1,0 +1,22 @@
+PASS invalid and pre-aborted signals emit no subscription frames or listeners
+PASS active cancellation awaits basic.cancel-ok, ends callback and preserves sibling
+PASS noWait subscription still cancels with a reply and drains pre-ack deliveries
+PASS abort during subscription keeps its RPC and cancels after consume-ok
+PASS automatic cancel waits for an unrelated RPC then admits one queued user RPC
+PASS many consumers sharing one signal cancel independently and leave other consumers
+PASS manual cancellation releases listeners and old signals cannot cancel a reused tag
+PASS server cancellation releases listeners and old signals cannot cancel a reused tag
+PASS failed subscription and duplicate pending tag release only their own signal hooks
+PASS callback failure on cancellation is isolated and reported
+PASS closing rejects an automatic cancel and its queued RPC and removes listeners
+PASS automatic cancel timeout closes the connection instead of silently resubscribing
+PASS server cancel while signal cancel is pending emits one terminal callback
+PASS signal cancel follows the whole outgoing streamed body on its channel
+PASS already delivered incoming stream remains readable until cancellation acknowledgement
+PASS same consumer tag on two channels has independent cancellation scope
+PASS online recovery cancellation removes confirmed auto-delete intent and is not replayed
+PASS consumer signal remains attached across a completed connection recovery
+PASS offline abort forgets consumer intent without asserting an unacknowledged queue deletion
+PASS abort during consumer restoration waits for its reply and prevents later replay
+PASS closing a recovering channel detaches its surviving signal hook
+21 consumer cancellation fixture groups passed

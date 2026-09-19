@@ -1,0 +1,18 @@
+PASS all no-wait operations send proper flags without reply slots or timers
+PASS default operations still wait for their normal responses
+PASS no-wait request preserves an unrelated pending RPC reply slot
+PASS later broker rejection closes only the offending no-wait channel
+PASS no-wait request remains behind the complete same-channel body
+PASS no-wait consumer accepts immediate delivery in buffer mode
+PASS no-wait consumer accepts immediate delivery in stream mode
+PASS cancel no-wait drops late buffered delivery without ack
+PASS cancel no-wait drops late large streamed delivery without ack
+PASS invalid noWait is rejected locally by every option-bearing method
+PASS local encoding failure leaves no false consumer registration or dead connection
+PASS consumer cap bounds no-wait registrations and cancellation releases capacity
+PASS anonymous no-wait queue exposes no invented name or counts
+PASS named recovery retains no-wait topology and consumer flags
+PASS binding removal identity is independent of wait policy during recovery
+PASS no-wait cancel and deletes remove recovery intent and auto-delete dependents
+PASS failed no-wait metadata does not enter recovery topology
+17 no-wait fixture groups passed

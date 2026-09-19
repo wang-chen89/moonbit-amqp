@@ -1,5 +1,6 @@
 import {randomUUID} from 'node:crypto';
 import {Lifecycle, notice, snapshot, identity} from './recovery-state.mjs';
+import {checkConsumerSignal,observeConsumerSignal} from './consumer-signal.mjs';
 
 export class RecoveringChannel extends Lifecycle {
   #connection; #physical; #generation = 0; #offset = 0n; #lastTag = 0n;
@@ -21,12 +22,12 @@ export class RecoveringChannel extends Lifecycle {
     raw.on('return', message => { if (this.#physical === raw) {if(message.type==='messageStart'&&!this.listenerCount('return'))message.body.discard().catch(()=>{});notice(this,'return',message);} });
     raw.on('callbackError', error => notice(this,'callbackError',error));
     raw.on('flow', active => { if(this.#physical===raw)notice(this,'flow',active); });
-    raw.on('cancel', tag => {
+    raw.on('cancel', (tag,details) => {
       if (this.#physical !== raw) return;
       const entry=this.#consumers.get(tag)??this.#pendingConsumers.get(tag);this.#consumers.delete(tag);
-      if(entry)entry.cancelled=true;
+      if(entry){entry.cancelled=true;entry.dispose?.();}
       if(entry)this.#connection._consumerGone(entry.queue);
-      notice(this,'cancel',tag);
+      notice(this,'cancel',tag,details);
     });
     raw.on('close', error => {
       if (this.#physical === raw && !this.closed) this.#connection._channelLost(this,error);
@@ -37,9 +38,13 @@ export class RecoveringChannel extends Lifecycle {
     if(raw.closed||claim!==this.#opening||this.closed||this.#connection.closed)throw Error('Channel closed or superseded while opening');
     return raw;
   }
-  _lost(error) { this.#opening++;this.#deliveries=[];this.#deliveryBytes=0;if (!this.closed) this._state('reconnecting',error); }
+  _lost(error) {
+    this.#opening++;this.#deliveries=[];this.#deliveryBytes=0;
+    for(const entry of [...this.#consumers.values(),...this.#pendingConsumers.values()])if(entry.cancelRequested)this.#cancelOffline(entry);
+    if (!this.closed) this._state('reconnecting',error);
+  }
   _restored() { if (!this.closed) {this._state('open');this._drain();} }
-  _stop(error) { this.#opening++;this.#generation++;this.#deliveries=[];this.#deliveryBytes=0; this.#consumers.clear(); this._state('closed',error); }
+  _stop(error) { this.#opening++;this.#generation++;this.#deliveries=[];this.#deliveryBytes=0;for(const entry of [...this.#consumers.values(),...this.#pendingConsumers.values()])entry.dispose?.();this.#consumers.clear();this.#pendingConsumers.clear();this._state('closed',error); }
   _drain() {
     if(this.state!=='open'||this.#connection.state!=='open')return;
     const deliveries=this.#deliveries;this.#deliveries=[];this.#deliveryBytes=0;
@@ -64,8 +69,8 @@ export class RecoveringChannel extends Lifecycle {
     this.#deliveries.push({callback,message:value,generation});
   }
   _removeQueue(key) {
-    for(const [tag,c] of this.#consumers) if(c.queue===key)this.#consumers.delete(tag);
-    for(const c of this.#pendingConsumers.values())if(c.queue===key)c.cancelled=true;
+    for(const [tag,c] of this.#consumers) if(c.queue===key){c.dispose?.();this.#consumers.delete(tag);}
+    for(const c of this.#pendingConsumers.values())if(c.queue===key){c.cancelled=true;c.dispose?.();}
   }
   _hasConsumer(key) { return [...this.#consumers.values(),...this.#pendingConsumers.values()].some(c=>c.queue===key); }
   _queue(name) { return this.#connection.topology.key(name || this.#lastQueue); }
@@ -152,23 +157,46 @@ export class RecoveringChannel extends Lifecycle {
   }
   async consume(queue,callback,options={}) {
     if(typeof callback !== 'function')return Promise.reject(TypeError('Invalid consumer callback'));
-    options={...snapshot(options),consumerTag:options.consumerTag??randomUUID()};
+    const {signal,...wireOptions}=options;checkConsumerSignal(signal);
+    options={...snapshot(wireOptions),consumerTag:options.consumerTag??randomUUID()};
     if(!options.consumerTag || this.#consumers.has(options.consumerTag)||this.#pendingConsumers.has(options.consumerTag))return Promise.reject(TypeError('Duplicate or empty consumer tag'));
     if(this.#consumers.size+this.#pendingConsumers.size>=1024)return Promise.reject(Error('Recovery consumer limit reached'));
-    const entry={queue:this._queue(queue),callback,options};
     const raw=this._active(true),generation=this.#generation;
+    const entry={queue:this._queue(queue),options,raw};
+    entry.callback=message=>{if(message===null){if(entry.cancelNotified)return;entry.cancelNotified=true;}return callback(message);};
+    entry.dispose=observeConsumerSignal(signal,reason=>this.#abortSubscription(entry,reason));
     const requestedTag=options.consumerTag;this.#pendingConsumers.set(requestedTag,entry);
-    try {return await this.#call('consume',[this._resolved(queue),m=>this.#notify(callback,m,raw,generation),options],tag=>{entry.options.consumerTag=tag;if(!entry.cancelled)this.#consumers.set(tag,entry);return tag;},true);}
+    try {return await this.#call('consume',[this._resolved(queue),m=>this.#notify(entry.callback,m,raw,generation),options],tag=>{entry.options.consumerTag=tag;if(!entry.cancelled)this.#consumers.set(tag,entry);return tag;},true);}
+    catch(error){entry.dispose();throw error;}
     finally {this.#pendingConsumers.delete(requestedTag);this.#connection._consumerSettled(entry.queue);}
   }
-  cancel(tag,options={}) { return this.#call('cancel',[tag,snapshot(options)],value=>{const entry=this.#consumers.get(tag);this.#consumers.delete(tag);if(entry)this.#connection._consumerGone(entry.queue);return value;},true); }
+  #abortSubscription(entry,reason) {
+    if(entry.cancelled)return;
+    entry.cancelRequested=true;entry.reason=reason;entry.dispose?.();
+    if(!entry.raw||entry.raw.closed){this.#cancelOffline(entry);return;}
+    entry.raw._abortConsumer(entry.options.consumerTag,reason).catch(error=>{
+      if(entry.raw.closed)this.#cancelOffline(entry);
+      else notice(this,'callbackError',error);
+    });
+  }
+  #cancelOffline(entry) {
+    if(entry.cancelled)return;
+    entry.cancelled=true;entry.dispose?.();
+    if(this.#consumers.get(entry.options.consumerTag)===entry)this.#consumers.delete(entry.options.consumerTag);
+    // No broker acknowledgement exists here. Retain topology rather than
+    // infer that an auto-delete queue recreated during recovery was deleted.
+    Promise.resolve().then(()=>entry.callback(null)).catch(error=>notice(this,'callbackError',error));
+    notice(this,'cancel',entry.options.consumerTag,{origin:'signal',reason:entry.reason,offline:true});
+  }
+  cancel(tag,options={}) { return this.#call('cancel',[tag,snapshot(options)],value=>{const entry=this.#consumers.get(tag);this.#consumers.delete(tag);entry?.dispose?.();if(entry)this.#connection._consumerGone(entry.queue);return value;},true); }
   async _restoreConsumers() {
     const skipped=new Set();
     while(true) {
       const raw=this.#physical,generation=this.#generation; let restart=false;
       for(const [tag,entry] of this.#consumers) {
-        if(skipped.has(tag))continue;
+        if(skipped.has(tag)||entry.cancelRequested||entry.cancelled)continue;
         try {
+          entry.raw=raw;
           await raw.consume(this.#connection.resolveQueue(entry.queue),m=>this.#notify(entry.callback,m,raw,generation),entry.options);
         } catch(error) {
           await this.#connection._entityError({type:'consumer',name:tag,channel:this.id,error});

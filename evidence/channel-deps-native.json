@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T16:21:37.208Z",
+  "utc": "2026-09-19T17:37:52.787Z",
   "cases": 2,
   "matched": 0,
   "explainedImprovements": 2,
@@ -126,14 +126,15 @@
     "erlang-asn1_1%3a27.3.4.6+dfsg-1_amd64.deb": "b2d3f1a35d642727631ff138070d5a4f410bb0066f67a1efbf11ad61dc51fa6d"
   },
   "sources": {
-    "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
+    "tools/evidence-source.mjs": "999255ad3c0484ded40ebeac9854e83299c4b40016dab1af6f28b8be49d054e0",
+    "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
     "tools/channel-deps-reference.go": "2481266d1842992fd911ecf0559c32e2a42d1722118aabe688d8bfab7972555c",
     "tools/test-channel-deps-native.mjs": "72ef9e3811f58405b8a043be58416f6d2b0a8f416c84b9fb9708835ed4fbe8de",
     "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
-    "tools/client.mjs": "ce5d316951d7b6e65541d681b3fa9c6ba76b83e2ed4bab9b1c7b8b318faeafd6",
+    "tools/client.mjs": "b701c6fec98e356cd7752853be34e3367aba2d33d441cf0dd4d27051d1ab35e6",
     "web/engine.mjs": "28381c963d442f191df87990728372343c97c8d0bceae2ea6efe6b1fa9225f36",
-    "evidence/rabbitmq-channel-deps.json": "0e2e5681a94d8bb9855f7ab16e946e45a17f91f9754a21bf49cc63c8f9738b73",
+    "evidence/rabbitmq-channel-deps.json": "096c477ffaa602fe8c5d04466254c817580273df77d137bbd9ed0802aa1a6ece",
     "evidence/channel-deps-reference-build.json": "cee9ecb156d6cd3904d8c50ea9ccc1c409d60823cb384a8899230d8f169eac25"
   },
   "scope": "Two real single-channel recovery boundary comparisons. Explicit improvements over pinned Go behavior, not matching-conformance cases or a claim of full upstream parity."

@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T09:54:10.087Z",
+  "utc": "2026-09-19T17:37:32.866Z",
   "node": "v24.11.0",
   "passed": 7,
   "tests": [
@@ -124,15 +124,15 @@
       },
       "processMemory": {
         "before": {
-          "rss": 58773504,
-          "heapTotal": 10780672,
-          "heapUsed": 8793008,
-          "external": 2498022,
-          "arrayBuffers": 24911
+          "rss": 57987072,
+          "heapTotal": 11042816,
+          "heapUsed": 8882704,
+          "external": 2498043,
+          "arrayBuffers": 24932
         },
         "peak": {
-          "rss": 88637440,
-          "external": 5135545
+          "rss": 102707200,
+          "external": 5250177
         },
         "samplePeriodMs": 10,
         "note": "Whole Node process sample; includes bridge, GC and source buffers. Not an RSS bound or throughput comparison."
@@ -154,15 +154,15 @@
       },
       "processMemory": {
         "before": {
-          "rss": 91074560,
-          "heapTotal": 46956544,
-          "heapUsed": 9924352,
-          "external": 6742044,
-          "arrayBuffers": 4238488
+          "rss": 105205760,
+          "heapTotal": 52461568,
+          "heapUsed": 16998176,
+          "external": 6987663,
+          "arrayBuffers": 4484107
         },
         "peak": {
-          "rss": 104493056,
-          "external": 6742044
+          "rss": 105205760,
+          "external": 6987663
         },
         "samplePeriodMs": 10,
         "note": "Whole Node process sample; includes bridge, GC and source buffers. Not an RSS bound or throughput comparison."
@@ -184,15 +184,15 @@
       },
       "processMemory": {
         "before": {
-          "rss": 104669184,
-          "heapTotal": 45547520,
-          "heapUsed": 9734512,
-          "external": 2540100,
-          "arrayBuffers": 35741
+          "rss": 104439808,
+          "heapTotal": 50003968,
+          "heapUsed": 9774368,
+          "external": 2531908,
+          "arrayBuffers": 27549
         },
         "peak": {
-          "rss": 105902080,
-          "external": 3208695
+          "rss": 133025792,
+          "external": 3790334
         },
         "samplePeriodMs": 10,
         "note": "Whole Node process sample; includes bridge, GC and source buffers. Not an RSS bound or throughput comparison."
@@ -200,13 +200,14 @@
     }
   ],
   "sources": {
-    "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
+    "tools/evidence-source.mjs": "999255ad3c0484ded40ebeac9854e83299c4b40016dab1af6f28b8be49d054e0",
+    "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
     "session.mbt": "83a95ee1ccb550399ccc0db9f08b3a1ab1e467098b53e467332ae741b503f48b",
     "publish_stream.mbt": "7bea19d02cf97ae7d24997595a0d9cc2855544a59906ad4b4ef8db88ef2e5501",
     "cmd/web/publish_stream.mbt": "78bd1662496a37dd89512596ffbc99d083fd39605dc3eeaa02fe42ffa3f7248a",
-    "tools/client.mjs": "ce5d316951d7b6e65541d681b3fa9c6ba76b83e2ed4bab9b1c7b8b318faeafd6",
+    "tools/client.mjs": "b701c6fec98e356cd7752853be34e3367aba2d33d441cf0dd4d27051d1ab35e6",
     "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
-    "tools/recovery-channel.mjs": "a4ae32515d14cf147ef389368ba9fcf12e7f2e1f243b145863350285c0073d34",
+    "tools/recovery-channel.mjs": "4329e08320c75c373903b14a07a14c206433be360effab238ee4e139e26c3b20",
     "tools/stream-reference.go": "d5c6bd4bf2a91796ff3d50e0503110fa0e1ee027b90e2ee7960dcc6d2d1fbc16",
     "tools/test-stream-native.mjs": "77daa107b823f7432217cd9840986ea097bf8d107db36c752e7220cad0efeb00",
     "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",

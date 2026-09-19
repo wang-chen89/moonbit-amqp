@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T16:36:50.791583+00:00",
+  "utc": "2026-09-19T17:48:31.186689+00:00",
   "referenceCommit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "scope": "Syntactic exported-name functions/methods on exported receiver types in root non-test Go files. Includes conditional Fuzz; excludes unexported receivers and does not inventory struct fields, constants, interfaces or generated behavior. No full compatibility or coverage percentage claim.",
   "declarationCount": 106,
@@ -261,8 +261,8 @@
       "file": "channel.go",
       "line": 1510,
       "buildConstraint": "",
-      "hostEquivalent": "consume",
-      "boundary": "尚缺消费者生命周期的独立取消 signal/context 入口"
+      "hostEquivalent": "consume(queue, callback, {signal})",
+      "boundary": "有独立 AbortSignal 生命周期；6 报文/9 broker 对照一致；RPC 排队、标签复用、离线取消的 3 项差异单列，非完整 Go context 契约"
     },
     {
       "name": "Channel.ExchangeDeclare",

@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T16:22:10.709Z",
+  "utc": "2026-09-19T17:40:19.015Z",
   "cases": 10,
   "matched": 9,
   "explainedDifferences": 1,
@@ -646,11 +646,12 @@
     "erlang-asn1_1%3a27.3.4.6+dfsg-1_amd64.deb": "b2d3f1a35d642727631ff138070d5a4f410bb0066f67a1efbf11ad61dc51fa6d"
   },
   "sources": {
-    "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
+    "tools/evidence-source.mjs": "999255ad3c0484ded40ebeac9854e83299c4b40016dab1af6f28b8be49d054e0",
+    "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
     "tools/recovery.mjs": "f9bb94945bc9dc9fa95c624ee692c8d5859a744591f51c51252deb1b2861a427",
-    "tools/recovery-channel.mjs": "a4ae32515d14cf147ef389368ba9fcf12e7f2e1f243b145863350285c0073d34",
+    "tools/recovery-channel.mjs": "4329e08320c75c373903b14a07a14c206433be360effab238ee4e139e26c3b20",
     "tools/recovery-state.mjs": "78435fc7a882bfa4e7f349602db597d9778cf1f0558f7459475e8e562fff683e",
-    "tools/client.mjs": "ce5d316951d7b6e65541d681b3fa9c6ba76b83e2ed4bab9b1c7b8b318faeafd6",
+    "tools/client.mjs": "b701c6fec98e356cd7752853be34e3367aba2d33d441cf0dd4d27051d1ab35e6",
     "tools/autodelete-reference.go": "2ce1349229c3df548b0689dc3bcb50ec43a53de0ec4e40e2bb3841f1ad28fbc9",
     "tools/autodelete-scenarios.json": "4d5461e34ac5773ab86784b957b5a5c044fa6ff827966aa88a06e15127d9e3c5",
     "tools/test-autodelete-native.mjs": "cccd17ff04899893abacb490a73031e066a24302c7d1b34a64f56deb8c1fe96d",

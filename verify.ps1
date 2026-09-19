@@ -44,6 +44,8 @@ try {
   if ($LASTEXITCODE -ne 0) {throw 'no-wait fixtures failed'}
   node tools/test-channel-options.mjs
   if ($LASTEXITCODE -ne 0) {throw 'channel option fixtures failed'}
+  node tools/test-consumer-cancel.mjs
+  if ($LASTEXITCODE -ne 0) {throw 'consumer cancellation fixtures failed'}
   node tools/test-recovery.mjs
   if ($LASTEXITCODE -ne 0) {throw 'client recovery fixtures failed'}
   node tools/test-authentication.mjs

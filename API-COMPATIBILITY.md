@@ -1,12 +1,14 @@
-# 原库接口对应与剩余差距 · 0.14
+# 原库接口对应与剩余差距 · 0.15
 
 基准为已核验的 amqp091-go 提交 `a0195c6baf35db642d13651cb28938f899062e7c`。下表来自根目录非测试 Go 源文件的 106 条导出命名函数/方法声明，排除非导出接收者，包含构建标签下的 Fuzz。它不是 106 项独立功能，也不涵盖所有结构体字段、常量、接口或运行行为；不能据此计算“追平百分比”。逐条源位置、构建标签和文件 SHA-256 见 [接口清单](evidence/api-surface-audit.json)。
 
-“有入口”仅指已有对应操作及所注明的有限验证，不代表完整兼容。当前优先差距包括：独立消费者取消、独立确认事件/句柄/序号、连接属性/地址/TLS 状态/自定义传输/URL、显式重连与可读拓扑快照，以及完整恢复/长期/多版本/性能验证。
+“有入口”仅指已有对应操作及所注明的有限验证，不代表完整兼容。当前优先差距包括：完整 context 语义、独立确认事件/句柄/序号、连接属性/地址/TLS 状态/自定义传输/URL、显式重连与可读拓扑快照，以及完整恢复/长期/多版本/性能验证。
 
 0.13 为 11 个宿主方法补 noWait 选项，队列与交换机被动声明复用原方法选项。15 条原库报文逐字节一致；8 个真实 broker 场景结果一致。另有一个明确差异：固定 Go 的 Confirm(true) 仍等待 RabbitMQ 按 no-wait 抑制的回复，本实现不等待且能继续获得发布确认。该项单独记录，未计为行为一致。其余 8 个 Go broker 场景使用 Confirm(false) 隔离此限制。
 
 0.14 补齐 QoS prefetchSize、消费 noLocal、普通/流式发布 immediate、主动 flow 与服务器通知。18 条原库方法报文、1 组通知/自动回复与 9 个 broker 结果一致。QoS 超出线路范围时拒绝（Go 截断），服务器暂停时自动阻止新发布（Go 交由应用），这 2 项差异未计为一致。RabbitMQ 4.0.5 拒绝非零 size、immediate、flow(false)，noLocal 不隔离本连接投递。
+
+0.15 新增独立消费者 AbortSignal，21 组线路/恢复检查通过。两个序列 6 条方法报文、9 个真实 broker 场景一致；并发 RPC 调度、标签复用、离线取消 3 项差异另列。离线取消只移除消费者意图，保留未确认删除的拓扑。原库正常重连后取消也有效。
 
 | 原库声明 | 本版入口/对应能力 | 边界 |
 |---|---|---|
@@ -39,7 +41,7 @@
 | `Channel.QueuePurge` | 队列/交换机对应操作 | 有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体 |
 | `Channel.QueueDelete` | 队列/交换机对应操作 | 有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体 |
 | `Channel.Consume` | consume(queue, callback, options) | 支持 noWait/noLocal；固定 RabbitMQ 接受 noLocal 但仍投递本连接消息，回调与 Go delivery channel 契约不同 |
-| `Channel.ConsumeWithContext` | consume | 尚缺消费者生命周期的独立取消 signal/context 入口 |
+| `Channel.ConsumeWithContext` | consume(queue, callback, {signal}) | 有独立 AbortSignal 生命周期；6 报文/9 broker 对照一致；RPC 排队、标签复用、离线取消的 3 项差异单列，非完整 Go context 契约 |
 | `Channel.ExchangeDeclare` | 队列/交换机对应操作 | 有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体 |
 | `Channel.ExchangeDeclarePassive` | 队列/交换机对应操作 | 有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体 |
 | `Channel.ExchangeDelete` | 队列/交换机对应操作 | 有入口；适用方法已支持 noWait，恢复仅覆盖已登记实体 |

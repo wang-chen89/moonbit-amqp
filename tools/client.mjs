@@ -6,6 +6,7 @@ import * as core from '../web/engine.mjs';
 import {snapshotAuthentication,authenticationPlan,responseBytes} from './authentication.mjs';
 import {SendQueue,waitFor,aborted} from './outbound.mjs';
 import {IncomingBodies} from './inbound.mjs';
+import {checkConsumerSignal,observeConsumerSignal} from './consumer-signal.mjs';
 
 function checked(text) {
   if (text.startsWith('ERROR:')) throw Error(text.slice(7));
@@ -315,23 +316,40 @@ export class Channel extends EventEmitter {
   #connection; #pending; #closed = false; #consumers = new Map(); #id;
   #mode = 'normal'; #nextConfirm = 1n; #confirms = new Map();
   #sends; #sendAbort=new AbortController(); #publications=0;
+  #subscriptions=new Map(); #consumerCancels=new Set(); #waitingRPC;
   constructor(connection, id) { super(); this.#connection = connection; this.#id = id; this.#sends=new SendQueue(connection.maxBufferedBytes); }
   get id() { return this.#id; }
   get closed() { return this.#closed; }
   async _flushOutput() { if(this.#closed)return;await this.#sends.idle();await Promise.allSettled([...this.#confirms.values()].map(p=>p.promise)); }
-  _rpc(name, args, expected, apply = e => e.args) {
+  _rpc(name, args, expected, apply = e => e.args, automatic = false) {
     if (this.#closed) return Promise.reject(Error('Channel closed'));
     if (this.#connection.closing) return Promise.reject(Error('Connection closing'));
-    if (this.#pending) return Promise.reject(Error('One RPC may be outstanding per channel; await it or use another channel'));
-    const p = deferred();
-    const pending={...p,expected,apply};this.#pending=pending;
+    if (this.#pending && (!this.#pending.automatic || this.#waitingRPC)) return Promise.reject(Error('One RPC may be outstanding per channel; await it or use another channel'));
     try {
-      const encoded=JSON.stringify(args);
-      this.#sends.run(()=>this.#connection._sendQueued(this.id,name,encoded,()=>{pending.timer=setTimeout(()=>this.#connection._fail(Error(`RPC timeout: ${name}`)),this.#connection.timeout);},[this.#sendAbort.signal])).catch(e=>{
-        clearTimeout(pending.timer);if(this.#pending===pending)this.#pending=undefined;p.reject(e);
-      });
-    }catch(e){this.#pending=undefined;p.reject(e);}
-    return p.promise;
+      const pending={...deferred(),name,encoded:JSON.stringify(args),expected,apply,automatic};
+      // One user RPC may wait behind an automatic consumer cancel. Ordinary
+      // concurrent user RPCs retain their existing one-outstanding contract.
+      if(this.#pending)this.#waitingRPC=pending;else this.#startRPC(pending);
+      return pending.promise;
+    }catch(error){return Promise.reject(error);}
+  }
+  #startRPC(pending) {
+    this.#pending=pending;
+    this.#sends.run(()=>this.#connection._sendQueued(this.id,pending.name,pending.encoded,()=>{pending.timer=setTimeout(()=>this.#connection._fail(Error(`RPC timeout: ${pending.name}`)),this.#connection.timeout);},[this.#sendAbort.signal])).catch(error=>{
+      clearTimeout(pending.timer);if(this.#pending===pending)this.#pending=undefined;pending.reject(error);this.#nextRPC();
+    });
+  }
+  #nextRPC() {
+    if(this.#pending||this.#closed)return;
+    if(this.#waitingRPC){const next=this.#waitingRPC;this.#waitingRPC=undefined;this.#startRPC(next);return;}
+    if(this.#connection.closing)return;
+    for(const entry of this.#consumerCancels){
+      if(entry.finished||entry.cancelPromise){this.#consumerCancels.delete(entry);continue;}
+      if(!entry.ready)continue;
+      this.#consumerCancels.delete(entry);
+      this.#cancelConsumer(entry.tag,false,true).catch(error=>{if(!this.#closed)this.#connection._fail(Error('Consumer cancellation failed',{cause:error}));});
+      break;
+    }
   }
   #request(name,args,expected,noWait,local,apply){
     if(typeof noWait!=='boolean')return Promise.reject(TypeError('Invalid noWait'));
@@ -376,14 +394,15 @@ export class Channel extends EventEmitter {
     } else if (e.name === 'basic.cancel') {
       const tag = e.args['consumer-tag'];
       if (!e.args['no-wait']) this.#oneWay('basic.cancel-ok', [tag],true);
-      const callback = this.#consumers.get(tag); this.#consumers.delete(tag);
+      const callback = this.#consumers.get(tag);this.#forgetConsumer(this.#subscriptions.get(tag));
       if (callback) this.#notify(callback, null);
-      this.emit('cancel', tag);
+      this.emit('cancel', tag, {origin:'server'});
     } else if(e.name==='channel.flow') {
       this.emit('flow',e.args.active);
     } else if (this.#pending?.expected.includes(e.name)) {
       const p = this.#pending; this.#pending = undefined; clearTimeout(p.timer);
       try { p.resolve(p.apply(e)); } catch (error) { p.reject(error); throw error; }
+      this.#nextRPC();
     } else throw Error(`Unexpected method ${e.name}`);
   }
   _terminate(error) {
@@ -392,6 +411,9 @@ export class Channel extends EventEmitter {
     this.#connection._closeIncomingChannel(this.id,error);
     this.#sendAbort.abort(error);this.#sends.close(error);
     if (this.#pending) { clearTimeout(this.#pending.timer); this.#pending.reject(error); this.#pending = undefined; }
+    this.#waitingRPC?.reject(error);this.#waitingRPC=undefined;
+    for(const entry of this.#subscriptions.values())this.#forgetConsumer(entry,error);
+    this.#consumerCancels.clear();
     for (const p of this.#confirms.values()) { clearTimeout(p.timer); p.reject(error); }
     this.#confirms.clear(); this.#consumers.clear(); this.emit('close', error);
   }
@@ -420,17 +442,51 @@ export class Channel extends EventEmitter {
     return this._rpc('channel.flow',[active],['channel.flow-ok'],e=>e.args.active);
   }
   get(queue, {noAck = false} = {}) { return this._rpc('basic.get', [0, queue, noAck], ['basic.get-ok', 'basic.get-empty'], e => e.name === 'basic.get-empty' ? null : delivery(e)); }
-  consume(queue, callback, {consumerTag = randomUUID(), noAck = false, exclusive = false, noWait=false, noLocal=false, arguments: args = {}} = {}) {
-    if (typeof callback !== 'function' || !consumerTag || this.#consumers.has(consumerTag)) return Promise.reject(TypeError('Invalid callback or duplicate/empty consumer tag'));
-    if(this.#consumers.size>=1024)return Promise.reject(Error('Consumer limit: 1024'));
+  consume(queue, callback, {consumerTag = randomUUID(), noAck = false, exclusive = false, noWait=false, noLocal=false, signal, arguments: args = {}} = {}) {
+    try{checkConsumerSignal(signal);}catch(error){return Promise.reject(error);}
+    if (typeof callback !== 'function' || !consumerTag || this.#subscriptions.has(consumerTag)) return Promise.reject(TypeError('Invalid callback or duplicate/empty consumer tag'));
+    if(this.#subscriptions.size>=1024)return Promise.reject(Error('Consumer limit: 1024'));
     if(typeof noWait!=='boolean')return Promise.reject(TypeError('Invalid noWait'));
     if(typeof noLocal!=='boolean')return Promise.reject(TypeError('Invalid noLocal'));
+    const entry={tag:consumerTag,callback,ready:false};this.#subscriptions.set(consumerTag,entry);
+    entry.dispose=observeConsumerSignal(signal,reason=>{this._abortConsumer(entry.tag,reason).catch(()=>{});});
     if(noWait)this.#consumers.set(consumerTag,callback);
-    return this.#request('basic.consume', [0, queue, consumerTag, noLocal, noAck, exclusive, noWait, args], ['basic.consume-ok'],noWait,()=>consumerTag, e => {
-      const tag = e.args['consumer-tag']; this.#consumers.set(tag, callback); return tag;
-    }).catch(error=>{if(noWait&&this.#consumers.get(consumerTag)===callback)this.#consumers.delete(consumerTag);throw error;});
+    const ready=tag=>{
+      if(entry.finished)return tag;
+      if(tag!==entry.tag){if(this.#subscriptions.has(tag))throw Error('Duplicate broker consumer tag');this.#subscriptions.delete(entry.tag);entry.tag=tag;this.#subscriptions.set(tag,entry);}
+      entry.ready=true;this.#consumers.set(tag,callback);this.#nextRPC();return tag;
+    };
+    return this.#request('basic.consume', [0, queue, consumerTag, noLocal, noAck, exclusive, noWait, args], ['basic.consume-ok'],noWait,()=>ready(consumerTag),e=>ready(e.args['consumer-tag']))
+      .catch(error=>{this.#forgetConsumer(entry,error);throw error;});
   }
-  cancel(consumerTag,{noWait=false}={}) { return this.#request('basic.cancel', [consumerTag, noWait], ['basic.cancel-ok'],noWait,()=>{this.#consumers.delete(consumerTag);}, e => { this.#consumers.delete(e.args['consumer-tag']); }); }
+  #forgetConsumer(entry,error) {
+    if(!entry||entry.finished)return;
+    entry.finished=true;entry.dispose?.();this.#consumerCancels.delete(entry);
+    if(this.#subscriptions.get(entry.tag)===entry){this.#subscriptions.delete(entry.tag);this.#consumers.delete(entry.tag);}
+    if(error)entry.aborted?.reject(error);else entry.aborted?.resolve();
+  }
+  _abortConsumer(tag,reason=Error('Consumer aborted')) {
+    const entry=this.#subscriptions.get(tag);if(!entry||entry.finished)return Promise.resolve();
+    if(!entry.aborted){entry.aborted=deferred();entry.aborted.promise.catch(()=>{});entry.reason=reason;entry.dispose?.();this.#consumerCancels.add(entry);this.#nextRPC();}
+    return entry.aborted.promise;
+  }
+  #cancelConsumer(tag,noWait,automatic=false) {
+    const entry=this.#subscriptions.get(tag);
+    if(entry?.cancelPromise)return entry.cancelPromise;
+    const finish=()=>{
+      if(entry?.finished)return;
+      const signalled=Boolean(entry?.aborted);this.#forgetConsumer(entry);
+      if(signalled){this.#notify(entry.callback,null);this.emit('cancel',tag,{origin:'signal',reason:entry.reason});}
+    };
+    const apply=e=>{if(e.args['consumer-tag']!==tag)throw Error('Unexpected cancel consumer tag');finish();};
+    const operation=noWait?this.#request('basic.cancel',[tag,noWait],['basic.cancel-ok'],noWait,finish,apply):this._rpc('basic.cancel',[tag,noWait],['basic.cancel-ok'],apply,automatic);
+    if(entry){
+      entry.cancelPromise=operation;
+      operation.catch(error=>{entry.cancelPromise=undefined;if(entry.aborted&&!entry.finished){if(automatic)this.#forgetConsumer(entry,error);else{this.#consumerCancels.add(entry);this.#nextRPC();}}});
+    }
+    return operation;
+  }
+  cancel(consumerTag,{noWait=false}={}) { if(typeof noWait!=='boolean')return Promise.reject(TypeError('Invalid noWait'));return this.#cancelConsumer(consumerTag,noWait); }
   #oneWay(name,args,internal=false){if(this.#closed)throw Error('Channel closed');if(!internal&&this.#connection.closing)throw Error('Connection closing');const encoded=JSON.stringify(args);const sent=this.#sends.run(()=>this.#connection._sendQueued(this.id,name,encoded,undefined,[this.#sendAbort.signal]));sent.catch(error=>{if(!this.#closed)this.#connection._fail(error);});return sent;}
   ack(deliveryTag, multiple = false) { this.#connection._assertIncomingComplete(this.id,deliveryTag,multiple);return this.#oneWay('basic.ack', [String(deliveryTag), multiple]); }
   nack(deliveryTag, {multiple = false, requeue = true} = {}) { this.#connection._assertIncomingComplete(this.id,deliveryTag,multiple);return this.#oneWay('basic.nack', [String(deliveryTag), multiple, requeue]); }

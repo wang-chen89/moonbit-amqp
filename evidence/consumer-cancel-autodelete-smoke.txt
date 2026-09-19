@@ -1,0 +1,14 @@
+PASS last consumer cancellation forgets the queue and full exchange chain before reconnect
+PASS consumer tags are channel scoped and all channels participate in last-consumer tracking
+PASS never-consumed queues and never-bound exchanges survive no-op cancellation and unbind
+PASS argument-distinct bindings and bindings from other channels retain their source until the last removal
+PASS exchange unbinding removes only the auto-delete source, preserving an unbound destination
+PASS explicit deletion cascades through a cyclic exchange graph without recursive looping
+PASS failed deletion does not erase the desired topology
+PASS a pending cross-channel consumer prevents premature auto-deletion before its acknowledgement
+PASS a pending binding prevents the last acknowledged unbind from prematurely deleting its source
+PASS explicit channel close forgets its last auto-delete consumer but preserves an unused queue
+PASS broker cancellation cascades and repeated cancellation cannot resurrect records
+PASS server-named queue aliases are removed after cancellation following recovery
+PASS consumer acknowledgement immediately followed by broker cancellation cannot leave a stale recovery consumer
+13 auto-delete fixture groups passed

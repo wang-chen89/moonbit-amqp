@@ -277,3 +277,17 @@ node tools/test-stream-native.mjs
 两个 peer 对照差异单列、不计 matched：Go 只验证 QoS 非负，65536/4294967296 转成线路整数后为 0/0；本版拒绝。Go 在服务器 flow(false) 后通知应用但仍允许 Publish，本版核心阻止新发布并可在 flow(true) 后继续；这是既有核心保护，本版补通知入口并补原生证据。发往服务器的主动 flow 控制投递方向，不会停掉本地发布，也不在恢复配置中重放。真实 RabbitMQ 不实现暂停请求，不能用本轮 broker 测试宣称已验证某个其它服务器的完整暂停投递效果。
 
 已有网络、发送/接收、文件 CLI、noWait、恢复、认证、凭证更新、自动删除与跨通道依赖回归及原库对照继续核验，历史差异保留；307 异常输入与文档样例通过。最终清单 `channel-options-upgrade.json` 绑定当前源与报告。尚缺完整消费者取消/确认通知/元数据与 URI 等 API、恢复交错、长期/集群、多平台/多版本及代表性原生性能；其余 19 项本轮没有重跑，全部追平目标保持未完成。
+
+## 0.15 消费者独立取消与恢复
+
+`node tools/test-consumer-cancel.mjs` 的 21 组独立 TCP 线路测试验证预取消与无效 signal 不发帧、等待注册回复、noWait 注册后等待取消确认、普通 RPC 与自动取消排队、共享信号与跨通道隔离、手动/服务端取消后的标签复用、错误与关闭后释放监听器、回调异常、超时、服务端竞争取消、发送/接收正文顺序，以及恢复前后/恢复中的取消。在线确认后自动删除登记清理；离线只删除消费者意图，保留未得到删除确认的拓扑。verify/CI 配置已纳入此脚本；远程 CI 未运行。MoonBit 核心/API 没有变更，JS/Wasm-GC 各 122 项继续通过。
+
+`tools/consumer-cancel-reference.go` 调用固定提交的 `ConsumeWithContext`，72 个上游源码文件保持未修改，构建指纹见 `consumer-cancel-reference-build.json`。按先前 replace 方法编译后设置 `AMQP_CONSUMER_CANCEL_REFERENCE` 与 `RABBITMQ_ROOT`，运行 `node tools/test-consumer-cancel-native.mjs`。等待/无等待注册两个 peer 序列的 6 条方法报文逐字节一致；真实 RabbitMQ 的预取消、活动消费、无等待注册、共享信号、未确认消息、兄弟通道、自动删除、重连前取消、重连完成后取消共 9 个场景结果一致。
+
+另有 3 项单独计数的差异，不计为匹配：
+
+- 在 qos-ok 被扣留时，Go 的 context watcher 会同时发出 basic.cancel；本版等待当前 RPC 回复。Go 探针在捕获取消帧后主动退出，仅证明发帧时机，没有声称并发回复成功或失败。本版另验证释放 qos-ok 后取消完成。
+- Go 手动取消后保留旧 context watcher；标签复用后取消旧 context 会终止新订阅。本版随订阅释放监听器，复用标签的新订阅不受影响。
+- 代理阻断重连期间取消 context，留出 50 ms 让 Go watcher 运行，其在关闭通道上的 Cancel 不移除恢复登记；恢复后仍消费。本版去掉该消费者意图。原库在正常重连后仍能按 context 取消，不能将离线差异概括为原库信号不支持恢复。
+
+取消不自动确认/重投，已经交付的流式正文仍须排空；注册 Promise 不是取消完成通知。完整 context、所有恢复交错和离线自动删除行为没有宣称对齐。本轮旧网络/恢复/认证/凭证更新/自动删除/依赖/收发流/文件 CLI/noWait/flow 的 source-bound 证据均按当前宿主重跑，既有差异保留。`consumer-cancel-upgrade.json` 绑定最终源码与证据；只记录本机样例和内存观察，没有新增吞吐/生产性能追平结论，其余 19 项未在本轮重测。

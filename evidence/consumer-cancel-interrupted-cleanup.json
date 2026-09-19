@@ -1,0 +1,28 @@
+{
+  "utc": "2026-09-19T17:50:11.971083+00:00",
+  "initialAudit": {
+    "utc": "2026-09-19T17:49:24.853256+00:00",
+    "ownedRuntimeProcesses": [
+      {
+        "pid": 55106,
+        "name": "epmd"
+      }
+    ],
+    "temporaryBrokerDirectories": [
+      "/tmp/moonbit-rabbitmq-gnd8jyab"
+    ],
+    "cleanupVerified": false,
+    "scope": "Only the owned extracted RabbitMQ runtime and temporary test instances; downloaded package cache is retained."
+  },
+  "stoppedOwnedProcesses": {
+    "55106": {
+      "group": 55106,
+      "base": "/tmp/moonbit-rabbitmq-gnd8jyab",
+      "name": "epmd"
+    }
+  },
+  "removedDirectories": [
+    "/tmp/moonbit-rabbitmq-gnd8jyab"
+  ],
+  "scope": "Explicit cleanup of the interrupted consumer-cancellation reference test instance. Process environment, group membership and temporary paths checked; no system service or package cache touched."
+}
