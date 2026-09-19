@@ -5,7 +5,7 @@ import {sourceSnapshot,assertSourceUnchanged} from './evidence-source.mjs';
 import {connect} from './client.mjs';
 import {fixture,method,ack,cat,u16,u32,short,delay,deliver} from './recovery-peer.mjs';
 const tests=[];
-const sources=sourceSnapshot(['tools/client.mjs','tools/recovery.mjs','tools/recovery-channel.mjs','tools/recovery-state.mjs','tools/recovery-peer.mjs','tools/test-recovery.mjs','web/engine.mjs']);
+const sources=sourceSnapshot(['authentication.mbt','cmd/web/authentication.mbt','tools/authentication.mjs','tools/client.mjs','tools/recovery.mjs','tools/recovery-channel.mjs','tools/recovery-state.mjs','tools/recovery-peer.mjs','tools/test-recovery.mjs','web/engine.mjs']);
 const event=(target,name)=>once(target,name,{signal:AbortSignal.timeout(5000)});
 const config={recovery:{retryDelay:5,retryJitter:0,maxRetries:3},timeout:500};
 async function test(name,action){await action();tests.push(name);console.log('PASS '+name);}

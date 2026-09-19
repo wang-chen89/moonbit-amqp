@@ -1,6 +1,7 @@
 ///|
 pub(all) enum SessionEvent {
   Ready
+  AuthenticationRequested(Int, String)
   Received(Int, Method)
   Message(Content)
   ChannelClosed(Int, Int, String)
@@ -13,7 +14,9 @@ pub struct Session {
   priv decoder : Decoder
   priv assembler : Assembler
   priv mut state : String
-  priv mut secret : Bytes
+  priv auth : Array[Authentication]
+  priv mut selected_auth : String
+  priv locale : String
   priv vhost : String
   priv mut channel_limit : Int
   priv mut frame_limit : Int
@@ -33,11 +36,31 @@ pub fn Session::new(
   frame_max? : Int = 131072,
   heartbeat? : Int = 60,
 ) -> Session raise FrameError {
-  if username.contains("\u0000") ||
-    password.contains("\u0000") ||
-    username.length() > 1024 ||
-    password.length() > 1024 {
-    raise Invalid("invalid PLAIN credentials")
+  Session::with_authentication(
+    [Authentication::plain(username, password)],
+    vhost~,
+    channel_max~,
+    frame_max~,
+    heartbeat~,
+  )
+}
+
+///|
+/// Candidates are considered in client order. No shared candidate fails closed.
+pub fn Session::with_authentication(
+  authentication : Array[Authentication],
+  vhost? : String = "/",
+  locale? : String = "en_US",
+  channel_max? : Int = 64,
+  frame_max? : Int = 131072,
+  heartbeat? : Int = 60,
+) -> Session raise FrameError {
+  if authentication.is_empty() ||
+    authentication.length() > 32 ||
+    locale.is_empty() ||
+    @utf8.encode(locale).length() > 255 ||
+    locale.contains(" ") {
+    raise Invalid("invalid authentication candidates or locale")
   }
   if channel_max < 1 ||
     channel_max > 65535 ||
@@ -52,7 +75,9 @@ pub fn Session::new(
     decoder: Decoder::new(),
     assembler: Assembler::new(strict_methods=true),
     state: "start",
-    secret: @utf8.encode("\u0000" + username + "\u0000" + password),
+    auth: authentication.copy(),
+    selected_auth: "",
+    locale,
     vhost,
     channel_limit: channel_max,
     frame_limit: frame_max,
@@ -76,7 +101,7 @@ fn Session::closed(self : Session) -> Unit {
   }
   self.channels.clear()
   self.paused.clear()
-  self.secret = b""
+  self.auth.clear()
   self.state = "closed"
 }
 
@@ -202,9 +227,7 @@ pub fn Session::heartbeat(self : Session) -> Bytes raise FrameError {
 
 ///|
 pub fn Session::finish(self : Session) -> Unit raise FrameError {
-  defer {
-    self.secret = b""
-  }
+  defer self.auth.clear()
   errdefer {
     self.state = "failed"
     self.output.clear()
@@ -227,7 +250,7 @@ pub fn Session::feed(
   }
   errdefer {
     self.state = "failed"
-    self.secret = b""
+    self.auth.clear()
     self.output.clear()
   }
   let events = []
@@ -286,38 +309,32 @@ pub fn Session::feed(
             LongString(mechanisms),
             LongString(locales),
           ] {
-          let has_plain = @utf8.decode_lossy(mechanisms)
-            .split(" ")
-            .any(s => s == "PLAIN")
+          let offered = @utf8.decode_lossy(mechanisms).split(" ").to_array()
           let has_locale = @utf8.decode_lossy(locales)
             .split(" ")
-            .any(s => s == "en_US")
-          if !has_plain || !has_locale {
-            raise Invalid("PLAIN or en_US is unavailable")
+            .any(s => s == self.locale)
+          if !has_locale {
+            raise Invalid("requested locale is unavailable")
           }
-          self.emit(
-            "connection.start-ok",
-            [
-              Table([
-                ("product", LongString(b"moonbit-amqp")),
-                (
-                  "capabilities",
-                  TableValue([
-                    ("publisher_confirms", Boolean(true)),
-                    ("consumer_cancel_notify", Boolean(true)),
-                    ("connection.blocked", Boolean(true)),
-                    ("basic.nack", Boolean(true)),
-                  ]),
-                ),
-              ]),
-              ShortString("PLAIN"),
-              LongString(self.secret),
-              ShortString("en_US"),
-            ],
-            0,
-          )
-          self.secret = b""
-          self.state = "tune"
+          let mut selected = None
+          for i, candidate in self.auth {
+            if offered.contains(candidate.mechanism) {
+              selected = Some((i, candidate))
+              break
+            }
+          }
+          let (index, candidate) = selected.unwrap_or_else(() => {
+            raise Invalid("no shared SASL mechanism")
+          })
+          self.selected_auth = candidate.mechanism
+          self.auth.clear()
+          match candidate.response {
+            Some(response) => self.auth_response(response)
+            None => {
+              self.state = "authenticate"
+              events.push(AuthenticationRequested(index, candidate.mechanism))
+            }
+          }
         } else {
           raise Invalid("unsupported protocol version")
         }

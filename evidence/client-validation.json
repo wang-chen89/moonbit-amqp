@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-19T05:52:35.955Z",
+  "at": "2026-09-19T06:17:34.232Z",
   "node": "v24.11.0",
   "passed": 18,
   "tests": [
@@ -24,10 +24,13 @@
   ],
   "sources": {
     "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
-    "session.mbt": "3581f3819e5907a7dadb13e1bf232e27905c8089364b56d2fbc1ad683838b141",
-    "cmd/web/session.mbt": "9f649277c03c42ab8948f3f1e9e6f57dc546560cfcd85f0ac6ab45ae97fc8454",
-    "tools/client.mjs": "90df037047b281d7d88d2af985ac061a76033708c7d14029287a7bd8fec19f05",
-    "web/engine.mjs": "12282d0a723a0c92333298b862c7cb83c80b46c74c164e99f876acb13bec36c5",
-    "tools/test-client.mjs": "37e4711555ef2fbeac4171d68f9c64bb144a773f4133ceb670be829fb8739f2b"
+    "authentication.mbt": "09505b81f862c30d7f2bc24502188068475904ed5c858a8f38897060fa6397b6",
+    "cmd/web/authentication.mbt": "5302c487cb36963947e2e25b6a75d63d998789b3222dc28b889bb506103cae4a",
+    "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
+    "session.mbt": "8d89b1de3eb0c24ecdbda48b2bb2020175c2f6b537aed37f55ad071f664fbb8c",
+    "cmd/web/session.mbt": "3beb76807437fe21e95b088235579c3072307b18d05bb407b931811331d1a4bd",
+    "tools/client.mjs": "9f17f6880797001749eedb3b48f016c628a45345324ad45eb1ca5caf6ccc6f12",
+    "web/engine.mjs": "48a00bdd555f0d578106d10c3965d15d5cb623ea1c97c1ae5e55c09669a1b09c",
+    "tools/test-client.mjs": "f84cef9f977e00ed4dc6918cfe344a196852e6b2f8008ff9cf27467e2f0a28f9"
   }
 }

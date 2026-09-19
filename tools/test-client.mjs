@@ -7,7 +7,7 @@ import fs from 'node:fs/promises';
 import {sourceSnapshot,assertSourceUnchanged} from './evidence-source.mjs';
 import {connect} from './client.mjs';
 import * as core from '../web/engine.mjs';
-const sources=sourceSnapshot(['session.mbt', 'cmd/web/session.mbt', 'tools/client.mjs', 'web/engine.mjs', 'tools/test-client.mjs']);
+const sources=sourceSnapshot(['authentication.mbt','cmd/web/authentication.mbt','tools/authentication.mjs','session.mbt', 'cmd/web/session.mbt', 'tools/client.mjs', 'web/engine.mjs', 'tools/test-client.mjs']);
 
 const tests=[], cat=(...parts)=>Buffer.concat(parts), u16=n=>{const b=Buffer.alloc(2);b.writeUInt16BE(n);return b;}, u32=n=>{const b=Buffer.alloc(4);b.writeUInt32BE(n);return b;};
 const u64=n=>{const b=Buffer.alloc(8);b.writeBigUInt64BE(BigInt(n));return b;};

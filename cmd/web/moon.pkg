@@ -16,6 +16,8 @@ options(
         "inspect_wire",
         "schemas",
         "session_open",
+        "session_open_auth",
+        "session_auth_response",
         "session_drop",
         "session_feed",
         "session_send",

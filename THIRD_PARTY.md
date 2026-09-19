@@ -52,3 +52,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 0.5 恢复接口/语义参考固定 [amqp091-go a0195c6](https://github.com/rabbitmq/amqp091-go/tree/a0195c6baf35db642d13651cb28938f899062e7c)。恢复实现为本项目独立编写；`tools/recovery-reference.go` 是原创独立调用程序，Go 原库只用于测试，源码与二进制均未打入本项目 ZIP。外部参考归档 SHA256 为 `19067ca18143f0101b390ab09a237e2de989fd900ca20917746a4b22b66cafef`，保留下载原库自带许可；证据固定提交，不把主分支提交称为某个发行版。
+
+
+0.6 的认证对照继续使用同一固定 Go 原库；`tools/authentication-reference.go` 为原创调用程序，原库的 auth.go/connection.go 等 72 个文件未修改。保存原生 Response 与独立握手结果，AMQPLAIN 表的字段顺序单独归一化。认证生产代码独立编写，固定原库不做 SASLprep；没有复制第三方 Unicode 表或规范化实现。真实证书认证调用 RabbitMQ 4.0.5 包内原版 SSL 机制插件。配置依据为 [RabbitMQ 认证机制](https://www.rabbitmq.com/docs/access-control#mechanisms) 与 [TLS 文档](https://www.rabbitmq.com/docs/ssl)，实际兼容结论限定为所测发行包。

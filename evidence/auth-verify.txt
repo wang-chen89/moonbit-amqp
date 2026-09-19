@@ -1,0 +1,71 @@
+Finished. moon: ran 2 tasks, now up to date
+Finished. moon: ran 2 tasks, now up to date
+Finished. moon: ran 2 tasks, now up to date
+Total tests: 104, passed: 104, failed: 0.
+Total tests: 104, passed: 104, failed: 0.
+Finished. moon: ran 5 tasks, now up to date
+[{ kind: 1, channel: 1, payload: <Bytes: [0x00, 0x3c, 0x00, 0x28]> }]
+amqp: standalone engine passed
+AMQP inspection: schema/engine plus 7 CLI scenarios passed
+amqp: CLI input/file/stdin/error/exit-status checks passed
+PASS configuration rejects plaintext by default and invalid numeric values
+PASS fragmented handshake and graceful close
+PASS handshake timeout destroys socket
+PASS abort during handshake
+PASS RPC timeout rejects all channels and closes connection
+PASS abort terminates pending RPC
+PASS premature EOF with partial message rejects get
+PASS connection close rejects RPC and acknowledges peer
+PASS out-of-order single and cumulative publisher confirmations
+PASS publisher nack rejects only affected publish
+PASS future confirmation tag fails closed
+PASS unconfirmed publish timeout closes connection
+PASS missing broker heartbeat fails idle connection
+PASS bad frame terminator fails pending request
+PASS oversized frame rejected from header without waiting for body
+PASS invalid local publish leaves confirmation sequence usable
+PASS broker blocked event prevents publishing until unblocked
+PASS session bridge malformed table does not throw outside error result
+Client fixtures: 18 passed
+PASS recovery configuration validation precedes connection creation
+PASS ordered cross-channel topology and server-named queue aliases survive repeated disconnects
+PASS deliveries received during recovery wait for readiness and stale tags never reach new channel
+PASS unconfirmed publications reject and are not silently republished after recovery
+PASS soft channel error recovers that channel without disconnecting a healthy sibling
+PASS deleted topology, unbound routes and cancelled consumers are not resurrected
+PASS transient mode preserves subscriptions but skips durable declarations
+PASS disabled topology still restores channel QoS and transaction mode
+PASS skippable topology failure reopens channel before restoring remaining entities
+PASS topology error callback can refuse skipping and exhaust retry budget
+PASS connection failure during topology replay retries the complete recovery sequence
+PASS explicit close cancels retry delay without creating another socket
+PASS AbortSignal cancels a reconnect handshake and releases the wait
+PASS ready wait cancellation is local and callback errors do not stop recovery listeners
+PASS topology stores an independent argument snapshot and enforces a bounded registry
+PASS pending non-idempotent RPC rejects instead of being replayed after reconnect
+PASS failure of the last topology entity still leaves a usable reopened channel
+PASS skipping a failed consumer restores earlier subscriptions after reopening its channel
+PASS broker consumer cancellation removes its recovery entry
+PASS closing a channel during connection recovery cannot resurrect or leak the opening channel
+PASS connection recovery supersedes an older channel retry without a duplicate open
+PASS server-named queue aliases also work for later passive declarations
+PASS closing connection from a channel ready listener cannot resurrect it
+PASS closing connection from stateChange suppresses stale readiness notifications
+PASS a channel recovery notification permits a new topology RPC
+25 recovery fixture groups passed
+PASS authentication rejects malformed candidates and redacts malformed bridge credentials
+PASS client preference and locale are transmitted with exact PLAIN bytes
+PASS AMQPLAIN preserves embedded zero bytes and UTF-8 without PLAIN delimiters
+PASS selected async provider runs once and unselected providers are never evaluated
+PASS unsupported mechanism or locale does not call a secret provider or send credentials
+PASS provider rejection fails the handshake without writing an initial response
+PASS invalid or oversized provider results cannot escape through the bridge
+PASS handshake timeout aborts a pending provider and suppresses its late result
+PASS explicit AbortSignal cancels authentication before any late response can be sent
+PASS recovery retains original candidates and reselects against the new broker offer
+PASS custom provider refreshes once per selected recovery handshake
+PASS failed selected authentication is not silently retried with another mechanism
+12 authentication fixture groups passed
+30 stored native authentication vectors in four backend groups verified
+amqp: 307 bounded inputs, no uncaught runtime failure
+{"project":"amqp","utc":"2026-09-19T06:17:36.442Z","runtime":"v24.11.0","platform":"win32","cpu":"Intel(R) Core(TM) i7-14700HX","input_utf8_bytes":122,"samples":30,"warmup":5,"median_ms":0.06349999999999767,"p95_ms":0.14520000000000266,"max_ms":0.1513000000000062,"scope":"JS warm execution of documented example; no cross-project or upstream performance claim"}

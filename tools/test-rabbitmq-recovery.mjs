@@ -5,7 +5,7 @@ import {sourceSnapshot,assertSourceUnchanged} from './evidence-source.mjs';
 import fs from 'node:fs';
 import {connect} from './client.mjs';
 import {withRabbit,proxyTo} from './rabbitmq-harness.mjs';
-const sources=sourceSnapshot(['tools/client.mjs','tools/recovery.mjs','tools/recovery-channel.mjs','tools/recovery-state.mjs','tools/rabbitmq-harness.mjs','tools/test-rabbitmq-recovery.mjs','tools/rabbitmq-reference.py','web/engine.mjs']);
+const sources=sourceSnapshot(['authentication.mbt','cmd/web/authentication.mbt','tools/authentication.mjs','tools/client.mjs','tools/recovery.mjs','tools/recovery-channel.mjs','tools/recovery-state.mjs','tools/rabbitmq-harness.mjs','tools/test-rabbitmq-recovery.mjs','tools/rabbitmq-reference.py','web/engine.mjs']);
 const tests=[],observations=[],recoveryLatenciesMs=[],config={host:'127.0.0.1',username:'demo',password:'test-only',allowInsecureAuth:true,heartbeat:2,timeout:3000,recovery:{retryDelay:40,retryJitter:0,maxRetries:5,onTopologyError:()=>false}};
 const event=(target,name)=>once(target,name,{signal:AbortSignal.timeout(10000)});
 async function test(name,action){await action();tests.push(name);console.log('PASS '+name);}

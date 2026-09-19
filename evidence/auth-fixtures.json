@@ -1,0 +1,32 @@
+{
+  "utc": "2026-09-19T06:17:35.836Z",
+  "passed": 12,
+  "tests": [
+    "authentication rejects malformed candidates and redacts malformed bridge credentials",
+    "client preference and locale are transmitted with exact PLAIN bytes",
+    "AMQPLAIN preserves embedded zero bytes and UTF-8 without PLAIN delimiters",
+    "selected async provider runs once and unselected providers are never evaluated",
+    "unsupported mechanism or locale does not call a secret provider or send credentials",
+    "provider rejection fails the handshake without writing an initial response",
+    "invalid or oversized provider results cannot escape through the bridge",
+    "handshake timeout aborts a pending provider and suppresses its late result",
+    "explicit AbortSignal cancels authentication before any late response can be sent",
+    "recovery retains original candidates and reselects against the new broker offer",
+    "custom provider refreshes once per selected recovery handshake",
+    "failed selected authentication is not silently retried with another mechanism"
+  ],
+  "sources": {
+    "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
+    "authentication.mbt": "09505b81f862c30d7f2bc24502188068475904ed5c858a8f38897060fa6397b6",
+    "session.mbt": "8d89b1de3eb0c24ecdbda48b2bb2020175c2f6b537aed37f55ad071f664fbb8c",
+    "cmd/web/authentication.mbt": "5302c487cb36963947e2e25b6a75d63d998789b3222dc28b889bb506103cae4a",
+    "cmd/web/session.mbt": "3beb76807437fe21e95b088235579c3072307b18d05bb407b931811331d1a4bd",
+    "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
+    "tools/client.mjs": "9f17f6880797001749eedb3b48f016c628a45345324ad45eb1ca5caf6ccc6f12",
+    "tools/recovery.mjs": "1de317e4be23348e7cebe20a05f877f910e7f7fa83fd91d1c5fc944f02af4421",
+    "tools/recovery-peer.mjs": "2938b1f6187d9f322c0b47e0498dda341ccb863a7e797501ce14cc5088864190",
+    "tools/test-authentication.mjs": "277175c3f26d03e2672a8d2b51ebc50514d2e9bcb5bd6f2e429656993afb422e",
+    "web/engine.mjs": "48a00bdd555f0d578106d10c3965d15d5cb623ea1c97c1ae5e55c09669a1b09c"
+  },
+  "scope": "Independent scripted TCP peer, including custom async response lifecycle and recovery; real certificate authentication is tested separately."
+}

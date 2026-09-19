@@ -36,6 +36,7 @@ export class RecoveringConnection extends Lifecycle {
   get _raw() { return this.#physical; }
   get limits() { return this.#physical?.limits; }
   get timeout() { return this.#physical?.timeout??this.#options.timeout??10000; }
+  get authenticationMechanism() { return this.#physical?.authenticationMechanism; }
   resolveQueue(name) { return this.topology.resolve(name); }
   _active(channel,topology=false) {
     if(this.state!=='open'||this.#physical?.closed||channel?.state!=='open'||channel?._raw?.closed)throw Error('Recovery in progress or connection/channel closed');

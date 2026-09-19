@@ -36,6 +36,10 @@ try {
   if ($LASTEXITCODE -ne 0) {throw 'client transport fixtures failed'}
   node tools/test-recovery.mjs
   if ($LASTEXITCODE -ne 0) {throw 'client recovery fixtures failed'}
+  node tools/test-authentication.mjs
+  if ($LASTEXITCODE -ne 0) {throw 'authentication fixtures failed'}
+  python tools/generate-auth-vectors.py --check
+  if ($LASTEXITCODE -ne 0) {throw 'stored authentication vectors failed'}
   node tools/robustness.mjs
   if ($LASTEXITCODE -ne 0) {throw 'robustness failed'}
   node tools/benchmark.mjs

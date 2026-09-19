@@ -1,6 +1,6 @@
 # AMQP 0-9-1 编解码与消息客户端
 
-本地候选版 **0.5.0**。MoonBit 实现帧/方法/属性编解码、连接认证协商和通道状态机；Node.js 提供 TCP/TLS、RPC、心跳和消息发布/消费宿主。仓库独立，当前仅供本地审查。
+本地候选版 **0.6.0**。MoonBit 实现帧/方法/属性编解码、连接认证协商和通道状态机；Node.js 提供 TCP/TLS、RPC、心跳和消息发布/消费宿主。仓库独立，当前仅供本地审查。
 
 ```sh
 moon test --target js
@@ -87,6 +87,32 @@ node tools/broker.mjs get existing-queue
 
 `roundtrip` 使用临时独占队列。`publish` 验证队列存在并等待确认；`get` 输出正文 Base64 JSON 后发送消费确认，空队列输出 `null`。浏览器页面仍用于线路审查，网络客户端运行在 Node 中。
 
+## 认证机制与客户端证书
+
+默认使用 PLAIN。通过 `sasl` 提供客户端优先顺序；选择第一个在 broker 公告中完整匹配的名称。一次握手选定后认证失败会返回错误，不在该连接上偷偷改用下一个机制。
+
+```js
+const connection = await connect({
+  host: 'broker.example',
+  tls: {ca: caPem, cert: clientCertPem, key: clientKeyPem},
+  sasl: [{mechanism: 'EXTERNAL'}],
+  recovery: true,
+});
+console.log(connection.authenticationMechanism);
+```
+
+EXTERNAL 身份由 broker 的外部认证机制确定；本版已实测 RabbitMQ 的证书插件，以证书 CN 映射已有用户。服务端须配置和信任客户端证书；仅设置 TLS 不会自动改用 EXTERNAL。`tls` 的证书校验沿用 Node TLS 默认设置。
+
+PLAIN/AMQPLAIN 候选可以各自配置 `username` / `password`，省略时沿用连接级值。例：`sasl: [{mechanism: 'AMQPLAIN'}, {mechanism: 'PLAIN'}]`。AMQPLAIN 由 MoonBit 编码 LOGIN/PASSWORD 字段表，去掉外层长度前缀。凭证保持 UTF-8 原值，**不做 SASLprep 或 Unicode 归一化**，与固定原库一致；PLAIN 内嵌 NUL 仍被本项目拒绝，AMQPLAIN 可以保留。
+
+自定义初始响应使用 `{mechanism: 'TOKEN', response: bytesOrString}`，也可使用 `response: async ({mechanism, signal}) => token`。提供器仅在该候选被选中时调用；它受握手超时和连接取消控制，关闭后返回的迟到结果不会发到网络。默认 TCP 仍须显式 `allowInsecureAuth: true`。这只支持初始响应；多轮 connection.secure 挑战仍不支持，固定 amqp091-go 参考也不实现该路径。
+
+每次重连重新协商原候选列表。内置凭证和静态响应在连接建立时复制，后续修改原数组不改变它们；函数提供器在每次选中的握手上重新调用，可从应用自己的凭证存储获取新值。当前尚无 connection.update-secret；提供器更新只影响后续握手。库不会自动获取 OAuth 令牌。JS 中不承诺密码内存可靠清零。
+
+最多 32 个候选、每个响应最多 1 MiB，并仍受配置的帧上限约束；JSON 桥认证配置最多 4 MiB。`locale` 默认 en_US，必须由 broker 公告；不支持的 locale 会失败。MoonBit 公开 `Authentication::plain/amqplain/external/custom/deferred`、`Session::with_authentication` 与 `respond_authentication`。延迟认证通过 `AuthenticationRequested(index, mechanism)` 请求初始响应。
+
+消息 CLI 增加 `AMQP_SASL=AMQPLAIN,PLAIN`、`AMQP_LOCALE`、`AMQP_CERT`/`AMQP_KEY`、`AMQP_SERVERNAME`。EXTERNAL 示例配置 `AMQP_TLS=1`、`AMQP_SASL=EXTERNAL`、CA 和客户端证书路径后运行 `node tools/broker.mjs roundtrip`，不把私钥或密码写入命令参数。
+
 ## 可选自动恢复
 
 ```js
@@ -122,11 +148,11 @@ connection.on('queueNameChanged', ({previous, current}) => console.log({previous
 
 ## 验证与成熟度
 
-0.5 的 **91 项核心测试在 JS 与 Wasm-GC 分别通过**，包含之前的 220 组 Pika 1.3.2 独立字节向量及新增会话状态测试。**18 组网络故障、25 组恢复故障、22 项原有 RabbitMQ 流程及 6 组真实恢复流程**通过；原有浏览器核心、CLI 与 7 项帧审查 CLI 场景也通过。
+0.6 的 **104 项核心测试在 JS 与 Wasm-GC 分别通过**，包含之前的 220 组 Pika 1.3.2 独立字节向量及新增会话状态测试。**18 组网络故障、25 组恢复故障、22 项原有 RabbitMQ 流程及 6 组真实恢复流程**通过；原有浏览器核心、CLI 与 7 项帧审查 CLI 场景也通过。
 
-真实服务器为 Ubuntu 发行的 RabbitMQ **4.0.5**、Erlang/OTP **27**，通过 Windows Node 24 的 TCP/TLS 访问本机 WSL 临时实例。验证了二进制分片、64 位属性、确认、退回、重投、消费取消、交换机路由、事务、通道错误隔离、心跳、错误凭证、TLS 信任/主机名和消息 CLI。证据及复现见 [TESTING.md](TESTING.md)、`evidence/client-validation.json`、`evidence/rabbitmq-validation.json`。恢复另与固定 amqp091-go 提交 `a0195c6baf35db642d13651cb28938f899062e7c` 的原生程序比较一个重复断线场景，3 次确认消费与 2 次队列更名一致。各验证层覆盖重叠，不相加声称上游案例数。性能记录仅为 4 KiB 消息、8 个在途发布的单机确认样例和单进程恢复延时观察。
+真实服务器为 Ubuntu 发行的 RabbitMQ **4.0.5**、Erlang/OTP **27**，通过 Windows Node 24 的 TCP/TLS 访问本机 WSL 临时实例。验证了二进制分片、64 位属性、确认、退回、重投、消费取消、交换机路由、事务、通道错误隔离、心跳、错误凭证、TLS 信任/主机名和消息 CLI。认证新增 12 组故障/生命周期、10 组真实 broker（含双向 TLS、重连和 CLI）验证；30 个原库认证响应及 9 个独立协商对照通过，AMQPLAIN 只归一化无语义差异的字段顺序。证据及复现见 [TESTING.md](TESTING.md)、`evidence/client-validation.json`、`evidence/rabbitmq-validation.json`。恢复另与固定 amqp091-go 提交 `a0195c6baf35db642d13651cb28938f899062e7c` 的原生程序比较一个重复断线场景，3 次确认消费与 2 次队列更名一致。各验证层覆盖重叠，不相加声称上游案例数。性能记录仅为 4 KiB 消息、8 个在途发布的单机确认样例和单进程恢复延时观察。
 
-这仍未完整追平 amqp091-go：恢复已覆盖下述有界场景，尚缺完整恢复边界/上游兼容、更多 SASL/SASLprep、流式大消息和充分的生产负载/长期运行证据。协议版本仅为 AMQP 0-9-1，不是 AMQP 1.0。当前编码 API 也不检查所有 broker 业务规则和保留字段语义。
+这仍未完整追平 amqp091-go：恢复已覆盖下述有界场景，尚缺完整恢复边界/上游兼容、connection.update-secret/完整 OAuth 凭证更新、流式大消息和充分的生产负载/长期运行证据。协议版本仅为 AMQP 0-9-1，不是 AMQP 1.0。当前编码 API 也不检查所有 broker 业务规则和保留字段语义。
 
 ## 限制
 
@@ -148,4 +174,4 @@ Node 字段表用普通对象，支持 boolean、signed int32、字符串、null
 
 参考：[RabbitMQ 规格](https://www.rabbitmq.com/docs/specification)、[amqp091-go](https://github.com/rabbitmq/amqp091-go)。Pika 仅是独立验证工具，无运行期依赖。
 
-本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，0.5 本地增量归档另附同提交 ZIP/bundle；历史合集未更新。未上传、未发布、未添加远程仓库。
+本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，0.6 本地增量归档另附同提交 ZIP/bundle；历史合集未更新。未上传、未发布、未添加远程仓库。

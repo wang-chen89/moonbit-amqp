@@ -12,7 +12,7 @@ const long=s=>cat(u32(Buffer.byteLength(s)),Buffer.from(s));
 const frame=(type,ch,payload)=>cat(Buffer.from([type]),u16(ch),u32(payload.length),payload,Buffer.from([206]));
 const method=(ch,cls,id,...args)=>frame(1,ch,cat(u16(cls),u16(id),...args));
 const ack=(ch,tag,multiple=false,nack=false)=>method(ch,60,nack?120:80,u64(tag),Buffer.from([multiple?1:0]));
-const started=()=>method(0,10,10,Buffer.from([0,9]),u32(0),long('PLAIN'),long('en_US'));
+const started=(options,peer)=>method(0,10,10,Buffer.from([0,9]),u32(0),long(typeof options.mechanisms==='function'?options.mechanisms(peer):options.mechanisms??'PLAIN'),long(options.locales??'en_US'));
 const delay=ms=>new Promise(r=>setTimeout(r,ms));
 
 async function fixture(options, action) {
@@ -30,8 +30,8 @@ async function fixture(options, action) {
           assert.equal(buffer.subarray(0,8).toString('hex'),'414d515000000901'); buffer=buffer.subarray(8);header=true;
           if(options.noStart)return;
           if(options.fragmentStart) {
-            let chain=Promise.resolve();for(const byte of started())chain=chain.then(()=>new Promise(r=>setImmediate(()=>{if(!socket.destroyed)send(Buffer.from([byte]));r();})));
-          } else send(started());
+            let chain=Promise.resolve();for(const byte of started(options,socket.peerId))chain=chain.then(()=>new Promise(r=>setImmediate(()=>{if(!socket.destroyed)send(Buffer.from([byte]));r();})));
+          } else send(started(options,socket.peerId));
         }
         while(buffer.length>=8) {
           const size=buffer.readUInt32BE(3)+8;if(buffer.length<size)return;

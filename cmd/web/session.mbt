@@ -177,6 +177,12 @@ fn method_json(channel : Int, command : @lib.Method) -> Json {
 fn event_json(e : @lib.SessionEvent) -> Json raise {
   match e {
     Ready => { "type": "ready" }
+    AuthenticationRequested(index, mechanism) =>
+      {
+        "type": "authenticate",
+        "index": index.to_json(),
+        "mechanism": mechanism.to_json(),
+      }
     Received(ch, command) => method_json(ch, command)
     ChannelClosed(ch, code, reason) =>
       {
@@ -216,6 +222,7 @@ fn result(s : @lib.Session, events : Array[@lib.SessionEvent]) -> String raise {
   (
     {
       "state": s.status().to_json(),
+      "authenticationMechanism": s.authentication_mechanism().to_json(),
       "channelMax": channels.to_json(),
       "frameMax": frame.to_json(),
       "heartbeat": heartbeat.to_json(),

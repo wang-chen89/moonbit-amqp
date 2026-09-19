@@ -7,7 +7,7 @@ import {sourceSnapshot,assertSourceUnchanged} from './evidence-source.mjs';
 import fs from 'node:fs/promises';
 import net from 'node:net';
 import {connect} from './client.mjs';
-const sources=sourceSnapshot(['session.mbt','cmd/web/session.mbt','tools/client.mjs','tools/broker.mjs','web/engine.mjs','tools/rabbitmq-reference.py','tools/test-rabbitmq.mjs']);
+const sources=sourceSnapshot(['authentication.mbt','cmd/web/authentication.mbt','tools/authentication.mjs','session.mbt','cmd/web/session.mbt','tools/client.mjs','tools/broker.mjs','web/engine.mjs','tools/rabbitmq-reference.py','tools/test-rabbitmq.mjs']);
 
 const root = process.env.RABBITMQ_ROOT;
 if (!root) throw Error('Set RABBITMQ_ROOT to extracted Ubuntu package root (Linux path for WSL)');

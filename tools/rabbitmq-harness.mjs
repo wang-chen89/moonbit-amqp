@@ -3,11 +3,12 @@ import {once} from 'node:events';
 import {createInterface} from 'node:readline';
 import {fileURLToPath} from 'node:url';
 import net from 'node:net';
-export async function withRabbit(action) {
+export async function withRabbit(action,{authentication=false}={}) {
  const root=process.env.RABBITMQ_ROOT;if(!root)throw Error('Set RABBITMQ_ROOT');
  let script=fileURLToPath(new URL('./rabbitmq-reference.py',import.meta.url));
  if(process.platform==='win32')script='/mnt/'+script[0].toLowerCase()+script.slice(2).replaceAll('\\','/');
- const server=process.platform==='win32'?spawn('wsl',['-d',process.env.WSL_DISTRO??'Ubuntu-D','--exec','python3',script,root],{windowsHide:true,stdio:['pipe','pipe','pipe']}):spawn('python3',[script,root],{stdio:['pipe','pipe','pipe']});
+ const args=[script,root,...(authentication?['--auth']:[])];
+ const server=process.platform==='win32'?spawn('wsl',['-d',process.env.WSL_DISTRO??'Ubuntu-D','--exec','python3',...args],{windowsHide:true,stdio:['pipe','pipe','pipe']}):spawn('python3',args,{stdio:['pipe','pipe','pipe']});
  let diagnostic='',info;server.stderr.on('data',b=>diagnostic+=b);
  server.stdin.on('error',()=>{});
  const exited=once(server,'exit'),lines=createInterface({input:server.stdout});

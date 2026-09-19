@@ -3,6 +3,7 @@ import tls from 'node:tls';
 import {EventEmitter} from 'node:events';
 import {randomUUID} from 'node:crypto';
 import * as core from '../web/engine.mjs';
+import {snapshotAuthentication,authenticationPlan,responseBytes} from './authentication.mjs';
 
 function checked(text) {
   if (text.startsWith('ERROR:')) throw Error(text.slice(7));
@@ -27,6 +28,7 @@ export class Connection extends EventEmitter {
   #key = randomUUID(); #socket; #timer; #abort; #signal; #ready = deferred();
   #connectTimer; #closed = false; #closing = false; #lastRead = performance.now(); #lastWrite = 0;
   #channels = new Map(); #closeWait; #limits; #maxBuffered; #timeout;
+  #authProviders=[]; #authAbort=new AbortController(); #authenticationMechanism='';
   static async connect(options = {}) {
     const connection = new Connection(options);
     await connection.#ready.promise;
@@ -34,15 +36,18 @@ export class Connection extends EventEmitter {
   }
   constructor(options = {}) {
     super();
+    options=snapshotAuthentication(options);
     const {host = 'localhost', port = options.tls ? 5671 : 5672, username = 'guest', password = 'guest', vhost = '/', heartbeat = 60, frameMax = 131072, channelMax = 64, timeout = 10000, signal, allowInsecureAuth = false} = options;
-    if (!options.tls && !allowInsecureAuth) throw Error('PLAIN over TCP requires allowInsecureAuth: true; use TLS for protected credentials');
+    if (!options.tls && !allowInsecureAuth) throw Error('SASL over TCP requires allowInsecureAuth: true; use TLS for protected credentials');
     if (typeof host !== 'string' || typeof username !== 'string' || typeof password !== 'string' || typeof vhost !== 'string') throw TypeError('Expected string connection options');
+    if(options.locale!==undefined&&(typeof options.locale!=='string'||!options.locale.isWellFormed()||!options.locale.length||Buffer.byteLength(options.locale)>255||options.locale.includes(' ')))throw TypeError('Invalid authentication locale');
     integer(port, 1, 65535, 'port'); integer(heartbeat, 0, 65535, 'heartbeat');
     integer(frameMax, 4096, 16777216, 'frameMax'); integer(channelMax, 1, 65535, 'channelMax');
     this.#timeout = integer(timeout, 1, 2147483647, 'timeout');
     this.#maxBuffered = integer(options.maxBufferedBytes ?? 33554432, 1048576, 134217728, 'maxBufferedBytes');
     if (signal?.aborted) throw signal.reason ?? Error('Aborted');
-    const initial = JSON.parse(checked(core.session_open(this.#key, username, password, vhost, channelMax, frameMax, heartbeat)));
+    const auth=authenticationPlan(options.sasl);this.#authProviders=auth.providers;
+    const initial = JSON.parse(checked(core.session_open_auth(this.#key, JSON.stringify(auth.descriptors), vhost, options.locale??'en_US', channelMax, frameMax, heartbeat)));
     this.#limits = initial;
     try {
       this.#socket = options.tls ? tls.connect({...options.tls, host, port}) : net.connect({host, port});
@@ -76,6 +81,7 @@ export class Connection extends EventEmitter {
   get closed() { return this.#closed; }
   get limits() { const {channelMax, frameMax, heartbeat} = this.#limits; return {channelMax, frameMax, heartbeat}; }
   get timeout() { return this.#timeout; }
+  get authenticationMechanism() { return this.#authenticationMechanism; }
   #write(hexFrames) {
     if (this.#closed) throw Error('Connection closed');
     const bytes = hexFrames.reduce((n, x) => n + x.length / 2, 0);
@@ -89,10 +95,21 @@ export class Connection extends EventEmitter {
   }
   #process(text) {
     const result = JSON.parse(checked(text));
+    this.#authenticationMechanism=result.authenticationMechanism;
     this.#limits = {channelMax: result.channelMax, frameMax: result.frameMax, heartbeat: result.heartbeat};
     this.#write(result.output);
     for (const e of result.events) {
-      if (e.type === 'ready') {
+      if(e.type==='authenticate') {
+        const provider=this.#authProviders[e.index];
+        if(!provider)throw Error('Missing selected authentication provider');
+        Promise.resolve().then(()=>{
+          if(this.#closed)throw Error('Connection closed during authentication');
+          return provider({mechanism:e.mechanism,signal:this.#authAbort.signal});
+        }).then(value=>{
+          if(!this.#closed)this.#process(core.session_auth_response(this.#key,responseBytes(value).toString('hex')));
+        }).catch(error=>{if(!this.#closed)this._fail(error);});
+      } else if (e.type === 'ready') {
+        this.#authProviders=[];
         clearTimeout(this.#connectTimer);
         if (result.heartbeat) {
           this.#timer = setInterval(() => {
@@ -133,6 +150,7 @@ export class Connection extends EventEmitter {
   #terminate(error, graceful) {
     if (this.#closed) return;
     this.#closed = true;
+    this.#authAbort.abort(error);this.#authProviders=[];
     clearTimeout(this.#connectTimer); clearInterval(this.#timer);
     this.#signal?.removeEventListener('abort', this.#abort);
     this.#ready.reject(error); this.#closeWait?.reject(error);
@@ -291,6 +309,7 @@ export class Channel extends EventEmitter {
 }
 
 export const connect = async options => {
+  options=snapshotAuthentication(options);
   if (options?.recovery) {
     const {RecoveringConnection} = await import('./recovery.mjs');
     return RecoveringConnection.connect(options, opts => Connection.connect(opts));

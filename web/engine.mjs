@@ -140,6 +140,14 @@ function _M0DTPC16result6ResultGRP211localreview4amqp7SessionRPB7FailureE2Ok(par
   this._0 = param0;
 }
 _M0DTPC16result6ResultGRP211localreview4amqp7SessionRPB7FailureE2Ok.prototype.$tag = 1;
+function _M0DTPC16result6ResultGUiRP211localreview4amqp14AuthenticationERP211localreview4amqp10FrameErrorE3Err(param0) {
+  this._0 = param0;
+}
+_M0DTPC16result6ResultGUiRP211localreview4amqp14AuthenticationERP211localreview4amqp10FrameErrorE3Err.prototype.$tag = 0;
+function _M0DTPC16result6ResultGUiRP211localreview4amqp14AuthenticationERP211localreview4amqp10FrameErrorE2Ok(param0) {
+  this._0 = param0;
+}
+_M0DTPC16result6ResultGUiRP211localreview4amqp14AuthenticationERP211localreview4amqp10FrameErrorE2Ok.prototype.$tag = 1;
 function _M0DTPC16result6ResultGRPB4JsonRPB7FailureE3Err(param0) {
   this._0 = param0;
 }
@@ -149,6 +157,15 @@ function _M0DTPC16result6ResultGRPB4JsonRPB7FailureE2Ok(param0) {
 }
 _M0DTPC16result6ResultGRPB4JsonRPB7FailureE2Ok.prototype.$tag = 1;
 function _M0TPB3MapGsRPB4JsonE(param0, param1, param2, param3, param4, param5, param6) {
+  this.entries = param0;
+  this.size = param1;
+  this.capacity = param2;
+  this.capacity_mask = param3;
+  this.grow_at = param4;
+  this.head = param5;
+  this.tail = param6;
+}
+function _M0TPB3MapGiRP211localreview4amqp7PendingE(param0, param1, param2, param3, param4, param5, param6) {
   this.entries = param0;
   this.size = param1;
   this.capacity = param2;
@@ -167,15 +184,6 @@ function _M0TPB3MapGisE(param0, param1, param2, param3, param4, param5, param6) 
   this.tail = param6;
 }
 function _M0TPB3MapGibE(param0, param1, param2, param3, param4, param5, param6) {
-  this.entries = param0;
-  this.size = param1;
-  this.capacity = param2;
-  this.capacity_mask = param3;
-  this.grow_at = param4;
-  this.head = param5;
-  this.tail = param6;
-}
-function _M0TPB3MapGiRP211localreview4amqp7PendingE(param0, param1, param2, param3, param4, param5, param6) {
   this.entries = param0;
   this.size = param1;
   this.capacity = param2;
@@ -246,6 +254,14 @@ function _M0TPB8MutLocalGORPB5EntryGsRPB4JsonEE(param0) {
 function _M0TPB8MutLocalGORPB5EntryGisEE(param0) {
   this.val = param0;
 }
+function _M0DTPC16result6ResultGRPB5ArrayGRP211localreview4amqp14AuthenticationERPC15error5ErrorE3Err(param0) {
+  this._0 = param0;
+}
+_M0DTPC16result6ResultGRPB5ArrayGRP211localreview4amqp14AuthenticationERPC15error5ErrorE3Err.prototype.$tag = 0;
+function _M0DTPC16result6ResultGRPB5ArrayGRP211localreview4amqp14AuthenticationERPC15error5ErrorE2Ok(param0) {
+  this._0 = param0;
+}
+_M0DTPC16result6ResultGRPB5ArrayGRP211localreview4amqp14AuthenticationERPC15error5ErrorE2Ok.prototype.$tag = 1;
 function _M0DTPC16result6ResultGRPB5ArrayGRPB4JsonERPC15error5ErrorE3Err(param0) {
   this._0 = param0;
 }
@@ -819,6 +835,18 @@ function _M0TP211localreview4amqp5Frame(param0, param1, param2) {
   this.channel = param1;
   this.payload = param2;
 }
+function _M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRP211localreview4amqp10FrameErrorE3Err(param0) {
+  this._0 = param0;
+}
+_M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRP211localreview4amqp10FrameErrorE3Err.prototype.$tag = 0;
+function _M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRP211localreview4amqp10FrameErrorE2Ok(param0) {
+  this._0 = param0;
+}
+_M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRP211localreview4amqp10FrameErrorE2Ok.prototype.$tag = 1;
+function _M0TP211localreview4amqp14Authentication(param0, param1) {
+  this.mechanism = param0;
+  this.response = param1;
+}
 const $bytes_literal$1 = new Uint8Array([65,77,81,80,0,0,9,1]);
 function _M0DTPC16result6ResultGRP211localreview4amqp9AssemblerRP211localreview4amqp10FrameErrorE3Err(param0) {
   this._0 = param0;
@@ -863,19 +891,21 @@ function _M0DTPC16result6ResultGRP211localreview4amqp7SessionRP211localreview4am
   this._0 = param0;
 }
 _M0DTPC16result6ResultGRP211localreview4amqp7SessionRP211localreview4amqp10FrameErrorE2Ok.prototype.$tag = 1;
-function _M0TP211localreview4amqp7Session(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11) {
+function _M0TP211localreview4amqp7Session(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13) {
   this.decoder = param0;
   this.assembler = param1;
   this.state = param2;
-  this.secret = param3;
-  this.vhost = param4;
-  this.channel_limit = param5;
-  this.frame_limit = param6;
-  this.heartbeat_seconds = param7;
-  this.channels = param8;
-  this.paused = param9;
-  this.blocked = param10;
-  this.output = param11;
+  this.auth = param3;
+  this.selected_auth = param4;
+  this.locale = param5;
+  this.vhost = param6;
+  this.channel_limit = param7;
+  this.frame_limit = param8;
+  this.heartbeat_seconds = param9;
+  this.channels = param10;
+  this.paused = param11;
+  this.blocked = param12;
+  this.output = param13;
 }
 function _M0TPB9ArrayViewGUisEE(param0, param1, param2) {
   this.buf = param0;
@@ -1073,6 +1103,7 @@ function _M0TP211localreview4amqp7Content(param0, param1, param2, param3) {
   this.header = param2;
   this.body = param3;
 }
+const $bytes_literal$2 = new Uint8Array([109,111,111,110,98,105,116,45,97,109,113,112]);
 function _M0DTPC16result6ResultGRPB5ArrayGRP211localreview4amqp12SessionEventERP211localreview4amqp10FrameErrorE3Err(param0) {
   this._0 = param0;
 }
@@ -1084,27 +1115,35 @@ _M0DTPC16result6ResultGRPB5ArrayGRP211localreview4amqp12SessionEventERP211localr
 function _M0DTP211localreview4amqp12SessionEvent5Ready() {}
 _M0DTP211localreview4amqp12SessionEvent5Ready.prototype.$tag = 0;
 const _M0DTP211localreview4amqp12SessionEvent5Ready__ = new _M0DTP211localreview4amqp12SessionEvent5Ready();
+function _M0DTP211localreview4amqp12SessionEvent23AuthenticationRequested(param0, param1) {
+  this._0 = param0;
+  this._1 = param1;
+}
+_M0DTP211localreview4amqp12SessionEvent23AuthenticationRequested.prototype.$tag = 1;
 function _M0DTP211localreview4amqp12SessionEvent8Received(param0, param1) {
   this._0 = param0;
   this._1 = param1;
 }
-_M0DTP211localreview4amqp12SessionEvent8Received.prototype.$tag = 1;
+_M0DTP211localreview4amqp12SessionEvent8Received.prototype.$tag = 2;
 function _M0DTP211localreview4amqp12SessionEvent7Message(param0) {
   this._0 = param0;
 }
-_M0DTP211localreview4amqp12SessionEvent7Message.prototype.$tag = 2;
+_M0DTP211localreview4amqp12SessionEvent7Message.prototype.$tag = 3;
 function _M0DTP211localreview4amqp12SessionEvent13ChannelClosed(param0, param1, param2) {
   this._0 = param0;
   this._1 = param1;
   this._2 = param2;
 }
-_M0DTP211localreview4amqp12SessionEvent13ChannelClosed.prototype.$tag = 3;
+_M0DTP211localreview4amqp12SessionEvent13ChannelClosed.prototype.$tag = 4;
 function _M0DTP211localreview4amqp12SessionEvent6Closed(param0, param1) {
   this._0 = param0;
   this._1 = param1;
 }
-_M0DTP211localreview4amqp12SessionEvent6Closed.prototype.$tag = 4;
-const $bytes_literal$2 = new Uint8Array([109,111,111,110,98,105,116,45,97,109,113,112]);
+_M0DTP211localreview4amqp12SessionEvent6Closed.prototype.$tag = 5;
+function _M0TPB8MutLocalGOUiRP211localreview4amqp14AuthenticationEE(param0) {
+  this.val = param0;
+}
+const $bytes_literal$3 = new Uint8Array([0,42,0,42]);
 function _M0DTPC16result6ResultGsRPB7FailureE3Err(param0) {
   this._0 = param0;
 }
@@ -1228,6 +1267,22 @@ function _M0DTPC16result6ResultGRPB4JsonRPC15error5ErrorE2Ok(param0) {
   this._0 = param0;
 }
 _M0DTPC16result6ResultGRPB4JsonRPC15error5ErrorE2Ok.prototype.$tag = 1;
+function _M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRPC15error5ErrorE3Err(param0) {
+  this._0 = param0;
+}
+_M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRPC15error5ErrorE3Err.prototype.$tag = 0;
+function _M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRPC15error5ErrorE2Ok(param0) {
+  this._0 = param0;
+}
+_M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRPC15error5ErrorE2Ok.prototype.$tag = 1;
+function _M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRPB7FailureE3Err(param0) {
+  this._0 = param0;
+}
+_M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRPB7FailureE3Err.prototype.$tag = 0;
+function _M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRPB7FailureE2Ok(param0) {
+  this._0 = param0;
+}
+_M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRPB7FailureE2Ok.prototype.$tag = 1;
 const _M0FP092moonbitlang_2fcore_2fbuiltin_2fStringBuilder_24as_24_40moonbitlang_2fcore_2fbuiltin_2eLogger = { method_0: _M0IPB13StringBuilderPB6Logger13write__string, method_1: _M0IP016_24default__implPB6Logger16write__substringGRPB13StringBuilderE, method_2: _M0IPB13StringBuilderPB6Logger11write__view, method_3: _M0IPB13StringBuilderPB6Logger11write__char, method_4: _M0IP016_24default__implPB6Logger28write__string__interpolationGRPB13StringBuilderE, method_5: _M0IP016_24default__implPB6Logger5writeGRPB13StringBuilderE };
 const _M0FP049Int_24as_24_40moonbitlang_2fcore_2fbuiltin_2eShow = { method_0: _M0IP016_24default__implPB4Show6outputGiE, method_1: _M0IPC13int3IntPB4Show10to__string };
 const _M0FP052String_24as_24_40moonbitlang_2fcore_2fbuiltin_2eShow = { method_0: _M0IP016_24default__implPB4Show6outputGsE, method_1: _M0IPC16string6StringPB4Show10to__string };
@@ -1409,7 +1464,7 @@ const _M0FPC28internal7strconv17check__underscoreN25_2atransition__table__222S23
 const _M0FPC28internal7strconv15parse__inf__nanN25_2atransition__table__304S312 = [14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 3, 4, 14, 14, 14, 14, 14, 14, 14, 7, 14, 14, 14, 14, 5, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 6, 14, 14, 14, 0, 14, 14, 14, 14, 14, 14, 14, 14, 14, 8, 14, 14, 14, 14, 14, 1, 14, 14, 9, 14, 14, 14, 14, 14, 14, 14, 14, 10, 14, 14, 14, 14, 14, 14, 11, 14, 14, 14, 14, 14, 14, 14, 14, 14, 12, 14, 14, 14, 14, 14, 14, 14, 14, 13, 14, 1, 14, 14, 14, 14, 14, 14, 14];
 const _M0IPC14json8JsonPathPC15debug5Debug8to__reprN6constrS1889 = "key";
 const _M0IPC14json8JsonPathPC15debug5Debug8to__reprN6constrS1890 = "index";
-function _M0FPC15abort5abortGRPB4JsonE(msg) {
+function _M0FPC15abort5abortGRPC15bytes9BytesViewE(msg) {
   return $panic();
 }
 function _M0FPC15abort5abortGuE(msg) {
@@ -1446,7 +1501,7 @@ function _M0FPB4rotl(x, r) {
 function _M0FPB13consume4__acc(acc, input) {
   return Math.imul(_M0FPB4rotl((acc >>> 0) + ((Math.imul(input, -1028477379) | 0) >>> 0) | 0, 17), 668265263) | 0;
 }
-function _M0MPC15array10FixedArray12unsafe__blitGRPB17UnsafeMaybeUninitGyEE(dst, dst_offset, src, src_offset, len) {
+function _M0MPC15array10FixedArray12unsafe__blitGyE(dst, dst_offset, src, src_offset, len) {
   if (dst === src && dst_offset < src_offset) {
     let _tmp = 0;
     while (true) {
@@ -1485,7 +1540,7 @@ function _M0MPC15array10FixedArray12unsafe__blitGRPB17UnsafeMaybeUninitGyEE(dst,
     }
   }
 }
-function _M0MPC15array10FixedArray12unsafe__blitGyE(dst, dst_offset, src, src_offset, len) {
+function _M0MPC15array10FixedArray12unsafe__blitGRPB17UnsafeMaybeUninitGyEE(dst, dst_offset, src, src_offset, len) {
   if (dst === src && dst_offset < src_offset) {
     let _tmp = 0;
     while (true) {
@@ -1792,7 +1847,7 @@ function _M0MPC16string10StringView12view_2einner(self, start_offset, end_offset
     const _Some = end_offset;
     end_offset$2 = _Some;
   }
-  return start_offset >= 0 && (start_offset <= end_offset$2 && end_offset$2 <= (self.end - self.start | 0)) ? new _M0TPC16string10StringView(self.str, self.start + start_offset | 0, self.start + end_offset$2 | 0) : _M0FPC15abort5abortGRPB4JsonE("Invalid index for View");
+  return start_offset >= 0 && (start_offset <= end_offset$2 && end_offset$2 <= (self.end - self.start | 0)) ? new _M0TPC16string10StringView(self.str, self.start + start_offset | 0, self.start + end_offset$2 | 0) : _M0FPC15abort5abortGRPC15bytes9BytesViewE("Invalid index for View");
 }
 function _M0MPC16uint646UInt648to__byte(self) {
   return (Number(BigInt.asIntN(32, self)) | 0) & 255;
@@ -2113,7 +2168,7 @@ function _M0MPC16string6String12view_2einner(self, start_offset, end_offset) {
     const _Some = end_offset;
     end_offset$2 = _Some;
   }
-  return start_offset >= 0 && (start_offset <= end_offset$2 && end_offset$2 <= self.length) ? new _M0TPC16string10StringView(self, start_offset, end_offset$2) : _M0FPC15abort5abortGRPB4JsonE("Invalid index for View");
+  return start_offset >= 0 && (start_offset <= end_offset$2 && end_offset$2 <= self.length) ? new _M0TPC16string10StringView(self, start_offset, end_offset$2) : _M0FPC15abort5abortGRPC15bytes9BytesViewE("Invalid index for View");
 }
 function _M0MPC16string6String24char__length__eq_2einner(self, len, start_offset, end_offset) {
   let end_offset$2;
@@ -2432,7 +2487,7 @@ function _M0IPC16string6StringPB4Show10to__string(self) {
 }
 function _M0MPC16string6String6repeat(self, n) {
   if (n < 0) {
-    return _M0FPC15abort5abortGRPB4JsonE("negative repeat count");
+    return _M0FPC15abort5abortGRPC15bytes9BytesViewE("negative repeat count");
   } else {
     if (n === 0) {
       return "";
@@ -2467,7 +2522,7 @@ function _M0MPC16string6String6repeat(self, n) {
           }
           return _M0MPB13StringBuilder10to__string(buf);
         } else {
-          return _M0FPC15abort5abortGRPB4JsonE("repeat result too large");
+          return _M0FPC15abort5abortGRPC15bytes9BytesViewE("repeat result too large");
         }
       }
     }
@@ -2508,6 +2563,9 @@ function _M0MPC16string6String13strip__suffix(self, suffix) {
 function _M0MPC16string10StringView13strip__prefix(self, prefix) {
   const prefix_len = prefix.end - prefix.start | 0;
   return (self.end - self.start | 0) >= prefix_len && _M0IPC16string10StringViewPB2Eq5equal(_M0MPC16string10StringView12view_2einner(self, 0, prefix_len), prefix) ? _M0MPC16string10StringView12view_2einner(self, prefix_len, undefined) : undefined;
+}
+function _M0MPC15array5Array13Array_2einnerGRPC16string10StringViewE(capacity) {
+  return [];
 }
 function _M0MPC15array5Array4pushGRP211localreview4amqp8ArgumentE(self, value) {
   _M0MPB7JSArray4push(self, value);
@@ -2903,6 +2961,9 @@ function _M0MPC16string6String4trim(self, chars$46$opt) {
 function _M0MPC16string10StringView9is__empty(self) {
   return (self.end - self.start | 0) === 0;
 }
+function _M0MPC16string6String9is__empty(self) {
+  return self === "";
+}
 function _M0MPC16string6String4iter(self) {
   const len = self.length;
   const index = new _M0TPB8MutLocalGiE(0);
@@ -2979,6 +3040,29 @@ function _M0MPC16string10StringView5split(self, sep) {
 }
 function _M0MPC16string6String5split(self, sep) {
   return _M0MPC16string10StringView5split(new _M0TPC16string10StringView(self, 0, self.length), sep);
+}
+function _M0MPB4Iter9to__arrayGRPC16string10StringViewE(self) {
+  const _bind$2 = self.size_hint;
+  let result;
+  if (_bind$2 === undefined) {
+    result = [];
+  } else {
+    const _Some = _bind$2;
+    const _n = _Some;
+    result = _M0MPC15array5Array13Array_2einnerGRPC16string10StringViewE(_n);
+  }
+  while (true) {
+    const _bind$3 = _M0MPB4Iter4nextGUsRP211localreview4amqp12ArgumentKindEE(self);
+    if (_bind$3 === undefined) {
+      break;
+    } else {
+      const _Some = _bind$3;
+      const _x = _Some;
+      _M0MPC15array5Array4pushGRP211localreview4amqp8ArgumentE(result, _x);
+      continue;
+    }
+  }
+  return result;
 }
 function _M0MPC16string10StringView9get__char(self, idx) {
   if (idx >= 0 && idx < (self.end - self.start | 0)) {
@@ -3259,6 +3343,15 @@ function _M0MPC16option6Option16unwrap__or__elseGRP211localreview4amqp7SessionEH
     return new _M0DTPC16result6ResultGRP211localreview4amqp7SessionRPB7FailureE2Ok(_t);
   }
 }
+function _M0MPC16option6Option16unwrap__or__elseGUiRP211localreview4amqp14AuthenticationEEHRP211localreview4amqp10FrameError(self, default_) {
+  if (self === undefined) {
+    return default_();
+  } else {
+    const _Some = self;
+    const _t = _Some;
+    return new _M0DTPC16result6ResultGUiRP211localreview4amqp14AuthenticationERP211localreview4amqp10FrameErrorE2Ok(_t);
+  }
+}
 function _M0MPC16option6Option16unwrap__or__elseGRPB4JsonEHRPB7Failure(self, default_) {
   if (self === undefined) {
     return default_();
@@ -3309,6 +3402,14 @@ function _M0FPB8new__mapGsRPB4JsonE(capacity) {
   const _bind$5 = undefined;
   return new _M0TPB3MapGsRPB4JsonE(_bind$4, 0, capacity$2, _bind$2, _bind$3, _bind$5, -1);
 }
+function _M0FPB8new__mapGiRP211localreview4amqp7PendingE(capacity) {
+  const capacity$2 = _M0MPC13int3Int20next__power__of__two(capacity);
+  const _bind$2 = capacity$2 - 1 | 0;
+  const _bind$3 = _M0FPB21calc__grow__threshold(capacity$2);
+  const _bind$4 = $make_array_len_and_init(capacity$2, undefined);
+  const _bind$5 = undefined;
+  return new _M0TPB3MapGiRP211localreview4amqp7PendingE(_bind$4, 0, capacity$2, _bind$2, _bind$3, _bind$5, -1);
+}
 function _M0FPB8new__mapGisE(capacity) {
   const capacity$2 = _M0MPC13int3Int20next__power__of__two(capacity);
   const _bind$2 = capacity$2 - 1 | 0;
@@ -3324,14 +3425,6 @@ function _M0FPB8new__mapGibE(capacity) {
   const _bind$4 = $make_array_len_and_init(capacity$2, undefined);
   const _bind$5 = undefined;
   return new _M0TPB3MapGibE(_bind$4, 0, capacity$2, _bind$2, _bind$3, _bind$5, -1);
-}
-function _M0FPB8new__mapGiRP211localreview4amqp7PendingE(capacity) {
-  const capacity$2 = _M0MPC13int3Int20next__power__of__two(capacity);
-  const _bind$2 = capacity$2 - 1 | 0;
-  const _bind$3 = _M0FPB21calc__grow__threshold(capacity$2);
-  const _bind$4 = $make_array_len_and_init(capacity$2, undefined);
-  const _bind$5 = undefined;
-  return new _M0TPB3MapGiRP211localreview4amqp7PendingE(_bind$4, 0, capacity$2, _bind$2, _bind$3, _bind$5, -1);
 }
 function _M0FPB21capacity__for__length(length) {
   let capacity = _M0MPC13int3Int20next__power__of__two(length);
@@ -4178,6 +4271,32 @@ function _M0MPB3Map3MapGsRP211localreview4amqp7SessionE(arr, capacity) {
   }
   return m;
 }
+function _M0MPB3Map3MapGiRP211localreview4amqp7PendingE(arr, capacity) {
+  const length = arr.end - arr.start | 0;
+  let capacity$2;
+  if (capacity === undefined) {
+    capacity$2 = length === 0 ? 8 : _M0FPB21capacity__for__length(length);
+  } else {
+    const _Some = capacity;
+    const _capacity = _Some;
+    capacity$2 = _M0MPC13int3Int3max(_capacity, _M0FPB21capacity__for__length(length));
+  }
+  const m = _M0FPB8new__mapGiRP211localreview4amqp7PendingE(capacity$2);
+  const _bind$2 = arr.end - arr.start | 0;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind$2) {
+      const e = arr.buf[arr.start + _ | 0];
+      _M0MPB3Map3setGiRP211localreview4amqp7PendingE(m, e._0, e._1);
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return m;
+}
 function _M0MPB3Map3MapGisE(arr, capacity) {
   const length = arr.end - arr.start | 0;
   let capacity$2;
@@ -4222,32 +4341,6 @@ function _M0MPB3Map3MapGibE(arr, capacity) {
     if (_ < _bind$2) {
       const e = arr.buf[arr.start + _ | 0];
       _M0MPB3Map3setGibE(m, e._0, e._1);
-      _tmp = _ + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  return m;
-}
-function _M0MPB3Map3MapGiRP211localreview4amqp7PendingE(arr, capacity) {
-  const length = arr.end - arr.start | 0;
-  let capacity$2;
-  if (capacity === undefined) {
-    capacity$2 = length === 0 ? 8 : _M0FPB21capacity__for__length(length);
-  } else {
-    const _Some = capacity;
-    const _capacity = _Some;
-    capacity$2 = _M0MPC13int3Int3max(_capacity, _M0FPB21capacity__for__length(length));
-  }
-  const m = _M0FPB8new__mapGiRP211localreview4amqp7PendingE(capacity$2);
-  const _bind$2 = arr.end - arr.start | 0;
-  let _tmp = 0;
-  while (true) {
-    const _ = _tmp;
-    if (_ < _bind$2) {
-      const e = arr.buf[arr.start + _ | 0];
-      _M0MPB3Map3setGiRP211localreview4amqp7PendingE(m, e._0, e._1);
       _tmp = _ + 1 | 0;
       continue;
     } else {
@@ -5009,6 +5102,31 @@ function _M0MPC15array5Array3mapGUsRP211localreview4amqp12ArgumentKindERPB4JsonE
   }
   return arr;
 }
+function _M0MPC15array5Array3mapGRPB4JsonRP211localreview4amqp14AuthenticationEHRPC15error5Error(self, f) {
+  const arr = new Array(self.length);
+  const _bind$2 = self.length;
+  let _tmp = 0;
+  while (true) {
+    const i = _tmp;
+    if (i < _bind$2) {
+      const v = self[i];
+      const _bind$3 = f(v);
+      let _tmp$2;
+      if (_bind$3.$tag === 1) {
+        const _ok = _bind$3;
+        _tmp$2 = _ok._0;
+      } else {
+        return _bind$3;
+      }
+      arr[i] = _tmp$2;
+      _tmp = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return new _M0DTPC16result6ResultGRPB5ArrayGRP211localreview4amqp14AuthenticationERPC15error5ErrorE2Ok(arr);
+}
 function _M0MPC15array5Array3mapGzsE(self, f) {
   const arr = new Array(self.length);
   const _bind$2 = self.length;
@@ -5346,6 +5464,21 @@ function _M0MPB4Iter3anyGRPC16string10StringViewE(self, f) {
     }
   }
 }
+function _M0MPB4Iter3anyGcE(self, f) {
+  while (true) {
+    const _bind$2 = _M0MPB4Iter4nextGcE(self);
+    if (_bind$2 === -1) {
+      return false;
+    } else {
+      const _Some = _bind$2;
+      const _x = _Some;
+      if (f(_x)) {
+        return true;
+      }
+      continue;
+    }
+  }
+}
 function _M0MPB4Iter11find__firstGUsRP211localreview4amqp12ArgumentKindEE(self, f) {
   while (true) {
     const _bind$2 = _M0MPB4Iter4nextGUsRP211localreview4amqp12ArgumentKindEE(self);
@@ -5390,7 +5523,7 @@ function _M0MPC15bytes5Bytes12view_2einner(self, start, end) {
     const _bind$2 = end$2 - start | 0;
     return new _M0TPC15bytes9BytesView(self, start, start + _bind$2 | 0);
   } else {
-    return _M0FPC15abort5abortGRPB4JsonE("Invalid index for View");
+    return _M0FPC15abort5abortGRPC15bytes9BytesViewE("Invalid index for View");
   }
 }
 function _M0IPC16string6StringPB4Hash4hash(self) {
@@ -5755,7 +5888,7 @@ function _M0MPC15bytes9BytesView9to__array(self) {
   const len = self.end - self.start | 0;
   return _M0MPC15array5Array44unsafe__make__and__blit__from__fixed_2einnerGyE(_M0MPC15bytes9BytesView4data(self), len, len, _M0MPC15bytes9BytesView13start__offset(self), 0);
 }
-function _M0MPC15array5Array28unsafe__truncate__to__lengthGzE(self, new_len) {
+function _M0MPC15array5Array28unsafe__truncate__to__lengthGRP211localreview4amqp14AuthenticationE(self, new_len) {
   _M0MPB7JSArray11set__length(self, new_len);
 }
 function _M0MPC15array5Array28unsafe__truncate__to__lengthGyE(self, new_len) {
@@ -5790,7 +5923,7 @@ function _M0MPC15array5Array3popGRPC14json10WriteFrameE(self) {
     return v;
   }
 }
-function _M0MPC15array5Array4copyGzE(self) {
+function _M0MPC15array5Array4copyGRP211localreview4amqp14AuthenticationE(self) {
   return _M0MPB7JSArray4copy(self);
 }
 function _M0MPC15array5Array2atGRPB4JsonE(self, index) {
@@ -5868,8 +6001,8 @@ function _M0MPC15array5Array3anyGUsRP211localreview4amqp12ArgumentKindEE(self, f
   }
   return false;
 }
-function _M0MPC15array5Array5clearGzE(self) {
-  _M0MPC15array5Array28unsafe__truncate__to__lengthGzE(self, 0);
+function _M0MPC15array5Array5clearGRP211localreview4amqp14AuthenticationE(self) {
+  _M0MPC15array5Array28unsafe__truncate__to__lengthGRP211localreview4amqp14AuthenticationE(self, 0);
 }
 function _M0MPC15array5Array5clearGyE(self) {
   _M0MPC15array5Array28unsafe__truncate__to__lengthGyE(self, 0);
@@ -5892,6 +6025,23 @@ function _M0MPC15array5Array6filterGsE(self, f) {
     }
   }
   return arr;
+}
+function _M0MPC15array5Array8containsGRPC16string10StringViewE(self, value) {
+  const _bind$2 = self.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind$2) {
+      const v = self[_];
+      if (_M0IPC16string10StringViewPB2Eq5equal(v, value)) {
+        return true;
+      }
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      return false;
+    }
+  }
 }
 function _M0MPC15array5Array8containsGsE(self, value) {
   const _bind$2 = self.length;
@@ -11063,7 +11213,7 @@ function _M0MPC14json12ParseContext13parse__value2(ctx, tok, remaining_available
       }
     }
   }
-  return new _M0DTPC16result6ResultGRPB4JsonRPC14json10ParseErrorE2Ok(_M0FPC15abort5abortGRPB4JsonE("unreachable"));
+  return new _M0DTPC16result6ResultGRPB4JsonRPC14json10ParseErrorE2Ok(_M0FPC15abort5abortGRPC15bytes9BytesViewE("unreachable"));
 }
 function _M0MPC14json12ParseContext12parse__array(ctx, remaining_available_depth) {
   if (remaining_available_depth <= 0) {
@@ -11639,92 +11789,92 @@ function _M0IPC16uint646UInt64PC14json8FromJson10from__json(json, path) {
     return _M0FPC14json13decode__errorGmE(path, "UInt64::from_json: expected number in string representation");
   }
 }
-function _M0IP211localreview4amqp8ArgumentPC15debug5Debug8to__repr(_x_511) {
-  let _arg_519;
+function _M0IP211localreview4amqp8ArgumentPC15debug5Debug8to__repr(_x_550) {
+  let _arg_558;
   _L: {
-    let _arg_518;
+    let _arg_557;
     _L$2: {
-      let _arg_517;
+      let _arg_556;
       _L$3: {
-        let _arg_516;
+        let _arg_555;
         _L$4: {
-          let _arg_515;
+          let _arg_554;
           _L$5: {
-            let _arg_514;
+            let _arg_553;
             _L$6: {
-              let _arg_513;
+              let _arg_552;
               _L$7: {
-                let _arg_512;
+                let _arg_551;
                 _L$8: {
-                  switch (_x_511.$tag) {
+                  switch (_x_550.$tag) {
                     case 0: {
-                      const _Bit = _x_511;
-                      const _$42$arg_512 = _Bit._0;
-                      _arg_512 = _$42$arg_512;
+                      const _Bit = _x_550;
+                      const _$42$arg_551 = _Bit._0;
+                      _arg_551 = _$42$arg_551;
                       break _L$8;
                     }
                     case 1: {
-                      const _Octet = _x_511;
-                      const _$42$arg_513 = _Octet._0;
-                      _arg_513 = _$42$arg_513;
+                      const _Octet = _x_550;
+                      const _$42$arg_552 = _Octet._0;
+                      _arg_552 = _$42$arg_552;
                       break _L$7;
                     }
                     case 2: {
-                      const _Short = _x_511;
-                      const _$42$arg_514 = _Short._0;
-                      _arg_514 = _$42$arg_514;
+                      const _Short = _x_550;
+                      const _$42$arg_553 = _Short._0;
+                      _arg_553 = _$42$arg_553;
                       break _L$6;
                     }
                     case 3: {
-                      const _Long = _x_511;
-                      const _$42$arg_515 = _Long._0;
-                      _arg_515 = _$42$arg_515;
+                      const _Long = _x_550;
+                      const _$42$arg_554 = _Long._0;
+                      _arg_554 = _$42$arg_554;
                       break _L$5;
                     }
                     case 4: {
-                      const _LongLong = _x_511;
-                      const _$42$arg_516 = _LongLong._0;
-                      _arg_516 = _$42$arg_516;
+                      const _LongLong = _x_550;
+                      const _$42$arg_555 = _LongLong._0;
+                      _arg_555 = _$42$arg_555;
                       break _L$4;
                     }
                     case 5: {
-                      const _ShortString = _x_511;
-                      const _$42$arg_517 = _ShortString._0;
-                      _arg_517 = _$42$arg_517;
+                      const _ShortString = _x_550;
+                      const _$42$arg_556 = _ShortString._0;
+                      _arg_556 = _$42$arg_556;
                       break _L$3;
                     }
                     case 6: {
-                      const _LongString = _x_511;
-                      const _$42$arg_518 = _LongString._0;
-                      _arg_518 = _$42$arg_518;
+                      const _LongString = _x_550;
+                      const _$42$arg_557 = _LongString._0;
+                      _arg_557 = _$42$arg_557;
                       break _L$2;
                     }
                     default: {
-                      const _Table = _x_511;
-                      const _$42$arg_519 = _Table._0;
-                      _arg_519 = _$42$arg_519;
+                      const _Table = _x_550;
+                      const _$42$arg_558 = _Table._0;
+                      _arg_558 = _$42$arg_558;
                       break _L;
                     }
                   }
                 }
-                return _M0MPC15debug4Repr4ctor("Bit", [{ _0: undefined, _1: _M0IPC14bool4BoolPC15debug5Debug8to__repr(_arg_512) }]);
+                return _M0MPC15debug4Repr4ctor("Bit", [{ _0: undefined, _1: _M0IPC14bool4BoolPC15debug5Debug8to__repr(_arg_551) }]);
               }
-              return _M0MPC15debug4Repr4ctor("Octet", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_513) }]);
+              return _M0MPC15debug4Repr4ctor("Octet", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_552) }]);
             }
-            return _M0MPC15debug4Repr4ctor("Short", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_514) }]);
+            return _M0MPC15debug4Repr4ctor("Short", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_553) }]);
           }
-          return _M0MPC15debug4Repr4ctor("Long", [{ _0: undefined, _1: _M0IPC14uint4UIntPC15debug5Debug8to__repr(_arg_515) }]);
+          return _M0MPC15debug4Repr4ctor("Long", [{ _0: undefined, _1: _M0IPC14uint4UIntPC15debug5Debug8to__repr(_arg_554) }]);
         }
-        return _M0MPC15debug4Repr4ctor("LongLong", [{ _0: undefined, _1: _M0IPC16uint646UInt64PC15debug5Debug8to__repr(_arg_516) }]);
+        return _M0MPC15debug4Repr4ctor("LongLong", [{ _0: undefined, _1: _M0IPC16uint646UInt64PC15debug5Debug8to__repr(_arg_555) }]);
       }
-      return _M0MPC15debug4Repr4ctor("ShortString", [{ _0: undefined, _1: _M0IPC16string6StringPC15debug5Debug8to__repr(_arg_517) }]);
+      return _M0MPC15debug4Repr4ctor("ShortString", [{ _0: undefined, _1: _M0IPC16string6StringPC15debug5Debug8to__repr(_arg_556) }]);
     }
-    return _M0MPC15debug4Repr4ctor("LongString", [{ _0: undefined, _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_arg_518) }]);
+    return _M0MPC15debug4Repr4ctor("LongString", [{ _0: undefined, _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_arg_557) }]);
   }
-  return _M0MPC15debug4Repr4ctor("Table", [{ _0: undefined, _1: _M0IPC15array5ArrayPC15debug5Debug8to__reprGUsRP211localreview4amqp10FieldValueEE(_arg_519) }]);
+  return _M0MPC15debug4Repr4ctor("Table", [{ _0: undefined, _1: _M0IPC15array5ArrayPC15debug5Debug8to__reprGUsRP211localreview4amqp10FieldValueEE(_arg_558) }]);
 }
-function _M0IP211localreview4amqp12ArgumentKindPC15debug5Debug8to__repr(_x_465) {
-  switch (_x_465) {
+function _M0IP211localreview4amqp12ArgumentKindPC15debug5Debug8to__repr(_x_504) {
+  switch (_x_504) {
     case 0: {
       return _M0MPC15debug4Repr4ctor("BitKind", []);
     }
@@ -11751,59 +11901,59 @@ function _M0IP211localreview4amqp12ArgumentKindPC15debug5Debug8to__repr(_x_465) 
     }
   }
 }
-function _M0IP211localreview4amqp12ArgumentKindPB2Eq5equal(_x_461, _x_462) {
-  switch (_x_461) {
+function _M0IP211localreview4amqp12ArgumentKindPB2Eq5equal(_x_500, _x_501) {
+  switch (_x_500) {
     case 0: {
-      if (_x_462 === 0) {
+      if (_x_501 === 0) {
         return true;
       } else {
         return false;
       }
     }
     case 1: {
-      if (_x_462 === 1) {
+      if (_x_501 === 1) {
         return true;
       } else {
         return false;
       }
     }
     case 2: {
-      if (_x_462 === 2) {
+      if (_x_501 === 2) {
         return true;
       } else {
         return false;
       }
     }
     case 3: {
-      if (_x_462 === 3) {
+      if (_x_501 === 3) {
         return true;
       } else {
         return false;
       }
     }
     case 4: {
-      if (_x_462 === 4) {
+      if (_x_501 === 4) {
         return true;
       } else {
         return false;
       }
     }
     case 5: {
-      if (_x_462 === 5) {
+      if (_x_501 === 5) {
         return true;
       } else {
         return false;
       }
     }
     case 6: {
-      if (_x_462 === 6) {
+      if (_x_501 === 6) {
         return true;
       } else {
         return false;
       }
     }
     default: {
-      if (_x_462 === 7) {
+      if (_x_501 === 7) {
         return true;
       } else {
         return false;
@@ -11811,151 +11961,151 @@ function _M0IP211localreview4amqp12ArgumentKindPB2Eq5equal(_x_461, _x_462) {
     }
   }
 }
-function _M0IP211localreview4amqp10FrameErrorPC15debug5Debug8to__reprGRP211localreview4amqp10FrameErrorE(_x_451) {
-  let _arg_452;
+function _M0IP211localreview4amqp10FrameErrorPC15debug5Debug8to__reprGRP211localreview4amqp10FrameErrorE(_x_490) {
+  let _arg_491;
   _L: {
-    const _Invalid = _x_451;
-    const _$42$arg_452 = _Invalid._0;
-    _arg_452 = _$42$arg_452;
+    const _Invalid = _x_490;
+    const _$42$arg_491 = _Invalid._0;
+    _arg_491 = _$42$arg_491;
     break _L;
   }
-  return _M0MPC15debug4Repr4ctor("Invalid", [{ _0: undefined, _1: _M0IPC16string6StringPC15debug5Debug8to__repr(_arg_452) }]);
+  return _M0MPC15debug4Repr4ctor("Invalid", [{ _0: undefined, _1: _M0IPC16string6StringPC15debug5Debug8to__repr(_arg_491) }]);
 }
-function _M0IP211localreview4amqp7ContentPC15debug5Debug8to__repr(_x_395) {
-  const _bind$2 = [{ _0: "channel", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_395.channel) }, { _0: "method_payload", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_395.method_payload) }, { _0: "header", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_395.header) }, { _0: "body", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_395.body) }];
+function _M0IP211localreview4amqp7ContentPC15debug5Debug8to__repr(_x_422) {
+  const _bind$2 = [{ _0: "channel", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_422.channel) }, { _0: "method_payload", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_422.method_payload) }, { _0: "header", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_422.header) }, { _0: "body", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_422.body) }];
   return _M0MPC15debug4Repr6record(_M0MPB3Map3MapGsRPC15debug4ReprE(new _M0TPB9ArrayViewGUsRPC15debug4ReprEE(_bind$2, 0, 4), undefined));
 }
-function _M0IP211localreview4amqp10FieldValuePC15debug5Debug8to__repr(_x_355) {
-  let _arg_372;
+function _M0IP211localreview4amqp10FieldValuePC15debug5Debug8to__repr(_x_382) {
+  let _arg_399;
   _L: {
-    let _arg_371;
+    let _arg_398;
     _L$2: {
-      let _arg_370;
+      let _arg_397;
       _L$3: {
-        let _arg_369;
+        let _arg_396;
         _L$4: {
-          let _arg_368;
+          let _arg_395;
           _L$5: {
-            let _arg_366;
-            let _arg_367;
+            let _arg_393;
+            let _arg_394;
             _L$6: {
-              let _arg_365;
+              let _arg_392;
               _L$7: {
-                let _arg_364;
+                let _arg_391;
                 _L$8: {
-                  let _arg_363;
+                  let _arg_390;
                   _L$9: {
-                    let _arg_362;
+                    let _arg_389;
                     _L$10: {
-                      let _arg_361;
+                      let _arg_388;
                       _L$11: {
-                        let _arg_360;
+                        let _arg_387;
                         _L$12: {
-                          let _arg_359;
+                          let _arg_386;
                           _L$13: {
-                            let _arg_358;
+                            let _arg_385;
                             _L$14: {
-                              let _arg_357;
+                              let _arg_384;
                               _L$15: {
-                                let _arg_356;
+                                let _arg_383;
                                 _L$16: {
-                                  switch (_x_355.$tag) {
+                                  switch (_x_382.$tag) {
                                     case 0: {
-                                      const _Boolean = _x_355;
-                                      const _$42$arg_356 = _Boolean._0;
-                                      _arg_356 = _$42$arg_356;
+                                      const _Boolean = _x_382;
+                                      const _$42$arg_383 = _Boolean._0;
+                                      _arg_383 = _$42$arg_383;
                                       break _L$16;
                                     }
                                     case 1: {
-                                      const _Signed8 = _x_355;
-                                      const _$42$arg_357 = _Signed8._0;
-                                      _arg_357 = _$42$arg_357;
+                                      const _Signed8 = _x_382;
+                                      const _$42$arg_384 = _Signed8._0;
+                                      _arg_384 = _$42$arg_384;
                                       break _L$15;
                                     }
                                     case 2: {
-                                      const _Unsigned8 = _x_355;
-                                      const _$42$arg_358 = _Unsigned8._0;
-                                      _arg_358 = _$42$arg_358;
+                                      const _Unsigned8 = _x_382;
+                                      const _$42$arg_385 = _Unsigned8._0;
+                                      _arg_385 = _$42$arg_385;
                                       break _L$14;
                                     }
                                     case 3: {
-                                      const _Signed16 = _x_355;
-                                      const _$42$arg_359 = _Signed16._0;
-                                      _arg_359 = _$42$arg_359;
+                                      const _Signed16 = _x_382;
+                                      const _$42$arg_386 = _Signed16._0;
+                                      _arg_386 = _$42$arg_386;
                                       break _L$13;
                                     }
                                     case 4: {
-                                      const _Unsigned16 = _x_355;
-                                      const _$42$arg_360 = _Unsigned16._0;
-                                      _arg_360 = _$42$arg_360;
+                                      const _Unsigned16 = _x_382;
+                                      const _$42$arg_387 = _Unsigned16._0;
+                                      _arg_387 = _$42$arg_387;
                                       break _L$12;
                                     }
                                     case 5: {
-                                      const _Signed32 = _x_355;
-                                      const _$42$arg_361 = _Signed32._0;
-                                      _arg_361 = _$42$arg_361;
+                                      const _Signed32 = _x_382;
+                                      const _$42$arg_388 = _Signed32._0;
+                                      _arg_388 = _$42$arg_388;
                                       break _L$11;
                                     }
                                     case 6: {
-                                      const _Unsigned32 = _x_355;
-                                      const _$42$arg_362 = _Unsigned32._0;
-                                      _arg_362 = _$42$arg_362;
+                                      const _Unsigned32 = _x_382;
+                                      const _$42$arg_389 = _Unsigned32._0;
+                                      _arg_389 = _$42$arg_389;
                                       break _L$10;
                                     }
                                     case 7: {
-                                      const _Signed64 = _x_355;
-                                      const _$42$arg_363 = _Signed64._0;
-                                      _arg_363 = _$42$arg_363;
+                                      const _Signed64 = _x_382;
+                                      const _$42$arg_390 = _Signed64._0;
+                                      _arg_390 = _$42$arg_390;
                                       break _L$9;
                                     }
                                     case 8: {
-                                      const _Float32Bits = _x_355;
-                                      const _$42$arg_364 = _Float32Bits._0;
-                                      _arg_364 = _$42$arg_364;
+                                      const _Float32Bits = _x_382;
+                                      const _$42$arg_391 = _Float32Bits._0;
+                                      _arg_391 = _$42$arg_391;
                                       break _L$8;
                                     }
                                     case 9: {
-                                      const _Float64Bits = _x_355;
-                                      const _$42$arg_365 = _Float64Bits._0;
-                                      _arg_365 = _$42$arg_365;
+                                      const _Float64Bits = _x_382;
+                                      const _$42$arg_392 = _Float64Bits._0;
+                                      _arg_392 = _$42$arg_392;
                                       break _L$7;
                                     }
                                     case 10: {
-                                      const _Decimal = _x_355;
-                                      const _$42$arg_366 = _Decimal._0;
-                                      const _$42$arg_367 = _Decimal._1;
-                                      _arg_366 = _$42$arg_366;
-                                      _arg_367 = _$42$arg_367;
+                                      const _Decimal = _x_382;
+                                      const _$42$arg_393 = _Decimal._0;
+                                      const _$42$arg_394 = _Decimal._1;
+                                      _arg_393 = _$42$arg_393;
+                                      _arg_394 = _$42$arg_394;
                                       break _L$6;
                                     }
                                     case 11: {
-                                      const _LongString = _x_355;
-                                      const _$42$arg_368 = _LongString._0;
-                                      _arg_368 = _$42$arg_368;
+                                      const _LongString = _x_382;
+                                      const _$42$arg_395 = _LongString._0;
+                                      _arg_395 = _$42$arg_395;
                                       break _L$5;
                                     }
                                     case 12: {
-                                      const _ByteArray = _x_355;
-                                      const _$42$arg_369 = _ByteArray._0;
-                                      _arg_369 = _$42$arg_369;
+                                      const _ByteArray = _x_382;
+                                      const _$42$arg_396 = _ByteArray._0;
+                                      _arg_396 = _$42$arg_396;
                                       break _L$4;
                                     }
                                     case 13: {
-                                      const _Timestamp = _x_355;
-                                      const _$42$arg_370 = _Timestamp._0;
-                                      _arg_370 = _$42$arg_370;
+                                      const _Timestamp = _x_382;
+                                      const _$42$arg_397 = _Timestamp._0;
+                                      _arg_397 = _$42$arg_397;
                                       break _L$3;
                                     }
                                     case 14: {
-                                      const _ArrayValue = _x_355;
-                                      const _$42$arg_371 = _ArrayValue._0;
-                                      _arg_371 = _$42$arg_371;
+                                      const _ArrayValue = _x_382;
+                                      const _$42$arg_398 = _ArrayValue._0;
+                                      _arg_398 = _$42$arg_398;
                                       break _L$2;
                                     }
                                     case 15: {
-                                      const _TableValue = _x_355;
-                                      const _$42$arg_372 = _TableValue._0;
-                                      _arg_372 = _$42$arg_372;
+                                      const _TableValue = _x_382;
+                                      const _$42$arg_399 = _TableValue._0;
+                                      _arg_399 = _$42$arg_399;
                                       break _L;
                                     }
                                     default: {
@@ -11963,40 +12113,40 @@ function _M0IP211localreview4amqp10FieldValuePC15debug5Debug8to__repr(_x_355) {
                                     }
                                   }
                                 }
-                                return _M0MPC15debug4Repr4ctor("Boolean", [{ _0: undefined, _1: _M0IPC14bool4BoolPC15debug5Debug8to__repr(_arg_356) }]);
+                                return _M0MPC15debug4Repr4ctor("Boolean", [{ _0: undefined, _1: _M0IPC14bool4BoolPC15debug5Debug8to__repr(_arg_383) }]);
                               }
-                              return _M0MPC15debug4Repr4ctor("Signed8", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_357) }]);
+                              return _M0MPC15debug4Repr4ctor("Signed8", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_384) }]);
                             }
-                            return _M0MPC15debug4Repr4ctor("Unsigned8", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_358) }]);
+                            return _M0MPC15debug4Repr4ctor("Unsigned8", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_385) }]);
                           }
-                          return _M0MPC15debug4Repr4ctor("Signed16", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_359) }]);
+                          return _M0MPC15debug4Repr4ctor("Signed16", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_386) }]);
                         }
-                        return _M0MPC15debug4Repr4ctor("Unsigned16", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_360) }]);
+                        return _M0MPC15debug4Repr4ctor("Unsigned16", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_387) }]);
                       }
-                      return _M0MPC15debug4Repr4ctor("Signed32", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_361) }]);
+                      return _M0MPC15debug4Repr4ctor("Signed32", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_388) }]);
                     }
-                    return _M0MPC15debug4Repr4ctor("Unsigned32", [{ _0: undefined, _1: _M0IPC14uint4UIntPC15debug5Debug8to__repr(_arg_362) }]);
+                    return _M0MPC15debug4Repr4ctor("Unsigned32", [{ _0: undefined, _1: _M0IPC14uint4UIntPC15debug5Debug8to__repr(_arg_389) }]);
                   }
-                  return _M0MPC15debug4Repr4ctor("Signed64", [{ _0: undefined, _1: _M0IPC15int645Int64PC15debug5Debug8to__repr(_arg_363) }]);
+                  return _M0MPC15debug4Repr4ctor("Signed64", [{ _0: undefined, _1: _M0IPC15int645Int64PC15debug5Debug8to__repr(_arg_390) }]);
                 }
-                return _M0MPC15debug4Repr4ctor("Float32Bits", [{ _0: undefined, _1: _M0IPC14uint4UIntPC15debug5Debug8to__repr(_arg_364) }]);
+                return _M0MPC15debug4Repr4ctor("Float32Bits", [{ _0: undefined, _1: _M0IPC14uint4UIntPC15debug5Debug8to__repr(_arg_391) }]);
               }
-              return _M0MPC15debug4Repr4ctor("Float64Bits", [{ _0: undefined, _1: _M0IPC16uint646UInt64PC15debug5Debug8to__repr(_arg_365) }]);
+              return _M0MPC15debug4Repr4ctor("Float64Bits", [{ _0: undefined, _1: _M0IPC16uint646UInt64PC15debug5Debug8to__repr(_arg_392) }]);
             }
-            return _M0MPC15debug4Repr4ctor("Decimal", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_366) }, { _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_367) }]);
+            return _M0MPC15debug4Repr4ctor("Decimal", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_393) }, { _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_394) }]);
           }
-          return _M0MPC15debug4Repr4ctor("LongString", [{ _0: undefined, _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_arg_368) }]);
+          return _M0MPC15debug4Repr4ctor("LongString", [{ _0: undefined, _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_arg_395) }]);
         }
-        return _M0MPC15debug4Repr4ctor("ByteArray", [{ _0: undefined, _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_arg_369) }]);
+        return _M0MPC15debug4Repr4ctor("ByteArray", [{ _0: undefined, _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_arg_396) }]);
       }
-      return _M0MPC15debug4Repr4ctor("Timestamp", [{ _0: undefined, _1: _M0IPC16uint646UInt64PC15debug5Debug8to__repr(_arg_370) }]);
+      return _M0MPC15debug4Repr4ctor("Timestamp", [{ _0: undefined, _1: _M0IPC16uint646UInt64PC15debug5Debug8to__repr(_arg_397) }]);
     }
-    return _M0MPC15debug4Repr4ctor("ArrayValue", [{ _0: undefined, _1: _M0IPC15array5ArrayPC15debug5Debug8to__reprGRP211localreview4amqp10FieldValueE(_arg_371) }]);
+    return _M0MPC15debug4Repr4ctor("ArrayValue", [{ _0: undefined, _1: _M0IPC15array5ArrayPC15debug5Debug8to__reprGRP211localreview4amqp10FieldValueE(_arg_398) }]);
   }
-  return _M0MPC15debug4Repr4ctor("TableValue", [{ _0: undefined, _1: _M0IPC15array5ArrayPC15debug5Debug8to__reprGUsRP211localreview4amqp10FieldValueEE(_arg_372) }]);
+  return _M0MPC15debug4Repr4ctor("TableValue", [{ _0: undefined, _1: _M0IPC15array5ArrayPC15debug5Debug8to__reprGUsRP211localreview4amqp10FieldValueEE(_arg_399) }]);
 }
-function _M0IP211localreview4amqp5FramePC15debug5Debug8to__repr(_x_281) {
-  const _bind$2 = [{ _0: "kind", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_281.kind) }, { _0: "channel", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_281.channel) }, { _0: "payload", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_281.payload) }];
+function _M0IP211localreview4amqp5FramePC15debug5Debug8to__repr(_x_308) {
+  const _bind$2 = [{ _0: "kind", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_308.kind) }, { _0: "channel", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_308.channel) }, { _0: "payload", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_308.payload) }];
   return _M0MPC15debug4Repr6record(_M0MPB3Map3MapGsRPC15debug4ReprE(new _M0TPB9ArrayViewGUsRPC15debug4ReprEE(_bind$2, 0, 3), undefined));
 }
 function _M0MP211localreview4amqp10WireWriter3new() {
@@ -12218,6 +12368,41 @@ function _M0FP211localreview4amqp12body__frames(channel, body, max_frame_size) {
   }
   return new _M0DTPC16result6ResultGRPB5ArrayGRP211localreview4amqp5FrameERP211localreview4amqp10FrameErrorE2Ok(frames);
 }
+function _M0FP211localreview4amqp16check__mechanism(mechanism) {
+  if (_M0MPC16string6String9is__empty(mechanism) || (mechanism.length > 255 || _M0MPB4Iter3anyGcE(_M0MPC16string6String4iter(mechanism), (c) => c < 33 || c > 126))) {
+    return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid SASL mechanism"));
+  } else {
+    return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE2Ok(undefined);
+  }
+}
+function _M0MP211localreview4amqp14Authentication6custom(mechanism, response) {
+  const _bind$2 = _M0FP211localreview4amqp16check__mechanism(mechanism);
+  if (_bind$2.$tag === 1) {
+    const _ok = _bind$2;
+    _ok._0;
+  } else {
+    return _bind$2;
+  }
+  if (response.length > 1048576) {
+    return new _M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("SASL response exceeds 1 MiB"));
+  }
+  return new _M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRP211localreview4amqp10FrameErrorE2Ok(new _M0TP211localreview4amqp14Authentication(mechanism, response));
+}
+function _M0MP211localreview4amqp14Authentication5plain(username, password) {
+  let _tmp;
+  const _bind$2 = "\u0000";
+  if (_M0MPC16string6String8contains(username, new _M0TPC16string10StringView(_bind$2, 0, _bind$2.length))) {
+    _tmp = true;
+  } else {
+    const _bind$3 = "\u0000";
+    _tmp = _M0MPC16string6String8contains(password, new _M0TPC16string10StringView(_bind$3, 0, _bind$3.length));
+  }
+  if (_tmp) {
+    return new _M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid PLAIN credentials"));
+  }
+  const _bind$3 = `\u0000${username}\u0000${password}`;
+  return _M0MP211localreview4amqp14Authentication6custom("PLAIN", _M0FPC28encoding4utf814encode_2einner(new _M0TPC16string10StringView(_bind$3, 0, _bind$3.length), false));
+}
 function _M0FP211localreview4amqp16protocol__header() {
   return $bytes_literal$1;
 }
@@ -12234,51 +12419,72 @@ function _M0MP211localreview4amqp7Decoder11new_2einner(max_size) {
   }
   return new _M0DTPC16result6ResultGRP211localreview4amqp7DecoderRP211localreview4amqp10FrameErrorE2Ok(new _M0TP211localreview4amqp7Decoder([], max_size, 7, false));
 }
-function _M0MP211localreview4amqp7Session11new_2einner(username, password, vhost, channel_max, frame_max, heartbeat) {
+function _M0MP211localreview4amqp7Session28with__authentication_2einner(authentication, vhost, locale, channel_max, frame_max, heartbeat) {
   let _tmp;
-  const _bind$2 = "\u0000";
-  if (_M0MPC16string6String8contains(username, new _M0TPC16string10StringView(_bind$2, 0, _bind$2.length))) {
+  if (_M0MPC15array5Array9is__emptyGRPB4JsonE(authentication)) {
     _tmp = true;
   } else {
     let _tmp$2;
-    const _bind$3 = "\u0000";
-    if (_M0MPC16string6String8contains(password, new _M0TPC16string10StringView(_bind$3, 0, _bind$3.length))) {
+    if (authentication.length > 32) {
       _tmp$2 = true;
     } else {
-      _tmp$2 = username.length > 1024 || password.length > 1024;
+      let _tmp$3;
+      if (_M0MPC16string6String9is__empty(locale)) {
+        _tmp$3 = true;
+      } else {
+        let _tmp$4;
+        if (_M0FPC28encoding4utf814encode_2einner(new _M0TPC16string10StringView(locale, 0, locale.length), false).length > 255) {
+          _tmp$4 = true;
+        } else {
+          const _bind$2 = " ";
+          _tmp$4 = _M0MPC16string6String8contains(locale, new _M0TPC16string10StringView(_bind$2, 0, _bind$2.length));
+        }
+        _tmp$3 = _tmp$4;
+      }
+      _tmp$2 = _tmp$3;
     }
     _tmp = _tmp$2;
   }
   if (_tmp) {
-    return new _M0DTPC16result6ResultGRP211localreview4amqp7SessionRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid PLAIN credentials"));
+    return new _M0DTPC16result6ResultGRP211localreview4amqp7SessionRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid authentication candidates or locale"));
   }
   if (channel_max < 1 || (channel_max > 65535 || (frame_max < 4096 || (frame_max > 16777216 || (heartbeat < 0 || (heartbeat > 65535 || _M0FPC28encoding4utf814encode_2einner(new _M0TPC16string10StringView(vhost, 0, vhost.length), false).length > 255)))))) {
     return new _M0DTPC16result6ResultGRP211localreview4amqp7SessionRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid connection options"));
   }
-  const _bind$3 = _M0MP211localreview4amqp7Decoder11new_2einner(131072);
+  const _bind$2 = _M0MP211localreview4amqp7Decoder11new_2einner(131072);
   let _tmp$2;
+  if (_bind$2.$tag === 1) {
+    const _ok = _bind$2;
+    _tmp$2 = _ok._0;
+  } else {
+    return _bind$2;
+  }
+  const _tmp$3 = _tmp$2;
+  const _bind$3 = _M0MP211localreview4amqp9Assembler11new_2einner(8388608, true);
+  let _tmp$4;
   if (_bind$3.$tag === 1) {
     const _ok = _bind$3;
-    _tmp$2 = _ok._0;
+    _tmp$4 = _ok._0;
   } else {
     return _bind$3;
   }
-  const _tmp$3 = _tmp$2;
-  const _bind$4 = _M0MP211localreview4amqp9Assembler11new_2einner(8388608, true);
-  let _tmp$4;
-  if (_bind$4.$tag === 1) {
-    const _ok = _bind$4;
-    _tmp$4 = _ok._0;
-  } else {
-    return _bind$4;
-  }
   const _tmp$5 = _tmp$4;
-  const _bind$5 = `\u0000${username}\u0000${password}`;
-  const _tmp$6 = _M0FPC28encoding4utf814encode_2einner(new _M0TPC16string10StringView(_bind$5, 0, _bind$5.length), false);
-  const _bind$6 = [];
-  const _tmp$7 = _M0MPB3Map3MapGisE(new _M0TPB9ArrayViewGUisEE(_bind$6, 0, 0), undefined);
-  const _bind$7 = [];
-  return new _M0DTPC16result6ResultGRP211localreview4amqp7SessionRP211localreview4amqp10FrameErrorE2Ok(new _M0TP211localreview4amqp7Session(_tmp$3, _tmp$5, "start", _tmp$6, vhost, channel_max, frame_max, heartbeat, _tmp$7, _M0MPB3Map3MapGibE(new _M0TPB9ArrayViewGUibEE(_bind$7, 0, 0), undefined), false, [_M0FP211localreview4amqp16protocol__header()]));
+  const _tmp$6 = _M0MPC15array5Array4copyGRP211localreview4amqp14AuthenticationE(authentication);
+  const _bind$4 = [];
+  const _tmp$7 = _M0MPB3Map3MapGisE(new _M0TPB9ArrayViewGUisEE(_bind$4, 0, 0), undefined);
+  const _bind$5 = [];
+  return new _M0DTPC16result6ResultGRP211localreview4amqp7SessionRP211localreview4amqp10FrameErrorE2Ok(new _M0TP211localreview4amqp7Session(_tmp$3, _tmp$5, "start", _tmp$6, "", locale, vhost, channel_max, frame_max, heartbeat, _tmp$7, _M0MPB3Map3MapGibE(new _M0TPB9ArrayViewGUibEE(_bind$5, 0, 0), undefined), false, [_M0FP211localreview4amqp16protocol__header()]));
+}
+function _M0MP211localreview4amqp7Session11new_2einner(username, password, vhost, channel_max, frame_max, heartbeat) {
+  const _bind$2 = _M0MP211localreview4amqp14Authentication5plain(username, password);
+  let _tmp;
+  if (_bind$2.$tag === 1) {
+    const _ok = _bind$2;
+    _tmp = _ok._0;
+  } else {
+    return _bind$2;
+  }
+  return _M0MP211localreview4amqp7Session28with__authentication_2einner([_tmp], vhost, "en_US", channel_max, frame_max, heartbeat);
 }
 function _M0MP211localreview4amqp7Session6status(self) {
   return self.state;
@@ -12340,15 +12546,15 @@ function _M0MP211localreview4amqp7Session6closed(self) {
   }
   _M0MPB3Map5clearGisE(self.channels);
   _M0MPB3Map5clearGibE(self.paused);
-  self.secret = $bytes_literal$0;
+  _M0MPC15array5Array5clearGRP211localreview4amqp14AuthenticationE(self.auth);
   self.state = "closed";
 }
 function _M0MP211localreview4amqp7Session6limits(self) {
   return { _0: self.channel_limit, _1: self.frame_limit, _2: self.heartbeat_seconds };
 }
 function _M0MP211localreview4amqp7Session12take__output(self) {
-  const out = _M0MPC15array5Array4copyGzE(self.output);
-  _M0MPC15array5Array5clearGzE(self.output);
+  const out = _M0MPC15array5Array4copyGRP211localreview4amqp14AuthenticationE(self.output);
+  _M0MPC15array5Array5clearGRP211localreview4amqp14AuthenticationE(self.output);
   return out;
 }
 function _M0FP211localreview4amqp8validate(frame, max_size) {
@@ -13911,7 +14117,7 @@ function _M0MP211localreview4amqp7Decoder6finish(self) {
 }
 function _M0MP211localreview4amqp7Session6finish(self) {
   const _defer = () => {
-    self.secret = $bytes_literal$0;
+    _M0MPC15array5Array5clearGRP211localreview4amqp14AuthenticationE(self.auth);
   };
   let _err;
   _L: {
@@ -13945,7 +14151,7 @@ function _M0MP211localreview4amqp7Session6finish(self) {
         break _L$2;
       }
       self.state = "failed";
-      _M0MPC15array5Array5clearGzE(self.output);
+      _M0MPC15array5Array5clearGRP211localreview4amqp14AuthenticationE(self.output);
       _err = _err$2;
       break _L;
     }
@@ -14829,6 +15035,20 @@ function _M0MP211localreview4amqp7Decoder10set__limit(self, limit) {
   self.limit = limit;
   return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE2Ok(undefined);
 }
+function _M0MP211localreview4amqp7Session14auth__response(self, response) {
+  if (response.length > 1048576) {
+    return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("SASL response exceeds 1 MiB"));
+  }
+  const _bind$2 = _M0MP211localreview4amqp7Session4emit(self, "connection.start-ok", [new _M0DTP211localreview4amqp8Argument5Table([{ _0: "product", _1: new _M0DTP211localreview4amqp10FieldValue10LongString($bytes_literal$2) }, { _0: "capabilities", _1: new _M0DTP211localreview4amqp10FieldValue10TableValue([{ _0: "publisher_confirms", _1: new _M0DTP211localreview4amqp10FieldValue7Boolean(true) }, { _0: "consumer_cancel_notify", _1: new _M0DTP211localreview4amqp10FieldValue7Boolean(true) }, { _0: "connection.blocked", _1: new _M0DTP211localreview4amqp10FieldValue7Boolean(true) }, { _0: "basic.nack", _1: new _M0DTP211localreview4amqp10FieldValue7Boolean(true) }]) }]), new _M0DTP211localreview4amqp8Argument11ShortString(self.selected_auth), new _M0DTP211localreview4amqp8Argument10LongString(response), new _M0DTP211localreview4amqp8Argument11ShortString(self.locale)], 0);
+  if (_bind$2.$tag === 1) {
+    const _ok = _bind$2;
+    _ok._0;
+  } else {
+    return _bind$2;
+  }
+  self.state = "tune";
+  return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE2Ok(undefined);
+}
 function _M0MP211localreview4amqp7Session4feed(self, input) {
   if (self.state === "failed" || self.state === "closed") {
     return new _M0DTPC16result6ResultGRPB5ArrayGRP211localreview4amqp12SessionEventERP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("session is closed"));
@@ -15022,31 +15242,82 @@ function _M0MP211localreview4amqp7Session4feed(self, input) {
                   }
                   const _tmp$2 = _M0FPC28encoding4utf821decode__lossy_2einner(new _M0TPC15bytes9BytesView(mechanisms, 0, mechanisms.length), false);
                   const _bind$7 = " ";
-                  const has_plain = _M0MPB4Iter3anyGRPC16string10StringViewE(_M0MPC16string6String5split(_tmp$2, new _M0TPC16string10StringView(_bind$7, 0, _bind$7.length)), (s) => {
-                    const _bind$8 = "PLAIN";
-                    return _M0IPC16string10StringViewPB2Eq5equal(s, new _M0TPC16string10StringView(_bind$8, 0, _bind$8.length));
-                  });
+                  const offered = _M0MPB4Iter9to__arrayGRPC16string10StringViewE(_M0MPC16string6String5split(_tmp$2, new _M0TPC16string10StringView(_bind$7, 0, _bind$7.length)));
                   const _tmp$3 = _M0FPC28encoding4utf821decode__lossy_2einner(new _M0TPC15bytes9BytesView(locales, 0, locales.length), false);
                   const _bind$8 = " ";
                   const has_locale = _M0MPB4Iter3anyGRPC16string10StringViewE(_M0MPC16string6String5split(_tmp$3, new _M0TPC16string10StringView(_bind$8, 0, _bind$8.length)), (s) => {
-                    const _bind$9 = "en_US";
+                    const _bind$9 = self.locale;
                     return _M0IPC16string10StringViewPB2Eq5equal(s, new _M0TPC16string10StringView(_bind$9, 0, _bind$9.length));
                   });
-                  if (!has_plain || !has_locale) {
-                    _err = new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("PLAIN or en_US is unavailable");
+                  if (!has_locale) {
+                    _err = new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("requested locale is unavailable");
                     break _L;
                   }
-                  const _bind$9 = _M0MP211localreview4amqp7Session4emit(self, "connection.start-ok", [new _M0DTP211localreview4amqp8Argument5Table([{ _0: "product", _1: new _M0DTP211localreview4amqp10FieldValue10LongString($bytes_literal$2) }, { _0: "capabilities", _1: new _M0DTP211localreview4amqp10FieldValue10TableValue([{ _0: "publisher_confirms", _1: new _M0DTP211localreview4amqp10FieldValue7Boolean(true) }, { _0: "consumer_cancel_notify", _1: new _M0DTP211localreview4amqp10FieldValue7Boolean(true) }, { _0: "connection.blocked", _1: new _M0DTP211localreview4amqp10FieldValue7Boolean(true) }, { _0: "basic.nack", _1: new _M0DTP211localreview4amqp10FieldValue7Boolean(true) }]) }]), new _M0DTP211localreview4amqp8Argument11ShortString("PLAIN"), new _M0DTP211localreview4amqp8Argument10LongString(self.secret), new _M0DTP211localreview4amqp8Argument11ShortString("en_US")], 0);
-                  if (_bind$9.$tag === 1) {
-                    const _ok = _bind$9;
-                    _ok._0;
-                  } else {
-                    const _err$2 = _bind$9;
-                    _err = _err$2._0;
-                    break _L;
+                  const selected = new _M0TPB8MutLocalGOUiRP211localreview4amqp14AuthenticationEE(undefined);
+                  const _bind$9 = self.auth;
+                  const _bind$10 = _bind$9.length;
+                  let _tmp$4 = 0;
+                  while (true) {
+                    const i = _tmp$4;
+                    if (i < _bind$10) {
+                      const candidate = _bind$9[i];
+                      const _bind$11 = candidate.mechanism;
+                      if (_M0MPC15array5Array8containsGRPC16string10StringViewE(offered, new _M0TPC16string10StringView(_bind$11, 0, _bind$11.length))) {
+                        selected.val = { _0: i, _1: candidate };
+                        break;
+                      }
+                      _tmp$4 = i + 1 | 0;
+                      continue;
+                    } else {
+                      break;
+                    }
                   }
-                  self.secret = $bytes_literal$0;
-                  self.state = "tune";
+                  let index;
+                  let candidate;
+                  _L$6: {
+                    const _bind$11 = _M0MPC16option6Option16unwrap__or__elseGUiRP211localreview4amqp14AuthenticationEEHRP211localreview4amqp10FrameError(selected.val, () => new _M0DTPC16result6ResultGUiRP211localreview4amqp14AuthenticationERP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("no shared SASL mechanism")));
+                    let _bind$12;
+                    if (_bind$11.$tag === 1) {
+                      const _ok = _bind$11;
+                      _bind$12 = _ok._0;
+                    } else {
+                      const _err$2 = _bind$11;
+                      _err = _err$2._0;
+                      break _L;
+                    }
+                    const _index = _bind$12._0;
+                    const _candidate = _bind$12._1;
+                    index = _index;
+                    candidate = _candidate;
+                    break _L$6;
+                  }
+                  self.selected_auth = candidate.mechanism;
+                  _M0MPC15array5Array5clearGRP211localreview4amqp14AuthenticationE(self.auth);
+                  let response;
+                  _L$7: {
+                    _L$8: {
+                      const _bind$11 = candidate.response;
+                      if (_bind$11 === undefined) {
+                        self.state = "authenticate";
+                        _M0MPC15array5Array4pushGRP211localreview4amqp8ArgumentE(events, new _M0DTP211localreview4amqp12SessionEvent23AuthenticationRequested(index, candidate.mechanism));
+                      } else {
+                        const _Some = _bind$11;
+                        const _response = _Some;
+                        response = _response;
+                        break _L$8;
+                      }
+                      break _L$7;
+                    }
+                    const _bind$11 = _M0MP211localreview4amqp7Session14auth__response(self, response);
+                    if (_bind$11.$tag === 1) {
+                      const _ok = _bind$11;
+                      _ok._0;
+                    } else {
+                      const _err$2 = _bind$11;
+                      _err = _err$2._0;
+                      break _L;
+                    }
+                  }
                   break _L$3;
                 }
                 _err = new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("unsupported protocol version");
@@ -15298,8 +15569,8 @@ function _M0MP211localreview4amqp7Session4feed(self, input) {
     return new _M0DTPC16result6ResultGRPB5ArrayGRP211localreview4amqp12SessionEventERP211localreview4amqp10FrameErrorE2Ok(events);
   }
   self.state = "failed";
-  self.secret = $bytes_literal$0;
-  _M0MPC15array5Array5clearGzE(self.output);
+  _M0MPC15array5Array5clearGRP211localreview4amqp14AuthenticationE(self.auth);
+  _M0MPC15array5Array5clearGRP211localreview4amqp14AuthenticationE(self.output);
   return new _M0DTPC16result6ResultGRPB5ArrayGRP211localreview4amqp12SessionEventERP211localreview4amqp10FrameErrorE3Err(_err);
 }
 function _M0FP211localreview4amqp13method__names() {
@@ -15307,6 +15578,51 @@ function _M0FP211localreview4amqp13method__names() {
 }
 function _M0MP211localreview4amqp7Content13basic__header(self) {
   return _M0MP211localreview4amqp11BasicHeader6decode(new _M0TP211localreview4amqp5Frame(2, self.channel, self.header));
+}
+function _M0FP211localreview4amqp13encode__table(entries) {
+  const w = _M0MP211localreview4amqp10WireWriter3new();
+  const _bind$2 = _M0FP211localreview4amqp12write__table(w, entries, 0);
+  if (_bind$2.$tag === 1) {
+    const _ok = _bind$2;
+    _ok._0;
+  } else {
+    return _bind$2;
+  }
+  const _bind$3 = w.bytes;
+  return new _M0DTPC16result6ResultGzRP211localreview4amqp10FrameErrorE2Ok(_M0MPC15bytes5Bytes11from__array(new _M0TPB9ArrayViewGyE(_bind$3, 0, _bind$3.length)));
+}
+function _M0MP211localreview4amqp14Authentication8deferred(mechanism) {
+  const _bind$2 = _M0FP211localreview4amqp16check__mechanism(mechanism);
+  if (_bind$2.$tag === 1) {
+    const _ok = _bind$2;
+    _ok._0;
+  } else {
+    return _bind$2;
+  }
+  return new _M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRP211localreview4amqp10FrameErrorE2Ok(new _M0TP211localreview4amqp14Authentication(mechanism, undefined));
+}
+function _M0MP211localreview4amqp14Authentication8amqplain(username, password) {
+  const _bind$2 = _M0FP211localreview4amqp13encode__table([{ _0: "LOGIN", _1: new _M0DTP211localreview4amqp10FieldValue10LongString(_M0FPC28encoding4utf814encode_2einner(new _M0TPC16string10StringView(username, 0, username.length), false)) }, { _0: "PASSWORD", _1: new _M0DTP211localreview4amqp10FieldValue10LongString(_M0FPC28encoding4utf814encode_2einner(new _M0TPC16string10StringView(password, 0, password.length), false)) }]);
+  let table;
+  if (_bind$2.$tag === 1) {
+    const _ok = _bind$2;
+    table = _ok._0;
+  } else {
+    return _bind$2;
+  }
+  return _M0MP211localreview4amqp14Authentication6custom("AMQPLAIN", _M0MPC15bytes9BytesView9to__owned(_M0MPC15bytes5Bytes12view_2einner(table, 4, undefined)));
+}
+function _M0MP211localreview4amqp14Authentication8external() {
+  return new _M0TP211localreview4amqp14Authentication("EXTERNAL", $bytes_literal$3);
+}
+function _M0MP211localreview4amqp7Session23respond__authentication(self, response) {
+  if (_M0IP016_24default__implPB2Eq10not__equalGsE(self.state, "authenticate")) {
+    return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("no initial SASL response is pending"));
+  }
+  return _M0MP211localreview4amqp7Session14auth__response(self, response);
+}
+function _M0MP211localreview4amqp7Session25authentication__mechanism(self) {
+  return self.selected_auth;
 }
 function _M0FP411localreview4amqp3cmd3web7session(key) {
   return _M0MPC16option6Option16unwrap__or__elseGRP211localreview4amqp7SessionEHRPB7Failure(_M0MPB3Map3getGsRP211localreview4amqp7SessionE(_M0FP411localreview4amqp3cmd3web8sessions, key), () => new _M0DTPC16result6ResultGRP211localreview4amqp7SessionRPB7FailureE3Err(new _M0DTPC15error5Error48moonbitlang_2fcore_2fbuiltin_2eFailure_2eFailure("unknown session")));
@@ -16178,44 +16494,58 @@ function _M0FP411localreview4amqp3cmd3web11event__json(e) {
         let ch$2;
         let command;
         _L$4: {
-          switch (e.$tag) {
-            case 0: {
-              const _bind$2 = [{ _0: "type", _1: _M0MPC14json4Json6string("ready") }];
-              return new _M0DTPC16result6ResultGRPB4JsonRPC15error5ErrorE2Ok(_M0MPC14json4Json6object(_M0MPB3Map3MapGsRPB4JsonE(new _M0TPB9ArrayViewGUsRPB4JsonEE(_bind$2, 0, 1), undefined)));
-            }
-            case 1: {
-              const _Received = e;
-              const _ch = _Received._0;
-              const _command = _Received._1;
-              ch$2 = _ch;
-              command = _command;
-              break _L$4;
-            }
-            case 3: {
-              const _ChannelClosed = e;
-              const _ch$2 = _ChannelClosed._0;
-              const _code = _ChannelClosed._1;
-              const _reason = _ChannelClosed._2;
-              code$2 = _code;
-              ch = _ch$2;
-              reason$2 = _reason;
-              break _L$3;
-            }
-            case 4: {
-              const _Closed = e;
-              const _code$2 = _Closed._0;
-              const _reason$2 = _Closed._1;
-              code = _code$2;
-              reason = _reason$2;
-              break _L$2;
-            }
-            default: {
-              const _Message = e;
-              const _c = _Message._0;
-              c = _c;
-              break _L;
+          let index;
+          let mechanism;
+          _L$5: {
+            switch (e.$tag) {
+              case 0: {
+                const _bind$2 = [{ _0: "type", _1: _M0MPC14json4Json6string("ready") }];
+                return new _M0DTPC16result6ResultGRPB4JsonRPC15error5ErrorE2Ok(_M0MPC14json4Json6object(_M0MPB3Map3MapGsRPB4JsonE(new _M0TPB9ArrayViewGUsRPB4JsonEE(_bind$2, 0, 1), undefined)));
+              }
+              case 1: {
+                const _AuthenticationRequested = e;
+                const _index = _AuthenticationRequested._0;
+                const _mechanism = _AuthenticationRequested._1;
+                index = _index;
+                mechanism = _mechanism;
+                break _L$5;
+              }
+              case 2: {
+                const _Received = e;
+                const _ch = _Received._0;
+                const _command = _Received._1;
+                ch$2 = _ch;
+                command = _command;
+                break _L$4;
+              }
+              case 4: {
+                const _ChannelClosed = e;
+                const _ch$2 = _ChannelClosed._0;
+                const _code = _ChannelClosed._1;
+                const _reason = _ChannelClosed._2;
+                code$2 = _code;
+                ch = _ch$2;
+                reason$2 = _reason;
+                break _L$3;
+              }
+              case 5: {
+                const _Closed = e;
+                const _code$2 = _Closed._0;
+                const _reason$2 = _Closed._1;
+                code = _code$2;
+                reason = _reason$2;
+                break _L$2;
+              }
+              default: {
+                const _Message = e;
+                const _c = _Message._0;
+                c = _c;
+                break _L;
+              }
             }
           }
+          const _bind$2 = [{ _0: "type", _1: _M0MPC14json4Json6string("authenticate") }, { _0: "index", _1: _M0IPC13int3IntPB6ToJson8to__json(index) }, { _0: "mechanism", _1: _M0IPC16string6StringPB6ToJson8to__json(mechanism) }];
+          return new _M0DTPC16result6ResultGRPB4JsonRPC15error5ErrorE2Ok(_M0MPC14json4Json6object(_M0MPB3Map3MapGsRPB4JsonE(new _M0TPB9ArrayViewGUsRPB4JsonEE(_bind$2, 0, 3), undefined)));
         }
         return new _M0DTPC16result6ResultGRPB4JsonRPC15error5ErrorE2Ok(_M0FP411localreview4amqp3cmd3web12method__json(ch$2, command));
       }
@@ -16295,20 +16625,21 @@ function _M0FP411localreview4amqp3cmd3web6result(s, events) {
     break _L;
   }
   const _tmp = { _0: "state", _1: _M0IPC16string6StringPB6ToJson8to__json(_M0MP211localreview4amqp7Session6status(s)) };
-  const _tmp$2 = { _0: "channelMax", _1: _M0IPC13int3IntPB6ToJson8to__json(channels) };
-  const _tmp$3 = { _0: "frameMax", _1: _M0IPC13int3IntPB6ToJson8to__json(frame) };
-  const _tmp$4 = { _0: "heartbeat", _1: _M0IPC13int3IntPB6ToJson8to__json(heartbeat) };
-  const _tmp$5 = { _0: "output", _1: _M0IPC15array5ArrayPB6ToJson8to__jsonGsE(_M0MPC15array5Array3mapGzsE(_M0MP211localreview4amqp7Session12take__output(s), _M0FP411localreview4amqp3cmd3web3hex)) };
+  const _tmp$2 = { _0: "authenticationMechanism", _1: _M0IPC16string6StringPB6ToJson8to__json(_M0MP211localreview4amqp7Session25authentication__mechanism(s)) };
+  const _tmp$3 = { _0: "channelMax", _1: _M0IPC13int3IntPB6ToJson8to__json(channels) };
+  const _tmp$4 = { _0: "frameMax", _1: _M0IPC13int3IntPB6ToJson8to__json(frame) };
+  const _tmp$5 = { _0: "heartbeat", _1: _M0IPC13int3IntPB6ToJson8to__json(heartbeat) };
+  const _tmp$6 = { _0: "output", _1: _M0IPC15array5ArrayPB6ToJson8to__jsonGsE(_M0MPC15array5Array3mapGzsE(_M0MP211localreview4amqp7Session12take__output(s), _M0FP411localreview4amqp3cmd3web3hex)) };
   const _bind$2 = _M0MPC15array5Array3mapGRP211localreview4amqp12SessionEventRPB4JsonEHRPC15error5Error(events, _M0FP411localreview4amqp3cmd3web11event__json);
-  let _tmp$6;
+  let _tmp$7;
   if (_bind$2.$tag === 1) {
     const _ok = _bind$2;
-    _tmp$6 = _ok._0;
+    _tmp$7 = _ok._0;
   } else {
     return _bind$2;
   }
-  const _bind$3 = [_tmp, _tmp$2, _tmp$3, _tmp$4, _tmp$5, { _0: "events", _1: _M0IPC15array5ArrayPB6ToJson8to__jsonGRPB4JsonE(_tmp$6) }];
-  return new _M0DTPC16result6ResultGsRPC15error5ErrorE2Ok(_M0MPC14json4Json17stringify_2einner(_M0MPC14json4Json6object(_M0MPB3Map3MapGsRPB4JsonE(new _M0TPB9ArrayViewGUsRPB4JsonEE(_bind$3, 0, 6), undefined)), false, 0, undefined));
+  const _bind$3 = [_tmp, _tmp$2, _tmp$3, _tmp$4, _tmp$5, _tmp$6, { _0: "events", _1: _M0IPC15array5ArrayPB6ToJson8to__jsonGRPB4JsonE(_tmp$7) }];
+  return new _M0DTPC16result6ResultGsRPC15error5ErrorE2Ok(_M0MPC14json4Json17stringify_2einner(_M0MPC14json4Json6object(_M0MPB3Map3MapGsRPB4JsonE(new _M0TPB9ArrayViewGUsRPB4JsonEE(_bind$3, 0, 7), undefined)), false, 0, undefined));
 }
 function _M0FP411localreview4amqp3cmd3web13session__open(key, user, password, vhost, channel_max, frame_max, heartbeat) {
   let _try_err;
@@ -17036,7 +17367,237 @@ function _M0FP411localreview4amqp3cmd3web7schemas() {
   }
   return _M0MPC14json4Json17stringify_2einner(_M0IPC15array5ArrayPB6ToJson8to__jsonGRPB4JsonE(records), false, 0, undefined);
 }
+function _M0FP411localreview4amqp3cmd3web19session__open__auth(key, authentication, vhost, locale, channel_max, frame_max, heartbeat) {
+  let _try_err;
+  _L: {
+    if (key.length > 128 || (_M0MPB3Map8containsGsRP211localreview4amqp7SessionE(_M0FP411localreview4amqp3cmd3web8sessions, key) || (_M0MPB3Map6lengthGsRP211localreview4amqp7SessionE(_M0FP411localreview4amqp3cmd3web8sessions) >= 64 || authentication.length > 4194304))) {
+      _try_err = new _M0DTPC15error5Error48moonbitlang_2fcore_2fbuiltin_2eFailure_2eFailure("session or authentication size limit");
+      break _L;
+    }
+    let candidates;
+    let values;
+    _L$2: {
+      const _bind$2 = _M0FPC14json13parse_2einner(new _M0TPC16string10StringView(authentication, 0, authentication.length), 1024);
+      let _bind$3;
+      if (_bind$2.$tag === 1) {
+        const _ok = _bind$2;
+        _bind$3 = _ok._0;
+      } else {
+        const _err = _bind$2;
+        _try_err = _err._0;
+        break _L;
+      }
+      if (_bind$3.$tag === 5) {
+        const _Array = _bind$3;
+        const _values = _Array._0;
+        values = _values;
+        break _L$2;
+      } else {
+        _try_err = new _M0DTPC15error5Error48moonbitlang_2fcore_2fbuiltin_2eFailure_2eFailure("expected authentication array");
+        break _L;
+      }
+    }
+    const _bind$2 = _M0MPC15array5Array3mapGRPB4JsonRP211localreview4amqp14AuthenticationEHRPC15error5Error(values, (value) => {
+      const _bind$3 = _M0FP411localreview4amqp3cmd3web3obj(value);
+      let o;
+      if (_bind$3.$tag === 1) {
+        const _ok = _bind$3;
+        o = _ok._0;
+      } else {
+        return _bind$3;
+      }
+      const _bind$4 = _M0FP411localreview4amqp3cmd3web8required(o, "mechanism");
+      let _tmp;
+      if (_bind$4.$tag === 1) {
+        const _ok = _bind$4;
+        _tmp = _ok._0;
+      } else {
+        return _bind$4;
+      }
+      const _bind$5 = _M0FP411localreview4amqp3cmd3web3str(_tmp);
+      let mechanism;
+      if (_bind$5.$tag === 1) {
+        const _ok = _bind$5;
+        mechanism = _ok._0;
+      } else {
+        return _bind$5;
+      }
+      const _bind$6 = _M0FP411localreview4amqp3cmd3web8required(o, "kind");
+      let _tmp$2;
+      if (_bind$6.$tag === 1) {
+        const _ok = _bind$6;
+        _tmp$2 = _ok._0;
+      } else {
+        return _bind$6;
+      }
+      const _bind$7 = _M0FP411localreview4amqp3cmd3web3str(_tmp$2);
+      let _bind$8;
+      if (_bind$7.$tag === 1) {
+        const _ok = _bind$7;
+        _bind$8 = _ok._0;
+      } else {
+        return _bind$7;
+      }
+      switch (_bind$8) {
+        case "plain": {
+          const _bind$9 = _M0FP411localreview4amqp3cmd3web8required(o, "username");
+          let _tmp$3;
+          if (_bind$9.$tag === 1) {
+            const _ok = _bind$9;
+            _tmp$3 = _ok._0;
+          } else {
+            return _bind$9;
+          }
+          const _bind$10 = _M0FP411localreview4amqp3cmd3web3str(_tmp$3);
+          let _tmp$4;
+          if (_bind$10.$tag === 1) {
+            const _ok = _bind$10;
+            _tmp$4 = _ok._0;
+          } else {
+            return _bind$10;
+          }
+          const _tmp$5 = _tmp$4;
+          const _bind$11 = _M0FP411localreview4amqp3cmd3web8required(o, "password");
+          let _tmp$6;
+          if (_bind$11.$tag === 1) {
+            const _ok = _bind$11;
+            _tmp$6 = _ok._0;
+          } else {
+            return _bind$11;
+          }
+          const _bind$12 = _M0FP411localreview4amqp3cmd3web3str(_tmp$6);
+          let _tmp$7;
+          if (_bind$12.$tag === 1) {
+            const _ok = _bind$12;
+            _tmp$7 = _ok._0;
+          } else {
+            return _bind$12;
+          }
+          return _M0MP211localreview4amqp14Authentication5plain(_tmp$5, _tmp$7);
+        }
+        case "amqplain": {
+          const _bind$13 = _M0FP411localreview4amqp3cmd3web8required(o, "username");
+          let _tmp$8;
+          if (_bind$13.$tag === 1) {
+            const _ok = _bind$13;
+            _tmp$8 = _ok._0;
+          } else {
+            return _bind$13;
+          }
+          const _bind$14 = _M0FP411localreview4amqp3cmd3web3str(_tmp$8);
+          let _tmp$9;
+          if (_bind$14.$tag === 1) {
+            const _ok = _bind$14;
+            _tmp$9 = _ok._0;
+          } else {
+            return _bind$14;
+          }
+          const _tmp$10 = _tmp$9;
+          const _bind$15 = _M0FP411localreview4amqp3cmd3web8required(o, "password");
+          let _tmp$11;
+          if (_bind$15.$tag === 1) {
+            const _ok = _bind$15;
+            _tmp$11 = _ok._0;
+          } else {
+            return _bind$15;
+          }
+          const _bind$16 = _M0FP411localreview4amqp3cmd3web3str(_tmp$11);
+          let _tmp$12;
+          if (_bind$16.$tag === 1) {
+            const _ok = _bind$16;
+            _tmp$12 = _ok._0;
+          } else {
+            return _bind$16;
+          }
+          return _M0MP211localreview4amqp14Authentication8amqplain(_tmp$10, _tmp$12);
+        }
+        case "external": {
+          return new _M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRPC15error5ErrorE2Ok(_M0MP211localreview4amqp14Authentication8external());
+        }
+        case "deferred": {
+          return _M0MP211localreview4amqp14Authentication8deferred(mechanism);
+        }
+        default: {
+          return new _M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRPB7FailureE3Err(new _M0DTPC15error5Error48moonbitlang_2fcore_2fbuiltin_2eFailure_2eFailure("unknown authentication kind"));
+        }
+      }
+    });
+    if (_bind$2.$tag === 1) {
+      const _ok = _bind$2;
+      candidates = _ok._0;
+    } else {
+      const _err = _bind$2;
+      _try_err = _err._0;
+      break _L;
+    }
+    const _bind$3 = _M0MP211localreview4amqp7Session28with__authentication_2einner(candidates, vhost, locale, channel_max, frame_max, heartbeat);
+    let s;
+    if (_bind$3.$tag === 1) {
+      const _ok = _bind$3;
+      s = _ok._0;
+    } else {
+      const _err = _bind$3;
+      _try_err = _err._0;
+      break _L;
+    }
+    _M0MPB3Map3setGsRP211localreview4amqp7SessionE(_M0FP411localreview4amqp3cmd3web8sessions, key, s);
+    const _bind$4 = _M0FP411localreview4amqp3cmd3web6result(s, []);
+    if (_bind$4.$tag === 1) {
+      const _ok = _bind$4;
+      return _ok._0;
+    } else {
+      const _err = _bind$4;
+      _try_err = _err._0;
+      break _L;
+    }
+  }
+  return "ERROR: invalid authentication or connection options";
+}
+function _M0FP411localreview4amqp3cmd3web23session__auth__response(key, response) {
+  let _try_err;
+  _L: {
+    const _bind$2 = _M0FP411localreview4amqp3cmd3web7session(key);
+    let s;
+    if (_bind$2.$tag === 1) {
+      const _ok = _bind$2;
+      s = _ok._0;
+    } else {
+      const _err = _bind$2;
+      _try_err = _err._0;
+      break _L;
+    }
+    const _bind$3 = _M0FP411localreview4amqp3cmd3web13unhex_2einner(response, 2097152);
+    let _tmp;
+    if (_bind$3.$tag === 1) {
+      const _ok = _bind$3;
+      _tmp = _ok._0;
+    } else {
+      const _err = _bind$3;
+      _try_err = _err._0;
+      break _L;
+    }
+    const _bind$4 = _M0MP211localreview4amqp7Session23respond__authentication(s, _tmp);
+    if (_bind$4.$tag === 1) {
+      const _ok = _bind$4;
+      _ok._0;
+    } else {
+      const _err = _bind$4;
+      _try_err = _err._0;
+      break _L;
+    }
+    const _bind$5 = _M0FP411localreview4amqp3cmd3web6result(s, []);
+    if (_bind$5.$tag === 1) {
+      const _ok = _bind$5;
+      return _ok._0;
+    } else {
+      const _err = _bind$5;
+      _try_err = _err._0;
+      break _L;
+    }
+  }
+  return "ERROR: invalid or unexpected authentication response";
+}
 (() => {
 })();
-export { _M0FP411localreview4amqp3cmd3web13session__open as session_open, _M0FP411localreview4amqp3cmd3web13session__drop as session_drop, _M0FP411localreview4amqp3cmd3web13session__feed as session_feed, _M0FP411localreview4amqp3cmd3web13session__send as session_send, _M0FP411localreview4amqp3cmd3web16session__publish as session_publish, _M0FP411localreview4amqp3cmd3web18session__heartbeat as session_heartbeat, _M0FP411localreview4amqp3cmd3web15session__finish as session_finish, _M0FP411localreview4amqp3cmd3web13inspect__wire as inspect_wire, _M0FP411localreview4amqp3cmd3web3run as run, _M0FP411localreview4amqp3cmd3web7schemas as schemas }
+export { _M0FP411localreview4amqp3cmd3web13session__open as session_open, _M0FP411localreview4amqp3cmd3web13session__drop as session_drop, _M0FP411localreview4amqp3cmd3web13session__feed as session_feed, _M0FP411localreview4amqp3cmd3web13session__send as session_send, _M0FP411localreview4amqp3cmd3web16session__publish as session_publish, _M0FP411localreview4amqp3cmd3web18session__heartbeat as session_heartbeat, _M0FP411localreview4amqp3cmd3web15session__finish as session_finish, _M0FP411localreview4amqp3cmd3web13inspect__wire as inspect_wire, _M0FP411localreview4amqp3cmd3web3run as run, _M0FP411localreview4amqp3cmd3web7schemas as schemas, _M0FP411localreview4amqp3cmd3web19session__open__auth as session_open_auth, _M0FP411localreview4amqp3cmd3web23session__auth__response as session_auth_response }
 //# sourceMappingURL=web.js.map
