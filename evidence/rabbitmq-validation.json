@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-19T07:55:05.671Z",
+  "at": "2026-09-19T08:33:01.449Z",
   "node": "v24.11.0",
   "platform": "win32",
   "oracle": "RabbitMQ 4.0.5-10ubuntu5 on Erlang/OTP 27, Ubuntu distribution packages, unmodified binaries",
@@ -35,9 +35,9 @@
     "warmupBatches": 4,
     "measuredBatches": 16,
     "messages": 128,
-    "medianBatchMs": 44.393700000000536,
-    "p95BatchMs": 48.63339999999971,
-    "confirmedMessagesPerSecond": 175.7825240585162,
+    "medianBatchMs": 45.422599999999875,
+    "p95BatchMs": 50.657100000000355,
+    "confirmedMessagesPerSecond": 176.4315559967565,
     "scope": "one Windows Node/WSL loopback run; nonpersistent messages, exclusive classic queue; not a production or upstream throughput comparison"
   },
   "packages": {
@@ -62,13 +62,13 @@
   "sources": {
     "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
     "authentication.mbt": "09505b81f862c30d7f2bc24502188068475904ed5c858a8f38897060fa6397b6",
-    "cmd/web/authentication.mbt": "5302c487cb36963947e2e25b6a75d63d998789b3222dc28b889bb506103cae4a",
+    "cmd/web/authentication.mbt": "9c57e3bcbad42ef3f9a417eafadf12c99829dbfcb453df4683076d7567c4d3e4",
     "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
-    "session.mbt": "cf5d7e4688b1a6f028ff9eedabb09f67c891be5f6187193191d0c236c4aae6e6",
-    "cmd/web/session.mbt": "3beb76807437fe21e95b088235579c3072307b18d05bb407b931811331d1a4bd",
-    "tools/client.mjs": "36ca96d093e88a7ad7819676f82717cf44c2bcf5f6cf97bead8f3f9ad01489af",
+    "session.mbt": "2f5aa1cfe6e89655598d4ef75a1badb658f6c6f3e679284e87d4f57818db471e",
+    "cmd/web/session.mbt": "461bca58fe6295a404e98487ec8869daa8aa5e452a744c714699d780bdb7a58b",
+    "tools/client.mjs": "4c46851a8c9ccb9816b668e694aa394814202043a9130e4f9d1b40108d28b57b",
     "tools/broker.mjs": "fbd62611d286137a2501b09094caeb4b441785a16212fe21c2fa5c5da41db7f8",
-    "web/engine.mjs": "5511694ff61a66950c7c4b0f065351d526667039b734efc2a4a59a988a34c1a1",
+    "web/engine.mjs": "56e93f45cc106b5a630d95d36b372c1dcb929b4f6df49322d762d1cca9c4cc9e",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
     "tools/test-rabbitmq.mjs": "b356e7d2d894728b877d493a143e20e1f3a000f776c0d3afe89659d23df52365"
   }

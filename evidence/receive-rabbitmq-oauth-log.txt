@@ -1,0 +1,11 @@
+PASS real RS256 OAuth token authenticates and permits a confirmed message
+PASS updating token keeps the connection and channel usable beyond the original expiry
+PASS new token scopes restrict new channel operations until a later permission renewal
+PASS OAuth rejects bad signature during credential update
+PASS OAuth rejects wrong audience during credential update
+PASS OAuth rejects changed subject during credential update
+PASS RabbitMQ 4.0 acknowledges an expired replacement but refuses the next authorized operation
+PASS an already expired initial token is refused
+PASS verified TLS carries a successful OAuth credential update and message
+PASS application token provider supplies renewed credentials to both live update and recovery
+10 real RabbitMQ OAuth groups passed

@@ -4,6 +4,9 @@ pub(all) enum SessionEvent {
   AuthenticationRequested(Int, String)
   Received(Int, Method)
   Message(Content)
+  MessageStart(Int, Method, BasicHeader)
+  MessageData(Int, Bytes)
+  MessageEnd(Int)
   ChannelClosed(Int, Int, String)
   Closed(Int, String)
 } derive(Debug, Eq)
@@ -13,6 +16,8 @@ pub(all) enum SessionEvent {
 pub struct Session {
   priv decoder : Decoder
   priv assembler : Assembler
+  priv stream_assembler : StreamAssembler
+  priv stream_bodies : Bool
   priv mut state : String
   priv auth : Array[Authentication]
   priv mut selected_auth : String
@@ -37,6 +42,7 @@ pub fn Session::new(
   channel_max? : Int = 64,
   frame_max? : Int = 131072,
   heartbeat? : Int = 60,
+  stream_bodies? : Bool = false,
 ) -> Session raise FrameError {
   Session::with_authentication(
     [Authentication::plain(username, password)],
@@ -44,6 +50,7 @@ pub fn Session::new(
     channel_max~,
     frame_max~,
     heartbeat~,
+    stream_bodies~,
   )
 }
 
@@ -56,6 +63,7 @@ pub fn Session::with_authentication(
   channel_max? : Int = 64,
   frame_max? : Int = 131072,
   heartbeat? : Int = 60,
+  stream_bodies? : Bool = false,
 ) -> Session raise FrameError {
   if authentication.is_empty() ||
     authentication.length() > 32 ||
@@ -76,6 +84,8 @@ pub fn Session::with_authentication(
   {
     decoder: Decoder::new(),
     assembler: Assembler::new(strict_methods=true),
+    stream_assembler: StreamAssembler::new(),
+    stream_bodies,
     state: "start",
     auth: authentication.copy(),
     selected_auth: "",
@@ -102,6 +112,7 @@ pub fn Session::status(self : Session) -> String {
 fn Session::closed(self : Session) -> Unit {
   for channel, _ in self.channels {
     self.assembler.discard(channel)
+    self.stream_assembler.discard(channel)
   }
   self.channels.clear()
   self.paused.clear()
@@ -251,6 +262,7 @@ pub fn Session::finish(self : Session) -> Unit raise FrameError {
   }
   self.decoder.finish()
   self.assembler.finish()
+  self.stream_assembler.finish()
   if self.state != "closed" {
     self.state = "failed"
     raise Invalid("connection ended without close handshake")
@@ -290,9 +302,7 @@ pub fn Session::feed(
         self.channels.get(frame.channel) != Some("open") {
         raise Invalid("content on inactive channel")
       }
-      if self.assembler.push(frame) is Some(content) {
-        events.push(Message(content))
-      }
+      self.receive_content(frame, events)
       continue
     }
     let command = Method::decode(frame)
@@ -430,6 +440,7 @@ pub fn Session::feed(
         if name == "channel.close" {
           self.emit("channel.close-ok", [], frame.channel)
           self.assembler.discard(frame.channel)
+          self.stream_assembler.discard(frame.channel)
           self.channels.remove(frame.channel)
           self.sending.remove(frame.channel)
           self.paused.remove(frame.channel)
@@ -448,6 +459,7 @@ pub fn Session::feed(
           Some("closing") => {
             if name == "channel.close-ok" {
               self.assembler.discard(frame.channel)
+              self.stream_assembler.discard(frame.channel)
               self.channels.remove(frame.channel)
               self.sending.remove(frame.channel)
               self.paused.remove(frame.channel)
@@ -461,9 +473,7 @@ pub fn Session::feed(
           self.paused[frame.channel] = !active
           self.emit("channel.flow-ok", [Bit(active)], frame.channel)
         }
-        if self.assembler.push(frame) is Some(content) {
-          events.push(Message(content))
-        }
+        self.receive_content(frame, events)
         if !method_spec(command.class_id, command.method_id).unwrap().carries_content {
           events.push(Received(frame.channel, command))
         }

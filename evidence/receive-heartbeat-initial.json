@@ -1,0 +1,13 @@
+{
+  "utc": "2026-09-19T08:26:31.717Z",
+  "status": "real large receive left unrelated admin connection with heartbeat timeout",
+  "passedBeforeFailure": 2,
+  "sources": {
+    "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
+    "tools/client.mjs": "8fda0498663df703bd6fd72f98771ad4be6fa038bc953f83f98e1864de937bdb",
+    "tools/inbound.mjs": "477773d2166e767f2d1b30a43ddb7d63c625da9561d711fb516ba0cb034b1f5a",
+    "tools/test-receive-native.mjs": "f3c64f30888ab984150e9297cd4bcf1f88bf21c69503ff544679f30ee2d908c6",
+    "web/engine.mjs": "56e93f45cc106b5a630d95d36b372c1dcb929b4f6df49322d762d1cca9c4cc9e",
+    "evidence/receive-heartbeat-initial.txt": "ea5678fc9b91fcffe914e541e3f00742ad10cc9e5a7a07db3b69123bd1f7d567"
+  }
+}

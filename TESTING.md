@@ -202,7 +202,7 @@ node tools/test-autodelete-native.mjs
 
 最终清单 `channel-deps-upgrade.json` 绑定当前源码/报告。依赖图只覆盖此连接登记的实体；无法凭空发现其它连接的拓扑或恢复未知外部队列。尚未覆盖所有交错、长期断网/集群、多版本/平台或原生吞吐性能。完整 20 项追平目标保持未完成。
 
-## 0.10 发送端流式正文与背压
+## 0.10 发送端流式正文与背压（0.11 继续回归）
 
 `publish_stream_test.mbt` 新增 6 组核心状态/编码测试：完整 UInt64 长度、元数据失败原子性、空正文、同通道顺序、无效块不消耗长度、协商帧上限、多通道交错、流控及通道关闭后复用。JS 和 Wasm-GC 各 115 项通过。
 
@@ -221,3 +221,19 @@ node tools/test-stream-native.mjs
 接收/退回仍是完整组装，正文默认 8 MiB，CLI stdin 仍限 1 MiB；发送端进展不代表这些边界已消除。socket 遵循 [Node 24.11 writable/drain 契约](https://nodejs.org/download/release/v24.11.0/docs/api/stream.html#event-drain)。源拥有的块、编码临时对象、GC、内核/TLS 缓冲不计入 `maxBufferedBytes`，报告的进程 RSS/external 只是本次整体采样。没有原生吞吐、长时间并发压力、多平台或多版本验收。
 
 现有认证/更新/恢复/自动删除/依赖、真实 broker 和原库对照均在本版源指纹下重新核验，历史已披露差异继续保留。最终 `stream-upgrade.json` 绑定源码、报告和验证计数；各层重叠，不相加作为全量上游案例数。其它 19 个项目本轮未重跑。
+
+## 0.11 可选流式接收
+
+核心新增 5 组测试，JS/Wasm-GC 各 120 项：UInt64 头部、正文不拼接、空/非空结束边界、非法长度/重复头部/提前正文/方法打断、多通道交错/心跳、通道关闭后重用。默认组装路径不变；新 Session 选项与事件是调用者可选择的接收接口。
+
+`node tools/test-receive-stream.mjs` 的 25 组独立线路测试涵盖大 get/consume/return、字节水位和一字节分片对象水位、慢读/丢弃/提前退出、未完成确认拒绝、截断/过长/停顿、回调异常、正常关闭与断线、同连接多通道、恢复期间的提前流式回调及 recoveryReady。1 秒心跳夹具验证应用背压时暂停接收截止计时，恢复读取后继续检查；单纯读取已完成正文的缓存不会刷新网络活性。没有 return 监听者时普通/恢复连接都排空退回正文。
+
+`tools/receive-reference.go` 调用相同固定提交的未修改 Go 客户端发送正文，并独立接收 mandatory 退回。按前节 replace 方法编译，72 个源码文件核验记录见 `receive-reference-build.json`；设置 `AMQP_RECEIVE_REFERENCE` 后执行 `node tools/test-receive-native.mjs`。8 组真实 broker 流程包含 3 个完整正文/属性对照：12 MiB TCP get、16 MiB 校验证书的 TLS consume、12 MiB mandatory return。另验证丢弃后 nack 重投、QoS=1 等待 ack、强制断线后旧流失败/旧标签拒绝/新 get 重投、关闭未读通道保留兄弟通道，以及普通 Buffer 模式仍以 8 MiB 拒绝大正文。
+
+首次真实大消息测试中，另一个空闲管理连接因心跳超时而关闭。初始日志和当时源码指纹保存在 `receive-heartbeat-initial.txt/.json`。独立空闲探测中流式/普通连接均正常收到心跳；将流式输入解码限制为每个事件循环一批后，相同大消息测试中的管理连接持续可用，8 组全部通过。没有提高测试心跳超时或关闭心跳来规避该问题。
+
+`receiveHighWaterMark` 限制连接级未取走的正文；分片数另在 4096 处触发暂停。解码批次最多 64 KiB，正文缓存上界包含一帧及一批的余量，分片硬上限为 12289；游标出队避免长数组逐个 shift。一字节分片测试验证低于字节水位时也会暂停，随后正文哈希一致。`receive-stream-validation.json` 记录实际字节/分片峰值。`receive-native.json` 同时记录进程内存采样；它不等于仅正文缓存，也不证明 RSS 恒定或生产性能。
+
+流式消息头部可以先于完整正文交给应用，因此部分数据已处理后仍可能遇到失败；应用应等待 completed 再确认，需要业务原子性时由应用负责。恢复期间的流式回调允许先读正文，完成后还需等 recoveryReady 才操作逻辑通道。这是显式开启的新契约，普通 Buffer 回调仍按原规则等待恢复完成。源消费缓慢会阻塞共享 TCP 连接的其他回复，普通 RPC/确认超时仍可能触发；未声称具有独立通道网络背压。
+
+心跳依据 [RabbitMQ 心跳说明](https://www.rabbitmq.com/docs/heartbeats)，最终运行采用同一 RabbitMQ 4.0.5 发行包；该网页的当前版本不替代固定测试版本证据。完整 verify、旧真实 broker/原库对照及新报告由 `receive-upgrade.json` 绑定。CLI stdin 的 1 MiB 限制、完整 API/恢复交错、跨版本/平台、集群/长期和代表性性能仍待补齐。所有操作仅在本地，其他 19 项本轮未重测。

@@ -184,6 +184,24 @@ fn event_json(e : @lib.SessionEvent) -> Json raise {
         "mechanism": mechanism.to_json(),
       }
     Received(ch, command) => method_json(ch, command)
+    MessageStart(ch, command, header) => {
+      let o = obj(method_json(ch, command))
+      o["type"] = "messageStart"
+      o["bodySize"] = header.body_size.to_string().to_json()
+      let props : Map[String, Json] = Map([])
+      for (k, v) in header.properties {
+        props[k] = argument_json(v)
+      }
+      o["properties"] = Json::object(props)
+      Json::object(o)
+    }
+    MessageData(ch, data) =>
+      {
+        "type": "messageData",
+        "channel": ch.to_json(),
+        "bodyHex": hex(data).to_json(),
+      }
+    MessageEnd(ch) => { "type": "messageEnd", "channel": ch.to_json() }
     ChannelClosed(ch, code, reason) =>
       {
         "type": "channelClosed",

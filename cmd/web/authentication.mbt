@@ -8,6 +8,37 @@ pub fn session_open_auth(
   frame_max : Int,
   heartbeat : Int,
 ) -> String {
+  open_auth(
+    key, authentication, vhost, locale, channel_max, frame_max, heartbeat, false,
+  )
+}
+
+///|
+pub fn session_open_stream_auth(
+  key : String,
+  authentication : String,
+  vhost : String,
+  locale : String,
+  channel_max : Int,
+  frame_max : Int,
+  heartbeat : Int,
+) -> String {
+  open_auth(
+    key, authentication, vhost, locale, channel_max, frame_max, heartbeat, true,
+  )
+}
+
+///|
+fn open_auth(
+  key : String,
+  authentication : String,
+  vhost : String,
+  locale : String,
+  channel_max : Int,
+  frame_max : Int,
+  heartbeat : Int,
+  stream_bodies : Bool,
+) -> String {
   try {
     if key.length() > 128 ||
       sessions.contains(key) ||
@@ -45,6 +76,7 @@ pub fn session_open_auth(
       channel_max~,
       frame_max~,
       heartbeat~,
+      stream_bodies~,
     )
     sessions[key] = s
     result(s, [])

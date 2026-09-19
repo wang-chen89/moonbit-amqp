@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T07:58:11.761Z",
+  "utc": "2026-09-19T08:33:17.862Z",
   "node": "v24.11.0",
   "passed": 7,
   "tests": [
@@ -124,15 +124,15 @@
       },
       "processMemory": {
         "before": {
-          "rss": 53080064,
-          "heapTotal": 11018240,
-          "heapUsed": 8709128,
-          "external": 2498009,
-          "arrayBuffers": 24898
+          "rss": 55418880,
+          "heapTotal": 11042816,
+          "heapUsed": 8710784,
+          "external": 11687057,
+          "arrayBuffers": 880938
         },
         "peak": {
-          "rss": 101064704,
-          "external": 5332057
+          "rss": 90669056,
+          "external": 11687057
         },
         "samplePeriodMs": 10,
         "note": "Whole Node process sample; includes bridge, GC and source buffers. Not an RSS bound or throughput comparison."
@@ -154,15 +154,15 @@
       },
       "processMemory": {
         "before": {
-          "rss": 103469056,
-          "heapTotal": 52961280,
-          "heapUsed": 20583944,
-          "external": 7085940,
-          "arrayBuffers": 4582384
+          "rss": 92422144,
+          "heapTotal": 52199424,
+          "heapUsed": 17625032,
+          "external": 7004076,
+          "arrayBuffers": 4500520
         },
         "peak": {
-          "rss": 103469056,
-          "external": 7085940
+          "rss": 100864000,
+          "external": 7004076
         },
         "samplePeriodMs": 10,
         "note": "Whole Node process sample; includes bridge, GC and source buffers. Not an RSS bound or throughput comparison."
@@ -184,15 +184,15 @@
       },
       "processMemory": {
         "before": {
-          "rss": 103473152,
-          "heapTotal": 49717248,
-          "heapUsed": 9642240,
+          "rss": 99971072,
+          "heapTotal": 51314688,
+          "heapUsed": 9723232,
           "external": 2540100,
           "arrayBuffers": 35741
         },
         "peak": {
-          "rss": 131244032,
-          "external": 3790342
+          "rss": 129081344,
+          "external": 3790334
         },
         "samplePeriodMs": 10,
         "note": "Whole Node process sample; includes bridge, GC and source buffers. Not an RSS bound or throughput comparison."
@@ -201,18 +201,18 @@
   ],
   "sources": {
     "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
-    "session.mbt": "cf5d7e4688b1a6f028ff9eedabb09f67c891be5f6187193191d0c236c4aae6e6",
+    "session.mbt": "2f5aa1cfe6e89655598d4ef75a1badb658f6c6f3e679284e87d4f57818db471e",
     "publish_stream.mbt": "60a37400a8bc0dbfe2b4f47448dc7d9b27f18af498573498e1ea421c9e1c7013",
     "cmd/web/publish_stream.mbt": "13eb1ed3791310e67cc7210bcebf990819fa6f7135c7819f3a03f7e7238ee8fd",
-    "tools/client.mjs": "36ca96d093e88a7ad7819676f82717cf44c2bcf5f6cf97bead8f3f9ad01489af",
+    "tools/client.mjs": "4c46851a8c9ccb9816b668e694aa394814202043a9130e4f9d1b40108d28b57b",
     "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
-    "tools/recovery-channel.mjs": "1b17c3f6530a0b9d6ff06be3633c64730e70fec3a27c5958b8524831129d20ee",
+    "tools/recovery-channel.mjs": "977dc31c61ca4ef96a2085770e9147dd9058bdbcb1768061492f5a83547a1f36",
     "tools/stream-reference.go": "d5c6bd4bf2a91796ff3d50e0503110fa0e1ee027b90e2ee7960dcc6d2d1fbc16",
     "tools/test-stream-native.mjs": "77daa107b823f7432217cd9840986ea097bf8d107db36c752e7220cad0efeb00",
     "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
     "evidence/stream-reference-build.json": "ad1e9cfbaf6c2011305305bdd2d9bb752e4a59830e723805860070ae4925f5a8",
-    "web/engine.mjs": "5511694ff61a66950c7c4b0f065351d526667039b734efc2a4a59a988a34c1a1"
+    "web/engine.mjs": "56e93f45cc106b5a630d95d36b372c1dcb929b4f6df49322d762d1cca9c4cc9e"
   },
   "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "binarySha256": "ea1f1a9b03c4144df27343062f39e07337ada527a8a7ccc71217f369b23c98e0",

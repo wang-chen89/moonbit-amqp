@@ -1,0 +1,3 @@
+PASS explicit consumer channel close removes its auto-delete chain while unused topology survives reconnect
+PASS external queue deletion sends broker cancellation and removes the chain from recovery
+2 real RabbitMQ auto-delete lifecycle groups passed

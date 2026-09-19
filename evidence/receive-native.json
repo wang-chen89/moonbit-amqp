@@ -1,0 +1,234 @@
+{
+  "utc": "2026-09-19T08:38:17.917Z",
+  "node": "v24.11.0",
+  "passed": 8,
+  "tests": [
+    "12 MiB TCP get matches pinned Go bytes and properties",
+    "16 MiB verified TLS consumer matches pinned Go bytes and properties",
+    "discard then negative acknowledgement requeues the full original body",
+    "prefetch one withholds the next stream until explicit acknowledgement",
+    "12 MiB mandatory return matches pinned Go and permits publisher confirmation",
+    "disconnect fails the old body and recovered get redelivers it with a fresh tag",
+    "closing an unread delivery channel requeues its body and keeps sibling usable",
+    "legacy buffer mode preserves the 8 MiB receiving bound"
+  ],
+  "nativeComparisons": 3,
+  "comparisons": [
+    {
+      "name": "12 MiB TCP get",
+      "matched": true,
+      "actual": {
+        "bytes": 12582912,
+        "sha256": "b6967a4c54cdab8a16907be0774af71e5db8198045f91933ebed106ddba22dfb",
+        "contentType": "application/octet-stream",
+        "messageId": "large-message",
+        "correlationId": "stream-check",
+        "deliveryMode": 2,
+        "headers": {
+          "label": "中文",
+          "n": 42
+        }
+      },
+      "reference": {
+        "bytes": 12582912,
+        "contentType": "application/octet-stream",
+        "correlationId": "stream-check",
+        "deliveryMode": 2,
+        "headers": {
+          "label": "中文",
+          "n": 42
+        },
+        "messageId": "large-message",
+        "sha256": "b6967a4c54cdab8a16907be0774af71e5db8198045f91933ebed106ddba22dfb"
+      }
+    },
+    {
+      "name": "16 MiB verified TLS consumer",
+      "matched": true,
+      "actual": {
+        "bytes": 16777216,
+        "sha256": "287507f403176f1f5b22b9a4d9cb49f7d7f88ac19e406b5ae87ce109564846bd",
+        "contentType": "application/octet-stream",
+        "messageId": "large-message",
+        "correlationId": "stream-check",
+        "deliveryMode": 2,
+        "headers": {
+          "label": "中文",
+          "n": 42
+        }
+      },
+      "reference": {
+        "bytes": 16777216,
+        "contentType": "application/octet-stream",
+        "correlationId": "stream-check",
+        "deliveryMode": 2,
+        "headers": {
+          "label": "中文",
+          "n": 42
+        },
+        "messageId": "large-message",
+        "sha256": "287507f403176f1f5b22b9a4d9cb49f7d7f88ac19e406b5ae87ce109564846bd"
+      }
+    },
+    {
+      "name": "12 MiB mandatory return",
+      "matched": true,
+      "actual": {
+        "bytes": 12582912,
+        "sha256": "b6967a4c54cdab8a16907be0774af71e5db8198045f91933ebed106ddba22dfb",
+        "contentType": "application/octet-stream",
+        "messageId": "large-message",
+        "correlationId": "stream-check",
+        "deliveryMode": 2,
+        "headers": {
+          "label": "中文",
+          "n": 42
+        }
+      },
+      "reference": {
+        "bytes": 12582912,
+        "contentType": "application/octet-stream",
+        "correlationId": "stream-check",
+        "deliveryMode": 2,
+        "headers": {
+          "label": "中文",
+          "n": 42
+        },
+        "messageId": "large-message",
+        "sha256": "b6967a4c54cdab8a16907be0774af71e5db8198045f91933ebed106ddba22dfb"
+      }
+    }
+  ],
+  "observations": [
+    {
+      "name": "12 MiB TCP get",
+      "held": {
+        "bufferedBodyBytes": 130944,
+        "maxObservedBodyBytes": 130944,
+        "bufferedChunks": 16,
+        "maxObservedChunks": 16,
+        "chunkHighWaterMark": 4096,
+        "chunkBound": 12289,
+        "backpressurePauses": 1,
+        "activeBodies": 1,
+        "retainedBodies": 1,
+        "highWaterMark": 65536,
+        "bodyBufferBound": 139264,
+        "pendingInputBytes": 0
+      },
+      "final": {
+        "bufferedBodyBytes": 0,
+        "maxObservedBodyBytes": 130944,
+        "bufferedChunks": 0,
+        "maxObservedChunks": 16,
+        "chunkHighWaterMark": 4096,
+        "chunkBound": 12289,
+        "backpressurePauses": 1,
+        "activeBodies": 0,
+        "retainedBodies": 0,
+        "highWaterMark": 65536,
+        "bodyBufferBound": 139264,
+        "pendingInputBytes": 0
+      },
+      "processMemory": {
+        "initial": {
+          "rss": 73175040,
+          "heapTotal": 28082176,
+          "heapUsed": 8246360,
+          "external": 3087615,
+          "arrayBuffers": 286916
+        },
+        "peak": {
+          "rss": 233791488,
+          "external": 5052633
+        },
+        "note": "Whole Node process observation, not an RSS guarantee or upstream throughput comparison."
+      }
+    },
+    {
+      "name": "16 MiB verified TLS consumer",
+      "held": {
+        "bufferedBodyBytes": 73656,
+        "maxObservedBodyBytes": 73656,
+        "bufferedChunks": 9,
+        "maxObservedChunks": 9,
+        "chunkHighWaterMark": 4096,
+        "chunkBound": 12289,
+        "backpressurePauses": 1,
+        "activeBodies": 1,
+        "retainedBodies": 1,
+        "highWaterMark": 65536,
+        "bodyBufferBound": 139264,
+        "pendingInputBytes": 0
+      },
+      "final": {
+        "bufferedBodyBytes": 0,
+        "maxObservedBodyBytes": 73656,
+        "bufferedChunks": 0,
+        "maxObservedChunks": 9,
+        "chunkHighWaterMark": 4096,
+        "chunkBound": 12289,
+        "backpressurePauses": 1,
+        "activeBodies": 0,
+        "retainedBodies": 0,
+        "highWaterMark": 65536,
+        "bodyBufferBound": 139264,
+        "pendingInputBytes": 0
+      },
+      "processMemory": {
+        "initial": {
+          "rss": 229937152,
+          "heapTotal": 183803904,
+          "heapUsed": 90490384,
+          "external": 4457908,
+          "arrayBuffers": 1953549
+        },
+        "peak": {
+          "rss": 231579648,
+          "external": 4755542
+        },
+        "note": "Whole Node process observation, not an RSS guarantee or upstream throughput comparison."
+      }
+    }
+  ],
+  "sources": {
+    "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
+    "session.mbt": "2f5aa1cfe6e89655598d4ef75a1badb658f6c6f3e679284e87d4f57818db471e",
+    "receive_stream.mbt": "189d08894d96e52044c93f958c135efba5e2c5a8d969264b9a22099681d7f1c0",
+    "cmd/web/session.mbt": "461bca58fe6295a404e98487ec8869daa8aa5e452a744c714699d780bdb7a58b",
+    "cmd/web/authentication.mbt": "9c57e3bcbad42ef3f9a417eafadf12c99829dbfcb453df4683076d7567c4d3e4",
+    "tools/client.mjs": "4c46851a8c9ccb9816b668e694aa394814202043a9130e4f9d1b40108d28b57b",
+    "tools/inbound.mjs": "472f83ff6abb1d1516ad46254f4a90219170630bf1506bb917fd35b1688e341f",
+    "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
+    "tools/recovery-channel.mjs": "977dc31c61ca4ef96a2085770e9147dd9058bdbcb1768061492f5a83547a1f36",
+    "tools/recovery.mjs": "d74b466f5d48174578d5a621565925f658adb1d6fa6c9a62101eb1f1a547d09c",
+    "tools/receive-reference.go": "0e0db50f1abe3ee383c6825f89ee1f2f508ea0d4f092abe318b72f0763bac19c",
+    "tools/test-receive-native.mjs": "f3c64f30888ab984150e9297cd4bcf1f88bf21c69503ff544679f30ee2d908c6",
+    "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
+    "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
+    "evidence/receive-reference-build.json": "0fac38895af8f0124999844277fc0a8e465d162c262342bd5d433b92c22012ca",
+    "web/engine.mjs": "56e93f45cc106b5a630d95d36b372c1dcb929b4f6df49322d762d1cca9c4cc9e"
+  },
+  "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
+  "binarySha256": "a016335103c37cb250e6f5efc2ce1165b87f149346f78fe66917afb97e00cbf1",
+  "brokerPackages": {
+    "rabbitmq-server_4.0.5-10ubuntu5_all.deb": "facf754e045a705aca30b82b7728ac7b3f123d2b7f7838575b246fe0bd2ad05e",
+    "libsctp1_1.0.21+dfsg-1build2_amd64.deb": "92924c463cf0e6630b1e9fd3969d45b21558f7ecbf0c9ef12c80523669f8a271",
+    "erlang-xmerl_1%3a27.3.4.6+dfsg-1_amd64.deb": "7480288faf6f4870a62e9de14c56cd4e6b92bebf4c26e1d35123bab10c92d1fc",
+    "erlang-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "f2769fae5be10c5c7048f2d1f62c5d41c9202c016b48138b039a6887c44c4757",
+    "erlang-syntax-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "06a238505a33eb31b4479cdcc003719bcf37cdff8922e0496296407bcafee2f4",
+    "erlang-ssl_1%3a27.3.4.6+dfsg-1_amd64.deb": "f194e4197bd209a2e3b219190f545c5fa3735369b6d8e36b8616a20dac767b64",
+    "erlang-snmp_1%3a27.3.4.6+dfsg-1_amd64.deb": "ce4c7681a5ee8d8c9f8fab0fc1b6297e2dab573f6991e24bc592770bd1e4cd4d",
+    "erlang-runtime-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "dfe9a6452a7073faf6be4e2f4ac4e5513458294d5949fa10040b77f5d522970a",
+    "erlang-public-key_1%3a27.3.4.6+dfsg-1_amd64.deb": "8cb55457e13ff6b00ff9ea80df4b13360dbb4df9c4bc1dbbbdc3ad4d9658ee8c",
+    "erlang-parsetools_1%3a27.3.4.6+dfsg-1_amd64.deb": "bd846ef7ca9d58f48ee54123a7138ec1812aa7aa813ebdffce21fc5fd6f45d78",
+    "erlang-os-mon_1%3a27.3.4.6+dfsg-1_amd64.deb": "b1cc339e3dfc237440069314dcdb082dc812cea57c1494679efbd642c22b9775",
+    "erlang-mnesia_1%3a27.3.4.6+dfsg-1_amd64.deb": "527c4881cb83a0c89e6d621adae20b4e301b8220311e59a839a443c4bf7edca6",
+    "erlang-inets_1%3a27.3.4.6+dfsg-1_amd64.deb": "f075fa56cd4464a63eb26d7d90d834a2b31446d9707c527029fa15915ae1f9ed",
+    "erlang-eldap_1%3a27.3.4.6+dfsg-1_amd64.deb": "4c40df00f11f0b459d0d5221b167e05e2eb57f63d82a61fed61541481093aa57",
+    "erlang-crypto_1%3a27.3.4.6+dfsg-1_amd64.deb": "1a2de05e72695135d4c091cbb7f74e5c291f3c763d4ced4b18e48d78a2a73d3a",
+    "erlang-base_1%3a27.3.4.6+dfsg-1_amd64.deb": "8e7ababa5b1ddbe72e135faa78d15755268dfbb7cdfc25a5a8144f3e2d5754df",
+    "erlang-asn1_1%3a27.3.4.6+dfsg-1_amd64.deb": "b2d3f1a35d642727631ff138070d5a4f410bb0066f67a1efbf11ad61dc51fa6d"
+  },
+  "scope": "Actual pinned Go publications to Node streamed get/consume and Go/Node mandatory returns; QoS, discard/requeue, channel closure and connection recovery on real RabbitMQ. Legacy bounded buffer mode retained. No production/throughput parity claim."
+}

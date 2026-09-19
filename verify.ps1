@@ -36,6 +36,8 @@ try {
   if ($LASTEXITCODE -ne 0) {throw 'client transport fixtures failed'}
   node tools/test-stream.mjs
   if ($LASTEXITCODE -ne 0) {throw 'streaming publication fixtures failed'}
+  node tools/test-receive-stream.mjs
+  if ($LASTEXITCODE -ne 0) {throw 'incoming streaming fixtures failed'}
   node tools/test-recovery.mjs
   if ($LASTEXITCODE -ne 0) {throw 'client recovery fixtures failed'}
   node tools/test-authentication.mjs

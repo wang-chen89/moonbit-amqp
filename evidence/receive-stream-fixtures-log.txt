@@ -1,0 +1,26 @@
+PASS stream mode validates options before dialing
+PASS 12 MiB get exposes header early and paused consumer bounds read-ahead
+PASS empty streamed get and get-empty preserve distinct results
+PASS ack nack reject and cumulative ack reject incomplete delivery locally
+PASS discard drains a large body and permits later acknowledgements and RPC
+PASS breaking iteration drains remaining bytes before iterator return completes
+PASS overrun fails the whole feed without exposing a successful get
+PASS duplicate header fails the whole feed without exposing a successful get
+PASS method during body fails the whole feed without exposing a successful get
+PASS truncated UInt64 declared body rejects completion and current iterator
+PASS missing body progress times out without allocating declared length
+PASS unread large body times out while socket is paused
+PASS completed buffered stream remains readable after connection destruction
+PASS partial channel closure rejects only its body and preserves sibling
+PASS normal connection close releases paused input and rejects incomplete body
+PASS large mandatory return is streamed while publisher confirmation waits behind body
+PASS two simultaneous consumer channels share a bounded incoming budget
+PASS recovery delivers stream headers early so large bodies cannot deadlock restoration
+PASS explicit channel close releases paused body without closing its sibling
+PASS overrun in a later socket read rejects an already exposed stream
+PASS consumer callback error discards its unread source and keeps connection usable
+PASS application backpressure pauses receive heartbeat deadline and resumes normally
+PASS reading completed body buffers does not hide absent broker heartbeats
+PASS unobserved mandatory return is discarded for plain and recovering connections
+PASS one-byte body fragments hit the shared object-count watermark before the byte limit
+25 incoming streaming fixture groups passed

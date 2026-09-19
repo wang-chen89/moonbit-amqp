@@ -5,6 +5,7 @@ import {randomUUID} from 'node:crypto';
 import * as core from '../web/engine.mjs';
 import {snapshotAuthentication,authenticationPlan,responseBytes} from './authentication.mjs';
 import {SendQueue,waitFor,aborted} from './outbound.mjs';
+import {IncomingBodies} from './inbound.mjs';
 
 function checked(text) {
   if (text.startsWith('ERROR:')) throw Error(text.slice(7));
@@ -20,6 +21,7 @@ function deferred() {
   return {promise, resolve, reject};
 }
 function delivery(event) {
+  if(event.type==='messageStart')return event;
   const {bodyHex, ...rest} = event;
   return {...rest, body: Buffer.from(bodyHex, 'hex')};
 }
@@ -33,6 +35,7 @@ export class Connection extends EventEmitter {
   #secretUpdate;
   #publishWrites; #streaming=new Map(); #deferredBytes=0;
   #maxWritten=0; #drainWaits=0;
+  #receiving; #pendingInput=Buffer.alloc(0); #readScheduled=false; #readPumping=false; #readEnded=false; #readBackpressured=false;
   static async connect(options = {}) {
     const connection = new Connection(options);
     await connection.#ready.promise;
@@ -50,9 +53,12 @@ export class Connection extends EventEmitter {
     this.#timeout = integer(timeout, 1, 2147483647, 'timeout');
     this.#maxBuffered = integer(options.maxBufferedBytes ?? 33554432, 1048576, 134217728, 'maxBufferedBytes');
     this.#publishWrites=new SendQueue(this.#maxBuffered,4096);
+    if(options.streamBodies!==undefined&&typeof options.streamBodies!=='boolean')throw TypeError('Invalid streamBodies');
+    const receiveHighWaterMark=integer(options.receiveHighWaterMark??262144,4096,134217728,'receiveHighWaterMark');
+    if(options.streamBodies)this.#receiving=new IncomingBodies({highWaterMark:receiveHighWaterMark,frameMax,timeout:this.#timeout,changed:()=>this.#resumeRead(),fail:error=>this._fail(error)});
     if (signal?.aborted) throw signal.reason ?? Error('Aborted');
     const auth=authenticationPlan(options.sasl);this.#authProviders=auth.providers;
-    const initial = JSON.parse(checked(core.session_open_auth(this.#key, JSON.stringify(auth.descriptors), vhost, options.locale??'en_US', channelMax, frameMax, heartbeat)));
+    const initial = JSON.parse(checked((options.streamBodies?core.session_open_stream_auth:core.session_open_auth)(this.#key, JSON.stringify(auth.descriptors), vhost, options.locale??'en_US', channelMax, frameMax, heartbeat)));
     this.#limits = initial;
     try {
       this.#socket = options.tls ? tls.connect({...options.tls, host, port}) : net.connect({host, port});
@@ -64,18 +70,20 @@ export class Connection extends EventEmitter {
     this.#socket.on('data', bytes => {
       try {
         this.#lastRead = performance.now();
+        if(this.#receiving){
+          if(this.#pendingInput.length)throw Error('Overlapping paused socket input');
+          if(bytes.length>1048576)throw Error('Socket input chunk limit exceeded');
+          this.#socket.pause();this.#pendingInput=bytes;this.#pumpRead();return;
+        }
         // MoonBit bridge accepts bounded chunks, independent of socket chunk sizing.
         for (let i = 0; i < bytes.length; i += 65536) this.#process(core.session_feed(this.#key, bytes.subarray(i, i + 65536).toString('hex')));
       } catch (e) { this._fail(e); }
     });
     this.#socket.on('error', e => this._fail(e));
     this.#socket.on('end', () => {
-      if (!this.#closed) {
-        try { checked(core.session_finish(this.#key)); this._fail(Error('Unexpected EOF')); }
-        catch (e) { this._fail(e); }
-      }
+      this.#readEnded=true;if(!this.#pendingInput.length)this.#finishRead();
     });
-    this.#socket.on('close', () => { if (!this.#closed) this._fail(Error('Socket closed')); });
+    this.#socket.on('close', () => { if (!this.#closed&&!(this.#readEnded&&this.#pendingInput.length)) this._fail(Error('Socket closed')); });
     this.#connectTimer = setTimeout(() => this._fail(Error('AMQP handshake timeout')), timeout);
     if (signal) {
       this.#signal = signal;
@@ -89,6 +97,27 @@ export class Connection extends EventEmitter {
   get timeout() { return this.#timeout; }
   get maxBufferedBytes() { return this.#maxBuffered; }
   get writeStats() { return {socketBufferedBytes:this.#socket.writableLength,maxObservedSocketBytes:this.#maxWritten,drainWaits:this.#drainWaits,streamingChannels:this.#streaming.size,deferredProtocolBytes:this.#deferredBytes}; }
+  get readStats() { return this.#receiving?{...this.#receiving.stats,pendingInputBytes:this.#pendingInput.length}:undefined; }
+  #finishRead(){if(this.#closed)return;try{checked(core.session_finish(this.#key));this._fail(Error('Unexpected EOF'));}catch(error){this._fail(error);}}
+  #resumeRead(){
+    if(this.#closed||this.#readScheduled||this.#receiving.paused)return;
+    // Yield between decode batches so a hot connection cannot starve other sockets or timers.
+    this.#readScheduled=true;setImmediate(()=>{this.#readScheduled=false;if(this.#closed||this.#receiving.paused)return;if(this.#readBackpressured){this.#readBackpressured=false;this.#lastRead=performance.now();}if(this.#pendingInput.length)this.#pumpRead();else if(this.#readEnded)this.#finishRead();else this.#socket.resume();});
+  }
+  #pumpRead(){
+    if(this.#closed||this.#readPumping)return;this.#readPumping=true;
+    try{
+      if(this.#pendingInput.length&&!this.#receiving.paused&&!this.#closed){
+        const bytes=this.#pendingInput.subarray(0,65536);this.#pendingInput=this.#pendingInput.subarray(bytes.length);
+        this.#process(core.session_feed(this.#key,bytes.toString('hex')));
+      }
+      if(this.#receiving.paused)this.#readBackpressured=true;
+      if(!this.#closed){if(!this.#pendingInput.length&&this.#readEnded)this.#finishRead();else if(!this.#receiving.paused)this.#resumeRead();}
+    }catch(error){this._fail(error);}finally{this.#readPumping=false;}
+  }
+  _assertIncomingComplete(channel,tag,multiple=false){this.#receiving?.assertComplete(channel,tag,multiple);}
+  _closeIncomingChannel(channel,error){this.#receiving?.closeChannel(channel,error);}
+  _discardIncomingChannel(channel){this.#receiving?.discardChannel(channel);}
   get authenticationMechanism() { return this.#authenticationMechanism; }
   #write(hexFrames,owner=0) {
     if (this.#closed) throw Error('Connection closed');
@@ -116,8 +145,12 @@ export class Connection extends EventEmitter {
     const result = typeof text==='string'?JSON.parse(checked(text)):text;
     this.#authenticationMechanism=result.authenticationMechanism;
     this.#limits = {channelMax: result.channelMax, frameMax: result.frameMax, heartbeat: result.heartbeat};
+    if(this.#receiving)this.#receiving.frameMax=result.frameMax;
     this.#write(result.output,owner);
     for (const e of result.events) {
+      if(e.type==='messageData'){this.#receiving.push(e);continue;}
+      if(e.type==='messageEnd'){this.#receiving.end(e.channel);continue;}
+      if(e.type==='messageStart'){e.body=this.#receiving.start(e);e.completed=e.body.completed;}
       if(e.type==='authenticate') {
         const provider=this.#authProviders[e.index];
         if(!provider)throw Error('Missing selected authentication provider');
@@ -134,7 +167,7 @@ export class Connection extends EventEmitter {
           this.#timer = setInterval(() => {
             try {
               const now = performance.now(), ms = result.heartbeat * 1000;
-              if (now - this.#lastRead > ms) throw Error('AMQP heartbeat timeout');
+              if (!this.#receiving?.paused&&now - this.#lastRead > ms) throw Error('AMQP heartbeat timeout');
               if (now - this.#lastWrite >= ms / 2) this.#write([checked(core.session_heartbeat(this.#key))]);
             } catch (error) { this._fail(error); }
           }, Math.max(100, result.heartbeat * 250));
@@ -229,6 +262,7 @@ export class Connection extends EventEmitter {
   #terminate(error, graceful) {
     if (this.#closed) return;
     this.#closed = true;
+    this.#receiving?.close(error);this.#pendingInput=Buffer.alloc(0);
     this.#publishWrites.close(error);this.#streaming.clear();this.#deferredBytes=0;
     this.#authAbort.abort(error);this.#authProviders=[];
     clearTimeout(this.#connectTimer); clearInterval(this.#timer);
@@ -267,6 +301,7 @@ export class Connection extends EventEmitter {
     if (this.#closed) return;
     if (this.#closing) return this.#closeWait.promise;
     this.#closing = true; this.#closeWait = deferred();
+    this.#receiving?.discardAll();
     this.#closeWait.promise.catch(()=>{});
     const timer = setTimeout(() => this._fail(Error('Close timeout')), this.#timeout);
     try { await Promise.all([...this.#channels.values()].map(ch=>ch._flushOutput()));await this._sendQueued(0, 'connection.close', [200, 'normal close', 0, 0]); await this.#closeWait.promise; }
@@ -300,7 +335,7 @@ export class Channel extends EventEmitter {
   }
   #notify(callback, message) {
     // User callback failures do not corrupt framing or leave a rejected Promise unobserved.
-    Promise.resolve().then(() => callback(message)).catch(e => this.emit('callbackError', e));
+    Promise.resolve().then(() => callback(message)).catch(e => {if(message?.type==='messageStart')message.body.discard().catch(()=>{});this.emit('callbackError', e);});
   }
   _receive(e) {
     if (e.type === 'channelClosed') {
@@ -321,7 +356,7 @@ export class Channel extends EventEmitter {
         }
       }
     } else if (e.name === 'basic.return') {
-      this.emit('return', delivery(e));
+      if(!this.emit('return', delivery(e))&&e.type==='messageStart')e.body.discard().catch(()=>{});
     } else if (e.name === 'basic.deliver') {
       const callback = this.#consumers.get(e.args['consumer-tag']);
       if (!callback) throw Error('Delivery for unknown consumer');
@@ -340,6 +375,7 @@ export class Channel extends EventEmitter {
   _terminate(error) {
     if (this.#closed) return;
     this.#closed = true;
+    this.#connection._closeIncomingChannel(this.id,error);
     this.#sendAbort.abort(error);this.#sends.close(error);
     if (this.#pending) { clearTimeout(this.#pending.timer); this.#pending.reject(error); this.#pending = undefined; }
     for (const p of this.#confirms.values()) { clearTimeout(p.timer); p.reject(error); }
@@ -368,9 +404,9 @@ export class Channel extends EventEmitter {
   }
   cancel(consumerTag) { return this._rpc('basic.cancel', [consumerTag, false], ['basic.cancel-ok'], e => { this.#consumers.delete(e.args['consumer-tag']); }); }
   #oneWay(name,args,internal=false){if(this.#closed)throw Error('Channel closed');if(!internal&&this.#connection.closing)throw Error('Connection closing');const encoded=JSON.stringify(args);const sent=this.#sends.run(()=>this.#connection._sendQueued(this.id,name,encoded,undefined,[this.#sendAbort.signal]));sent.catch(error=>{if(!this.#closed)this.#connection._fail(error);});return sent;}
-  ack(deliveryTag, multiple = false) { return this.#oneWay('basic.ack', [String(deliveryTag), multiple]); }
-  nack(deliveryTag, {multiple = false, requeue = true} = {}) { return this.#oneWay('basic.nack', [String(deliveryTag), multiple, requeue]); }
-  reject(deliveryTag, requeue = true) { return this.#oneWay('basic.reject', [String(deliveryTag), requeue]); }
+  ack(deliveryTag, multiple = false) { this.#connection._assertIncomingComplete(this.id,deliveryTag,multiple);return this.#oneWay('basic.ack', [String(deliveryTag), multiple]); }
+  nack(deliveryTag, {multiple = false, requeue = true} = {}) { this.#connection._assertIncomingComplete(this.id,deliveryTag,multiple);return this.#oneWay('basic.nack', [String(deliveryTag), multiple, requeue]); }
+  reject(deliveryTag, requeue = true) { this.#connection._assertIncomingComplete(this.id,deliveryTag);return this.#oneWay('basic.reject', [String(deliveryTag), requeue]); }
   recover(requeue = true) { return this._rpc('basic.recover', [requeue], ['basic.recover-ok']); }
   async confirmSelect() {
     if (this.#mode === 'confirm') return;
@@ -420,7 +456,7 @@ export class Channel extends EventEmitter {
       if(pending){clearTimeout(pending.timer);this.#confirms.delete(seq);pending.reject(error);}throw error;
     }).finally(()=>{this.#publications--;});
   }
-  close() { return this._rpc('channel.close', [200, 'normal close', 0, 0], ['channelClosed']); }
+  close() { this.#connection._discardIncomingChannel(this.id);return this._rpc('channel.close', [200, 'normal close', 0, 0], ['channelClosed']); }
 }
 
 export const connect = async options => {

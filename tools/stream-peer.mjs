@@ -28,7 +28,7 @@ export async function fixture(options,action){
      const cls=p.readUInt16BE(0),id=p.readUInt16BE(2);Object.assign(event,{cls,id});state.events.push(event);
      if(publishing.has(ch)&&!(cls===20&&id===41))throw Error('Method interleaved with partial content');
      if(options.onMethod?.(event,socket,state))continue;
-     if(cls===10&&id===11)send(method(0,10,30,u16(16),u32(options.frameMax??131072),u16(0)));
+     if(cls===10&&id===11)send(method(0,10,30,u16(16),u32(options.frameMax??131072),u16(options.heartbeat??0)));
      else if(cls===10&&id===40)send(method(0,10,41,short('')));
      else if(cls===20&&id===10)send(method(ch,20,11,u32(0)));
      else if(cls===85&&id===10)send(method(ch,85,11));

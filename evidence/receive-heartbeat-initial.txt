@@ -1,0 +1,18 @@
+ADMIN CLOSE AMQP heartbeat timeout
+PASS 12 MiB TCP get matches pinned Go bytes and properties
+PASS 16 MiB verified TLS consumer matches pinned Go bytes and properties
+FAIL discard then negative acknowledgement requeues the full original body: Connection is closing or closed
+file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/client.mjs:277
+    if (this.#closed || this.#closing) throw Error('Connection is closing or closed');
+                                             ^
+
+Error: Connection is closing or closed
+    at Connection.openChannel (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/client.mjs:277:46)
+    at file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-receive-native.mjs:37:74
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async test (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-receive-native.mjs:20:34)
+    at async file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-receive-native.mjs:36:3
+    at async withRabbit (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/rabbitmq-harness.mjs:27:10)
+    at async file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-receive-native.mjs:21:1
+
+Node.js v24.11.0

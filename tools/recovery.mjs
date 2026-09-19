@@ -38,6 +38,8 @@ export class RecoveringConnection extends Lifecycle {
   get limits() { return this.#physical?.limits; }
   get timeout() { return this.#physical?.timeout??this.#options.timeout??10000; }
   get authenticationMechanism() { return this.#physical?.authenticationMechanism; }
+  get readStats() { return this.#physical?.readStats; }
+  get writeStats() { return this.#physical?.writeStats; }
   resolveQueue(name) { return this.topology.resolve(name); }
   async updateSecret(secret,reason='Credential refreshed') {
     if(this.state!=='open'||this.#physical?.closed)throw Error('Connection recovery in progress or closed');

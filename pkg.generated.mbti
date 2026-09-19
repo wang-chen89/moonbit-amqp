@@ -144,7 +144,7 @@ pub fn Session::feed(Self, Bytes) -> Array[SessionEvent] raise FrameError
 pub fn Session::finish(Self) -> Unit raise FrameError
 pub fn Session::heartbeat(Self) -> Bytes raise FrameError
 pub fn Session::limits(Self) -> (Int, Int, Int)
-pub fn Session::new(String, String, vhost? : String, channel_max? : Int, frame_max? : Int, heartbeat? : Int) -> Self raise FrameError
+pub fn Session::new(String, String, vhost? : String, channel_max? : Int, frame_max? : Int, heartbeat? : Int, stream_bodies? : Bool) -> Self raise FrameError
 pub fn Session::publish(Self, Int, String, String, Bytes, properties? : Array[(String, Argument)], mandatory? : Bool) -> Unit raise FrameError
 pub fn Session::publish_body(Self, Int, Bytes) -> Unit raise FrameError
 pub fn Session::publish_start(Self, Int, String, String, UInt64, properties? : Array[(String, Argument)], mandatory? : Bool) -> Unit raise FrameError
@@ -152,13 +152,16 @@ pub fn Session::respond_authentication(Self, Bytes) -> Unit raise FrameError
 pub fn Session::send(Self, Int, Method) -> Unit raise FrameError
 pub fn Session::status(Self) -> String
 pub fn Session::take_output(Self) -> Array[Bytes]
-pub fn Session::with_authentication(Array[Authentication], vhost? : String, locale? : String, channel_max? : Int, frame_max? : Int, heartbeat? : Int) -> Self raise FrameError
+pub fn Session::with_authentication(Array[Authentication], vhost? : String, locale? : String, channel_max? : Int, frame_max? : Int, heartbeat? : Int, stream_bodies? : Bool) -> Self raise FrameError
 
 pub(all) enum SessionEvent {
   Ready
   AuthenticationRequested(Int, String)
   Received(Int, Method)
   Message(Content)
+  MessageStart(Int, Method, BasicHeader)
+  MessageData(Int, Bytes)
+  MessageEnd(Int)
   ChannelClosed(Int, Int, String)
   Closed(Int, String)
 } derive(Eq, @debug.Debug)

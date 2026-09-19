@@ -18,7 +18,7 @@ export class RecoveringChannel extends Lifecycle {
     if (claim!==this.#opening || this.closed || this.#connection.closed) { if(!raw.closed)await raw.close(); throw Error('Closed or superseded during channel recovery'); }
     this.#physical = raw; this.#generation++; this.#offset = this.#lastTag;
     this.#deliveries=[];this.#deliveryBytes=0;
-    raw.on('return', message => { if (this.#physical === raw) notice(this,'return',message); });
+    raw.on('return', message => { if (this.#physical === raw) {if(message.type==='messageStart'&&!this.listenerCount('return'))message.body.discard().catch(()=>{});notice(this,'return',message);} });
     raw.on('callbackError', error => notice(this,'callbackError',error));
     raw.on('cancel', tag => {
       if (this.#physical !== raw) return;
@@ -49,6 +49,12 @@ export class RecoveringChannel extends Lifecycle {
   }
   #notify(callback,message,raw,generation) {
     const value=this.#delivery(message,raw,generation);if(value===undefined)return;
+    // A stream must be drained while restore RPCs are still behind its body on TCP.
+    // Only streaming callbacks run early; acknowledgements wait for recoveryReady.
+    if(value?.type==='messageStart'){
+      value.recoveryReady=Promise.all([this.waitForReady({timeout:this.#connection.timeout}),this.#connection.waitForReady({timeout:this.#connection.timeout})]).then(()=>{});
+      value.recoveryReady.catch(()=>{});return callback(value);
+    }
     if(this.state==='open'&&this.#connection.state==='open')return callback(value);
     this.#deliveryBytes+=value?.body.length??0;
     if(this.#deliveries.length>=1024||this.#deliveryBytes>8388608) {

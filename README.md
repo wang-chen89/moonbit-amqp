@@ -1,6 +1,6 @@
 # AMQP 0-9-1 编解码与消息客户端
 
-本地候选版 **0.10.0**。MoonBit 实现帧/方法/属性编解码、连接认证协商和通道状态机；Node.js 提供 TCP/TLS、RPC、心跳和消息发布/消费宿主。仓库独立，当前仅供本地审查。
+本地候选版 **0.11.0**。MoonBit 实现帧/方法/属性编解码、连接认证协商和通道状态机；Node.js 提供 TCP/TLS、RPC、心跳和消息发布/消费宿主。仓库独立，当前仅供本地审查。
 
 ```sh
 moon test --target js
@@ -86,7 +86,42 @@ await channel.publishStream('', queue, createReadStream('message.bin'), size, {
 
 发布选项 `signal` 可取消排队或尚未发送完的源。排队取消不调用源；已开始后源长度不符、抛错、超时或取消会终止连接，避免留下不完整正文。broker 主动关闭通道则丢弃该通道剩余源并保留健康兄弟通道。尽力调用 iterator `return()` / Readable `destroy()`，不能强制终止忽略取消的用户 Promise。发送完后 signal 不撤销消息或确认等待；恢复不自动重放旧源。
 
-这是发送端流式 API。消费和 mandatory 退回仍完整组装，默认 8 MiB 上限；超过它的退回会关闭连接。真实 broker 还限制消息大小：本次 RabbitMQ 默认上限 16 MiB，32 MiB 发布在服务端被 406 拒绝。应按实际 broker 配置和业务路由选择正文大小。
+默认消费和 mandatory 退回仍完整组装，采用 8 MiB 上限；更大的接收正文可启用下述流式模式。真实 broker 另有限制：本次 RabbitMQ 默认上限 16 MiB，32 MiB 发布在服务端被 406 拒绝。应按实际 broker 配置和业务路由选择正文大小。
+
+### 流式接收
+
+连接选项 `streamBodies: true` 将该连接的 get、consume 和 mandatory return 正文改为单次遍历的异步字节 iterable。消息在头部校验后即交付：`bodySize` 是十进制 UInt64 字符串，`body` 逐块给出 Buffer，`completed` 在正文长度完整验证后兑现；未完成就断线或遇到坏帧时拒绝。默认模式的 Buffer 接口保持不变。
+
+```js
+import {createHash} from 'node:crypto';
+import {connect} from './tools/client.mjs';
+const c = await connect({
+  host: '127.0.0.1', port: 5672, username: 'demo',
+  password: process.env.AMQP_PASSWORD, allowInsecureAuth: true,
+  streamBodies: true, receiveHighWaterMark: 65536,
+});
+try {
+  const ch = await c.openChannel();
+  const message = await ch.get('jobs');
+  if (message) {
+    const hash = createHash('sha256');
+    for await (const chunk of message.body) hash.update(chunk);
+    await message.completed;
+    await ch.ack(message.args['delivery-tag']);
+    console.log(message.bodySize, hash.digest('hex'));
+  }
+} finally { await c.close(); }
+```
+
+先读取或 `await message.body.discard()`，再等完成、进行 ack/nack/reject；这些确认方法会拒绝尚未完整接收的对应标签。`discard()` 只丢弃本地正文并继续校验剩余线路，不向 broker 确认；可随后 nack/reject 决定是否重投。`for await` 提前 break 也会排空并校验剩余正文。不要在大正文尚未读取时只等待 `completed`，否则背压会阻止后续字节到达。需要 Node Readable 时可用 `Readable.from(message.body)`；其额外缓冲由调用方负责。
+
+每条流必须读取或丢弃。未监听的 return 自动丢弃，消费回调抛错时也会丢弃其未读流并触发 `callbackError`。源或消费者超过连接 `timeout` 无进展会关闭连接。正常连接/通道 close 会丢弃未读流以解除背压，并拒绝仍不完整的正文；显式 destroy/断线也拒绝不完整正文。已完整收到的流在连接意外关闭后仍可读取其缓存。
+
+`receiveHighWaterMark` 默认 256 KiB（可设 4 KiB–128 MiB），按整条连接累计未取走的正文。达到字节水位或 4096 个未读分片就暂停 socket，每批最多解码 64 KiB 输入，因此正文缓存上界为水位 + 协商 frameMax + 64 KiB，分片硬上限 12289。单个待处理 socket 输入块另限 1 MiB，最多保留 1024 条尚未排空的流。核心同时最多跟踪 64 个未完成内容通道；正文队列用游标出队，避免逐片移动整个数组。`readStats` 可查看缓存、分片数、峰值、暂停次数和上界。这不含解码器、桥接临时对象、调用方保留的块、内核/TLS 缓冲，也不是进程 RSS 上限。
+
+暂停读取会阻塞同一 TCP 连接上的其它通道和回复。此时暂停接收心跳截止计时，但仍发送心跳并执行正文进展超时；普通 RPC/发布确认仍受各自超时约束。每批解码后让出事件循环，使大量接收不会饿死其它连接。慢速流建议使用独立连接、合理 QoS 和与处理时间匹配的 timeout。
+
+恢复模式下，流式 consume 回调可能在恢复尚未全部完成时收到头部，以便及时排空正文、让后续恢复回复通过。读完后还须 `await message.recoveryReady` 再 ack/nack/reject；它只在通道及连接恢复就绪后兑现。旧流在断线后失败，旧标签仍被拒绝；broker 可以重投消息，库不拼接新旧正文。普通 Buffer 回调仍等待整体恢复就绪。MoonBit 主机可用 `Session::new(..., stream_bodies=true)` 或 `with_authentication` 同名选项，处理 `MessageStart/MessageData/MessageEnd`；调用方应提供有界输入批次和自己的背压。
 
 `declareExchange` / `deleteExchange`、`declareQueue` / `deleteQueue` / `purgeQueue`、`bindQueue` / `unbindQueue`、`qos`、`consume` / `cancel`、`get`、`ack` / `nack` / `reject` / `recover` 见 [客户端接口](tools/client.mjs)。一个通道只允许一个未结束的 RPC，调用需 `await`；不同通道可并行，发布确认另按序号跟踪。delivery-tag 与 timestamp 使用十进制字符串，避免 JavaScript 53 位整数截断。
 
@@ -183,15 +218,15 @@ connection.on('queueNameChanged', ({previous, current}) => console.log({previous
 
 断线时未完成 RPC/确认可能已经在 broker 执行，均以失败结束，**不会自动重放或重发消息**。事务恢复只恢复模式，旧事务中的未提交发布不重发。投递标签跨恢复单调递增，旧通道的 ack/nack/reject 标签被拒绝；重投递仍可能发生，业务应按自身需求处理重复。`close()`、`destroy()` 和连接级 AbortSignal 是终止操作，停止重试；`waitForReady({signal, timeout})` 的取消只结束本次等待。状态和事件细节见 [TESTING.md](TESTING.md)。
 
-默认最多记录 4096 个拓扑实体/绑定，每通道最多 1024 个消费者，恢复阶段最多缓冲 1024 条投递或 8 MiB 正文，超限会触发连接故障。恢复仅由 Node 客户端提供；MoonBit 会话 API 仍由调用方负责网络与生命周期。
+默认最多记录 4096 个拓扑实体/绑定，每通道最多 1024 个消费者，普通模式的恢复阶段最多缓冲 1024 条投递或 8 MiB 正文，超限会触发连接故障；流式模式采用前述共享接收水位和早期回调契约。恢复仅由 Node 客户端提供；MoonBit 会话 API 仍由调用方负责网络与生命周期。
 
 ## 验证与成熟度
 
-0.10 的 **115 项核心测试在 JS 与 Wasm-GC 分别通过**，包含之前的 220 组 Pika 1.3.2 独立字节向量及会话状态测试。新增 **22 组流式发送/背压故障组、7 组真实 broker 大消息流程**；其中 2/12/16 MiB 的正文哈希和属性经原版 Go 客户端实际收发对照一致。32 MiB 的独立慢速接收测试验证生产源停顿与有界 socket 缓冲。**18 组网络故障、25 组恢复故障、22 项原有 RabbitMQ 流程及 6 组真实恢复流程**继续回归；原有浏览器核心、CLI 与 7 项帧审查 CLI 场景也通过。
+0.11 的 **120 项核心测试在 JS 与 Wasm-GC 分别通过**，包含之前的 220 组 Pika 1.3.2 独立字节向量及会话状态测试。接收端新增 **25 组线路故障、8 组真实 broker 流程**；12 MiB get、16 MiB TLS consume 和 12 MiB mandatory return 的正文/属性与原版 Go 对照一致。此前 **22 组流式发送/背压故障组、7 组真实 broker 大消息流程**继续通过，其中 2/12/16 MiB 与原版 Go 收发一致，32 MiB 独立慢端验证发送源停顿。**18 组网络故障、25 组恢复故障、22 项原有 RabbitMQ 流程及 6 组真实恢复流程**继续回归；原有浏览器核心、CLI 与 7 项帧审查 CLI 场景也通过。
 
 真实服务器为 Ubuntu 发行的 RabbitMQ **4.0.5**、Erlang/OTP **27**，通过 Windows Node 24 的 TCP/TLS 访问本机 WSL 临时实例。验证了二进制分片、64 位属性、确认、退回、重投、消费取消、交换机路由、事务、通道错误隔离、心跳、错误凭证、TLS 信任/主机名和消息 CLI。认证新增 12 组故障/生命周期、10 组真实 broker（含双向 TLS、重连和 CLI）验证；30 个原库认证响应及 9 个独立协商对照通过，AMQPLAIN 只归一化无语义差异的字段顺序。证据及复现见 [TESTING.md](TESTING.md)、`evidence/client-validation.json`、`evidence/rabbitmq-validation.json`。恢复另与固定 amqp091-go 提交 `a0195c6baf35db642d13651cb28938f899062e7c` 的原生程序比较一个重复断线场景，3 次确认消费与 2 次队列更名一致。各验证层覆盖重叠，不相加声称上游案例数。凭证更新新增 10 组故障、10 组真实 OAuth broker、6 个原库逐字节报文及 6 个真实 broker 结果对照通过。OAuth 服务器采用一次性 RS256 静态密钥；未接入远程授权服务器/JWKS/OIDC。自动删除恢复另有 13 组独立故障测试、2 组真实关闭/服务端取消流程，以及 10 个原生 Go/Node 真实重连场景：9 一致、1 个上述空解绑登记差异；重连后以被动声明验证存在/404，并确认存活队列仍能发布和取消息。跨通道依赖恢复新增 8 组线路故障和 6 组真实 broker 验证；另以原生 Go 验证了两项既有边界（缺少兄弟通道的队列或路由恢复），本实现改进这两种行为，没有计作原库一致案例。性能记录仅为 4 KiB 消息、8 个在途发布的单机确认样例和单进程恢复延时观察。
 
-这仍未完整追平 amqp091-go：恢复已覆盖下述有界场景，尚缺完整恢复边界/上游兼容、更多真实身份提供器/认证失败策略验证、流式接收和充分的生产负载/长期运行证据。协议版本仅为 AMQP 0-9-1，不是 AMQP 1.0。当前编码 API 也不检查所有 broker 业务规则和保留字段语义。
+这仍未完整追平 amqp091-go：恢复已覆盖下述有界场景，尚缺完整恢复边界/上游兼容、更多真实身份提供器/认证失败策略验证、CLI 大文件入口和充分的生产负载/长期运行证据。协议版本仅为 AMQP 0-9-1，不是 AMQP 1.0。当前编码 API 也不检查所有 broker 业务规则和保留字段语义。
 
 ## 限制
 
@@ -213,4 +248,4 @@ Node 字段表用普通对象，支持 boolean、signed int32、字符串、null
 
 参考：[RabbitMQ 规格](https://www.rabbitmq.com/docs/specification)、[amqp091-go](https://github.com/rabbitmq/amqp091-go)。Pika 仅是独立验证工具，无运行期依赖。
 
-本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，0.10 本地增量归档另附同提交 ZIP/bundle；历史合集未更新。未上传、未发布、未添加远程仓库。
+本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，0.11 本地增量归档另附同提交 ZIP/bundle；历史合集未更新。未上传、未发布、未添加远程仓库。
