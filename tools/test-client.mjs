@@ -4,9 +4,10 @@ import net from 'node:net';
 import assert from 'node:assert/strict';
 import {once} from 'node:events';
 import fs from 'node:fs/promises';
-import {createHash} from 'node:crypto';
+import {sourceSnapshot,assertSourceUnchanged} from './evidence-source.mjs';
 import {connect} from './client.mjs';
 import * as core from '../web/engine.mjs';
+const sources=sourceSnapshot(['session.mbt', 'cmd/web/session.mbt', 'tools/client.mjs', 'web/engine.mjs', 'tools/test-client.mjs']);
 
 const tests=[], cat=(...parts)=>Buffer.concat(parts), u16=n=>{const b=Buffer.alloc(2);b.writeUInt16BE(n);return b;}, u32=n=>{const b=Buffer.alloc(4);b.writeUInt32BE(n);return b;};
 const u64=n=>{const b=Buffer.alloc(8);b.writeBigUInt64BE(BigInt(n));return b;};
@@ -124,6 +125,6 @@ await test('session bridge malformed table does not throw outside error result',
   assert.doesNotThrow(()=>{const value=core.session_publish('missing',1,'','q','','{"headers":{"x":{"$type":"bytes"}}}',false);assert.match(value,/ERROR:/);});
 });
 
-const sources={};for(const file of ['session.mbt','cmd/web/session.mbt','tools/client.mjs','web/engine.mjs','tools/test-client.mjs'])sources[file]=createHash('sha256').update(await fs.readFile(new URL('../'+file,import.meta.url))).digest('hex');
+assertSourceUnchanged(sources);
 await fs.writeFile(new URL('../evidence/client-validation.json',import.meta.url),JSON.stringify({at:new Date().toISOString(),node:process.version,passed:tests.length,tests,sources},null,2)+'\n');
 console.log(`Client fixtures: ${tests.length} passed`);

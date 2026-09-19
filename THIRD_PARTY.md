@@ -49,3 +49,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
 其它新增编解码代码、生成器、测试输入和宿主工具为本项目原创，适用本项目 MIT 许可。独立验证调用另外安装的 Pika 1.3.2（BSD-3-Clause）；仓库没有复制其实现或测试集，仅记录本项目输入产生的协议字节及本项目编写的适配器。
+
+
+0.5 恢复接口/语义参考固定 [amqp091-go a0195c6](https://github.com/rabbitmq/amqp091-go/tree/a0195c6baf35db642d13651cb28938f899062e7c)。恢复实现为本项目独立编写；`tools/recovery-reference.go` 是原创独立调用程序，Go 原库只用于测试，源码与二进制均未打入本项目 ZIP。外部参考归档 SHA256 为 `19067ca18143f0101b390ab09a237e2de989fd900ca20917746a4b22b66cafef`，保留下载原库自带许可；证据固定提交，不把主分支提交称为某个发行版。

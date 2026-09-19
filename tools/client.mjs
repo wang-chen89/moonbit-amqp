@@ -235,6 +235,8 @@ export class Channel extends EventEmitter {
     return this._rpc('exchange.declare', [0, exchange, type, passive, durable, autoDelete, internal, false, args], ['exchange.declare-ok']);
   }
   deleteExchange(exchange, {ifUnused = false} = {}) { return this._rpc('exchange.delete', [0, exchange, ifUnused, false], ['exchange.delete-ok']); }
+  bindExchange(destination, source, routingKey = '', args = {}) { return this._rpc('exchange.bind', [0, destination, source, routingKey, false, args], ['exchange.bind-ok']); }
+  unbindExchange(destination, source, routingKey = '', args = {}) { return this._rpc('exchange.unbind', [0, destination, source, routingKey, false, args], ['exchange.unbind-ok']); }
   qos(prefetchCount, global = false) { return this._rpc('basic.qos', [0, prefetchCount, global], ['basic.qos-ok']); }
   get(queue, {noAck = false} = {}) { return this._rpc('basic.get', [0, queue, noAck], ['basic.get-ok', 'basic.get-empty'], e => e.name === 'basic.get-empty' ? null : delivery(e)); }
   consume(queue, callback, {consumerTag = randomUUID(), noAck = false, exclusive = false, arguments: args = {}} = {}) {
@@ -288,4 +290,10 @@ export class Channel extends EventEmitter {
   close() { return this._rpc('channel.close', [200, 'normal close', 0, 0], ['channelClosed']); }
 }
 
-export const connect = options => Connection.connect(options);
+export const connect = async options => {
+  if (options?.recovery) {
+    const {RecoveringConnection} = await import('./recovery.mjs');
+    return RecoveringConnection.connect(options, opts => Connection.connect(opts));
+  }
+  return Connection.connect(options);
+};

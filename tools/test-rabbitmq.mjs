@@ -3,10 +3,11 @@ import {spawn} from 'node:child_process';
 import {once} from 'node:events';
 import {createInterface} from 'node:readline';
 import {fileURLToPath} from 'node:url';
-import {createHash} from 'node:crypto';
+import {sourceSnapshot,assertSourceUnchanged} from './evidence-source.mjs';
 import fs from 'node:fs/promises';
 import net from 'node:net';
 import {connect} from './client.mjs';
+const sources=sourceSnapshot(['session.mbt','cmd/web/session.mbt','tools/client.mjs','tools/broker.mjs','web/engine.mjs','tools/rabbitmq-reference.py','tools/test-rabbitmq.mjs']);
 
 const root = process.env.RABBITMQ_ROOT;
 if (!root) throw Error('Set RABBITMQ_ROOT to extracted Ubuntu package root (Linux path for WSL)');
@@ -146,7 +147,7 @@ try {
     } finally {await a.deleteQueue(name);}
   });
   await run('orderly channel and connection close', async () => {await b.close(); await a.close(); await c.close(); assert.equal(c.closed,true);});
-  const sources={}; for(const path of ['session.mbt','cmd/web/session.mbt','tools/client.mjs','tools/broker.mjs','web/engine.mjs','tools/rabbitmq-reference.py','tools/test-rabbitmq.mjs']) sources[path]=createHash('sha256').update(await fs.readFile(new URL('../'+path,import.meta.url))).digest('hex');
+  assertSourceUnchanged(sources);
   await fs.writeFile(new URL('../evidence/rabbitmq-validation.json',import.meta.url),JSON.stringify({at:new Date().toISOString(),node:process.version,platform:process.platform,oracle:'RabbitMQ 4.0.5-10ubuntu5 on Erlang/OTP 27, Ubuntu distribution packages, unmodified binaries',transport:'Windows Node to loopback WSL Ubuntu-D' ,tests:cases,passed:cases.length,performanceSample,packages:info.packages,sources},null,2)+'\n');
   console.log(`RabbitMQ integration: ${cases.length} passed`);
 } finally {

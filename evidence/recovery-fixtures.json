@@ -1,0 +1,42 @@
+{
+  "utc": "2026-09-19T05:52:37.698Z",
+  "scope": "Independently encoded TCP peer; actual RabbitMQ integration is separate.",
+  "passed": 25,
+  "tests": [
+    "recovery configuration validation precedes connection creation",
+    "ordered cross-channel topology and server-named queue aliases survive repeated disconnects",
+    "deliveries received during recovery wait for readiness and stale tags never reach new channel",
+    "unconfirmed publications reject and are not silently republished after recovery",
+    "soft channel error recovers that channel without disconnecting a healthy sibling",
+    "deleted topology, unbound routes and cancelled consumers are not resurrected",
+    "transient mode preserves subscriptions but skips durable declarations",
+    "disabled topology still restores channel QoS and transaction mode",
+    "skippable topology failure reopens channel before restoring remaining entities",
+    "topology error callback can refuse skipping and exhaust retry budget",
+    "connection failure during topology replay retries the complete recovery sequence",
+    "explicit close cancels retry delay without creating another socket",
+    "AbortSignal cancels a reconnect handshake and releases the wait",
+    "ready wait cancellation is local and callback errors do not stop recovery listeners",
+    "topology stores an independent argument snapshot and enforces a bounded registry",
+    "pending non-idempotent RPC rejects instead of being replayed after reconnect",
+    "failure of the last topology entity still leaves a usable reopened channel",
+    "skipping a failed consumer restores earlier subscriptions after reopening its channel",
+    "broker consumer cancellation removes its recovery entry",
+    "closing a channel during connection recovery cannot resurrect or leak the opening channel",
+    "connection recovery supersedes an older channel retry without a duplicate open",
+    "server-named queue aliases also work for later passive declarations",
+    "closing connection from a channel ready listener cannot resurrect it",
+    "closing connection from stateChange suppresses stale readiness notifications",
+    "a channel recovery notification permits a new topology RPC"
+  ],
+  "sources": {
+    "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
+    "tools/client.mjs": "90df037047b281d7d88d2af985ac061a76033708c7d14029287a7bd8fec19f05",
+    "tools/recovery.mjs": "f80de3732dfe68c639e90408d59ebc5cbd995e6b75f351372cc9be9ce947bab1",
+    "tools/recovery-channel.mjs": "3aaaa62ff33e78d240d1f65e19c88ac42d474918e540bda2a578cf186da2ee89",
+    "tools/recovery-state.mjs": "b890609d50b6bce5d6444f4b051d2004ed0746fd51fb995e895e65b36b615e27",
+    "tools/recovery-peer.mjs": "461011ceb2199085bc19248f9aeebb7555aa8d7e621de2550ae98966cd20616e",
+    "tools/test-recovery.mjs": "877b089b6e498628a61279b78d47df72c6a263c316ed6b04bf4b4cae62269b95",
+    "web/engine.mjs": "12282d0a723a0c92333298b862c7cb83c80b46c74c164e99f876acb13bec36c5"
+  }
+}

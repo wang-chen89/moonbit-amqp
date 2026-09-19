@@ -1,6 +1,6 @@
 # AMQP 0-9-1 编解码与消息客户端
 
-本地候选版 **0.4.0**。MoonBit 实现帧/方法/属性编解码、连接认证协商和通道状态机；Node.js 提供 TCP/TLS、RPC、心跳和消息发布/消费宿主。仓库独立，当前仅供本地审查。
+本地候选版 **0.5.0**。MoonBit 实现帧/方法/属性编解码、连接认证协商和通道状态机；Node.js 提供 TCP/TLS、RPC、心跳和消息发布/消费宿主。仓库独立，当前仅供本地审查。
 
 ```sh
 moon test --target js
@@ -87,13 +87,46 @@ node tools/broker.mjs get existing-queue
 
 `roundtrip` 使用临时独占队列。`publish` 验证队列存在并等待确认；`get` 输出正文 Base64 JSON 后发送消费确认，空队列输出 `null`。浏览器页面仍用于线路审查，网络客户端运行在 Node 中。
 
+## 可选自动恢复
+
+```js
+const connection = await connect({
+  host: '127.0.0.1', username: 'demo', password: 'test-only',
+  allowInsecureAuth: true, // 仅限本机测试；实际连接推荐配置 TLS
+  recovery: {maxRetries: 5, retryDelay: 1000, retryJitter: 200, topology: 'all'},
+});
+const channel = await connection.openChannel();
+const {queue} = await channel.declareQueue('', {exclusive: true, autoDelete: true});
+await channel.qos(1);
+await channel.consume(queue, message => {
+  if (!message) return;
+  console.log(message.body.toString());
+  channel.ack(message.args['delivery-tag']);
+});
+connection.on('recovered', ({attempt, skipped}) => console.log({attempt, skipped}));
+connection.on('queueNameChanged', ({previous, current}) => console.log({previous, current}));
+// 不再需要时：await connection.close();
+```
+
+默认关闭恢复；`recovery: true` 启用默认配置。连接与通道对象保持不变，消费回调与已成功登记的拓扑在恢复后继续使用。恢复中的调用失败；可先 `await connection.waitForReady()` 和 `await channel.waitForReady()`，再发起新的业务操作。就绪后仍可能再次断线，业务层应处理每次调用的失败。
+
+初始拨号失败直接返回错误；已有连接断开时首次重试立即进行，后续按固定延时加抖动重试。连接默认最多重试 5 次、间隔 5000 ms、抖动 0–499 ms。单通道 broker 错误独立恢复，健康通道仍可收发；拓扑恢复期间其它拓扑变更会被拒绝，以免和重建冲突。
+
+恢复顺序为交换机、队列、交换机绑定、队列绑定、消费者，并恢复通道 QoS 与 confirm/transaction 模式。`topology: 'transient'` 只重建 exclusive/autoDelete 实体及相关绑定，但仍恢复消费者；`'none'` 不恢复拓扑和消费者。服务端重新生成的队列名可用 `connection.resolveQueue(最初队列名)` 查询；队列操作及默认交换机发布自动解析最初的别名。中间某次重连生成的过期队列名不作为永久别名保存。
+
+拓扑实体错误触发 `topologyError`，默认跳过该实体，详情见连接 `recovered.skipped`。需要任何实体失败都重试，可设置 `onTopologyError: () => false`；此策略与默认跳过均受重试次数限制。回调也可返回 Promise，应用须保证回调能结束。成功的显式 delete/unbind/cancel 不会被恢复撤销；隐式 auto-delete 的全部关联删除语义仍待补齐。
+
+断线时未完成 RPC/确认可能已经在 broker 执行，均以失败结束，**不会自动重放或重发消息**。事务恢复只恢复模式，旧事务中的未提交发布不重发。投递标签跨恢复单调递增，旧通道的 ack/nack/reject 标签被拒绝；重投递仍可能发生，业务应按自身需求处理重复。`close()`、`destroy()` 和连接级 AbortSignal 是终止操作，停止重试；`waitForReady({signal, timeout})` 的取消只结束本次等待。状态和事件细节见 [TESTING.md](TESTING.md)。
+
+默认最多记录 4096 个拓扑实体/绑定，每通道最多 1024 个消费者，恢复阶段最多缓冲 1024 条投递或 8 MiB 正文，超限会触发连接故障。恢复仅由 Node 客户端提供；MoonBit 会话 API 仍由调用方负责网络与生命周期。
+
 ## 验证与成熟度
 
-0.4 的 **91 项核心测试在 JS 与 Wasm-GC 分别通过**，包含之前的 220 组 Pika 1.3.2 独立字节向量及新增会话状态测试。**18 组网络故障测试、22 项真实 RabbitMQ 流程**通过；原有浏览器核心、CLI 与 7 项帧审查 CLI 场景也通过。
+0.5 的 **91 项核心测试在 JS 与 Wasm-GC 分别通过**，包含之前的 220 组 Pika 1.3.2 独立字节向量及新增会话状态测试。**18 组网络故障、25 组恢复故障、22 项原有 RabbitMQ 流程及 6 组真实恢复流程**通过；原有浏览器核心、CLI 与 7 项帧审查 CLI 场景也通过。
 
-真实服务器为 Ubuntu 发行的 RabbitMQ **4.0.5**、Erlang/OTP **27**，通过 Windows Node 24 的 TCP/TLS 访问本机 WSL 临时实例。验证了二进制分片、64 位属性、确认、退回、重投、消费取消、交换机路由、事务、通道错误隔离、心跳、错误凭证、TLS 信任/主机名和消息 CLI。证据及复现见 [TESTING.md](TESTING.md)、`evidence/client-validation.json`、`evidence/rabbitmq-validation.json`。性能记录仅为 4 KiB 消息、8 个在途发布的单机确认样例。
+真实服务器为 Ubuntu 发行的 RabbitMQ **4.0.5**、Erlang/OTP **27**，通过 Windows Node 24 的 TCP/TLS 访问本机 WSL 临时实例。验证了二进制分片、64 位属性、确认、退回、重投、消费取消、交换机路由、事务、通道错误隔离、心跳、错误凭证、TLS 信任/主机名和消息 CLI。证据及复现见 [TESTING.md](TESTING.md)、`evidence/client-validation.json`、`evidence/rabbitmq-validation.json`。恢复另与固定 amqp091-go 提交 `a0195c6baf35db642d13651cb28938f899062e7c` 的原生程序比较一个重复断线场景，3 次确认消费与 2 次队列更名一致。各验证层覆盖重叠，不相加声称上游案例数。性能记录仅为 4 KiB 消息、8 个在途发布的单机确认样例和单进程恢复延时观察。
 
-这仍未完整追平 amqp091-go：尚缺重连/拓扑恢复、更多 SASL/SASLprep、流式大消息和充分的生产负载/长期运行证据。协议版本仅为 AMQP 0-9-1，不是 AMQP 1.0。当前编码 API 也不检查所有 broker 业务规则和保留字段语义。
+这仍未完整追平 amqp091-go：恢复已覆盖下述有界场景，尚缺完整恢复边界/上游兼容、更多 SASL/SASLprep、流式大消息和充分的生产负载/长期运行证据。协议版本仅为 AMQP 0-9-1，不是 AMQP 1.0。当前编码 API 也不检查所有 broker 业务规则和保留字段语义。
 
 ## 限制
 
@@ -115,4 +148,4 @@ Node 字段表用普通对象，支持 boolean、signed int32、字符串、null
 
 参考：[RabbitMQ 规格](https://www.rabbitmq.com/docs/specification)、[amqp091-go](https://github.com/rabbitmq/amqp091-go)。Pika 仅是独立验证工具，无运行期依赖。
 
-本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，本次未重复重打包。未上传、未发布、未添加远程仓库。
+本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，0.5 本地增量归档另附同提交 ZIP/bundle；历史合集未更新。未上传、未发布、未添加远程仓库。
