@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T08:37:54.572Z",
+  "utc": "2026-09-19T09:02:55.672Z",
   "passed": 8,
   "tests": [
     "consumer-only channel replays sibling-owned routing before subscription without reopening sibling",

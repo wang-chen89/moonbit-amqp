@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T08:33:00.540Z",
+  "utc": "2026-09-19T09:05:19.874Z",
   "node": "v24.11.0",
   "platform": "win32",
   "broker": "RabbitMQ 4.0.5-10ubuntu5 / Erlang OTP 27",
@@ -47,7 +47,7 @@
     "tools/recovery.mjs": "d74b466f5d48174578d5a621565925f658adb1d6fa6c9a62101eb1f1a547d09c",
     "tools/recovery-channel.mjs": "977dc31c61ca4ef96a2085770e9147dd9058bdbcb1768061492f5a83547a1f36",
     "tools/recovery-state.mjs": "78435fc7a882bfa4e7f349602db597d9778cf1f0558f7459475e8e562fff683e",
-    "tools/broker.mjs": "fbd62611d286137a2501b09094caeb4b441785a16212fe21c2fa5c5da41db7f8",
+    "tools/broker.mjs": "3906562cee29a765dfa3f0c23c25574a5593b807461bde59471ba0abc55b2fa0",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
     "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
     "tools/test-rabbitmq-auth.mjs": "add0120499bc8159abfc8ccf89c697bfdbaae41e87c262c1b8a951d7ecc39597",

@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T08:37:50.738Z",
+  "utc": "2026-09-19T09:02:27.473Z",
   "node": "v24.11.0",
   "passed": 25,
   "tests": [
@@ -32,7 +32,7 @@
   "observations": [
     {
       "name": "12 MiB held consumer",
-      "senderBytesBeforeResume": 384272,
+      "senderBytesBeforeResume": 318864,
       "bufferedBodyBytes": 0,
       "maxObservedBodyBytes": 61320,
       "bufferedChunks": 0,
@@ -74,7 +74,7 @@
     "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
     "tools/recovery.mjs": "d74b466f5d48174578d5a621565925f658adb1d6fa6c9a62101eb1f1a547d09c",
     "tools/recovery-channel.mjs": "977dc31c61ca4ef96a2085770e9147dd9058bdbcb1768061492f5a83547a1f36",
-    "tools/stream-peer.mjs": "18a228fffcd0de676704b48eda76e430df6d5583a6505c1fcef79475bbb73d7f",
+    "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
     "tools/receive-peer.mjs": "39bc524b5d683a189c692d60b9dd8cc2cf509616e46bd5c03e6640c750b30516",
     "tools/test-receive-stream.mjs": "5f188a52e168e6145687379209250ca83a69e8edab27db0635bd780e332bb0e9",
     "web/engine.mjs": "56e93f45cc106b5a630d95d36b372c1dcb929b4f6df49322d762d1cca9c4cc9e"

@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T08:37:34.683Z",
+  "utc": "2026-09-19T09:02:12.511Z",
   "node": "v24.11.0",
   "passed": 22,
   "tests": [
@@ -47,12 +47,12 @@
     },
     {
       "name": "32 MiB paused receiver",
-      "producerBytesBeforeResume": 524288,
+      "producerBytesBeforeResume": 589824,
       "totalBytes": 33554432,
       "writeStats": {
         "socketBufferedBytes": 0,
         "maxObservedSocketBytes": 65544,
-        "drainWaits": 397,
+        "drainWaits": 415,
         "streamingChannels": 0,
         "deferredProtocolBytes": 0
       }
@@ -68,7 +68,7 @@
     "tools/client.mjs": "4c46851a8c9ccb9816b668e694aa394814202043a9130e4f9d1b40108d28b57b",
     "tools/recovery-channel.mjs": "977dc31c61ca4ef96a2085770e9147dd9058bdbcb1768061492f5a83547a1f36",
     "tools/recovery.mjs": "d74b466f5d48174578d5a621565925f658adb1d6fa6c9a62101eb1f1a547d09c",
-    "tools/stream-peer.mjs": "18a228fffcd0de676704b48eda76e430df6d5583a6505c1fcef79475bbb73d7f",
+    "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
     "tools/test-stream.mjs": "a777946698ffbbcef993f6dde250b23f5ca16537281c29a39a49b5d4e5e8e653",
     "web/engine.mjs": "56e93f45cc106b5a630d95d36b372c1dcb929b4f6df49322d762d1cca9c4cc9e"
   },

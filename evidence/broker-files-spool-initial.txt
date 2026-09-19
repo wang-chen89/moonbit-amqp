@@ -1,0 +1,28 @@
+PASS strict arguments and resource settings fail before network use
+PASS input file preflight rejects missing directories and body limit
+PASS regular file publication 12582912 bytes waits for confirm and matches hash
+PASS regular file publication 0 bytes waits for confirm and matches hash
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: EBADF: bad file descriptor, read
+
+
+1 !== 0
+
+    at success (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-broker-files.mjs:17:39)
+    at file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-broker-files.mjs:35:22
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async fixture (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/stream-peer.mjs:52:6)
+    at async test (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-broker-files.mjs:16:34)
+    at async file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-broker-files.mjs:30:2 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.11.0

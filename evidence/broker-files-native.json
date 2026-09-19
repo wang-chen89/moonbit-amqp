@@ -1,0 +1,161 @@
+{
+  "utc": "2026-09-19T09:05:00.411Z",
+  "node": "v24.11.0",
+  "platform": "win32",
+  "passed": 12,
+  "tests": [
+    "12 MiB CLI file publication is received byte-exact by pinned Go",
+    "3 MiB unknown stdin publication matches pinned Go",
+    "16 MiB TLS known stdin publication matches pinned Go",
+    "12 MiB pinned Go publication is atomically saved and acknowledged by CLI",
+    "16 MiB pinned Go publication reaches raw stdout over verified TLS",
+    "empty file roundtrip and empty queue remain distinguishable",
+    "receive size refusal requeues the complete message and removes partial file",
+    "existing output remains intact and queued message is not consumed",
+    "broken raw stdout exits with error and broker redelivers the whole body",
+    "blocked raw stdout times out and broker retains the unacknowledged body",
+    "broker size rejection is reported without publishing a partial message",
+    "TLS hostname refusal removes the unopened receive output"
+  ],
+  "nativeComparisons": 5,
+  "comparisons": [
+    {
+      "name": "file publication",
+      "matched": true,
+      "actual": {
+        "bytes": 12582912,
+        "sha256": "b6967a4c54cdab8a16907be0774af71e5db8198045f91933ebed106ddba22dfb"
+      },
+      "reference": {
+        "bytes": 12582912,
+        "sha256": "b6967a4c54cdab8a16907be0774af71e5db8198045f91933ebed106ddba22dfb"
+      }
+    },
+    {
+      "name": "spooled stdin",
+      "matched": true,
+      "actual": {
+        "bytes": 3145728,
+        "sha256": "a1feacf0d812ba4d0b0e463ed45bbd583cea1de55c54693116754b30b5794745"
+      },
+      "reference": {
+        "bytes": 3145728,
+        "sha256": "a1feacf0d812ba4d0b0e463ed45bbd583cea1de55c54693116754b30b5794745"
+      }
+    },
+    {
+      "name": "known stdin TLS",
+      "matched": true,
+      "actual": {
+        "bytes": 16777216,
+        "sha256": "287507f403176f1f5b22b9a4d9cb49f7d7f88ac19e406b5ae87ce109564846bd"
+      },
+      "reference": {
+        "bytes": 16777216,
+        "sha256": "287507f403176f1f5b22b9a4d9cb49f7d7f88ac19e406b5ae87ce109564846bd"
+      }
+    },
+    {
+      "name": "file reception",
+      "matched": true,
+      "actual": {
+        "bytes": 12582912,
+        "sha256": "b6967a4c54cdab8a16907be0774af71e5db8198045f91933ebed106ddba22dfb",
+        "contentType": "application/octet-stream",
+        "messageId": "large-message",
+        "correlationId": "stream-check",
+        "deliveryMode": 2,
+        "headers": {
+          "label": "中文",
+          "n": 42
+        }
+      },
+      "reference": {
+        "bytes": 12582912,
+        "contentType": "application/octet-stream",
+        "correlationId": "stream-check",
+        "deliveryMode": 2,
+        "headers": {
+          "label": "中文",
+          "n": 42
+        },
+        "messageId": "large-message",
+        "sha256": "b6967a4c54cdab8a16907be0774af71e5db8198045f91933ebed106ddba22dfb"
+      }
+    },
+    {
+      "name": "raw TLS reception",
+      "matched": true,
+      "actual": {
+        "bytes": 16777216,
+        "sha256": "287507f403176f1f5b22b9a4d9cb49f7d7f88ac19e406b5ae87ce109564846bd",
+        "contentType": "application/octet-stream",
+        "messageId": "large-message",
+        "correlationId": "stream-check",
+        "deliveryMode": 2,
+        "headers": {
+          "label": "中文",
+          "n": 42
+        }
+      },
+      "reference": {
+        "bytes": 16777216,
+        "contentType": "application/octet-stream",
+        "correlationId": "stream-check",
+        "deliveryMode": 2,
+        "headers": {
+          "label": "中文",
+          "n": 42
+        },
+        "messageId": "large-message",
+        "sha256": "287507f403176f1f5b22b9a4d9cb49f7d7f88ac19e406b5ae87ce109564846bd"
+      }
+    }
+  ],
+  "sources": {
+    "tools/evidence-source.mjs": "b255fb00208b45d0afc443b09852835646708cb54a97d2e54b9368fe837497d9",
+    "tools/broker.mjs": "3906562cee29a765dfa3f0c23c25574a5593b807461bde59471ba0abc55b2fa0",
+    "tools/broker-files.mjs": "863f1095cf1840fd26fbe00766f1a36033368b5ffafe79332e0b7c32b6c65a71",
+    "tools/broker-output.mjs": "da4590872c673ab2dcac813c05d95279bf507a2e5fadfc528b8932cda23fa3b2",
+    "tools/broker-output-worker.mjs": "6043be63dfdfb3482218a0d14bd15785ae16a62ea11d1d355d8a2b843fb8dbce",
+    "tools/broker-test-process.mjs": "22ced655b539ac84ee4b893ccb96b4263c219cfc1a16220bdf82ac2f854de1ff",
+    "tools/test-broker-files-native.mjs": "455842ddde3dd91f619e32e4bc452839ffb50bc80e7eb63353cac871be68840b",
+    "tools/client.mjs": "4c46851a8c9ccb9816b668e694aa394814202043a9130e4f9d1b40108d28b57b",
+    "tools/inbound.mjs": "472f83ff6abb1d1516ad46254f4a90219170630bf1506bb917fd35b1688e341f",
+    "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
+    "tools/receive-reference.go": "0e0db50f1abe3ee383c6825f89ee1f2f508ea0d4f092abe318b72f0763bac19c",
+    "tools/stream-reference.go": "d5c6bd4bf2a91796ff3d50e0503110fa0e1ee027b90e2ee7960dcc6d2d1fbc16",
+    "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
+    "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
+    "tools/receive-peer.mjs": "39bc524b5d683a189c692d60b9dd8cc2cf509616e46bd5c03e6640c750b30516",
+    "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
+    "evidence/receive-reference-build.json": "0fac38895af8f0124999844277fc0a8e465d162c262342bd5d433b92c22012ca",
+    "evidence/stream-reference-build.json": "ad1e9cfbaf6c2011305305bdd2d9bb752e4a59830e723805860070ae4925f5a8",
+    "web/engine.mjs": "56e93f45cc106b5a630d95d36b372c1dcb929b4f6df49322d762d1cca9c4cc9e"
+  },
+  "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
+  "binaries": {
+    "send": "a016335103c37cb250e6f5efc2ce1165b87f149346f78fe66917afb97e00cbf1",
+    "get": "ea1f1a9b03c4144df27343062f39e07337ada527a8a7ccc71217f369b23c98e0"
+  },
+  "brokerPackages": {
+    "rabbitmq-server_4.0.5-10ubuntu5_all.deb": "facf754e045a705aca30b82b7728ac7b3f123d2b7f7838575b246fe0bd2ad05e",
+    "libsctp1_1.0.21+dfsg-1build2_amd64.deb": "92924c463cf0e6630b1e9fd3969d45b21558f7ecbf0c9ef12c80523669f8a271",
+    "erlang-xmerl_1%3a27.3.4.6+dfsg-1_amd64.deb": "7480288faf6f4870a62e9de14c56cd4e6b92bebf4c26e1d35123bab10c92d1fc",
+    "erlang-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "f2769fae5be10c5c7048f2d1f62c5d41c9202c016b48138b039a6887c44c4757",
+    "erlang-syntax-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "06a238505a33eb31b4479cdcc003719bcf37cdff8922e0496296407bcafee2f4",
+    "erlang-ssl_1%3a27.3.4.6+dfsg-1_amd64.deb": "f194e4197bd209a2e3b219190f545c5fa3735369b6d8e36b8616a20dac767b64",
+    "erlang-snmp_1%3a27.3.4.6+dfsg-1_amd64.deb": "ce4c7681a5ee8d8c9f8fab0fc1b6297e2dab573f6991e24bc592770bd1e4cd4d",
+    "erlang-runtime-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "dfe9a6452a7073faf6be4e2f4ac4e5513458294d5949fa10040b77f5d522970a",
+    "erlang-public-key_1%3a27.3.4.6+dfsg-1_amd64.deb": "8cb55457e13ff6b00ff9ea80df4b13360dbb4df9c4bc1dbbbdc3ad4d9658ee8c",
+    "erlang-parsetools_1%3a27.3.4.6+dfsg-1_amd64.deb": "bd846ef7ca9d58f48ee54123a7138ec1812aa7aa813ebdffce21fc5fd6f45d78",
+    "erlang-os-mon_1%3a27.3.4.6+dfsg-1_amd64.deb": "b1cc339e3dfc237440069314dcdb082dc812cea57c1494679efbd642c22b9775",
+    "erlang-mnesia_1%3a27.3.4.6+dfsg-1_amd64.deb": "527c4881cb83a0c89e6d621adae20b4e301b8220311e59a839a443c4bf7edca6",
+    "erlang-inets_1%3a27.3.4.6+dfsg-1_amd64.deb": "f075fa56cd4464a63eb26d7d90d834a2b31446d9707c527029fa15915ae1f9ed",
+    "erlang-eldap_1%3a27.3.4.6+dfsg-1_amd64.deb": "4c40df00f11f0b459d0d5221b167e05e2eb57f63d82a61fed61541481093aa57",
+    "erlang-crypto_1%3a27.3.4.6+dfsg-1_amd64.deb": "1a2de05e72695135d4c091cbb7f74e5c291f3c763d4ced4b18e48d78a2a73d3a",
+    "erlang-base_1%3a27.3.4.6+dfsg-1_amd64.deb": "8e7ababa5b1ddbe72e135faa78d15755268dfbb7cdfc25a5a8144f3e2d5754df",
+    "erlang-asn1_1%3a27.3.4.6+dfsg-1_amd64.deb": "b2d3f1a35d642727631ff138070d5a4f410bb0066f67a1efbf11ad61dc51fa6d"
+  },
+  "scope": "Actual CLI subprocesses, pinned unmodified Go receiver/publisher and real RabbitMQ; TCP/TLS, file/stdin/raw data hashes, native properties, confirms, requeue on output failure and no-overwrite filesystem behavior. No throughput or cross-platform parity claim."
+}

@@ -222,7 +222,7 @@ node tools/test-stream-native.mjs
 
 现有认证/更新/恢复/自动删除/依赖、真实 broker 和原库对照均在本版源指纹下重新核验，历史已披露差异继续保留。最终 `stream-upgrade.json` 绑定源码、报告和验证计数；各层重叠，不相加作为全量上游案例数。其它 19 个项目本轮未重跑。
 
-## 0.11 可选流式接收
+## 0.11 可选流式接收（历史版本，0.12 保持回归）
 
 核心新增 5 组测试，JS/Wasm-GC 各 120 项：UInt64 头部、正文不拼接、空/非空结束边界、非法长度/重复头部/提前正文/方法打断、多通道交错/心跳、通道关闭后重用。默认组装路径不变；新 Session 选项与事件是调用者可选择的接收接口。
 
@@ -237,3 +237,15 @@ node tools/test-stream-native.mjs
 流式消息头部可以先于完整正文交给应用，因此部分数据已处理后仍可能遇到失败；应用应等待 completed 再确认，需要业务原子性时由应用负责。恢复期间的流式回调允许先读正文，完成后还需等 recoveryReady 才操作逻辑通道。这是显式开启的新契约，普通 Buffer 回调仍按原规则等待恢复完成。源消费缓慢会阻塞共享 TCP 连接的其他回复，普通 RPC/确认超时仍可能触发；未声称具有独立通道网络背压。
 
 心跳依据 [RabbitMQ 心跳说明](https://www.rabbitmq.com/docs/heartbeats)，最终运行采用同一 RabbitMQ 4.0.5 发行包；该网页的当前版本不替代固定测试版本证据。完整 verify、旧真实 broker/原库对照及新报告由 `receive-upgrade.json` 绑定。CLI stdin 的 1 MiB 限制、完整 API/恢复交错、跨版本/平台、集群/长期和代表性性能仍待补齐。所有操作仅在本地，其他 19 项本轮未重测。
+
+## 0.12 大文件消息 CLI
+
+`node tools/test-broker-files.mjs` 启动真实 Node CLI 子进程，与独立手写 AMQP peer 通信；23 组验证命令/资源参数、文件类型/长度、12 MiB 及空文件发布、未知长度 stdin 暂存前不连接、已知长度 stdin 的短/长错误、nack、大 mandatory return、原子无覆盖安装、安装时才允许 ack、零字节/空队列、目标竞争创建、截断/越界/超时/限额、原始二进制输出和堵塞 stdout。每组检查受控退出后的暂存文件清理。源指纹包括 CLI、文件 helper、输出父子进程、测试子进程 helper 和核心引擎。该脚本已进入 verify 和 CI 配置，未运行远程 CI。
+
+设置 `RABBITMQ_ROOT`、`AMQP_RECEIVE_REFERENCE`、`AMQP_STREAM_REFERENCE`，运行 `node tools/test-broker-files-native.mjs`。它复用已逐字验证 72 原库文件的两个固定 Go 程序及 17 个 RabbitMQ/Erlang 软件包，不修改或重建参考实现。12 组真实流程中，5 组为原版 Go 与 CLI 的内容/属性对照：12 MiB 文件发布、3 MiB 未知长度 stdin、16 MiB 已知长度 stdin/TLS、12 MiB 文件接收、16 MiB raw TLS 接收。其余验证空文件/空队列、接收限额失败后完整重投、已存在文件保留、stdout 断管/堵塞后完整重投、32 MiB broker 拒绝及 TLS 主机名失败后清理。正文按字节数和 SHA-256 比较，原库发布的消息同时比较全部设置的属性。仅在本机 Windows Node 24 + WSL RabbitMQ 4.0.5 上实测，未声称跨平台/长时间/生产性能。
+
+开发时的 stdin 暂存首次使用只写 fd，回读触发 EBADF；改为排他读写 fd。初始日志保留为 `broker-files-spool-initial.txt`。`broker-files-blocked-output-initial.txt` 保留 Windows 同步 stdout 导致超时失效、测试最终杀进程的失败。尝试异步 fs.write 后主循环能报超时，但操作系统写请求仍阻止退出；最终将 stdout 写入移到独立进程，每次最多交付 64 KiB，并在父进程超时后终止它。23 组夹具及真实 broker 堵塞/断管检查以退出码 1 和未确认完整重投证明最终行为；未通过增大超时规避。
+
+这个选择依据 [Node 24.11 进程 I/O 的平台差异](https://nodejs.org/download/release/v24.11.0/docs/api/process.html#a-note-on-process-io) 与 [文件系统 API](https://nodejs.org/download/release/v24.11.0/docs/api/fs.html)。保存使用目标目录的临时文件、sync、close、link；不覆盖目标，无硬链接支持则失败。受控失败会清理暂存文件，强制杀进程、断电、磁盘故障和任意文件系统的持久性没有完整验证。stdout 已输出前缀无法撤回，文件保存与 ack 之间仍有重复交付窗口。
+
+核心与客户端未改动；完整 verify 仍为 JS/Wasm-GC 各 120 项，既有网络/发送/接收/恢复/认证/更新/自动删除/依赖与 307 异常输入保留。改变的旧 CLI broker 路径重新实测；源码未变的原库/真实 broker 报告按源哈希核验后沿用，不能声称这些报告本轮全部重跑。最终 `broker-files-upgrade.json` 绑定全部源码及证据，历史报告和初始失败保留；本轮没有原生吞吐或进程内存性能验收。完整 20 项追平目标仍未完成，其他 19 项没有重跑。

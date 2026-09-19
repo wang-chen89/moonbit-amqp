@@ -1,0 +1,24 @@
+PASS strict arguments and resource settings fail before network use
+PASS input file preflight rejects missing directories and body limit
+PASS regular file publication 12582912 bytes waits for confirm and matches hash
+PASS regular file publication 0 bytes waits for confirm and matches hash
+PASS unknown stdin is spooled before connecting and then streamed
+PASS stdin spool limit and idle timeout remove temporary files
+PASS known-length stdin streams exactly with no spool
+PASS known stdin length mismatch 4096/4095 never reports success
+PASS known stdin length mismatch 4096/4097 never reports success
+PASS publisher nack is an error
+PASS large mandatory return drains and produces failure despite broker confirm
+PASS file get 0 bytes installs full body before ack
+PASS file get 12582912 bytes installs full body before ack
+PASS partial delivery exposes no destination and sends no ack
+PASS existing output is preserved before connecting
+PASS raced destination is preserved and message remains unacknowledged
+PASS failed cut receive leaves no file and no acknowledgement
+PASS failed overrun receive leaves no file and no acknowledgement
+PASS failed timeout receive leaves no file and no acknowledgement
+PASS failed limit receive leaves no file and no acknowledgement
+PASS raw output is exact binary and metadata stays on stderr
+PASS blocked raw output times out without acknowledgement
+PASS empty raw and file gets distinguish absence from a zero-byte body
+23 broker file CLI fixture groups passed

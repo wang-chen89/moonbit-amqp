@@ -49,5 +49,5 @@ export async function fixture(options,action){
  });
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const open=async extra=>{const c=await connect({host:'127.0.0.1',port:server.address().port,allowInsecureAuth:true,heartbeat:0,timeout:2000,...extra});connections.push(c);return c;};
- try{await action({open,state});assert.deepEqual(errors,[]);}finally{for(const c of connections)c.destroy();for(const s of sockets)s.destroy();await new Promise(r=>server.close(r));}
+ try{await action({open,state,port:server.address().port});assert.deepEqual(errors,[]);}finally{for(const c of connections)c.destroy();for(const s of sockets)s.destroy();await new Promise(r=>server.close(r));}
 }
