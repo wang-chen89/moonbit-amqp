@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T15:15:27.683Z",
+  "utc": "2026-09-20T15:37:26.740Z",
   "node": "v24.11.0",
   "passed": 22,
   "tests": [
@@ -47,7 +47,7 @@
     },
     {
       "name": "32 MiB paused receiver",
-      "producerBytesBeforeResume": 524288,
+      "producerBytesBeforeResume": 589824,
       "totalBytes": 33554432,
       "writeStats": {
         "socketBufferedBytes": 0,
@@ -85,7 +85,7 @@
     "tools/client.mjs": "c4836d1c198377be1f282b365836bbe36c08a4dfe44ccc76ed15f2d20ef18c3f",
     "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
     "tools/test-stream.mjs": "a777946698ffbbcef993f6dde250b23f5ca16537281c29a39a49b5d4e5e8e653",
-    "web/engine.mjs": "383b318ab47872c514132049c175a57052c09788f63e8609e03b9b08232bd914"
+    "web/engine.mjs": "50dbb50240e56a92b2a9316f3f7a43c1a4c6768bb87d173cd3bd5953cbc5033e"
   },
   "scope": "Independent wire fixtures; outbound streaming only. Source-owned chunk storage excluded from sender buffer bound."
 }

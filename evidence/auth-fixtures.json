@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T15:16:01.572Z",
+  "utc": "2026-09-20T15:37:54.826Z",
   "passed": 12,
   "tests": [
     "authentication rejects malformed candidates and redacts malformed bridge credentials",
@@ -43,7 +43,7 @@
     "tools/client.mjs": "c4836d1c198377be1f282b365836bbe36c08a4dfe44ccc76ed15f2d20ef18c3f",
     "tools/recovery-peer.mjs": "ce2f414bffcb07a848143cd34c1e737340e15078f4b3f0cb25f0e829a35118fe",
     "tools/test-authentication.mjs": "277175c3f26d03e2672a8d2b51ebc50514d2e9bcb5bd6f2e429656993afb422e",
-    "web/engine.mjs": "383b318ab47872c514132049c175a57052c09788f63e8609e03b9b08232bd914"
+    "web/engine.mjs": "50dbb50240e56a92b2a9316f3f7a43c1a4c6768bb87d173cd3bd5953cbc5033e"
   },
   "scope": "Independent scripted TCP peer, including custom async response lifecycle and recovery; real certificate authentication is tested separately."
 }

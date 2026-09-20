@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T15:15:38.398Z",
+  "utc": "2026-09-20T15:37:34.461Z",
   "node": "v24.11.0",
   "passed": 25,
   "tests": [
@@ -92,7 +92,7 @@
     "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
     "tools/receive-peer.mjs": "39bc524b5d683a189c692d60b9dd8cc2cf509616e46bd5c03e6640c750b30516",
     "tools/test-receive-stream.mjs": "5f188a52e168e6145687379209250ca83a69e8edab27db0635bd780e332bb0e9",
-    "web/engine.mjs": "383b318ab47872c514132049c175a57052c09788f63e8609e03b9b08232bd914"
+    "web/engine.mjs": "50dbb50240e56a92b2a9316f3f7a43c1a4c6768bb87d173cd3bd5953cbc5033e"
   },
   "scope": "Opt-in incoming async byte streams; bounded shared body buffer and independent AMQP wire peer. Does not bound user-retained chunks, decoder/bridge temporaries or process RSS."
 }

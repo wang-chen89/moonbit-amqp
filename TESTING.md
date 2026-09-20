@@ -1,3 +1,7 @@
+# 当前性能补丁验证
+
+[本次范围、复现和原始数据](PERFORMANCE.md)：JS 140 / Wasm-GC 138；全部本地检查通过；三组负载各三轮，27 个客户端进程逐条验证消息。先前版本的原生报告保留历史范围，本次未全部重跑。
+
 # Validation contract
 
 - Explicit Wasm-GC and JS targets: no inference from the toolchain default.

@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T15:15:58.222Z",
+  "utc": "2026-09-20T15:37:51.514Z",
   "node": "v24.11.0",
   "passed": 15,
   "tests": [
@@ -138,7 +138,7 @@
     "tools/recovery-peer.mjs": "ce2f414bffcb07a848143cd34c1e737340e15078f4b3f0cb25f0e829a35118fe",
     "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
     "tools/test-channel-options.mjs": "ede5787ca84ff928a4a0dde6afe3247ec44633466c5b1b24e69bfbc5c2faf643",
-    "web/engine.mjs": "383b318ab47872c514132049c175a57052c09788f63e8609e03b9b08232bd914"
+    "web/engine.mjs": "50dbb50240e56a92b2a9316f3f7a43c1a4c6768bb87d173cd3bd5953cbc5033e"
   },
   "scope": "Independent AMQP peer validates QoS width, consume/publish flags, both flow directions, source/RPC ordering, timeout/cancel, recovery snapshots and additive bridge compatibility; not full API or broker support."
 }

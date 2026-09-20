@@ -32,7 +32,7 @@
 | 资源处理 | 深度/节点/字节上限；组装正文及元数据总上限；错误后终止状态 | 畸形长度、截断、错误通道、类型与嵌套压力输入 |
 | 自动删除恢复 | 取消最后消费者、queue.delete、queue/exchange.unbind、exchange.delete 触发关联清理；跨通道与未完成操作防护、循环图、别名、显式通道关闭和 broker cancel | 13 故障组、2 真实生命周期组；10 Go/Node 真实重连场景中 9 一致，1 空解绑差异明确保留 |
 
-上述历史能力的计数保留各版本证据范围；0.24 当前重跑完整本地 verify，以及拓扑、自定义传输、元数据、URI、基础 RabbitMQ、确认、双向流式、自动删除、通道依赖和恢复对照，加恢复控制、限时关闭与两类自定义恢复策略共 38 份当前源码绑定报告。其余 10 份历史原生/broker 报告未重跑，详见 evidence/connection-strategy-upgrade.json。
+本次性能补丁只改字节桥接分配，完整本地回归及三个负载的三轮 broker 对照通过。当前 22 份源码报告和 27 份未重跑的历史原生/broker 报告见 evidence/performance-upgrade.json；有限性能结果见 PERFORMANCE.md。按最新要求，常见流程可用后结束本项目专项扩展。
 
 ## 仍需完善
 

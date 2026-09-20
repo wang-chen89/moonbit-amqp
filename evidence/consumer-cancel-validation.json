@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T15:15:58.822Z",
+  "utc": "2026-09-20T15:37:52.130Z",
   "node": "v24.11.0",
   "passed": 21,
   "tests": [
@@ -53,7 +53,7 @@
     "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
     "tools/receive-peer.mjs": "39bc524b5d683a189c692d60b9dd8cc2cf509616e46bd5c03e6640c750b30516",
     "tools/test-consumer-cancel.mjs": "12e4306390aa4e6ed2cf1316bc7a1eee179bfd0dbe806058f51501a3ad8a8816",
-    "web/engine.mjs": "383b318ab47872c514132049c175a57052c09788f63e8609e03b9b08232bd914"
+    "web/engine.mjs": "50dbb50240e56a92b2a9316f3f7a43c1a4c6768bb87d173cd3bd5953cbc5033e"
   },
   "scope": "Independent peer tests registration/cancellation RPC ordering, listener ownership and reuse, shutdown, streamed bodies, channel isolation and recovery intent. Offline cancellation retains topology because no broker cancel acknowledgement exists."
 }

@@ -1,0 +1,7 @@
+{
+  "utc": "2026-09-20T15:43:56.736645+00:00",
+  "ownedRuntimeProcesses": [],
+  "temporaryBrokerDirectories": [],
+  "cleanupVerified": true,
+  "scope": "Only the owned extracted RabbitMQ runtime and temporary test instances; downloaded package cache is retained."
+}

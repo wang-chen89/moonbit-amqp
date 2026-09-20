@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-20T15:15:20.303Z",
+  "at": "2026-09-20T15:37:22.472Z",
   "node": "v24.11.0",
   "passed": 18,
   "tests": [
@@ -48,7 +48,7 @@
     "session.mbt": "2e32e207bb10de94aa665c1855147c150b8dfbd203eab2d4d43515a50d55526d",
     "cmd/web/session.mbt": "77a46d26771f0f9afc04283bcf301353985c1f61e159b357d5fd20642e9ab5fb",
     "tools/client.mjs": "c4836d1c198377be1f282b365836bbe36c08a4dfe44ccc76ed15f2d20ef18c3f",
-    "web/engine.mjs": "383b318ab47872c514132049c175a57052c09788f63e8609e03b9b08232bd914",
+    "web/engine.mjs": "50dbb50240e56a92b2a9316f3f7a43c1a4c6768bb87d173cd3bd5953cbc5033e",
     "tools/test-client.mjs": "1edcef349e9a593ca0b27ba965472f661933c511abdeb4d96df02c5df97aa480"
   }
 }

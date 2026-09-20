@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T15:15:56.876Z",
+  "utc": "2026-09-20T15:37:50.198Z",
   "node": "v24.11.0",
   "platform": "win32",
   "passed": 23,
@@ -58,7 +58,7 @@
     "tools/inbound.mjs": "472f83ff6abb1d1516ad46254f4a90219170630bf1506bb917fd35b1688e341f",
     "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
     "tools/receive-peer.mjs": "39bc524b5d683a189c692d60b9dd8cc2cf509616e46bd5c03e6640c750b30516",
-    "web/engine.mjs": "383b318ab47872c514132049c175a57052c09788f63e8609e03b9b08232bd914"
+    "web/engine.mjs": "50dbb50240e56a92b2a9316f3f7a43c1a4c6768bb87d173cd3bd5953cbc5033e"
   },
   "scope": "Real CLI child processes and independent wire peer; bounded file/stdin/raw I/O, data hashes, confirm and ack order, malformed/truncated streams, resource failures and no-overwrite output. No native or throughput claim."
 }

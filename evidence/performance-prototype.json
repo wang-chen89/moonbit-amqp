@@ -1,0 +1,289 @@
+{
+  "utc": "2026-09-20T15:35:15.193Z",
+  "host": {
+    "platform": "win32",
+    "release": "10.0.26200",
+    "arch": "x64",
+    "cpu": "Intel(R) Core(TM) i7-14700HX",
+    "logicalCPUs": 28
+  },
+  "node": "v24.11.0",
+  "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
+  "binarySha256": "216c3942f74d1b08291473547d70fdcb2be7f450cb70c5323456a48a0c41262a",
+  "baselineCommit": "518a96c7e64e3fb2ddb96cf7dc8f38548c1fff07",
+  "baselineSources": {
+    "tools/evidence-source.mjs": "5b5bc6277d326cda62e39fce99dacbca21b4af52d2f16833c14eb975934596ba",
+    "tools/connection-strategy.mjs": "6278c52a2e4c83031b746ba0e869a460ce0c02b88ef882cebd7f5671ca948586",
+    "tools/topology-strategy.mjs": "48734ab45117f89e7c56220b583f4cbe8bd87bad625e4c68b2d6e61b0441a3a6",
+    "tools/close-deadline.mjs": "0277a8786a0d3eebe24084c69431232fbc0aa433cd9999ca6297c34105343768",
+    "tools/outbound.mjs": "bc9cc59a8df9669ae010138e4dd89fa801462c96f6440ed4ba48db45c7fe7f39",
+    "tools/recovery-control.mjs": "9c20dd1e5142a900c0af1d84eea338a09ab1b83ef4d12c47066f486b241e3a69",
+    "tools/recovery.mjs": "359b6bf6a2967ea38198200d9a5aae9739ae7f2e4483c6971818a87250cbf417",
+    "tools/recovery-state.mjs": "322925ae7632a2ea5241e2054fc4f8088bc9445b23757a88da75f98a9631c1ef",
+    "tools/recovery-channel.mjs": "8f8b4f44e4b6c30509530a0b2e50d0f3ab49b3eec83537e72136e8750aa30810",
+    "tools/topology-query.mjs": "26fdbf28aa2b51eb8bf1a7bfb81b1a004ef0207ae071989ab8aaaab5070493e6",
+    "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
+    "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
+    "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
+    "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
+    "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
+    "tools/client.mjs": "c4836d1c198377be1f282b365836bbe36c08a4dfe44ccc76ed15f2d20ef18c3f",
+    "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
+    "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
+    "web/engine.mjs": "383b318ab47872c514132049c175a57052c09788f63e8609e03b9b08232bd914"
+  },
+  "sources": {
+    "tools/evidence-source.mjs": "5b5bc6277d326cda62e39fce99dacbca21b4af52d2f16833c14eb975934596ba",
+    "tools/connection-strategy.mjs": "6278c52a2e4c83031b746ba0e869a460ce0c02b88ef882cebd7f5671ca948586",
+    "tools/topology-strategy.mjs": "48734ab45117f89e7c56220b583f4cbe8bd87bad625e4c68b2d6e61b0441a3a6",
+    "tools/close-deadline.mjs": "0277a8786a0d3eebe24084c69431232fbc0aa433cd9999ca6297c34105343768",
+    "tools/outbound.mjs": "bc9cc59a8df9669ae010138e4dd89fa801462c96f6440ed4ba48db45c7fe7f39",
+    "tools/recovery-control.mjs": "9c20dd1e5142a900c0af1d84eea338a09ab1b83ef4d12c47066f486b241e3a69",
+    "tools/recovery.mjs": "359b6bf6a2967ea38198200d9a5aae9739ae7f2e4483c6971818a87250cbf417",
+    "tools/recovery-state.mjs": "322925ae7632a2ea5241e2054fc4f8088bc9445b23757a88da75f98a9631c1ef",
+    "tools/recovery-channel.mjs": "8f8b4f44e4b6c30509530a0b2e50d0f3ab49b3eec83537e72136e8750aa30810",
+    "tools/topology-query.mjs": "26fdbf28aa2b51eb8bf1a7bfb81b1a004ef0207ae071989ab8aaaab5070493e6",
+    "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
+    "connection_metadata.mbt": "575835f99259cf2aae033f070579880762c5a812a81afbc4f52beebf1f0bd14f",
+    "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
+    "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
+    "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
+    "uri.mbt": "fb8755671ef6cc4afc4d3a51da45f3baf8df45a6ce1a9ffd3126b495d7df7d1e",
+    "cmd/web/uri.mbt": "277acacb4d51d0a13e470e7132a74ffc592fc13dec72855ec2881e9ea1e7ba54",
+    "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
+    "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
+    "tools/client.mjs": "c4836d1c198377be1f282b365836bbe36c08a4dfe44ccc76ed15f2d20ef18c3f",
+    "cmd/web/main.mbt": "8b7d71d7a0f0a89f3c08f2c16fde24919646390f396f551678b9705fab9d7e1d",
+    "tools/performance-reference.go": "34afb4cc2c647ff99d8e9210851067d0c28d5c41cb402dc2d5eb88a1b744f50f",
+    "tools/performance-worker.mjs": "4ae36e3179a252887dd4246cd7ae62be6a9941d84a4106d45bfa855322c3e729",
+    "tools/benchmark-native.mjs": "db307ba46ba5c5faedb8bd9e837c96fa9945d65e1e68ac34a0e422ad9cf9d41e",
+    "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
+    "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
+    "evidence/performance-reference-build.json": "9f63337089fe44ddadb44daa781b63044ed6785cdadca58693e41e74006c0b23",
+    "web/engine.mjs": "50dbb50240e56a92b2a9316f3f7a43c1a4c6768bb87d173cd3bd5953cbc5033e"
+  },
+  "packages": {
+    "rabbitmq-server_4.0.5-10ubuntu5_all.deb": "facf754e045a705aca30b82b7728ac7b3f123d2b7f7838575b246fe0bd2ad05e",
+    "libsctp1_1.0.21+dfsg-1build2_amd64.deb": "92924c463cf0e6630b1e9fd3969d45b21558f7ecbf0c9ef12c80523669f8a271",
+    "erlang-xmerl_1%3a27.3.4.6+dfsg-1_amd64.deb": "7480288faf6f4870a62e9de14c56cd4e6b92bebf4c26e1d35123bab10c92d1fc",
+    "erlang-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "f2769fae5be10c5c7048f2d1f62c5d41c9202c016b48138b039a6887c44c4757",
+    "erlang-syntax-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "06a238505a33eb31b4479cdcc003719bcf37cdff8922e0496296407bcafee2f4",
+    "erlang-ssl_1%3a27.3.4.6+dfsg-1_amd64.deb": "f194e4197bd209a2e3b219190f545c5fa3735369b6d8e36b8616a20dac767b64",
+    "erlang-snmp_1%3a27.3.4.6+dfsg-1_amd64.deb": "ce4c7681a5ee8d8c9f8fab0fc1b6297e2dab573f6991e24bc592770bd1e4cd4d",
+    "erlang-runtime-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "dfe9a6452a7073faf6be4e2f4ac4e5513458294d5949fa10040b77f5d522970a",
+    "erlang-public-key_1%3a27.3.4.6+dfsg-1_amd64.deb": "8cb55457e13ff6b00ff9ea80df4b13360dbb4df9c4bc1dbbbdc3ad4d9658ee8c",
+    "erlang-parsetools_1%3a27.3.4.6+dfsg-1_amd64.deb": "bd846ef7ca9d58f48ee54123a7138ec1812aa7aa813ebdffce21fc5fd6f45d78",
+    "erlang-os-mon_1%3a27.3.4.6+dfsg-1_amd64.deb": "b1cc339e3dfc237440069314dcdb082dc812cea57c1494679efbd642c22b9775",
+    "erlang-mnesia_1%3a27.3.4.6+dfsg-1_amd64.deb": "527c4881cb83a0c89e6d621adae20b4e301b8220311e59a839a443c4bf7edca6",
+    "erlang-inets_1%3a27.3.4.6+dfsg-1_amd64.deb": "f075fa56cd4464a63eb26d7d90d834a2b31446d9707c527029fa15915ae1f9ed",
+    "erlang-eldap_1%3a27.3.4.6+dfsg-1_amd64.deb": "4c40df00f11f0b459d0d5221b167e05e2eb57f63d82a61fed61541481093aa57",
+    "erlang-crypto_1%3a27.3.4.6+dfsg-1_amd64.deb": "1a2de05e72695135d4c091cbb7f74e5c291f3c763d4ced4b18e48d78a2a73d3a",
+    "erlang-base_1%3a27.3.4.6+dfsg-1_amd64.deb": "8e7ababa5b1ddbe72e135faa78d15755268dfbb7cdfc25a5a8144f3e2d5754df",
+    "erlang-asn1_1%3a27.3.4.6+dfsg-1_amd64.deb": "b2d3f1a35d642727631ff138070d5a4f410bb0066f67a1efbf11ad61dc51fa6d"
+  },
+  "repeats": 1,
+  "summary": [
+    {
+      "name": "tcp-65536-32-get",
+      "scenario": {
+        "tls": false,
+        "Bytes": 65536,
+        "Window": 32,
+        "Receive": "get",
+        "Count": 512,
+        "Warmup": 128
+      },
+      "repeats": 1,
+      "runtimes": {
+        "go": {
+          "medianPublishMS": 537.2272,
+          "medianReceiveMS": 333.9867,
+          "publishMessagesPerSecond": 953.0418415150982,
+          "receiveMessagesPerSecond": 1532.9951761552181,
+          "minPublishMS": 537.2272,
+          "maxPublishMS": 537.2272,
+          "medianBatchMS": 24.0222,
+          "p95BatchMS": 58.0392
+        },
+        "baseline": {
+          "medianPublishMS": 4297.4364000000005,
+          "medianReceiveMS": 5724.3859999999995,
+          "publishMessagesPerSecond": 119.14079752291389,
+          "receiveMessagesPerSecond": 89.44190695735753,
+          "minPublishMS": 4297.4364000000005,
+          "maxPublishMS": 4297.4364000000005,
+          "medianBatchMS": 231.82670000000007,
+          "p95BatchMS": 811.9585999999999
+        },
+        "node": {
+          "medianPublishMS": 2376.8166,
+          "medianReceiveMS": 3270.3769,
+          "publishMessagesPerSecond": 215.41418046306137,
+          "receiveMessagesPerSecond": 156.55687881112416,
+          "minPublishMS": 2376.8166,
+          "maxPublishMS": 2376.8166,
+          "medianBatchMS": 141.47119999999995,
+          "p95BatchMS": 195.82819999999992
+        }
+      },
+      "nodeToGoPublishTime": 4.424229823061825,
+      "nodeToGoReceiveTime": 9.791937523260659,
+      "nodeToBaselinePublishTime": 0.5530777837689465,
+      "nodeToBaselineReceiveTime": 0.5713061453228347
+    }
+  ],
+  "rows": [
+    {
+      "name": "tcp-65536-32-get",
+      "round": 0,
+      "scenario": {
+        "tls": false,
+        "Bytes": 65536,
+        "Window": 32,
+        "Receive": "get",
+        "Count": 512,
+        "Warmup": 128
+      },
+      "order": [
+        "go",
+        "baseline",
+        "node"
+      ],
+      "results": {
+        "go": {
+          "limits": {
+            "channelMax": 16,
+            "frameMax": 8192,
+            "heartbeat": 4
+          },
+          "measured": {
+            "PublishMS": 537.2272,
+            "ReceiveMS": 333.9867,
+            "BatchMS": [
+              24.0222,
+              21.8619,
+              13.6105,
+              14.5384,
+              58.0392,
+              15.9793,
+              55.1017,
+              56.8854,
+              55.9294,
+              56.0969,
+              10.9986,
+              57.1385,
+              12.8823,
+              14.0174,
+              56.9745,
+              13.151
+            ],
+            "Count": 512,
+            "Verified": 512
+          },
+          "runtime": "go1.26.0",
+          "warmup": {
+            "PublishMS": 103.8451,
+            "ReceiveMS": 104.5824,
+            "BatchMS": [
+              56.636,
+              17.2788,
+              13.421,
+              16.5093
+            ],
+            "Count": 128,
+            "Verified": 128
+          }
+        },
+        "baseline": {
+          "runtime": "v24.11.0",
+          "limits": {
+            "channelMax": 16,
+            "frameMax": 8192,
+            "heartbeat": 4
+          },
+          "warmup": {
+            "Count": 128,
+            "Verified": 128,
+            "BatchMS": [
+              230.3068,
+              171.36559999999997,
+              200.28629999999998,
+              166.10159999999996
+            ],
+            "PublishMS": 768.065,
+            "ReceiveMS": 1130.1241
+          },
+          "measured": {
+            "Count": 512,
+            "Verified": 512,
+            "BatchMS": [
+              293.4992000000002,
+              215.8690999999999,
+              201.20139999999992,
+              210.8349000000003,
+              259.9524999999999,
+              231.82670000000007,
+              190.9115999999999,
+              186.6507999999999,
+              230.5897,
+              215.9475999999995,
+              233.26819999999952,
+              246.76550000000043,
+              221.9992000000002,
+              310.3148000000001,
+              811.9585999999999,
+              235.83069999999952
+            ],
+            "PublishMS": 4297.4364000000005,
+            "ReceiveMS": 5724.3859999999995
+          }
+        },
+        "node": {
+          "runtime": "v24.11.0",
+          "limits": {
+            "channelMax": 16,
+            "frameMax": 8192,
+            "heartbeat": 4
+          },
+          "warmup": {
+            "Count": 128,
+            "Verified": 128,
+            "BatchMS": [
+              175.3467,
+              155.92239999999998,
+              180.17700000000002,
+              177.19220000000007
+            ],
+            "PublishMS": 688.6438,
+            "ReceiveMS": 753.2416000000001
+          },
+          "measured": {
+            "Count": 512,
+            "Verified": 512,
+            "BatchMS": [
+              136.71709999999985,
+              106.86460000000011,
+              149.88160000000016,
+              139.64679999999998,
+              131.56330000000025,
+              141.47119999999995,
+              162.39800000000014,
+              189.04329999999982,
+              100.08989999999994,
+              130.7139000000002,
+              125.25510000000031,
+              187.4971999999998,
+              125.55909999999994,
+              170.01510000000007,
+              195.82819999999992,
+              184.25530000000026
+            ],
+            "PublishMS": 2376.8166,
+            "ReceiveMS": 3270.3769
+          }
+        }
+      }
+    }
+  ],
+  "scope": "Same Windows host, sequential fresh client processes, one WSL RabbitMQ with frame_max=8192. Exclusive non-durable classic queues; nonpersistent messages; publisher confirms in fixed batches; auto-ack receive. Warmup and setup excluded; get/consume timings include deterministic body and ordered message-id verification. Consume timing includes registration, excludes cancellation. All publishes acknowledged and all messages verified; final empty get checked. Batch p95 is not per-message latency for window>1. Five rounds rotate runtime order; small local workloads are not a production/cluster/platform performance parity claim."
+}

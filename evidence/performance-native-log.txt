@@ -1,0 +1,10 @@
+tcp-128-1-get r1: go publish 37.2ms receive 36.6ms; baseline publish 5617.2ms receive 111.0ms; node publish 5618.8ms receive 88.8ms
+tcp-65536-32-get r1: go publish 469.3ms receive 371.8ms; baseline publish 3599.6ms receive 4442.2ms; node publish 2332.1ms receive 2967.9ms
+tls-4096-32-consume r1: go publish 202.9ms receive 16.7ms; baseline publish 772.2ms receive 227.2ms; node publish 813.7ms receive 175.3ms
+tcp-128-1-get r2: go publish 38.1ms receive 38.3ms; baseline publish 5612.2ms receive 103.5ms; node publish 5619.6ms receive 86.0ms
+tcp-65536-32-get r2: go publish 489.3ms receive 332.6ms; baseline publish 3659.9ms receive 4553.6ms; node publish 2278.9ms receive 2719.6ms
+tls-4096-32-consume r2: go publish 217.5ms receive 15.9ms; baseline publish 802.1ms receive 239.3ms; node publish 729.4ms receive 204.9ms
+tcp-128-1-get r3: go publish 36.0ms receive 34.4ms; baseline publish 5616.5ms receive 97.0ms; node publish 5610.2ms receive 80.3ms
+tcp-65536-32-get r3: go publish 534.0ms receive 404.7ms; baseline publish 3717.0ms receive 4610.5ms; node publish 2423.0ms receive 3000.7ms
+tls-4096-32-consume r3: go publish 108.2ms receive 16.6ms; baseline publish 837.5ms receive 240.8ms; node publish 802.8ms receive 184.8ms
+Saved 9 matched-workload measurements in performance-native.json

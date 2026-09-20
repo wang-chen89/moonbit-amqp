@@ -335,13 +335,13 @@ connection.on('queueNameChanged', ({previous, current}) => console.log({previous
 
 ## 验证与成熟度
 
-0.24 的 **138 项核心测试在 JS 与 Wasm-GC 分别通过**，完整本地 verify 通过，含新增 22 组自定义连接恢复策略检查及已有 fixture/CLI/畸形输入回归。
+0.24 性能补丁通过完整本地 verify：JS 140 项（138 核心加 2 个十六进制桥接边界测试）、Wasm-GC 138 项，以及全部宿主/CLI/恢复/流式检查和 307 个异常输入。
 
-固定未修改 Go 原库的 **10 个 peer 场景与 12 个真实 RabbitMQ 场景**，在决策回调次数、物理会话/取消状态、拓扑保留与恢复结果等已测字段一致，含 TLS 与确认投递。策略关闭已失效资源时的清理差异在两侧各 2 例单列，不计一致；原始错误和逻辑状态没有冒充 Go 调度等价。另有 1 个本地延迟决策后的原订阅投递流程，见 [自定义恢复决策](CONNECTION-STRATEGY.md)。
+新增 3 组同机负载各 3 轮，固定旧版、当前版和 Go 原库轮换执行；确认发布及 get/TLS consume 的正文、数量、顺序全部验证。结果与限制见 [性能补丁](PERFORMANCE.md) 和 [当前清单](evidence/performance-upgrade.json)。本补丁形成 22 份当前源码报告；其余 27 份原生/broker 报告保留历史范围，未重跑。
 
-共重跑 17 个原生/broker 命令，形成 38 份当前源码绑定报告；其余 10 份历史原生/broker 报告未重跑。精确范围见 [本轮清单](evidence/connection-strategy-upgrade.json)。各既有差异与改进保留原计数，不计为匹配。
+此前 0.24 恢复策略增量的 10 peer/12 broker 结果及已解释差异仍见 [历史清单](evidence/connection-strategy-upgrade.json)，不冒充本补丁重新运行的结果。
 
-运行环境为 Windows Node 24 和 WSL RabbitMQ 4.0.5/Erlang 27；各层覆盖重叠，不相加计算追平比例。仅记录本机示例和基础确认样本，**未建立代表性原生性能或生产负载追平**。完整 TLS 状态、Go context/通知/网络截止时间、所有恢复交错、多版本/平台/集群和长期验证仍缺。历史范围见 [TESTING.md](TESTING.md) 与 [API-COMPATIBILITY.md](API-COMPATIBILITY.md)。协议范围为 AMQP 0-9-1。
+常见连接、消息、确认、消费与恢复流程已有验证，按本轮有限收尾要求停止 AMQP 专项扩展。完整 TLS/Go 调度等价、多平台/版本/集群和生产性能仍属已披露限制，不宣称完整追平。
 
 ## 限制
 

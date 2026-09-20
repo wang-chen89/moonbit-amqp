@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T15:16:07.362Z",
+  "utc": "2026-09-20T15:38:00.581Z",
   "passed": 8,
   "tests": [
     "consumer-only channel replays sibling-owned routing before subscription without reopening sibling",
@@ -34,7 +34,7 @@
     "tools/client.mjs": "c4836d1c198377be1f282b365836bbe36c08a4dfe44ccc76ed15f2d20ef18c3f",
     "tools/recovery-peer.mjs": "ce2f414bffcb07a848143cd34c1e737340e15078f4b3f0cb25f0e829a35118fe",
     "tools/test-channel-deps.mjs": "6afb49420054b419555fd358cd91f6ad0e3221dd1ea3c692d436129d4f34cf2c",
-    "web/engine.mjs": "383b318ab47872c514132049c175a57052c09788f63e8609e03b9b08232bd914"
+    "web/engine.mjs": "50dbb50240e56a92b2a9316f3f7a43c1a4c6768bb87d173cd3bd5953cbc5033e"
   },
   "scope": "Independently encoded channel-close frames and observed outgoing methods; dependency order, sibling isolation, mode filters, cycles and unknown external entities."
 }

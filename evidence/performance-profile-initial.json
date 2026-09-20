@@ -1,0 +1,162 @@
+{
+  "scope": "V8 sampled self time from one profiled diagnostic run, including warmup/setup and waiting. Not used as a benchmark acceptance result.",
+  "profiles": [
+    {
+      "file": "tcp-65536-32-get-r0.cpuprofile",
+      "sha256": "ac1ac2804f3e547becaf600d8f427c7b72e8bbfa56d0df28b8b092ab212666de",
+      "totalSampleMS": 11582.238,
+      "hotspots": [
+        {
+          "function": "_M0MPB7JSArray4push",
+          "file": "engine.mjs",
+          "line": 106,
+          "sampleMS": 2811.879
+        },
+        {
+          "function": "(idle)",
+          "file": "",
+          "line": 0,
+          "sampleMS": 1414.383
+        },
+        {
+          "function": "_M0FP411localreview4amqp3cmd3web13unhex_2einner",
+          "file": "engine.mjs",
+          "line": 18679,
+          "sampleMS": 1166.235
+        },
+        {
+          "function": "_M0FP411localreview4amqp3cmd3web3hex",
+          "file": "engine.mjs",
+          "line": 18456,
+          "sampleMS": 910.883
+        },
+        {
+          "function": "_M0FPC14json20need__escape__scalar",
+          "file": "engine.mjs",
+          "line": 12838,
+          "sampleMS": 853.183
+        },
+        {
+          "function": "_M0MPC15array9ArrayView4joinGsE",
+          "file": "engine.mjs",
+          "line": 3605,
+          "sampleMS": 744.501
+        },
+        {
+          "function": "(garbage collector)",
+          "file": "",
+          "line": 0,
+          "sampleMS": 561.865
+        },
+        {
+          "function": "_M0MPC15array10FixedArray12unsafe__blitGRPB17UnsafeMaybeUninitGyEE",
+          "file": "engine.mjs",
+          "line": 1681,
+          "sampleMS": 409.226
+        },
+        {
+          "function": "_M0FP411localreview4amqp3cmd3web11event__json",
+          "file": "engine.mjs",
+          "line": 19237,
+          "sampleMS": 370.905
+        },
+        {
+          "function": "writeBuffer",
+          "file": "",
+          "line": 0,
+          "sampleMS": 320.126
+        },
+        {
+          "function": "_M0FP411localreview4amqp3cmd3web6result",
+          "file": "engine.mjs",
+          "line": 19443,
+          "sampleMS": 272.712
+        },
+        {
+          "function": "_M0MP211localreview4amqp7Decoder7consume",
+          "file": "engine.mjs",
+          "line": 16652,
+          "sampleMS": 261.546
+        },
+        {
+          "function": "_M0MP211localreview4amqp5Frame14encode_2einner",
+          "file": "engine.mjs",
+          "line": 15483,
+          "sampleMS": 158.747
+        },
+        {
+          "function": "#process",
+          "file": "client.mjs",
+          "line": 194,
+          "sampleMS": 139.444
+        },
+        {
+          "function": "_M0MP211localreview4amqp9Assembler4push",
+          "file": "engine.mjs",
+          "line": 17424,
+          "sampleMS": 130.758
+        },
+        {
+          "function": "_M0MPC15array5Array4joinGsE",
+          "file": "engine.mjs",
+          "line": 7547,
+          "sampleMS": 120.566
+        },
+        {
+          "function": "hexWrite",
+          "file": "",
+          "line": 0,
+          "sampleMS": 74.631
+        },
+        {
+          "function": "(program)",
+          "file": "",
+          "line": 0,
+          "sampleMS": 70.423
+        },
+        {
+          "function": "hexSlice",
+          "file": "",
+          "line": 0,
+          "sampleMS": 62.962
+        },
+        {
+          "function": "checked",
+          "file": "client.mjs",
+          "line": 21,
+          "sampleMS": 62.91
+        },
+        {
+          "function": "_M0MPC15bytes5Bytes11from__array",
+          "file": "engine.mjs",
+          "line": 7302,
+          "sampleMS": 40.268
+        },
+        {
+          "function": "FastBuffer",
+          "file": "buffer",
+          "line": 963,
+          "sampleMS": 36.045
+        },
+        {
+          "function": "_M0IPB13StringBuilderPB6Logger11write__view",
+          "file": "engine.mjs",
+          "line": 2518,
+          "sampleMS": 30.748
+        },
+        {
+          "function": "_M0MPC15array5Array3mapGzsE",
+          "file": "engine.mjs",
+          "line": 6539,
+          "sampleMS": 24.743
+        },
+        {
+          "function": "toString",
+          "file": "node:buffer",
+          "line": 845,
+          "sampleMS": 20.962
+        }
+      ]
+    }
+  ]
+}
