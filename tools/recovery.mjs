@@ -3,6 +3,8 @@ import {RecoveringChannel} from './recovery-channel.mjs';
 import {emptyTopologyConfiguration} from './topology-query.mjs';
 import {recoveryClosed} from './recovery-control.mjs';
 import {closeDeadlineMillis,connectionClosedError} from './close-deadline.mjs';
+import {topologyStrategy,runTopologyStrategy,recoveryOperationAllowed} from './topology-strategy.mjs';
+export {DefaultTopologyRecovery} from './topology-strategy.mjs';
 
 function number(value,min,max,name) {
   if(!Number.isInteger(value)||value<min||value>max)throw TypeError(`Invalid recovery ${name}`);
@@ -14,7 +16,7 @@ export class RecoveringConnection extends Lifecycle {
   #channelTasks=new Map(); #channelSerial=Promise.resolve(); #skipped=[];
   #cancelledQueues=new Map();
   #generation=0;
-  #recovery; #closeIntent=false;
+  #recovery; #closeIntent=false; #topologyStrategy;
   static async connect(options,dial) {
     const connection=new RecoveringConnection(options,dial);
     try { connection.#install(await dial(connection.#options));connection._state('open');return connection; }
@@ -30,6 +32,7 @@ export class RecoveringConnection extends Lifecycle {
       topology:config.topology??'all',onTopologyError:config.onTopologyError});
     if(!['all','transient','none'].includes(this.recovery.topology))throw TypeError('Invalid recovery topology mode');
     if(config.onTopologyError!==undefined&&typeof config.onTopologyError!=='function')throw TypeError('Invalid onTopologyError callback');
+    this.#topologyStrategy=topologyStrategy(config.topologyRecovery);
     this.topology=new Topology(number(config.maxTopologyEntries??4096,1,1000000,'maxTopologyEntries'));
     this.#dial=dial;this.#options={...options,recovery:undefined,signal:this.#lifetime.signal};
     this.#external=options.signal;
@@ -47,7 +50,7 @@ export class RecoveringConnection extends Lifecycle {
   get maxRetryCount() { return this.recoveryEnabled?this.#recovery.maxRetries:0; }
   get retryInterval() { return this.recoveryEnabled?this.#recovery.retryDelay:0; }
   get reconnectionConfig() { return {maxRetryCount:this.#recovery.maxRetries,retryInterval:this.#recovery.retryDelay}; }
-  get recoveryConfig() { const {onTopologyError,...config}=this.#recovery;return {...config,maxTopologyEntries:this.topology.limit,hasTopologyErrorHandler:Boolean(onTopologyError)}; }
+  get recoveryConfig() { const {onTopologyError,...config}=this.#recovery;return {...config,maxTopologyEntries:this.topology.limit,hasTopologyErrorHandler:Boolean(onTopologyError),hasCustomTopologyRecovery:Boolean(this.#topologyStrategy)}; }
   _topologyConfiguration(owner,global) {
     if(typeof global!=='boolean')throw TypeError('Invalid topology scope');
     return this.#recovery.topology==='none'?emptyTopologyConfiguration():this.topology.configuration(owner,global);
@@ -94,6 +97,7 @@ export class RecoveringConnection extends Lifecycle {
     if(this.state!=='open'||raw!==this.#physical)throw Error('Credential update interrupted by recovery; outcome may be unknown');
   }
   _active(channel,topology=false) {
+    if(recoveryOperationAllowed(this,channel)&&!this.#physical?.closed&&!channel?._raw?.closed&&!channel?.closed)return;
     if(this.state!=='open'||this.#physical?.closed||channel?.state!=='open'||channel?._raw?.closed)throw Error('Recovery in progress or connection/channel closed');
     if(topology&&this.#channelTasks.size)throw Error('Topology recovery in progress');
   }
@@ -165,9 +169,7 @@ export class RecoveringConnection extends Lifecycle {
         for(const ch of this.#channels.values())if(!ch.closed) {
           try { await ch._open(raw); } catch(error) { if(!ch.closed)throw error; }
         }
-        await this.#restoreTopology(undefined,true);
-        for(const ch of this.#channels.values())if(!ch.closed&&ch._raw.closed)await ch._open(raw);
-        if(this.recovery.topology!=='none')for(const ch of this.#channels.values())if(!ch.closed)await ch._restoreConsumers();
+        await this.#recoverTopology(undefined,true);
         if(raw.closed||this.state!=='reconnecting')throw Error('Connection closed while restoring topology');
         for(const ch of this.#channels.values())ch._restored();
         if(this.state!=='reconnecting')throw recoveryClosed();
@@ -190,45 +192,66 @@ export class RecoveringConnection extends Lifecycle {
       notice(channel,'recovering',{attempt,error});
       await delay(this.#retryDelay(attempt),this.#lifetime.signal);
       if(!current())return;
+      let restoringTopology=false;
       try {
         if(!reuse||attempt>1||channel._raw.closed)await channel._open(this.#physical);
-        await this.#restoreTopology(channel,false);
-        if(channel._raw.closed)await channel._open(this.#physical);
-        if(this.recovery.topology!=='none')await channel._restoreConsumers(reuse&&attempt===1);
+        restoringTopology=true;
+        await this.#recoverTopology(channel,false,reuse&&attempt===1);
         if(!current())return;
         if(channel._raw.closed)throw Error('Channel closed during recovery');
         this.#channelTasks.delete(channel);
-        channel._restored();if(channel.state==='open')notice(channel,'recovered',{attempt});return;
+        channel._restored();if(channel.state==='open')notice(channel,'recovered',{attempt,skipped:[...this.#skipped]});return;
       } catch(e) {
         error=e;
         if(!current())return;
+        // Go retries reopening a channel, but a fatal topology strategy error
+        // escapes that pass. Explicit callers retain the opened channel;
+        // the automatic recovery owner performs terminal cleanup on failure.
+        if(restoringTopology){
+          if(reuse){this.#channelTasks.delete(channel);if(!channel._raw.closed)channel._restored();}
+          throw e;
+        }
         if(!channel._raw?.closed)try{await channel._raw.close();}catch{}
       }
     }
     if(current())throw Error(`Channel recovery exhausted: ${error.message}`,{cause:error});
   }
   #retryDelay(attempt) { return attempt===1?0:Math.min(2147483647,this.recovery.retryDelay+Math.floor(Math.random()*this.recovery.retryJitter)); }
-  async _entityError(entity) {
+  async _entityError(entity,skipped=this.#skipped) {
     if(this.#physical.closed||this.closed||this.state==='closing')throw entity.error;
-    notice(this,'topologyError',entity);this.#skipped.push(entity);
+    notice(this,'topologyError',entity);skipped.push(entity);
     if(this.recovery.onTopologyError&&!(await this.recovery.onTopologyError(entity)))throw entity.error;
   }
-  async #restoreTopology(only,newConnection) {
+  async #recoverTopology(only,newConnection,keepActive=false) {
+    if(this.recovery.topology==='none')return;
+    const raw=this.#physical,channels=only?[only]:[...this.#channels.values()].filter(ch=>!ch.closed);
+    const current=()=>raw===this.#physical&&!this.closed&&this.state!=='closing'&&(!only||!only.closed&&this.state==='open');
+    this.#skipped=await runTopologyStrategy({strategy:this.#topologyStrategy,connection:this,channels,raw,signal:this.#lifetime.signal,current,keepActive,scopeChannel:only,
+      restoreDefault:async check=>{
+        const skipped=[],entityError=async entity=>{check();await this._entityError(entity,skipped);check();};
+        await this.#restoreTopology(only,newConnection,check,entityError);
+        for(const ch of channels)if(!ch.closed){check();if(ch._raw.closed)await ch._open(raw);check();await ch._restoreConsumers(keepActive,check,entityError);}
+        check();return skipped;
+      }});
+  }
+  async #restoreTopology(only,newConnection,check,entityError) {
     const mode=this.recovery.topology;if(mode==='none')return;
     const channels=[...this.#channels.values()].filter(ch=>!ch.closed);
     let spare;
     const owner=entry=>only??channels.find(ch=>!ch.closed&&ch.id===entry.owner)??channels.find(ch=>!ch.closed);
     const rawFor=async entry=>{
+      check();
       const ch=owner(entry);
-      if(ch) { if(ch._raw.closed)await ch._open(this.#physical);return ch._raw; }
-      if(!spare||spare.closed)spare=await this.#physical.openChannel();return spare;
+      if(ch) { if(ch._raw.closed)await ch._open(this.#physical);check();return ch._raw; }
+      if(!spare||spare.closed)spare=await this.#physical.openChannel();check();return spare;
     };
     const component=only?this.topology.recoveryComponent(only.id,[...only._consumers.values()].map(c=>c.queue)):undefined;
     const selected=entry=>(!component||component.has(entry));
     const run=async(type,name,entry,action)=>{
       if(!selected(entry))return;
-      try { await action(await rawFor(entry)); }
-      catch(error) { await this._entityError({type,name,channel:owner(entry)?.id??0,error}); }
+      check();
+      try { await action(await rawFor(entry));check(); }
+      catch(error) { check();await entityError({type,name,channel:owner(entry)?.id??0,error}); }
     };
     try {
       for(const e of this.topology.exchanges.values())if(this.topology.wanted(e,mode))

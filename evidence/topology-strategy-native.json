@@ -1,0 +1,1022 @@
+{
+  "utc": "2026-09-20T14:47:47.121Z",
+  "node": "v24.11.0",
+  "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
+  "binarySha256": "15959e08cc97979b26c0b5bcbc35f31c4eba61deb739da533414aa9bc13035be",
+  "peerMatches": 10,
+  "brokerMatches": 12,
+  "explicitDifferences": 0,
+  "localPassed": 1,
+  "peers": [
+    {
+      "name": "delegate",
+      "reference": {
+        "calls": 1,
+        "channelClosed": false,
+        "channelCounts": [
+          1
+        ],
+        "closed": false,
+        "dials": 2,
+        "dynamicRecorded": false,
+        "result": "ok",
+        "skipped": [],
+        "trackedRecorded": true
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 1,
+        "channelCounts": [
+          1
+        ],
+        "dials": 2,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": true,
+        "dynamicRecorded": false
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded"
+      ]
+    },
+    {
+      "name": "replace",
+      "reference": {
+        "calls": 1,
+        "channelClosed": false,
+        "channelCounts": [
+          1
+        ],
+        "closed": false,
+        "dials": 2,
+        "dynamicRecorded": false,
+        "result": "ok",
+        "skipped": [],
+        "trackedRecorded": true
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 1,
+        "channelCounts": [
+          1
+        ],
+        "dials": 2,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": true,
+        "dynamicRecorded": false
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded"
+      ]
+    },
+    {
+      "name": "dynamic",
+      "reference": {
+        "calls": 1,
+        "channelClosed": false,
+        "channelCounts": [
+          1
+        ],
+        "closed": false,
+        "dials": 2,
+        "dynamicRecorded": true,
+        "result": "ok",
+        "skipped": [],
+        "trackedRecorded": true
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 1,
+        "channelCounts": [
+          1
+        ],
+        "dials": 2,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": true,
+        "dynamicRecorded": true
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded"
+      ]
+    },
+    {
+      "name": "retry",
+      "reference": {
+        "calls": 2,
+        "channelClosed": false,
+        "channelCounts": [
+          1,
+          1
+        ],
+        "closed": false,
+        "dials": 3,
+        "dynamicRecorded": false,
+        "result": "ok",
+        "skipped": [],
+        "trackedRecorded": true
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 2,
+        "channelCounts": [
+          1,
+          1
+        ],
+        "dials": 3,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": true,
+        "dynamicRecorded": false
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded"
+      ]
+    },
+    {
+      "name": "exhaust",
+      "reference": {
+        "calls": 2,
+        "channelClosed": true,
+        "channelCounts": [
+          1,
+          1
+        ],
+        "closed": true,
+        "dials": 3,
+        "dynamicRecorded": false,
+        "result": "error",
+        "skipped": [],
+        "trackedRecorded": false
+      },
+      "actual": {
+        "result": "error",
+        "calls": 2,
+        "channelCounts": [
+          1,
+          1
+        ],
+        "dials": 3,
+        "closed": true,
+        "channelClosed": true,
+        "skipped": [],
+        "trackedRecorded": false,
+        "dynamicRecorded": false,
+        "rawError": "Recovery exhausted after 2 attempts: strategy fatal"
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded"
+      ]
+    },
+    {
+      "name": "disabled",
+      "reference": {
+        "calls": 0,
+        "channelClosed": false,
+        "channelCounts": [],
+        "closed": false,
+        "dials": 2,
+        "dynamicRecorded": false,
+        "result": "ok",
+        "skipped": [],
+        "trackedRecorded": false
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 0,
+        "channelCounts": [],
+        "dials": 2,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": false,
+        "dynamicRecorded": false
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded"
+      ]
+    },
+    {
+      "name": "channel",
+      "reference": {
+        "calls": 1,
+        "channelClosed": false,
+        "channelCounts": [
+          1
+        ],
+        "closed": false,
+        "dials": 1,
+        "dynamicRecorded": false,
+        "result": "ok",
+        "skipped": [],
+        "trackedRecorded": true
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 1,
+        "channelCounts": [
+          1
+        ],
+        "dials": 1,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": true,
+        "dynamicRecorded": false
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded"
+      ]
+    },
+    {
+      "name": "skipped",
+      "reference": {
+        "calls": 1,
+        "channelClosed": false,
+        "channelCounts": [
+          1
+        ],
+        "closed": false,
+        "dials": 2,
+        "dynamicRecorded": false,
+        "result": "ok",
+        "skipped": [
+          "policy-omitted"
+        ],
+        "trackedRecorded": true
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 1,
+        "channelCounts": [
+          1
+        ],
+        "dials": 2,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [
+          "policy-omitted"
+        ],
+        "trackedRecorded": true,
+        "dynamicRecorded": false
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded"
+      ]
+    },
+    {
+      "name": "no-channels",
+      "reference": {
+        "calls": 1,
+        "channelClosed": false,
+        "channelCounts": [
+          0
+        ],
+        "closed": false,
+        "dials": 2,
+        "dynamicRecorded": false,
+        "result": "ok",
+        "skipped": [],
+        "trackedRecorded": false
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 1,
+        "channelCounts": [
+          0
+        ],
+        "dials": 2,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": false,
+        "dynamicRecorded": false
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded"
+      ]
+    },
+    {
+      "name": "channel-fail",
+      "reference": {
+        "calls": 1,
+        "channelClosed": false,
+        "channelCounts": [
+          1
+        ],
+        "closed": false,
+        "dials": 1,
+        "dynamicRecorded": false,
+        "rawError": "strategy fatal",
+        "result": "error",
+        "skipped": [],
+        "trackedRecorded": true
+      },
+      "actual": {
+        "result": "error",
+        "calls": 1,
+        "channelCounts": [
+          1
+        ],
+        "dials": 1,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": true,
+        "dynamicRecorded": false,
+        "rawError": "strategy fatal"
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded"
+      ]
+    }
+  ],
+  "brokers": [
+    {
+      "name": "delegate",
+      "reference": {
+        "calls": 1,
+        "channelClosed": false,
+        "channelCounts": [
+          1
+        ],
+        "closed": false,
+        "dials": 2,
+        "dynamicExists": false,
+        "dynamicRecorded": false,
+        "result": "ok",
+        "skipped": [],
+        "trackedExists": true,
+        "trackedRecorded": true
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 1,
+        "channelCounts": [
+          1
+        ],
+        "dials": 2,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": true,
+        "dynamicRecorded": false,
+        "trackedExists": true,
+        "dynamicExists": false
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded",
+        "trackedExists",
+        "dynamicExists"
+      ]
+    },
+    {
+      "name": "replace",
+      "reference": {
+        "calls": 1,
+        "channelClosed": false,
+        "channelCounts": [
+          1
+        ],
+        "closed": false,
+        "dials": 2,
+        "dynamicExists": false,
+        "dynamicRecorded": false,
+        "result": "ok",
+        "skipped": [],
+        "trackedExists": false,
+        "trackedRecorded": true
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 1,
+        "channelCounts": [
+          1
+        ],
+        "dials": 2,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": true,
+        "dynamicRecorded": false,
+        "trackedExists": false,
+        "dynamicExists": false
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded",
+        "trackedExists",
+        "dynamicExists"
+      ]
+    },
+    {
+      "name": "dynamic",
+      "reference": {
+        "calls": 1,
+        "channelClosed": false,
+        "channelCounts": [
+          1
+        ],
+        "closed": false,
+        "dials": 2,
+        "dynamicExists": true,
+        "dynamicRecorded": true,
+        "result": "ok",
+        "skipped": [],
+        "trackedExists": false,
+        "trackedRecorded": true
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 1,
+        "channelCounts": [
+          1
+        ],
+        "dials": 2,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": true,
+        "dynamicRecorded": true,
+        "trackedExists": false,
+        "dynamicExists": true
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded",
+        "trackedExists",
+        "dynamicExists"
+      ]
+    },
+    {
+      "name": "retry",
+      "reference": {
+        "calls": 2,
+        "channelClosed": false,
+        "channelCounts": [
+          1,
+          1
+        ],
+        "closed": false,
+        "dials": 3,
+        "dynamicExists": false,
+        "dynamicRecorded": false,
+        "result": "ok",
+        "skipped": [],
+        "trackedExists": true,
+        "trackedRecorded": true
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 2,
+        "channelCounts": [
+          1,
+          1
+        ],
+        "dials": 3,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": true,
+        "dynamicRecorded": false,
+        "trackedExists": true,
+        "dynamicExists": false
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded",
+        "trackedExists",
+        "dynamicExists"
+      ]
+    },
+    {
+      "name": "exhaust",
+      "reference": {
+        "calls": 2,
+        "channelClosed": true,
+        "channelCounts": [
+          1,
+          1
+        ],
+        "closed": true,
+        "dials": 3,
+        "dynamicRecorded": false,
+        "result": "error",
+        "skipped": [],
+        "trackedRecorded": false
+      },
+      "actual": {
+        "result": "error",
+        "calls": 2,
+        "channelCounts": [
+          1,
+          1
+        ],
+        "dials": 3,
+        "closed": true,
+        "channelClosed": true,
+        "skipped": [],
+        "trackedRecorded": false,
+        "dynamicRecorded": false,
+        "rawError": "Recovery exhausted after 2 attempts: strategy fatal"
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded"
+      ]
+    },
+    {
+      "name": "disabled",
+      "reference": {
+        "calls": 0,
+        "channelClosed": false,
+        "channelCounts": [],
+        "closed": false,
+        "dials": 2,
+        "dynamicExists": false,
+        "dynamicRecorded": false,
+        "result": "ok",
+        "skipped": [],
+        "trackedExists": false,
+        "trackedRecorded": false
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 0,
+        "channelCounts": [],
+        "dials": 2,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": false,
+        "dynamicRecorded": false,
+        "trackedExists": false,
+        "dynamicExists": false
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded",
+        "trackedExists",
+        "dynamicExists"
+      ]
+    },
+    {
+      "name": "channel",
+      "reference": {
+        "calls": 1,
+        "channelClosed": false,
+        "channelCounts": [
+          1
+        ],
+        "closed": false,
+        "dials": 1,
+        "dynamicExists": false,
+        "dynamicRecorded": false,
+        "result": "ok",
+        "skipped": [],
+        "trackedExists": true,
+        "trackedRecorded": true
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 1,
+        "channelCounts": [
+          1
+        ],
+        "dials": 1,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": true,
+        "dynamicRecorded": false,
+        "trackedExists": true,
+        "dynamicExists": false
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded",
+        "trackedExists",
+        "dynamicExists"
+      ]
+    },
+    {
+      "name": "skipped",
+      "reference": {
+        "calls": 1,
+        "channelClosed": false,
+        "channelCounts": [
+          1
+        ],
+        "closed": false,
+        "dials": 2,
+        "dynamicExists": false,
+        "dynamicRecorded": false,
+        "result": "ok",
+        "skipped": [
+          "policy-omitted"
+        ],
+        "trackedExists": false,
+        "trackedRecorded": true
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 1,
+        "channelCounts": [
+          1
+        ],
+        "dials": 2,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [
+          "policy-omitted"
+        ],
+        "trackedRecorded": true,
+        "dynamicRecorded": false,
+        "trackedExists": false,
+        "dynamicExists": false
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded",
+        "trackedExists",
+        "dynamicExists"
+      ]
+    },
+    {
+      "name": "no-channels",
+      "reference": {
+        "calls": 1,
+        "channelClosed": false,
+        "channelCounts": [
+          0
+        ],
+        "closed": false,
+        "dials": 2,
+        "dynamicExists": true,
+        "dynamicRecorded": false,
+        "result": "ok",
+        "skipped": [],
+        "trackedExists": false,
+        "trackedRecorded": false
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 1,
+        "channelCounts": [
+          0
+        ],
+        "dials": 2,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": false,
+        "dynamicRecorded": false,
+        "trackedExists": false,
+        "dynamicExists": true
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded",
+        "trackedExists",
+        "dynamicExists"
+      ]
+    },
+    {
+      "name": "channel-fail",
+      "reference": {
+        "calls": 1,
+        "channelClosed": false,
+        "channelCounts": [
+          1
+        ],
+        "closed": false,
+        "dials": 1,
+        "dynamicRecorded": false,
+        "rawError": "strategy fatal",
+        "result": "error",
+        "skipped": [],
+        "trackedRecorded": true
+      },
+      "actual": {
+        "result": "error",
+        "calls": 1,
+        "channelCounts": [
+          1
+        ],
+        "dials": 1,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": true,
+        "dynamicRecorded": false,
+        "rawError": "strategy fatal"
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded"
+      ]
+    },
+    {
+      "name": "TLS delegate",
+      "reference": {
+        "calls": 1,
+        "channelClosed": false,
+        "channelCounts": [
+          1
+        ],
+        "closed": false,
+        "dials": 2,
+        "dynamicExists": false,
+        "dynamicRecorded": false,
+        "result": "ok",
+        "skipped": [],
+        "trackedExists": true,
+        "trackedRecorded": true
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 1,
+        "channelCounts": [
+          1
+        ],
+        "dials": 2,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": true,
+        "dynamicRecorded": false,
+        "trackedExists": true,
+        "dynamicExists": false
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded",
+        "trackedExists",
+        "dynamicExists"
+      ]
+    },
+    {
+      "name": "TLS retry",
+      "reference": {
+        "calls": 2,
+        "channelClosed": false,
+        "channelCounts": [
+          1,
+          1
+        ],
+        "closed": false,
+        "dials": 3,
+        "dynamicExists": false,
+        "dynamicRecorded": false,
+        "result": "ok",
+        "skipped": [],
+        "trackedExists": true,
+        "trackedRecorded": true
+      },
+      "actual": {
+        "result": "ok",
+        "calls": 2,
+        "channelCounts": [
+          1,
+          1
+        ],
+        "dials": 3,
+        "closed": false,
+        "channelClosed": false,
+        "skipped": [],
+        "trackedRecorded": true,
+        "dynamicRecorded": false,
+        "trackedExists": true,
+        "dynamicExists": false
+      },
+      "matchedFields": [
+        "result",
+        "calls",
+        "channelCounts",
+        "dials",
+        "closed",
+        "channelClosed",
+        "skipped",
+        "trackedRecorded",
+        "dynamicRecorded",
+        "trackedExists",
+        "dynamicExists"
+      ]
+    }
+  ],
+  "differences": [],
+  "localTests": [
+    "two real reconnects delegate default restoration and deliver confirmed messages through the original logical subscription"
+  ],
+  "packages": {
+    "rabbitmq-server_4.0.5-10ubuntu5_all.deb": "facf754e045a705aca30b82b7728ac7b3f123d2b7f7838575b246fe0bd2ad05e",
+    "libsctp1_1.0.21+dfsg-1build2_amd64.deb": "92924c463cf0e6630b1e9fd3969d45b21558f7ecbf0c9ef12c80523669f8a271",
+    "erlang-xmerl_1%3a27.3.4.6+dfsg-1_amd64.deb": "7480288faf6f4870a62e9de14c56cd4e6b92bebf4c26e1d35123bab10c92d1fc",
+    "erlang-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "f2769fae5be10c5c7048f2d1f62c5d41c9202c016b48138b039a6887c44c4757",
+    "erlang-syntax-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "06a238505a33eb31b4479cdcc003719bcf37cdff8922e0496296407bcafee2f4",
+    "erlang-ssl_1%3a27.3.4.6+dfsg-1_amd64.deb": "f194e4197bd209a2e3b219190f545c5fa3735369b6d8e36b8616a20dac767b64",
+    "erlang-snmp_1%3a27.3.4.6+dfsg-1_amd64.deb": "ce4c7681a5ee8d8c9f8fab0fc1b6297e2dab573f6991e24bc592770bd1e4cd4d",
+    "erlang-runtime-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "dfe9a6452a7073faf6be4e2f4ac4e5513458294d5949fa10040b77f5d522970a",
+    "erlang-public-key_1%3a27.3.4.6+dfsg-1_amd64.deb": "8cb55457e13ff6b00ff9ea80df4b13360dbb4df9c4bc1dbbbdc3ad4d9658ee8c",
+    "erlang-parsetools_1%3a27.3.4.6+dfsg-1_amd64.deb": "bd846ef7ca9d58f48ee54123a7138ec1812aa7aa813ebdffce21fc5fd6f45d78",
+    "erlang-os-mon_1%3a27.3.4.6+dfsg-1_amd64.deb": "b1cc339e3dfc237440069314dcdb082dc812cea57c1494679efbd642c22b9775",
+    "erlang-mnesia_1%3a27.3.4.6+dfsg-1_amd64.deb": "527c4881cb83a0c89e6d621adae20b4e301b8220311e59a839a443c4bf7edca6",
+    "erlang-inets_1%3a27.3.4.6+dfsg-1_amd64.deb": "f075fa56cd4464a63eb26d7d90d834a2b31446d9707c527029fa15915ae1f9ed",
+    "erlang-eldap_1%3a27.3.4.6+dfsg-1_amd64.deb": "4c40df00f11f0b459d0d5221b167e05e2eb57f63d82a61fed61541481093aa57",
+    "erlang-crypto_1%3a27.3.4.6+dfsg-1_amd64.deb": "1a2de05e72695135d4c091cbb7f74e5c291f3c763d4ced4b18e48d78a2a73d3a",
+    "erlang-base_1%3a27.3.4.6+dfsg-1_amd64.deb": "8e7ababa5b1ddbe72e135faa78d15755268dfbb7cdfc25a5a8144f3e2d5754df",
+    "erlang-asn1_1%3a27.3.4.6+dfsg-1_amd64.deb": "b2d3f1a35d642727631ff138070d5a4f410bb0066f67a1efbf11ad61dc51fa6d"
+  },
+  "sources": {
+    "tools/evidence-source.mjs": "5e95adfba0b9dd595266f91f88372d41f58a12288138ffb7b5bb6bf369eca9d9",
+    "tools/topology-strategy.mjs": "48734ab45117f89e7c56220b583f4cbe8bd87bad625e4c68b2d6e61b0441a3a6",
+    "tools/close-deadline.mjs": "0277a8786a0d3eebe24084c69431232fbc0aa433cd9999ca6297c34105343768",
+    "tools/outbound.mjs": "bc9cc59a8df9669ae010138e4dd89fa801462c96f6440ed4ba48db45c7fe7f39",
+    "tools/recovery-control.mjs": "9c20dd1e5142a900c0af1d84eea338a09ab1b83ef4d12c47066f486b241e3a69",
+    "tools/recovery.mjs": "f1efcd0ce820d957f95d0528cc98adca0755c2923e5e840d4a75b0d3fc6faaf8",
+    "tools/recovery-state.mjs": "322925ae7632a2ea5241e2054fc4f8088bc9445b23757a88da75f98a9631c1ef",
+    "tools/recovery-channel.mjs": "4ad872eacb6fa8db467304e105966493395ed6e7395a237ccd55d7fe738fa2fb",
+    "tools/topology-query.mjs": "26fdbf28aa2b51eb8bf1a7bfb81b1a004ef0207ae071989ab8aaaab5070493e6",
+    "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
+    "connection_metadata.mbt": "f4ca4bf6568337fe432d90b53003e6ef86274b355b655b7738ae09846d98d18e",
+    "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
+    "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
+    "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
+    "uri.mbt": "fb8755671ef6cc4afc4d3a51da45f3baf8df45a6ce1a9ffd3126b495d7df7d1e",
+    "cmd/web/uri.mbt": "277acacb4d51d0a13e470e7132a74ffc592fc13dec72855ec2881e9ea1e7ba54",
+    "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
+    "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
+    "tools/client.mjs": "fa84aae2eb5896ae04dc6afa3cf866b7bdcd5626fa636ad91d8d95db95607ab6",
+    "tools/recovery-peer.mjs": "ce2f414bffcb07a848143cd34c1e737340e15078f4b3f0cb25f0e829a35118fe",
+    "tools/topology-strategy-reference.go": "ca596c10fefec86e45344ec69f109a0e8ac6d90087727a660a6f07c8b3b4c84b",
+    "tools/test-topology-strategy-native.mjs": "a613d0ddb1c45c35d4919fc53a71b71b8f6beaa03b941209d7367b4a4ea3cb8e",
+    "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
+    "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
+    "evidence/topology-strategy-reference-build.json": "ca1bf64bd21c8a156bd9fbd4a0f4c34a9ecb31d5c2ff8ecdb21972f03f2760a7",
+    "web/engine.mjs": "33819d94532cdacd7d9be1c6b1806f9a07461c4e12940c085b89b21d35fcb93f"
+  },
+  "scope": "Custom topology invocation counts/channel scopes, replacement/delegation/retry/skip outcomes; broker existence verified independently through passive probes, including TLS. Explicit channel fatal errors return after one pass and preserve the opened channel. Revocable asynchronous contexts are a local API contract, not Go scheduling equivalence."
+}

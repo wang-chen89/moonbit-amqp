@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T18:22:50.604411+00:00",
+  "utc": "2026-09-20T14:51:22.298304+00:00",
   "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "archiveSha256": "19067ca18143f0101b390ab09a237e2de989fd900ca20917746a4b22b66cafef",
   "upstreamFileSha256": {
@@ -77,8 +77,8 @@
     "write_test.go": "c0355a6498d123d9954dacec2e93392395fdd745e381bf14b1602f86a7a0120c"
   },
   "upstreamFilesVerified": 72,
-  "programSha256": "52da86e1ef2d663c65f7ca976270a22bbc09861685cf551954e369f229d44674",
-  "binarySha256": "f3c36feea0abec1570881391c5226248111aab95ecdc2018c74d7571b5e9d47b",
+  "programSha256": "b36adbe12a229fa50f84c6d53f7c3d1fbe7491245c838dd8598b9746c0fb5806",
+  "binarySha256": "3aabffbfda328e7f56dad22b89557b6731b828b4ed974514817652fdeecc40de",
   "compiler": "go version go1.26.0 linux/amd64",
   "buildCommand": "GOOS=windows GOARCH=amd64 go build -o ../confirmations-oracle.exe .",
   "goMod": "module localreview/confirmationsoracle\n\ngo 1.20\n\nrequire github.com/rabbitmq/amqp091-go v0.0.0\n\nreplace github.com/rabbitmq/amqp091-go => ../amqp091-go-a0195c6baf35\n",

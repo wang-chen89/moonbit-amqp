@@ -1,0 +1,11 @@
+PASS native/broker last consumer cascades across two exchanges
+PASS native/broker two channels retain queue until both consumers cancel
+PASS native/broker queue deletion cascades to all source exchanges
+PASS native/broker exchange unbind deletes source but retains destination
+PASS native/broker deleting destination cascades to its auto-delete source
+PASS native/broker argument-distinct cross-channel bindings keep exchange alive until last unbind
+PASS native/broker never-used auto-delete entities remain eligible for recovery
+PASS native/broker non-auto-delete entities survive cancellation and unbinding
+PASS native/broker explicit deletion breaks an exchange cycle and cascades to the remaining sources
+OBSERVED difference no-op unbind of a never-bound exchange exposes a native bookkeeping difference
+9 native auto-delete recovery scenarios matched; 1 explained bookkeeping difference

@@ -1,6 +1,6 @@
 name = "localreview/amqp"
 
-version = "0.22.0"
+version = "0.23.0"
 
 license = "MIT AND BSD-3-Clause AND BSD-2-Clause"
 

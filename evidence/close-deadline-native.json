@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T14:15:28.839Z",
+  "utc": "2026-09-20T14:47:58.493Z",
   "node": "v24.11.0",
   "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "binarySha256": "065336561144a359bb1686d9890fe4f482020436386cd776ca20a3f948a6ba5d",
@@ -30,7 +30,7 @@
         "recoveryEnabled": false,
         "closeErrors": [],
         "noticesClosed": true,
-        "elapsedMS": 1.4534999999999911
+        "elapsedMS": 1.7700999999999567
       },
       "matchedFields": [
         "result",
@@ -63,7 +63,7 @@
         "recoveryEnabled": false,
         "closeErrors": [],
         "noticesClosed": true,
-        "elapsedMS": 0.7212000000000103
+        "elapsedMS": 0.6494999999999891
       },
       "matchedFields": [
         "result",
@@ -106,7 +106,7 @@
           }
         ],
         "noticesClosed": true,
-        "elapsedMS": 80.54360000000008
+        "elapsedMS": 80.6748
       },
       "matchedFields": [
         "result",
@@ -144,7 +144,7 @@
           }
         ],
         "noticesClosed": true,
-        "elapsedMS": 0.1591000000000804
+        "elapsedMS": 0.1770000000001346
       },
       "matchedFields": [
         "result",
@@ -177,7 +177,7 @@
         "recoveryEnabled": false,
         "closeErrors": [],
         "noticesClosed": true,
-        "elapsedMS": 0.04930000000001655
+        "elapsedMS": 0.05529999999998836
       },
       "matchedFields": [
         "result",
@@ -220,7 +220,7 @@
           }
         ],
         "noticesClosed": true,
-        "elapsedMS": 81.18049999999994
+        "elapsedMS": 80.57550000000015
       },
       "matchedFields": [
         "result",
@@ -264,7 +264,7 @@
           }
         ],
         "noticesClosed": true,
-        "elapsedMS": 0.1875999999999749,
+        "elapsedMS": 0.17630000000008295,
         "dialSettledAtReturn": false
       },
       "matchedFields": [
@@ -300,7 +300,7 @@
         "recoveryEnabled": false,
         "closeErrors": [],
         "noticesClosed": true,
-        "elapsedMS": 0.5033000000003085,
+        "elapsedMS": 0.6871999999998479,
         "confirmationDone": true,
         "confirmationAcked": false
       },
@@ -345,7 +345,7 @@
           }
         ],
         "noticesClosed": true,
-        "elapsedMS": 1.977100000000064
+        "elapsedMS": 2.029700000000048
       },
       "matchedFields": [
         "result",
@@ -380,7 +380,7 @@
         "recoveryEnabled": false,
         "closeErrors": [],
         "noticesClosed": true,
-        "elapsedMS": 1.6692000000002736
+        "elapsedMS": 0.7721999999994296
       },
       "matchedFields": [
         "result",
@@ -413,7 +413,7 @@
         "recoveryEnabled": false,
         "closeErrors": [],
         "noticesClosed": true,
-        "elapsedMS": 1.0432000000000698
+        "elapsedMS": 0.7098999999998341
       },
       "matchedFields": [
         "result",
@@ -451,7 +451,7 @@
           }
         ],
         "noticesClosed": true,
-        "elapsedMS": 0.15949999999975262
+        "elapsedMS": 0.19459999999980937
       },
       "matchedFields": [
         "result",
@@ -484,7 +484,7 @@
         "recoveryEnabled": false,
         "closeErrors": [],
         "noticesClosed": true,
-        "elapsedMS": 0.030699999999342253
+        "elapsedMS": 0.03269999999974971
       },
       "matchedFields": [
         "result",
@@ -528,7 +528,7 @@
           }
         ],
         "noticesClosed": true,
-        "elapsedMS": 0.10199999999986176,
+        "elapsedMS": 0.13140000000021246,
         "dialSettledAtReturn": false
       },
       "matchedFields": [
@@ -572,7 +572,7 @@
           }
         ],
         "noticesClosed": true,
-        "elapsedMS": 81.48949999999968
+        "elapsedMS": 81.0002999999997
       },
       "matchedFields": [
         "result",
@@ -615,7 +615,7 @@
           }
         ],
         "noticesClosed": true,
-        "elapsedMS": 80.43549999999959
+        "elapsedMS": 80.51070000000072
       },
       "matchedFields": [
         "result",
@@ -634,7 +634,7 @@
         "closeErrors": [],
         "closed": true,
         "connectionCancelled": true,
-        "elapsedMS": 1,
+        "elapsedMS": 0,
         "noticesClosed": true,
         "recoveryEnabled": false,
         "result": "ok"
@@ -648,7 +648,7 @@
         "recoveryEnabled": false,
         "closeErrors": [],
         "noticesClosed": true,
-        "elapsedMS": 1.5684000000001106
+        "elapsedMS": 1.0961000000006607
       },
       "matchedFields": [
         "result",
@@ -681,7 +681,7 @@
         "recoveryEnabled": false,
         "closeErrors": [],
         "noticesClosed": true,
-        "elapsedMS": 0.8685999999997875
+        "elapsedMS": 1.0051000000003114
       },
       "matchedFields": [
         "result",
@@ -719,7 +719,7 @@
           }
         ],
         "noticesClosed": true,
-        "elapsedMS": 0.18509999999878346
+        "elapsedMS": 0.2771999999986292
       },
       "matchedFields": [
         "result",
@@ -752,7 +752,7 @@
         "recoveryEnabled": false,
         "closeErrors": [],
         "noticesClosed": true,
-        "elapsedMS": 1.0240000000012515
+        "elapsedMS": 0.8999000000003434
       },
       "matchedFields": [
         "result",
@@ -801,16 +801,17 @@
     "erlang-asn1_1%3a27.3.4.6+dfsg-1_amd64.deb": "b2d3f1a35d642727631ff138070d5a4f410bb0066f67a1efbf11ad61dc51fa6d"
   },
   "sources": {
-    "tools/evidence-source.mjs": "53b3722a895b12d016cbcf61dc293db59e966d2511829d19e559d40113949aa1",
+    "tools/evidence-source.mjs": "5e95adfba0b9dd595266f91f88372d41f58a12288138ffb7b5bb6bf369eca9d9",
+    "tools/topology-strategy.mjs": "48734ab45117f89e7c56220b583f4cbe8bd87bad625e4c68b2d6e61b0441a3a6",
     "tools/close-deadline.mjs": "0277a8786a0d3eebe24084c69431232fbc0aa433cd9999ca6297c34105343768",
     "tools/outbound.mjs": "bc9cc59a8df9669ae010138e4dd89fa801462c96f6440ed4ba48db45c7fe7f39",
     "tools/recovery-control.mjs": "9c20dd1e5142a900c0af1d84eea338a09ab1b83ef4d12c47066f486b241e3a69",
-    "tools/recovery.mjs": "35e5f0af878b96270b09aab74a8ea999b401fe365b0a27244e422bf720aa7bfc",
+    "tools/recovery.mjs": "f1efcd0ce820d957f95d0528cc98adca0755c2923e5e840d4a75b0d3fc6faaf8",
     "tools/recovery-state.mjs": "322925ae7632a2ea5241e2054fc4f8088bc9445b23757a88da75f98a9631c1ef",
-    "tools/recovery-channel.mjs": "03cf31ab6a455287b95259653d61e9bb30d02ac2b44a110e241fc3352763189d",
+    "tools/recovery-channel.mjs": "4ad872eacb6fa8db467304e105966493395ed6e7395a237ccd55d7fe738fa2fb",
     "tools/topology-query.mjs": "26fdbf28aa2b51eb8bf1a7bfb81b1a004ef0207ae071989ab8aaaab5070493e6",
     "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
-    "connection_metadata.mbt": "e8869fa59f1ae42c2e7f0332164b33c78b53f2ec4e9b63f9ba46f3c6adb9e0b7",
+    "connection_metadata.mbt": "f4ca4bf6568337fe432d90b53003e6ef86274b355b655b7738ae09846d98d18e",
     "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
     "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
     "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
@@ -818,7 +819,7 @@
     "cmd/web/uri.mbt": "277acacb4d51d0a13e470e7132a74ffc592fc13dec72855ec2881e9ea1e7ba54",
     "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
     "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
-    "tools/client.mjs": "348c7aede1e6a75455154b481df84ab17aa23d9bf1d876a4d38d1264dcb7f501",
+    "tools/client.mjs": "fa84aae2eb5896ae04dc6afa3cf866b7bdcd5626fa636ad91d8d95db95607ab6",
     "tools/recovery-peer.mjs": "ce2f414bffcb07a848143cd34c1e737340e15078f4b3f0cb25f0e829a35118fe",
     "tools/close-deadline-peer.mjs": "e2f691b6b0c820f01dc92f56d8709a87d4d8ec5e23a6ae052c18ab2d295b53d9",
     "tools/close-deadline-reference.go": "634b0fca7a8c4d94b21f551c51d7d5cc8a9e114d6df40a08e745adb7b93dc55c",
@@ -826,7 +827,7 @@
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
     "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
     "evidence/close-deadline-reference-build.json": "42a77bdf3df41b92ac53c87cfdfd565d42c5675e7bbbf8a58d05ddf44d138076",
-    "web/engine.mjs": "9ccf99426f07f28f2aba8ed5d7a160ef48b5147fe927d2808b9adf60175a99b2"
+    "web/engine.mjs": "33819d94532cdacd7d9be1c6b1806f9a07461c4e12940c085b89b21d35fcb93f"
   },
   "scope": "Compare result category, closed resources, cancellation and recovery-disabled state; raw errors/notifications and elapsed time retained separately. Real RabbitMQ includes withheld close replies and TLS. No full Go notification/deadline scheduling or performance parity claim."
 }

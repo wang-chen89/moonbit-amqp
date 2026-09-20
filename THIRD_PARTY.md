@@ -78,3 +78,5 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 0.21 恢复控制继续调用相同固定 Go 原库的 Reconnect、NotifyRecoveryCancel、查询与最终清理入口。recovery-control-reference.go 为原创测试适配器；原库 72 文件未改动，未复制其恢复算法。原库 panic 仅在适配器中捕获并报告，差异不计为行为匹配。
 
 0.22 CloseDeadline 对照继续调用同一固定 Go 原库的公开限时关闭、取消与通知入口。close-deadline-reference.go 为原创适配器，72 个上游文件未改动；TCP 代理只扣留真实 broker 的关闭回复，不替代其协议实现。Node 期限计时和流清理独立编写，事件载荷与拨号等待差异明确记录。
+
+0.23 自定义拓扑策略适配器调用固定 Go 原库的 TopologyRecovery、DefaultTopologyRecovery、Reconnect 和查询接口，72 个上游文件未改动。受限上下文与取消实现独立编写；单通道拓扑失败边界依据实际原生结果修正。

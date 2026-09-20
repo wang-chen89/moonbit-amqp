@@ -10,7 +10,21 @@
 CI files are prepared locally; remote CI has not run because this repository has not been uploaded. Compatibility beyond README scope remains unverified.
 
 
-## 0.22 当前限时关闭验证
+## 0.23 当前自定义拓扑策略验证
+
+- `topology-strategy-verify.txt`：JS/Wasm-GC 各 138 项及全部本地检查，含 25 新策略组。
+- `topology-strategy-native.json`：10 peer/12 broker 的调用次数、通道范围、拨号、返回、关闭、跳过项及拓扑登记一致；真实 broker 包括队列存在性和 TLS；另有连续两次真实重连后的确认投递。
+- `topology-strategy-initial.json` 为实现前配置被忽略的复现；`topology-strategy-native-initial.json` 为开发阶段单通道重试差异，最终对照已修复。上下文有效期与异步调度是宿主契约，不宣称 Go 完整等价。
+- 16 个原生/broker 命令与全部本地 fixture 共 36 份当前源码绑定报告。10 份历史原生/broker 报告没有重跑；完整范围见 `topology-strategy-upgrade.json`。
+
+```powershell
+./verify.ps1 -MoonPath /absolute/path/to/moon.exe
+$env:AMQP_TOPOLOGY_STRATEGY_REFERENCE='/absolute/path/to/topology-strategy-oracle.exe'
+$env:RABBITMQ_ROOT='/path/to/extracted/rabbitmq/root'
+node tools/test-topology-strategy-native.mjs
+```
+
+## 0.22 历史限时关闭验证
 
 - `close-deadline-verify.txt`：JS/Wasm-GC 各 138 项与全部本地检查，含 17 新限时关闭组。
 - `close-deadline-native.json`：9 peer/11 broker 的返回类别、资源和取消状态一致；原始通知、错误和耗时完整保留。broker 包含 TLS 与透明代理扣留 close-ok。另 1 个本地真实确认发布/get 后关闭流程。
@@ -342,11 +356,11 @@ node tools/test-stream-native.mjs
 
 ## 0.12 大文件消息 CLI（历史版本，0.13 继续回归）
 
-`node tools/test-broker-files.mjs` 启动真实 Node CLI 子进程，与独立手写 AMQP peer 通信；23 组验证命令/资源参数、文件类型/长度、12 MiB 及空文件发布、未知长度 stdin 暂存前不连接、已知长度 stdin 的短/长错误、nack、大 mandatory return、原子无覆盖安装、安装时才允许 ack、零字节/空队列、目标竞争创建、截断/越界/超时/限额、原始二进制输出和堵塞 stdout。每组检查受控退出后的暂存文件清理。源指纹包括 CLI、文件 helper、输出父子进程、测试子进程 helper 和核心引擎。该脚本已进入 verify 和 CI 配置，未运行远程 CI。
+`node tools/test-broker-files.mjs` 启动真实 Node CLI 子进程，与独立手写 AMQP peer 通信；25 组验证命令/资源参数、文件类型/长度、12 MiB 及空文件发布、未知长度 stdin 暂存前不连接、已知长度 stdin 的短/长错误、nack、大 mandatory return、原子无覆盖安装、安装时才允许 ack、零字节/空队列、目标竞争创建、截断/越界/超时/限额、原始二进制输出和堵塞 stdout。每组检查受控退出后的暂存文件清理。源指纹包括 CLI、文件 helper、输出父子进程、测试子进程 helper 和核心引擎。该脚本已进入 verify 和 CI 配置，未运行远程 CI。
 
 设置 `RABBITMQ_ROOT`、`AMQP_RECEIVE_REFERENCE`、`AMQP_STREAM_REFERENCE`，运行 `node tools/test-broker-files-native.mjs`。它复用已逐字验证 72 原库文件的两个固定 Go 程序及 17 个 RabbitMQ/Erlang 软件包，不修改或重建参考实现。12 组真实流程中，5 组为原版 Go 与 CLI 的内容/属性对照：12 MiB 文件发布、3 MiB 未知长度 stdin、16 MiB 已知长度 stdin/TLS、12 MiB 文件接收、16 MiB raw TLS 接收。其余验证空文件/空队列、接收限额失败后完整重投、已存在文件保留、stdout 断管/堵塞后完整重投、32 MiB broker 拒绝及 TLS 主机名失败后清理。正文按字节数和 SHA-256 比较，原库发布的消息同时比较全部设置的属性。仅在本机 Windows Node 24 + WSL RabbitMQ 4.0.5 上实测，未声称跨平台/长时间/生产性能。
 
-开发时的 stdin 暂存首次使用只写 fd，回读触发 EBADF；改为排他读写 fd。初始日志保留为 `broker-files-spool-initial.txt`。`broker-files-blocked-output-initial.txt` 保留 Windows 同步 stdout 导致超时失效、测试最终杀进程的失败。尝试异步 fs.write 后主循环能报超时，但操作系统写请求仍阻止退出；最终将 stdout 写入移到独立进程，每次最多交付 64 KiB，并在父进程超时后终止它。23 组夹具及真实 broker 堵塞/断管检查以退出码 1 和未确认完整重投证明最终行为；未通过增大超时规避。
+开发时的 stdin 暂存首次使用只写 fd，回读触发 EBADF；改为排他读写 fd。初始日志保留为 `broker-files-spool-initial.txt`。`broker-files-blocked-output-initial.txt` 保留 Windows 同步 stdout 导致超时失效、测试最终杀进程的失败。尝试异步 fs.write 后主循环能报超时，但操作系统写请求仍阻止退出；最终将 stdout 写入移到独立进程，每次最多交付 64 KiB，并在父进程超时后终止它。25 组夹具及真实 broker 堵塞/断管检查以退出码 1 和未确认完整重投证明最终行为；未通过增大超时规避。
 
 这个选择依据 [Node 24.11 进程 I/O 的平台差异](https://nodejs.org/download/release/v24.11.0/docs/api/process.html#a-note-on-process-io) 与 [文件系统 API](https://nodejs.org/download/release/v24.11.0/docs/api/fs.html)。保存使用目标目录的临时文件、sync、close、link；不覆盖目标，无硬链接支持则失败。受控失败会清理暂存文件，强制杀进程、断电、磁盘故障和任意文件系统的持久性没有完整验证。stdout 已输出前缀无法撤回，文件保存与 ack 之间仍有重复交付窗口。
 
@@ -407,3 +421,5 @@ node tools/test-stream-native.mjs
 新确认接口是 Promise/事件形式，不是 Go channel 的阻塞、关闭或 goroutine 调度复刻。局部预取消优先拒绝已结束句柄的 wait；普通 channel close 令 wait 返回 false，并额外保留 error，不伪造 nack 通知。原库/真实 broker 既有 source-bound 套件全部按当前宿主重跑，历史差异保留；最终 `confirmations-upgrade.json` 绑定源码与报告。完整 context/恢复/通知交错、URI/传输/元数据、多平台/版本/集群/长期与生产性能仍未完成，其余 19 项本轮未重测。
 
 资源复查还复现了原有发送入口的无效 signal 泄漏：1025 次 `{signal: {}}` 本地失败错误占用发布额度，正常发布随后被上限拒绝。`confirmations-signal-initial.json/.txt/.patch` 保存修复前指纹、失败与客户端 diff；现在在登记前验证 AbortSignal，连续无效调用后仍能从序号 1 正常发送并确认。该回归属于上述本地失败组，没有另增重复计数。
+
+本轮确认回归曾在固定 Go 的单通道恢复场景发生 504；channel StateOpen 早于后续拓扑恢复完成，原对照程序等待条件不足。现通过委托 DefaultTopologyRecovery 的完成信号再继续业务 RPC，未修改原库或以延时掩盖失败。初次日志与依据保留于 topology-strategy-confirmations-native-initial-failure.txt / topology-strategy-confirmations-wait-fix.json。

@@ -25,6 +25,14 @@ func check(e error) {
 		panic(e)
 	}
 }
+// Channel StateOpen can precede the separate topology pass. Wait for the
+// default strategy itself before issuing application RPCs in this adapter.
+type completedTopology struct { done chan error }
+func (t *completedTopology) RecoverTopology(c *amqp.Connection, channels []*amqp.Channel) ([]amqp.TopologyRecoveryEntity, error) {
+ skipped, err := (&amqp.DefaultTopologyRecovery{}).RecoverTopology(c, channels)
+ t.done <- err
+ return skipped, err
+}
 func main() {
 	var r Request
 	check(json.NewDecoder(os.Stdin).Decode(&r))
@@ -33,6 +41,12 @@ func main() {
 	recovering := r.Mode == "recovery" || r.Mode == "channel-recovery"
 	if recovering {
 		cfg.Recovery = &amqp.Recovery{ReconnectionConfig: &amqp.ReconnectionConfig{MaxRetryCount: 8, RetryInterval: 40 * time.Millisecond}}
+	}
+
+	var topologyDone chan error
+	if r.Mode == "channel-recovery" {
+		topologyDone = make(chan error, 8)
+		cfg.Recovery.TopologyRecovery = &completedTopology{done: topologyDone}
 	}
 	c, e := amqp.DialConfig(fmt.Sprintf("amqp://demo:test-only@127.0.0.1:%d/", r.Port), cfg)
 	check(e)
@@ -249,6 +263,12 @@ func main() {
 						}
 					case <-deadline:
 						panic("recovery timeout")
+					}
+				}
+				if topologyDone != nil {
+					select {
+					case err := <-topologyDone: check(err)
+					case <-time.After(10 * time.Second): panic("topology completion timeout")
 					}
 				}
 				out["nextAfterRecovery"] = ch.GetNextPublishSeqNo()

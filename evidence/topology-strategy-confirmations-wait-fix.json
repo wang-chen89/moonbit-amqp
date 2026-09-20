@@ -1,0 +1,15 @@
+{
+  "utc": "2026-09-20T14:52:20.057966+00:00",
+  "observed": "Pinned Go channel-recovery confirmation scenario panicked at Get after StateOpen, with AMQP 504 channel/connection is not open.",
+  "failureLog": "topology-strategy-confirmations-native-initial-failure.txt",
+  "failureLogSha256": "fd20061d0280025fc4231e177b5c86141bce0f020e03a7b4ab4cb91021e65b1b",
+  "sourceEvidence": {
+    "upstreamCommit": "a0195c6baf35db642d13651cb28938f899062e7c",
+    "stateOpen": "channel.go:2465-2467: reconnectChannel marks StateOpen before returning",
+    "topology": "channel.go:2286-2296: public Reconnect invokes topology recovery after reconnectChannel returns"
+  },
+  "inference": "Waiting only for channel StateOpen allows application RPCs to overlap the still-running topology pass. The observed failure is in the Go adapter path, before comparing the Node result.",
+  "correction": "The adapter wraps unmodified DefaultTopologyRecovery and waits for its return before application RPCs; no arbitrary delay, upstream changes or retry of the failed semantic case.",
+  "previousBinarySha256": "f3c36feea0abec1570881391c5226248111aab95ecdc2018c74d7571b5e9d47b",
+  "newBinarySha256": "3aabffbfda328e7f56dad22b89557b6731b828b4ed974514817652fdeecc40de"
+}

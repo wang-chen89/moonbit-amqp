@@ -1,0 +1,33 @@
+{
+  "utc": "2026-09-20T14:42:32.834Z",
+  "actual": {
+    "calls": 2,
+    "closed": true
+  },
+  "expected": {
+    "calls": 1,
+    "closed": false
+  },
+  "scope": "Development probe: a custom strategy explicitly caught a temporary task error, but the framework still treated that handled error as fatal.",
+  "sources": {
+    "tools/evidence-source.mjs": "5e95adfba0b9dd595266f91f88372d41f58a12288138ffb7b5bb6bf369eca9d9",
+    "tools/topology-strategy.mjs": "aeb5e3944c49202cdd8415a9ca29bbf2609833fefc5011b5f68e7b068d048cc7",
+    "tools/close-deadline.mjs": "0277a8786a0d3eebe24084c69431232fbc0aa433cd9999ca6297c34105343768",
+    "tools/outbound.mjs": "bc9cc59a8df9669ae010138e4dd89fa801462c96f6440ed4ba48db45c7fe7f39",
+    "tools/recovery-control.mjs": "9c20dd1e5142a900c0af1d84eea338a09ab1b83ef4d12c47066f486b241e3a69",
+    "tools/recovery.mjs": "f1efcd0ce820d957f95d0528cc98adca0755c2923e5e840d4a75b0d3fc6faaf8",
+    "tools/recovery-state.mjs": "322925ae7632a2ea5241e2054fc4f8088bc9445b23757a88da75f98a9631c1ef",
+    "tools/recovery-channel.mjs": "4ad872eacb6fa8db467304e105966493395ed6e7395a237ccd55d7fe738fa2fb",
+    "tools/topology-query.mjs": "26fdbf28aa2b51eb8bf1a7bfb81b1a004ef0207ae071989ab8aaaab5070493e6",
+    "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
+    "connection_metadata.mbt": "f4ca4bf6568337fe432d90b53003e6ef86274b355b655b7738ae09846d98d18e",
+    "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
+    "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
+    "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
+    "uri.mbt": "fb8755671ef6cc4afc4d3a51da45f3baf8df45a6ce1a9ffd3126b495d7df7d1e",
+    "cmd/web/uri.mbt": "277acacb4d51d0a13e470e7132a74ffc592fc13dec72855ec2881e9ea1e7ba54",
+    "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
+    "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
+    "tools/client.mjs": "fa84aae2eb5896ae04dc6afa3cf866b7bdcd5626fa636ad91d8d95db95607ab6"
+  }
+}

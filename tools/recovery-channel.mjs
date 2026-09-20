@@ -2,6 +2,7 @@ import {randomUUID} from 'node:crypto';
 import {Lifecycle, notice, snapshot, identity} from './recovery-state.mjs';
 import {checkConsumerSignal,observeConsumerSignal} from './consumer-signal.mjs';
 import {confirmationView,emitConfirmation} from './confirmations.mjs';
+import {recoveryOperationAllowed} from './topology-strategy.mjs';
 
 export class RecoveringChannel extends Lifecycle {
   #connection; #physical; #generation = 0; #offset = 0n; #lastTag = 0n;
@@ -83,7 +84,7 @@ export class RecoveringChannel extends Lifecycle {
   async #call(method, args, after, topology = false) {
     const raw = this._active(topology), generation = this.#generation;
     const value = await raw[method](...args);
-    if (this.#physical !== raw || this.#generation !== generation || this.state !== 'open') throw Error('Operation interrupted by recovery; outcome may be unknown');
+    if (this.#physical !== raw || this.#generation !== generation || this.state !== 'open'&&!recoveryOperationAllowed(this.#connection,this)) throw Error('Operation interrupted by recovery; outcome may be unknown');
     return after ? after(value) : value;
   }
   async #record(method,args,after,extra=1) {
@@ -206,18 +207,21 @@ export class RecoveringChannel extends Lifecycle {
     notice(this,'cancel',entry.options.consumerTag,{origin:'signal',reason:entry.reason,offline:true});
   }
   cancel(tag,options={}) { return this.#call('cancel',[tag,snapshot(options)],value=>{const entry=this.#consumers.get(tag);this.#consumers.delete(tag);entry?.dispose?.();if(entry)this.#connection._consumerGone(entry.queue);return value;},true); }
-  async _restoreConsumers(keepActive=false) {
+  async _restoreConsumers(keepActive=false,check=()=>{},entityError=e=>this.#connection._entityError(e)) {
     const skipped=new Set();
     while(true) {
+      check();
       const raw=this.#physical,generation=this.#generation; let restart=false;
       for(const [tag,entry] of this.#consumers) {
+        check();
         if(skipped.has(tag)||entry.cancelRequested||entry.cancelled)continue;
         if(keepActive&&entry.raw===raw&&!raw.closed)continue;
         try {
           entry.raw=raw;
           await raw.consume(this.#connection.resolveQueue(entry.queue),m=>this.#notify(entry.callback,m,raw,generation),entry.options);
+          check();
         } catch(error) {
-          await this.#connection._entityError({type:'consumer',name:tag,channel:this.id,error});
+          check();await entityError({type:'consumer',name:tag,channel:this.id,error});check();
           skipped.add(tag);
           if(raw.closed) { await this._open(this.#connection._raw);restart=true;break; }
         }

@@ -42,4 +42,4 @@ await cancelled; // 只观察取消，不会主动取消连接。
 2. 固定 Go 在恢复耗尽后 Reconnect 返回成功，但随后 Channel 因清空后的登记表发生 panic。适配器捕获该 panic。本库重建可用会话，真实确认发布/get 证明新通道可用。
 3. 固定 Go 对活跃消费者再次执行通道 Reconnect，会重复订阅同一标签，触发 broker 拒绝与跳过；实测后续 Confirm 返回 ErrClosed，观察窗口内无投递。本库保留有效消费者，确认发布和实际投递均成功。这是明确改进。
 
-CloseDeadline 已由 0.22 提供，详见 [限时关闭](CLOSE-DEADLINE.md)。仍缺自定义 ConnectionRecovery/TopologyRecovery 策略、完整通知/Go context 调度、所有恢复交错、跨平台/多版本/集群和长期性能验证。已关闭通道重新进入原库恢复流程的全部边界没有验证；本库要求新建通道。本轮没有代表性原生吞吐或性能追平结论。
+CloseDeadline 已由 0.22 提供，详见 [限时关闭](CLOSE-DEADLINE.md)。自定义 TopologyRecovery 已在 0.23 提供，见 [拓扑策略](TOPOLOGY-STRATEGY.md)。仍缺自定义 ConnectionRecovery 策略、完整通知/Go context 调度、所有恢复交错、跨平台/多版本/集群和长期性能验证。已关闭通道重新进入原库恢复流程的全部边界没有验证；本库要求新建通道。本轮没有代表性原生吞吐或性能追平结论。

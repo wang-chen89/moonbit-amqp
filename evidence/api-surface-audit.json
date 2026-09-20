@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T14:13:12.957419+00:00",
+  "utc": "2026-09-20T14:38:02.510085+00:00",
   "referenceCommit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "scope": "Syntactic exported-name functions/methods on exported receiver types in root non-test Go files. Includes conditional Fuzz; excludes unexported receivers and does not inventory struct fields, constants, interfaces or generated behavior. No full compatibility or coverage percentage claim.",
   "declarationCount": 106,
@@ -789,8 +789,8 @@
       "file": "recovery.go",
       "line": 305,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "DefaultTopologyRecovery.recoverTopology(context) / context.restoreDefault()",
+      "boundary": "25 本地组、10 peer/12 broker 的调用/重建/返回结果等已测字段一致；受限异步上下文，非完整 Go 对象/调度等价"
     },
     {
       "name": "Error.Error",

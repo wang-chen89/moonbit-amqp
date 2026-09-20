@@ -1,0 +1,18 @@
+PASS native confirmation peer wire-normal
+PASS native confirmation peer wire-order
+PASS native confirmation peer wire-multiple
+PASS native confirmation peer wire-nack
+PASS native confirmation peer wire-wait
+PASS native confirmation peer wire-close
+PASS native confirmation peer wire-zero
+PASS native confirmation peer wire-future
+PASS native confirmation broker normal
+PASS native confirmation broker transaction
+PASS native confirmation broker basic
+PASS native confirmation broker stream
+PASS native confirmation broker mandatory
+PASS native confirmation broker pre-aborted
+PASS native confirmation broker multi-channel
+PASS native confirmation broker recovery
+PASS native confirmation broker channel-recovery
+19 native confirmation method frames; 6 peer sequences; 9 broker scenarios matched; 2 explicit differences

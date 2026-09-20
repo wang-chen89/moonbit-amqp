@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T14:18:43.285Z",
+  "utc": "2026-09-20T14:53:55.363Z",
   "reference": "Official amqp091-go, unmodified pinned source",
   "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "source": "https://github.com/rabbitmq/amqp091-go/tree/a0195c6baf35db642d13651cb28938f899062e7c",
@@ -58,11 +58,11 @@
   ],
   "passed": true,
   "sources": {
-    "tools/evidence-source.mjs": "53b3722a895b12d016cbcf61dc293db59e966d2511829d19e559d40113949aa1",
+    "tools/evidence-source.mjs": "5e95adfba0b9dd595266f91f88372d41f58a12288138ffb7b5bb6bf369eca9d9",
     "tools/recovery-reference.go": "ded6a6e6669eb35ab6fcbf972ec957b1a48fed54db453bb4aa15c477c2b14441",
     "tools/test-recovery-native.mjs": "fc54eb925a094bfed58b8697859c200ed158261bbdaf2adc327f0ceb86575405",
     "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
-    "evidence/rabbitmq-recovery.json": "32a8e994d605f23e2a34855aaa8b04b43d324d7ec3b2afa599e516f892dc5c9e"
+    "evidence/rabbitmq-recovery.json": "3a92d5cb22849fae6e6e7b281a5d1d812c5dc8660f9e07f41634dec5c871c326"
   }
 }

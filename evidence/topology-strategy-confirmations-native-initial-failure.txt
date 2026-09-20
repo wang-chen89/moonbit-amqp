@@ -1,0 +1,47 @@
+PASS native confirmation peer wire-normal
+PASS native confirmation peer wire-order
+PASS native confirmation peer wire-multiple
+PASS native confirmation peer wire-nack
+PASS native confirmation peer wire-wait
+PASS native confirmation peer wire-close
+PASS native confirmation peer wire-zero
+PASS native confirmation peer wire-future
+PASS native confirmation broker normal
+PASS native confirmation broker transaction
+PASS native confirmation broker basic
+PASS native confirmation broker stream
+PASS native confirmation broker mandatory
+PASS native confirmation broker pre-aborted
+PASS native confirmation broker multi-channel
+PASS native confirmation broker recovery
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: panic: Exception (504) Reason: "channel/connection is not open"
+
+goroutine 1 [running]:
+main.check(...)
+	/mnt/c/Users/uiwcv/Documents/Codex/2026-09-10/ban/work/amqp-reference/confirmations-oracle/main.go:25
+main.main.func6(...)
+	/mnt/c/Users/uiwcv/Documents/Codex/2026-09-10/ban/work/amqp-reference/confirmations-oracle/main.go:164
+main.main()
+	/mnt/c/Users/uiwcv/Documents/Codex/2026-09-10/ban/work/amqp-reference/confirmations-oracle/main.go:258 +0x33d7
+
+
+2 !== 0
+
+    at native (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-confirmations-native.mjs:19:134)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-confirmations-native.mjs:104:23
+    at async withRabbit (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/rabbitmq-harness.mjs:27:10)
+    at async file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-confirmations-native.mjs:101:1 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 2,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.11.0
