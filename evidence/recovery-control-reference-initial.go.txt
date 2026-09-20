@@ -1,0 +1,51 @@
+// Public API probe for recovery control; links the unmodified pinned upstream.
+package main
+
+import (
+ "encoding/json"
+ "errors"
+ "net"
+ "os"
+ "sync"
+ "time"
+ amqp "github.com/rabbitmq/amqp091-go"
+)
+
+type Request struct {URI, Scenario string}
+func check(e error) {if e!=nil {panic(e)}}
+func result(e error) string {if e==nil{return "ok"};if errors.Is(e,amqp.ErrClosed){return "closed"};return "error"}
+func closed(c <-chan struct{}) bool {select {case <-c:return true;default:return false}}
+func query(c *amqp.Connection)any{return map[string]any{"closed":c.IsClosed(),"recoveryEnabled":c.IsRecoveryEnabled(),"connectionRecoveryEnabled":c.IsConnectionRecoveryEnabled(),"topologyRecoveryEnabled":c.IsTopologyRecoveryEnabled(),"maxRetryCount":c.MaxRetryCount(),"retryInterval":int(c.RetryInterval()/time.Millisecond)}}
+func waitState(events <-chan *amqp.StateChanged, to amqp.LifeCycleState) {timer:=time.NewTimer(8*time.Second);defer timer.Stop();for {select {case e,ok:=<-events:if !ok{panic("state stream closed early")};if e.To==to{return};case <-timer.C:panic("state timeout")}}}
+func main(){
+ var r Request;check(json.NewDecoder(os.Stdin).Decode(&r))
+ var mu sync.Mutex;var socket net.Conn;attempts:=0;failing:=false
+ cfg:=amqp.Config{Heartbeat:time.Second,ChannelMax:64,FrameSize:131072}
+ cfg.Dial=func(network,address string)(net.Conn,error){mu.Lock();attempts++;fail:=failing;mu.Unlock();if fail{return nil,errors.New("injected dial failure")};s,e:=net.DialTimeout(network,address,time.Second);mu.Lock();socket=s;mu.Unlock();return s,e}
+ if r.Scenario!="off" {cfg.Recovery=&amqp.Recovery{ReconnectionConfig:&amqp.ReconnectionConfig{MaxRetryCount:2,RetryInterval:5*time.Millisecond}}}
+ c,e:=amqp.DialConfig(r.URI,cfg);check(e);defer c.Close();ch,e:=c.Channel();check(e)
+ events:=make(chan *amqp.StateChanged,64);c.NotifyStateChange(events)
+ cn:=c.NotifyRecoveryCancel(make(chan struct{}));hn:=ch.NotifyRecoveryCancel(make(chan struct{}))
+ stages:=[]any{};record:=func(name string){mu.Lock();n:=attempts;mu.Unlock();stages=append(stages,map[string]any{"name":name,"query":query(c),"attempts":n,"connectionCancelled":closed(cn),"channelCancelled":closed(hn),"channelClosed":ch.IsClosed(),"queues":len(ch.TopologyConfiguration(true).Queues)})}
+ out:=map[string]any{}
+ record("initial")
+ switch r.Scenario {
+ case "open", "off":
+  out["connectionReconnect"]=result(c.Reconnect());out["channelReconnect"]=result(ch.Reconnect());record("reconnected")
+ case "close":
+  check(ch.Close());out["channelReconnect"]=result(ch.Reconnect());record("channel-closed");out["connectionClose"]=result(c.Close());out["connectionReconnect"]=result(c.Reconnect());record("closed")
+  out["lateConnectionCancelled"]=closed(c.NotifyRecoveryCancel(make(chan struct{})));out["lateChannelCancelled"]=closed(ch.NotifyRecoveryCancel(make(chan struct{})))
+ case "exhaust", "retry", "cancel":
+  _,e=ch.QueueDeclare("control-owned",false,true,false,false,nil);check(e)
+  mu.Lock();failing=true;s:=socket;mu.Unlock();check(s.Close())
+  if r.Scenario=="cancel" {waitState(events,amqp.StateReconnecting);out["connectionClose"]=result(c.Close());record("cancelled");out["connectionReconnect"]=result(c.Reconnect())}else{
+   waitState(events,amqp.StateClosed);record("exhausted")
+   out["lateConnectionCancelled"]=closed(c.NotifyRecoveryCancel(make(chan struct{})));out["lateChannelCancelled"]=closed(ch.NotifyRecoveryCancel(make(chan struct{})))
+   if r.Scenario=="retry" {mu.Lock();failing=false;mu.Unlock();out["connectionReconnect"]=result(c.Reconnect());record("retried")
+    func(){defer func(){if recover()!=nil{out["newChannel"]="panic"}}();fresh,err:=c.Channel();out["newChannel"]=result(err);if err==nil{_ = fresh.Close()}}()
+   }else{out["connectionClose"]=result(c.Close());record("explicit-close-after-exhaustion");out["connectionReconnect"]=result(c.Reconnect())}
+  }
+ default:panic("unknown scenario")
+ }
+ out["stages"]=stages;check(json.NewEncoder(os.Stdout).Encode(out))
+}

@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T13:15:03.279Z",
+  "utc": "2026-09-20T13:46:42.274Z",
   "node": "v24.11.0",
   "passed": 22,
   "tests": [
@@ -52,20 +52,21 @@
       "writeStats": {
         "socketBufferedBytes": 0,
         "maxObservedSocketBytes": 65544,
-        "drainWaits": 401,
+        "drainWaits": 445,
         "streamingChannels": 0,
         "deferredProtocolBytes": 0
       }
     }
   ],
   "sources": {
-    "tools/evidence-source.mjs": "d3e0e0c596403cd1eb69cb95fffe2bf064ce584b9807e2c9eae0ae4b1a145eee",
-    "tools/recovery.mjs": "2350d4803c65df43aa72d80c4c095cdeb0757128f5b486c05fa6910cbae18eaa",
-    "tools/recovery-state.mjs": "252af8db222d6da70a5e499af2538f7e1026fb0b6634c1ffc30653f5b6d68a5d",
-    "tools/recovery-channel.mjs": "2a3044fbe998e25f56b735b23aa7160ca4bb448947f6e8446ce31a44b76f5abc",
+    "tools/evidence-source.mjs": "0e45358bb6d040269e379eb7c1783f7602ac076d72eca85eb57d0c4ef3d79777",
+    "tools/recovery-control.mjs": "9c20dd1e5142a900c0af1d84eea338a09ab1b83ef4d12c47066f486b241e3a69",
+    "tools/recovery.mjs": "b3635fff2aec21dcacd20542805a741a0317ab3a8c9d9cd21047cc67e58dcb77",
+    "tools/recovery-state.mjs": "322925ae7632a2ea5241e2054fc4f8088bc9445b23757a88da75f98a9631c1ef",
+    "tools/recovery-channel.mjs": "03cf31ab6a455287b95259653d61e9bb30d02ac2b44a110e241fc3352763189d",
     "tools/topology-query.mjs": "26fdbf28aa2b51eb8bf1a7bfb81b1a004ef0207ae071989ab8aaaab5070493e6",
     "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
-    "connection_metadata.mbt": "b3844afc5a7255d85cb5877e3ac3df28a28250165a843565c76f8dc410528a37",
+    "connection_metadata.mbt": "63ac63787d604be174175e5c6e2452a186bc545c0c2875bd2f25a3d189713d0e",
     "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
     "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
     "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
@@ -78,10 +79,10 @@
     "publish_stream_test.mbt": "967420c566722e4a5990a68987a51144fd7031224343552ceffde5f5bca3b1f0",
     "cmd/web/publish_stream.mbt": "78bd1662496a37dd89512596ffbc99d083fd39605dc3eeaa02fe42ffa3f7248a",
     "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
-    "tools/client.mjs": "33e2731a3f4458f4db59f831ef5ffe94ba475b4c1990149e04e550887f65fde9",
+    "tools/client.mjs": "31d2fbfaecc74f765f2522cd3eff6434b6383cd9e385815988db0b6c834b393d",
     "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
     "tools/test-stream.mjs": "a777946698ffbbcef993f6dde250b23f5ca16537281c29a39a49b5d4e5e8e653",
-    "web/engine.mjs": "bb184ca5269865886c5e0cd4c605716c752c123bcfcb3dbb2c075f3370239fa7"
+    "web/engine.mjs": "5867ee044d58c0bc47110858fbfe35dbf3a994e376724b9237deb4fb6d724b2c"
   },
   "scope": "Independent wire fixtures; outbound streaming only. Source-owned chunk storage excluded from sender buffer bound."
 }

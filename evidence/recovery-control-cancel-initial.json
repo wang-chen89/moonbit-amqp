@@ -1,0 +1,16 @@
+{
+  "scope": "Observed native cancel race before waiting for final StateClosed; not a stable completed-cleanup comparison.",
+  "nativeAtCloseReturn": {
+    "channelCancelled": false,
+    "queues": 1
+  },
+  "localAtCloseReturn": {
+    "channelCancelled": true,
+    "queues": 0
+  },
+  "resolution": "Compare completed teardown after final StateClosed; explicitly retain differing Close result as a difference.",
+  "sources": {
+    "tools/recovery-control-reference.go": "35920e356cf4f3cab2c34ea97a352cdd35bf8aefdcaddb5055715346302cd62f",
+    "tools/test-recovery-control-native.mjs": "4cb2be71f85e3c17ee224cba945272675cb4abd40467ab9faf124aef365cae37"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T13:23:10.837668+00:00",
+  "utc": "2026-09-20T13:45:46.363969+00:00",
   "referenceCommit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "scope": "Syntactic exported-name functions/methods on exported receiver types in root non-test Go files. Includes conditional Fuzz; excludes unexported receivers and does not inventory struct fields, constants, interfaces or generated behavior. No full compatibility or coverage percentage claim.",
   "declarationCount": 106,
@@ -133,8 +133,8 @@
       "file": "channel.go",
       "line": 730,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "notifyRecoveryCancel()",
+      "boundary": "当前生命周期的共享 Promise；关闭/耗尽完成，普通断线不完成；不同于 Go channel 调度"
     },
     {
       "name": "Channel.NotifyFlow",
@@ -429,8 +429,8 @@
       "file": "channel.go",
       "line": 2289,
       "buildConstraint": "",
-      "hostEquivalent": "自动恢复 / waitForReady",
-      "boundary": "部分；没有用户显式重连入口"
+      "hostEquivalent": "reconnect()",
+      "boundary": "加入现有恢复或重放活跃拓扑；有效消费者保留，原库重复标签差异单列；已关闭通道需新建"
     },
     {
       "name": "Channel.TopologyConfiguration",
@@ -581,8 +581,8 @@
       "file": "connection.go",
       "line": 502,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "notifyRecoveryCancel()",
+      "boundary": "当前生命周期的共享 Promise；关闭/耗尽完成，普通断线不完成；不同于 Go channel 调度"
     },
     {
       "name": "Connection.NotifyBlocked",
@@ -629,8 +629,8 @@
       "file": "connection.go",
       "line": 1546,
       "buildConstraint": "",
-      "hostEquivalent": "自动恢复 / waitForReady",
-      "boundary": "部分；没有用户显式重连入口"
+      "hostEquivalent": "reconnect()",
+      "boundary": "活跃连接不拨号；并发加入当前恢复；耗尽后可显式重试；原库新建通道 panic 的差异单列"
     },
     {
       "name": "Connection.IsRecoveryEnabled",
@@ -638,7 +638,7 @@
       "line": 1760,
       "buildConstraint": "",
       "hostEquivalent": "recoveryEnabled",
-      "boundary": "活动及显式 close 已原生对照；间隔毫秒；恢复耗尽等异常终止路径仍有兼容风险，见 TOPOLOGY.md"
+      "boundary": "活动、耗尽、显式关闭及耗尽后重连已原生对照；反映配置和关闭意图，间隔毫秒；不代表所有恢复交错"
     },
     {
       "name": "Connection.IsTopologyRecoveryEnabled",
@@ -646,7 +646,7 @@
       "line": 1781,
       "buildConstraint": "",
       "hostEquivalent": "topologyRecoveryEnabled",
-      "boundary": "活动及显式 close 已原生对照；间隔毫秒；恢复耗尽等异常终止路径仍有兼容风险，见 TOPOLOGY.md"
+      "boundary": "活动、耗尽、显式关闭及耗尽后重连已原生对照；反映配置和关闭意图，间隔毫秒；不代表所有恢复交错"
     },
     {
       "name": "Connection.IsConnectionRecoveryEnabled",
@@ -654,7 +654,7 @@
       "line": 1800,
       "buildConstraint": "",
       "hostEquivalent": "connectionRecoveryEnabled",
-      "boundary": "活动及显式 close 已原生对照；间隔毫秒；恢复耗尽等异常终止路径仍有兼容风险，见 TOPOLOGY.md"
+      "boundary": "活动、耗尽、显式关闭及耗尽后重连已原生对照；反映配置和关闭意图，间隔毫秒；不代表所有恢复交错"
     },
     {
       "name": "Connection.MaxRetryCount",
@@ -662,7 +662,7 @@
       "line": 1808,
       "buildConstraint": "",
       "hostEquivalent": "maxRetryCount",
-      "boundary": "活动及显式 close 已原生对照；间隔毫秒；恢复耗尽等异常终止路径仍有兼容风险，见 TOPOLOGY.md"
+      "boundary": "活动、耗尽、显式关闭及耗尽后重连已原生对照；反映配置和关闭意图，间隔毫秒；不代表所有恢复交错"
     },
     {
       "name": "Connection.RetryInterval",
@@ -670,7 +670,7 @@
       "line": 1816,
       "buildConstraint": "",
       "hostEquivalent": "retryInterval",
-      "boundary": "活动及显式 close 已原生对照；间隔毫秒；恢复耗尽等异常终止路径仍有兼容风险，见 TOPOLOGY.md"
+      "boundary": "活动、耗尽、显式关闭及耗尽后重连已原生对照；反映配置和关闭意图，间隔毫秒；不代表所有恢复交错"
     },
     {
       "name": "Delivery.Ack",

@@ -1,6 +1,7 @@
 import {Lifecycle, Topology, notice, delay} from './recovery-state.mjs';
 import {RecoveringChannel} from './recovery-channel.mjs';
 import {emptyTopologyConfiguration} from './topology-query.mjs';
+import {recoveryClosed} from './recovery-control.mjs';
 
 function number(value,min,max,name) {
   if(!Number.isInteger(value)||value<min||value>max)throw TypeError(`Invalid recovery ${name}`);
@@ -12,11 +13,11 @@ export class RecoveringConnection extends Lifecycle {
   #channelTasks=new Map(); #channelSerial=Promise.resolve(); #skipped=[];
   #cancelledQueues=new Map();
   #generation=0;
-  #recovery;
+  #recovery; #closeIntent=false;
   static async connect(options,dial) {
     const connection=new RecoveringConnection(options,dial);
     try { connection.#install(await dial(connection.#options));connection._state('open');return connection; }
-    catch(error) { connection.#stop(error);throw error; }
+    catch(error) { connection.destroy(error);throw error; }
   }
   constructor(options,dial) {
     super();
@@ -39,7 +40,7 @@ export class RecoveringConnection extends Lifecycle {
   }
   get _raw() { return this.#physical; }
   get recovery() { return this.#recovery; }
-  get recoveryEnabled() { return !this.closed&&this.state!=='closing'; }
+  get recoveryEnabled() { return !this.#closeIntent; }
   get connectionRecoveryEnabled() { return this.recoveryEnabled; }
   get topologyRecoveryEnabled() { return this.recoveryEnabled&&this.#recovery.topology!=='none'; }
   get maxRetryCount() { return this.recoveryEnabled?this.#recovery.maxRetries:0; }
@@ -66,6 +67,25 @@ export class RecoveringConnection extends Lifecycle {
   get config() { return this.#physical?.config; }
   get connectionInfo() { const info=this.#physical?.connectionInfo;return info?{...info,state:this.state,generation:this.#generation}:undefined; }
   resolveQueue(name) { return this.topology.resolve(name); }
+  async reconnect() {
+    // Finish synchronous teardown/close callbacks before permitting a new lifetime.
+    await Promise.resolve();
+    if(!this.recoveryEnabled||this.#external?.aborted)throw recoveryClosed();
+    if(this.closed) {
+      this.#lifetime=new AbortController();this.#options.signal=this.#lifetime.signal;
+      return this.#startConnectionRecovery(Error('Explicit recovery after exhaustion'),true);
+    }
+    if(this.state==='reconnecting')return this.#task;
+    if(this.state!=='open')throw recoveryClosed();
+  }
+  #startConnectionRecovery(error,restart=false) {
+    const task=Promise.resolve().then(()=>this.#restoreConnection(error)).catch(e=>{this.#stop(e);throw e;});
+    this.#task=task;task.catch(()=>{});
+    if(restart)this._restartRecovery();else this._state('reconnecting',error);
+    for(const channel of this.#channels.values())channel._lost(error);
+    this.#channelTasks.clear();this.#channelSerial=Promise.resolve();
+    return task;
+  }
   async updateSecret(secret,reason='Credential refreshed') {
     if(this.state!=='open'||this.#physical?.closed)throw Error('Connection recovery in progress or closed');
     const raw=this.#physical;
@@ -82,10 +102,7 @@ export class RecoveringConnection extends Lifecycle {
     for(const name of ['blocked','unblocked'])raw.on(name,event=>{if(raw===this.#physical)notice(this,name,event);});
     raw.on('close',error=>{
       if(raw!==this.#physical||this.closed||this.state==='closing'||this.state==='reconnecting')return;
-      this._state('reconnecting',error);
-      for(const channel of this.#channels.values())channel._lost(error);
-      this.#channelTasks.clear();this.#channelSerial=Promise.resolve();
-      this.#task=this.#restoreConnection(error).catch(e=>this.#stop(e));
+      this.#startConnectionRecovery(error);
     });
   }
   async openChannel() {
@@ -114,16 +131,31 @@ export class RecoveringConnection extends Lifecycle {
     channel._lost(error);
     // The raw Connection marks itself closed before notifying its channels.
     if(this.#physical.closed||this.state!=='open'||this.#channelTasks.has(channel))return;
+    this.#startChannelRecovery(channel,error);
+  }
+  async _reconnectChannel(channel) {
+    await Promise.resolve();
+    if(!this.recoveryEnabled||channel.closed||this.closed)throw recoveryClosed();
+    if(this.state==='reconnecting')await this.reconnect();
+    if(!this.recoveryEnabled||channel.closed||this.state!=='open')throw recoveryClosed();
+    const current=this.#channelTasks.get(channel);
+    if(current)return current.promise;
+    channel._lost(Error('Explicit channel topology recovery'));
+    return this.#startChannelRecovery(channel,Error('Explicit channel recovery'),true);
+  }
+  #startChannelRecovery(channel,error,reuse=false) {
     const token={},session=this.#physical;this.#channelTasks.set(channel,token);
-    const task=this.#channelSerial.then(()=>this.#restoreChannel(channel,error,token,session));
+    const task=this.#channelSerial.then(()=>this.#restoreChannel(channel,error,token,session,reuse));
     this.#channelSerial=task.catch(()=>{});
-    task.catch(e=>{channel._stop(e);this._removeChannel(channel);})
+    token.promise=task.catch(e=>{if(this.#channelTasks.get(channel)===token){channel._stop(e);this._removeChannel(channel);}throw e;})
+      .then(async()=>{if(this.state==='reconnecting')await this.reconnect();if(channel.closed||this.state!=='open')throw recoveryClosed();})
       .finally(()=>{if(this.#channelTasks.get(channel)===token)this.#channelTasks.delete(channel);});
+    token.promise.catch(()=>{});return token.promise;
   }
   async #restoreConnection(cause) {
     let error=cause;
     for(let attempt=1;attempt<=this.recovery.maxRetries;attempt++) {
-      if(this.closed||this.state==='closing')return;
+      if(this.closed||this.state==='closing')throw recoveryClosed();
       notice(this,'recovering',{attempt,error});
       await delay(this.#retryDelay(attempt),this.#lifetime.signal);
       let raw;
@@ -137,7 +169,7 @@ export class RecoveringConnection extends Lifecycle {
         if(this.recovery.topology!=='none')for(const ch of this.#channels.values())if(!ch.closed)await ch._restoreConsumers();
         if(raw.closed||this.state!=='reconnecting')throw Error('Connection closed while restoring topology');
         for(const ch of this.#channels.values())ch._restored();
-        if(this.state!=='reconnecting')return;
+        if(this.state!=='reconnecting')throw recoveryClosed();
         this._state('open');
         for(const ch of this.#channels.values())ch._drain();
         if(this.state==='open')notice(this,'recovered',{attempt,skipped:[...this.#skipped]});return;
@@ -148,7 +180,7 @@ export class RecoveringConnection extends Lifecycle {
     }
     throw Error(`Recovery exhausted after ${this.recovery.maxRetries} attempts: ${error.message}`,{cause:error});
   }
-  async #restoreChannel(channel,cause,token,session) {
+  async #restoreChannel(channel,cause,token,session,reuse=false) {
     const current=()=>!channel.closed&&this.state==='open'&&session===this.#physical&&this.#channelTasks.get(channel)===token;
     if(!current())return;
     let error=cause;this.#skipped=[];
@@ -158,10 +190,10 @@ export class RecoveringConnection extends Lifecycle {
       await delay(this.#retryDelay(attempt),this.#lifetime.signal);
       if(!current())return;
       try {
-        await channel._open(this.#physical);
+        if(!reuse||attempt>1||channel._raw.closed)await channel._open(this.#physical);
         await this.#restoreTopology(channel,false);
         if(channel._raw.closed)await channel._open(this.#physical);
-        if(this.recovery.topology!=='none')await channel._restoreConsumers();
+        if(this.recovery.topology!=='none')await channel._restoreConsumers(reuse&&attempt===1);
         if(!current())return;
         if(channel._raw.closed)throw Error('Channel closed during recovery');
         this.#channelTasks.delete(channel);
@@ -225,14 +257,15 @@ export class RecoveringConnection extends Lifecycle {
   }
   #stop(error) {
     if(this.closed)return;
-    this.#external?.removeEventListener('abort',this.#abort);
+    if(this.#closeIntent)this.#external?.removeEventListener('abort',this.#abort);
     // State first prevents close callbacks from scheduling another recovery.
     this._state('closed',error);this.#lifetime.abort(error);this.#physical?.destroy(error);
     for(const ch of this.#channels.values())ch._stop(error);
-    this.#channels.clear();this.#cancelledQueues.clear();this.topology.clear();
+    this.#channels.clear();this.#cancelledQueues.clear();this.topology.clear();this.#channelTasks.clear();this.#channelSerial=Promise.resolve();
   }
-  destroy(error=Error('Connection destroyed by application')) { this.#stop(error); }
+  destroy(error=Error('Connection destroyed by application')) { this.#closeIntent=true;this.#external?.removeEventListener('abort',this.#abort);this.#stop(error); }
   close() {
+    this.#closeIntent=true;this.#external?.removeEventListener('abort',this.#abort);
     if(this.#closing)return this.#closing;
     if(this.closed)return Promise.resolve();
     const graceful=this.state==='open'&&!this.#physical?.closed;

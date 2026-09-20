@@ -13,6 +13,7 @@ import {createConfirmation,emitConfirmation} from './confirmations.mjs';
 import {openOptions,validateTransportOptions,suppliedTLS,startTransport,finishTransportHandshake} from './transport.mjs';
 export {defaultDial} from './transport.mjs';
 import {emptyTopologyConfiguration} from './topology-query.mjs';
+import {RecoveryCancellation,recoveryClosed} from './recovery-control.mjs';
 
 function checked(text) {
   if (text.startsWith('ERROR:')) throw Error(text.slice(7));
@@ -35,6 +36,7 @@ function delivery(event) {
 
 /** Node transport for the MoonBit AMQP 0-9-1 Session. No third-party runtime dependency. */
 export class Connection extends EventEmitter {
+  #recoveryCancellation=new RecoveryCancellation();
   #key = randomUUID(); #socket; #timer; #abort; #signal; #ready = deferred();
   #connectTimer; #closed = false; #closing = false; #lastRead = performance.now(); #lastWrite = 0;
   #channels = new Map(); #closeWait; #limits; #maxBuffered; #timeout;
@@ -114,6 +116,8 @@ export class Connection extends EventEmitter {
     this.#write(output);stream.resume();
   }
   get closed() { return this.#closed; }
+  reconnect() { return Promise.reject(recoveryClosed()); }
+  notifyRecoveryCancel() { return this.#recoveryCancellation.wait(); }
   get recoveryEnabled() { return false; }
   get connectionRecoveryEnabled() { return false; }
   get topologyRecoveryEnabled() { return false; }
@@ -305,7 +309,7 @@ export class Connection extends EventEmitter {
   _fail(error) { this.#terminate(error, false); }
   #terminate(error, graceful) {
     if (this.#closed) return;
-    this.#closed = true;
+    this.#closed = true;this.#recoveryCancellation.cancel();
     this.#receiving?.close(error);this.#pendingInput=Buffer.alloc(0);
     this.#publishWrites.close(error);this.#streaming.clear();this.#deferredBytes=0;
     this.#authAbort.abort(error);this.#authProviders=[];
@@ -342,6 +346,7 @@ export class Connection extends EventEmitter {
     } catch(error) {return Promise.reject(error);}
   }
   async close() {
+    this.#recoveryCancellation.cancel();
     if (this.#closed) return;
     if (this.#closing) return this.#closeWait.promise;
     this.#closing = true; this.#closeWait = deferred();
@@ -356,6 +361,7 @@ export class Connection extends EventEmitter {
 }
 
 export class Channel extends EventEmitter {
+  #recoveryCancellation=new RecoveryCancellation();
   #connection; #pending; #closed = false; #consumers = new Map(); #id;
   #mode = 'normal'; #nextConfirm = 1n; #confirms = new Map();
   #nextNotice=1n; #confirmationEvents=new Map();
@@ -363,6 +369,8 @@ export class Channel extends EventEmitter {
   #subscriptions=new Map(); #consumerCancels=new Set(); #waitingRPC;
   constructor(connection, id) { super(); this.#connection = connection; this.#id = id; this.#sends=new SendQueue(connection.maxBufferedBytes); }
   get id() { return this.#id; }
+  reconnect() { return Promise.reject(recoveryClosed()); }
+  notifyRecoveryCancel() { return this.#recoveryCancellation.wait(); }
   topologyConfiguration(global=false) { if(typeof global!=='boolean')throw TypeError('Invalid topology scope');return emptyTopologyConfiguration(); }
   get closed() { return this.#closed; }
   get nextPublishSeqNo() { return this.#nextConfirm; }
@@ -461,7 +469,7 @@ export class Channel extends EventEmitter {
   }
   _terminate(error) {
     if (this.#closed) return;
-    this.#closed = true;
+    this.#closed = true;this.#recoveryCancellation.cancel();
     this.#connection._closeIncomingChannel(this.id,error);
     this.#sendAbort.abort(error);this.#sends.close(error);
     if (this.#pending) { clearTimeout(this.#pending.timer); this.#pending.reject(error); this.#pending = undefined; }
@@ -612,7 +620,7 @@ export class Channel extends EventEmitter {
     confirmed.catch(()=>{});
     return deferredConfirm?sent.then(()=>pending?.handle??null):confirmed;
   }
-  close() { this.#connection._discardIncomingChannel(this.id);return this._rpc('channel.close', [200, 'normal close', 0, 0], ['channelClosed']); }
+  close() { this.#recoveryCancellation.cancel();this.#connection._discardIncomingChannel(this.id);return this._rpc('channel.close', [200, 'normal close', 0, 0], ['channelClosed']); }
 }
 
 export const connect = async (options, overrides) => {

@@ -15,6 +15,7 @@ export class RecoveringChannel extends Lifecycle {
   get _generation() { return this.#generation; }
   get nextPublishSeqNo() { return this._active().nextPublishSeqNo; }
   topologyConfiguration(global=false) { return this.#connection._topologyConfiguration(this.id,global); }
+  reconnect() { return this.#connection._reconnectChannel(this); }
   _active(topology = false) { this.#connection._active(this,topology); return this.#physical; }
   async _open(connection) {
     const claim=++this.#opening;
@@ -205,12 +206,13 @@ export class RecoveringChannel extends Lifecycle {
     notice(this,'cancel',entry.options.consumerTag,{origin:'signal',reason:entry.reason,offline:true});
   }
   cancel(tag,options={}) { return this.#call('cancel',[tag,snapshot(options)],value=>{const entry=this.#consumers.get(tag);this.#consumers.delete(tag);entry?.dispose?.();if(entry)this.#connection._consumerGone(entry.queue);return value;},true); }
-  async _restoreConsumers() {
+  async _restoreConsumers(keepActive=false) {
     const skipped=new Set();
     while(true) {
       const raw=this.#physical,generation=this.#generation; let restart=false;
       for(const [tag,entry] of this.#consumers) {
         if(skipped.has(tag)||entry.cancelRequested||entry.cancelled)continue;
+        if(keepActive&&entry.raw===raw&&!raw.closed)continue;
         try {
           entry.raw=raw;
           await raw.consume(this.#connection.resolveQueue(entry.queue),m=>this.#notify(entry.callback,m,raw,generation),entry.options);

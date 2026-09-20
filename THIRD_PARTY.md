@@ -74,3 +74,5 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 0.19 自定义传输参考固定 Go 原库 connection.go 的 DefaultDial、DialConfig、Open、期限清理与重连拨号流程。transport-reference.go 是原创公共 API 适配器；72 个上游文件校验未改动，未复制或分发 Go 运行期代码。Node Duplex 实现独立编写，期限/调度差异明确披露。
 
 0.20 恢复配置与拓扑查询参考同一固定 Go 原库的 TopologyConfiguration、Clone、IsRecoveryEnabled、重试配置查询及关闭清理。topology-reference.go 为原创公开 API 适配器；72 个上游文件校验未改动，Node 所有权记录与快照实现独立编写。嵌套参数别名差异及异常终止查询待验证边界已披露。
+
+0.21 恢复控制继续调用相同固定 Go 原库的 Reconnect、NotifyRecoveryCancel、查询与最终清理入口。recovery-control-reference.go 为原创测试适配器；原库 72 文件未改动，未复制其恢复算法。原库 panic 仅在适配器中捕获并报告，差异不计为行为匹配。

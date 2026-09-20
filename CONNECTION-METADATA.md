@@ -26,7 +26,7 @@ try {
 
 `properties` 是 AMQP 字段表，支持字符串、布尔值、Int32 数字、null、数组、嵌套对象和原有 `$type` 标记（int64、timestamp、decimal、float32-bits、float64-bits、bytes、longstr）。Bytes 使用十六进制标记，时间戳/64 位整数使用十进制字符串，不通过浮点数传递。`connection_name` 与原库 `Table.SetClientConnectionName` 设置相同字段。
 
-不提供属性或提供空表时，采用 `newConnectionProperties()` 的 product/version/platform，标识本库 moonbit-amqp / 0.20.0 / moonbit。非空自定义表取代默认身份字段；要保留它们可像上例一样展开默认表。
+不提供属性或提供空表时，采用 `newConnectionProperties()` 的 product/version/platform，标识本库 moonbit-amqp / 0.21.0 / moonbit。非空自定义表取代默认身份字段；要保留它们可像上例一样展开默认表。
 
 实现总会覆盖 `capabilities`，公告 publisher_confirms、consumer_cancel_notify、connection.blocked、basic.nack 为 true，与固定 Go 原库的能力公告一致。只给 capabilities 的非空表不会另外补默认身份字段。应用给这个字段的值不会被用于能力协商。
 

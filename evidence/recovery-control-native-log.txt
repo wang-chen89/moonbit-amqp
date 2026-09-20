@@ -1,0 +1,17 @@
+CHECK recovery control peer open
+CHECK recovery control peer off
+CHECK recovery control peer open-topology
+CHECK recovery control peer close
+CHECK recovery control peer exhaust
+CHECK recovery control peer retry
+CHECK recovery control peer cancel
+CHECK recovery control broker open
+CHECK recovery control broker off
+CHECK recovery control broker open-topology
+CHECK recovery control broker close
+CHECK recovery control broker exhaust
+CHECK recovery control broker retry
+CHECK recovery control broker cancel
+Active consumer native result {"channelReconnect":"ok","confirmResult":"closed","confirmed":false,"delivered":false,"stages":[{"attempts":1,"channelCancelled":false,"channelClosed":false,"connectionCancelled":false,"name":"initial","query":{"closed":false,"connectionRecoveryEnabled":true,"maxRetryCount":2,"recoveryEnabled":true,"retryInterval":5,"topologyRecoveryEnabled":true},"queues":0},{"attempts":2,"channelCancelled":false,"channelClosed":false,"connectionCancelled":false,"name":"replayed","query":{"closed":false,"connectionRecoveryEnabled":true,"maxRetryCount":2,"recoveryEnabled":true,"retryInterval":5,"topologyRecoveryEnabled":true},"queues":1}],"topologyErrors":1}
+CHECK explicit active-consumer difference
+7 native/7 broker query sequences matched; 4 complete outcomes each; 3 explicit differences; 3 local recovery cases passed

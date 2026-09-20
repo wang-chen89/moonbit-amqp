@@ -1,5 +1,6 @@
 import {EventEmitter} from 'node:events';
 import {topologyConfiguration,emptyTopologyConfiguration} from './topology-query.mjs';
+import {RecoveryCancellation} from './recovery-control.mjs';
 
 export function notice(target, name, ...args) {
   for(const listener of target.rawListeners(name)) {
@@ -8,10 +9,18 @@ export function notice(target, name, ...args) {
   }
 }
 export class Lifecycle extends EventEmitter {
+  #recoveryCancellation=new RecoveryCancellation();
   state = 'connecting';
   get closed() { return this.state === 'closed'; }
+  notifyRecoveryCancel() { return this.#recoveryCancellation.wait(); }
+  _restartRecovery() {
+    if(!this.closed)throw Error('Only a terminated lifecycle can be restarted');
+    this.#recoveryCancellation.reset();this.state='reconnecting';
+    notice(this,'stateChange',{from:'closed',to:'reconnecting'});
+  }
   _state(next, error) {
     if (this.state === next || this.closed || this.state === 'closing' && next !== 'closed') return;
+    if(next==='closing'||next==='closed')this.#recoveryCancellation.cancel();
     const from = this.state; this.state = next;
     notice(this, 'stateChange', {from, to: next, error});
     if (next === 'open' && this.state === next) notice(this, 'ready');

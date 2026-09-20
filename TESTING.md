@@ -10,7 +10,23 @@
 CI files are prepared locally; remote CI has not run because this repository has not been uploaded. Compatibility beyond README scope remains unverified.
 
 
-## 0.20 当前恢复查询/拓扑验证
+## 0.21 当前恢复控制验证
+
+- `recovery-control-verify.txt`：JS/Wasm-GC 各 138 项与全部本地检查，含 14 新恢复控制组。
+- `recovery-control-native.json`：7 peer/7 broker 查询/取消阶段一致；每侧 4 个完整结果一致；额外 1 个 broker 活跃消费者差异对照；3 个本地真实恢复场景。
+- 共 3 类明确差异：幂等 close、耗尽后原库 Channel panic、活跃消费者重复订阅。后两项本库可用性由真实确认发布/get 或实际投递证明，不计为完整匹配。
+- `recovery-control-native-initial.json` 及原始 Go 调用程序保留最初原生观察；`recovery-control-cancel-initial.json` 记录在 Go Close 返回瞬间读清理状态的竞态。最终取消比较等待最终 StateClosed，不声称关闭返回时的状态相同。
+- 14 个原生/broker 命令和完整本地 fixture 共形成 32 份当前源码绑定报告；另 10 份历史原生/broker 报告未重跑。清单见 `recovery-control-upgrade.json`。
+- 原库 72 文件及 17 broker 包核验未变；程序和编译产物指纹分别保存于 `recovery-control-reference-build.json`。无全量恢复策略/调度或代表性性能追平结论。
+
+```powershell
+./verify.ps1 -MoonPath /absolute/path/to/moon.exe
+$env:AMQP_RECOVERY_CONTROL_REFERENCE='/absolute/path/to/recovery-control-oracle.exe'
+$env:RABBITMQ_ROOT='/path/to/extracted/rabbitmq/root'
+node tools/test-recovery-control-native.mjs
+```
+
+## 0.20 历史恢复查询/拓扑验证
 
 - `topology-verify.txt`：JS/Wasm-GC 各 138 项，完整本地检查含 14 新拓扑组。
 - `topology-close-initial.json`：0.19 源码复现显式关闭通道仍保留 idle 队列登记；固定 Go 已移除。新本地/原生检查验证修复。

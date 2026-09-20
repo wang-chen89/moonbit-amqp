@@ -22,10 +22,10 @@ try {
 
 | 查询 | 返回值 |
 |---|---|
-| `recoveryEnabled` | 恢复连接处于活动生命周期时为 true，包括重连等待；关闭中或已终止时为 false |
+| `recoveryEnabled` | 恢复配置启用且未显式终止时为 true，包括自动恢复耗尽；不是连接可用状态 |
 | `connectionRecoveryEnabled` | 当前内置恢复策略下与 recoveryEnabled 相同 |
 | `topologyRecoveryEnabled` | recoveryEnabled 且 topology 不是 none |
-| `maxRetryCount` / `retryInterval` | 活动时配置的重试次数/间隔；间隔单位毫秒，不含随机抖动；终止时均为 0 |
+| `maxRetryCount` / `retryInterval` | 配置的重试次数/间隔；间隔单位毫秒，不含随机抖动；显式终止时均为 0 |
 | `reconnectionConfig` | 每次生成 `{maxRetryCount, retryInterval}`；终止后仍保留已配置值 |
 | `recoveryConfig` | 每次生成 maxRetries、retryDelay、retryJitter、topology、maxTopologyEntries、hasTopologyErrorHandler；不返回凭证或回调函数 |
 | `channel.topologyConfiguration(false)` | 该通道登记的拓扑，默认 false |
@@ -50,6 +50,6 @@ try {
 
 原库 TopologyConfiguration / Clone 复制容器但共享嵌套 Args；修改查询会影响内部登记和已 Clone 的对象。本库深复制，因此此场景明确记为 1 项差异，不计入匹配数。
 
-活动及显式 close 的 enabled/次数/间隔查询已做原生对照。恢复耗尽等非显式终止路径尚无原生对照：本库按终止状态返回 false/0；固定 Go 的 IsRecoveryEnabled 依据 closeInit 和配置，cleanup 不直接设置 closeInit。这个源码审查发现的兼容风险单列在 [终止路径审查](evidence/topology-terminal-query-audit.json)，没有宣称查询行为全部追平。
+0.20 的终止路径源码审查保留在 [历史审查](evidence/topology-terminal-query-audit.json)。0.21 已用原生实测确认并修正耗尽查询，详见 [恢复控制](RECOVERY-CONTROL.md)。
 
-显式 Reconnect、NotifyRecoveryCancel、自定义策略接口、CloseDeadline、完整并发恢复交错、其他平台/版本及代表性性能仍待补齐或验证。本轮只有本机示例与基础确认计时，没有恢复查询或整体原生性能追平结论。
+自定义策略接口、CloseDeadline、完整并发恢复交错、其他平台/版本及代表性性能仍待补齐或验证。本轮只有本机示例与基础确认计时，没有恢复查询或整体原生性能追平结论。

@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T13:15:35.917Z",
+  "utc": "2026-09-20T13:47:20.763Z",
   "passed": 12,
   "tests": [
     "authentication rejects malformed candidates and redacts malformed bridge credentials",
@@ -16,13 +16,14 @@
     "failed selected authentication is not silently retried with another mechanism"
   ],
   "sources": {
-    "tools/evidence-source.mjs": "d3e0e0c596403cd1eb69cb95fffe2bf064ce584b9807e2c9eae0ae4b1a145eee",
-    "tools/recovery.mjs": "2350d4803c65df43aa72d80c4c095cdeb0757128f5b486c05fa6910cbae18eaa",
-    "tools/recovery-state.mjs": "252af8db222d6da70a5e499af2538f7e1026fb0b6634c1ffc30653f5b6d68a5d",
-    "tools/recovery-channel.mjs": "2a3044fbe998e25f56b735b23aa7160ca4bb448947f6e8446ce31a44b76f5abc",
+    "tools/evidence-source.mjs": "0e45358bb6d040269e379eb7c1783f7602ac076d72eca85eb57d0c4ef3d79777",
+    "tools/recovery-control.mjs": "9c20dd1e5142a900c0af1d84eea338a09ab1b83ef4d12c47066f486b241e3a69",
+    "tools/recovery.mjs": "b3635fff2aec21dcacd20542805a741a0317ab3a8c9d9cd21047cc67e58dcb77",
+    "tools/recovery-state.mjs": "322925ae7632a2ea5241e2054fc4f8088bc9445b23757a88da75f98a9631c1ef",
+    "tools/recovery-channel.mjs": "03cf31ab6a455287b95259653d61e9bb30d02ac2b44a110e241fc3352763189d",
     "tools/topology-query.mjs": "26fdbf28aa2b51eb8bf1a7bfb81b1a004ef0207ae071989ab8aaaab5070493e6",
     "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
-    "connection_metadata.mbt": "b3844afc5a7255d85cb5877e3ac3df28a28250165a843565c76f8dc410528a37",
+    "connection_metadata.mbt": "63ac63787d604be174175e5c6e2452a186bc545c0c2875bd2f25a3d189713d0e",
     "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
     "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
     "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
@@ -35,10 +36,10 @@
     "cmd/web/authentication.mbt": "007c9d1407e295f973f608933292e2e33f9c9e275cc7dd50b7718094a63b2809",
     "cmd/web/session.mbt": "77a46d26771f0f9afc04283bcf301353985c1f61e159b357d5fd20642e9ab5fb",
     "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
-    "tools/client.mjs": "33e2731a3f4458f4db59f831ef5ffe94ba475b4c1990149e04e550887f65fde9",
+    "tools/client.mjs": "31d2fbfaecc74f765f2522cd3eff6434b6383cd9e385815988db0b6c834b393d",
     "tools/recovery-peer.mjs": "ce2f414bffcb07a848143cd34c1e737340e15078f4b3f0cb25f0e829a35118fe",
     "tools/test-authentication.mjs": "277175c3f26d03e2672a8d2b51ebc50514d2e9bcb5bd6f2e429656993afb422e",
-    "web/engine.mjs": "bb184ca5269865886c5e0cd4c605716c752c123bcfcb3dbb2c075f3370239fa7"
+    "web/engine.mjs": "5867ee044d58c0bc47110858fbfe35dbf3a994e376724b9237deb4fb6d724b2c"
   },
   "scope": "Independent scripted TCP peer, including custom async response lifecycle and recovery; real certificate authentication is tested separately."
 }
