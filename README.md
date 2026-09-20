@@ -1,6 +1,6 @@
 # AMQP 0-9-1 编解码与消息客户端
 
-本地候选版 **0.15.0**。MoonBit 实现帧/方法/属性编解码、连接认证协商和通道状态机；Node.js 提供 TCP/TLS、RPC、心跳和消息发布/消费宿主。仓库独立，当前仅供本地审查。
+本地候选版 **0.16.0**。MoonBit 实现帧/方法/属性编解码、连接认证协商和通道状态机；Node.js 提供 TCP/TLS、RPC、心跳和消息发布/消费宿主。仓库独立，当前仅供本地审查。
 
 ```sh
 moon test --target js
@@ -70,6 +70,26 @@ try {
 ```
 
 `publish` 在 confirm 模式等待 broker 确认；普通模式仅表示数据已交给本地 socket。`mandatory` 消息无法路由时通过独立的 `return` 事件送回，确认本身不表示已经消费或成功路由。事务模式使用 `txSelect` / `txCommit` / `txRollback`，与 confirm 模式互斥。
+
+### 发布确认句柄与事件
+
+`publishWithDeferredConfirm(exchange, routingKey, body, options)` 在本地发送完成后返回确认句柄，`publishStreamWithDeferredConfirm(exchange, routingKey, source, bodySize, options)` 提供相同的流式入口。它们不等待 broker 确认才返回；未开启确认模式时返回 `null`。发送/源本身失败仍拒绝 Promise。旧 `publish` / `publishStream` 继续等待确认，nack 或连接失败仍拒绝。
+
+```js
+await channel.confirmSelect();
+channel.on('confirm', ({deliveryTag, ack, generation}) => {
+  console.log(generation, deliveryTag, ack);
+});
+const receipt = await channel.publishWithDeferredConfirm('', queue, 'hello');
+const accepted = await receipt.wait({timeout: 5000});
+console.log(receipt.deliveryTag, accepted);
+```
+
+句柄只读：`deliveryTag` 是 BigInt；`completed` 表示已经结束；`acked` 在收到肯定确认后为 true；`done` 是结束时兑现的 Promise；`wait({signal, timeout})` 返回确认布尔值。收到 nack 或通道/连接终止时结果为 false，后者另外保留 `error`，不能把 false 一律理解成 broker 明确拒绝。`done` 本身不拒绝。一个句柄可以独立等待多次；局部取消/超时只拒绝该次等待，不撤回消息，也不改变其它等待者。预取消信号优先拒绝，即使句柄已经结束。最多保留 1024 个并行等待者，取消后立即释放监听器和等待槽位。
+
+`confirm` 事件按发布序号连续触发，即使线路确认乱序；单独句柄可以先于前面的序号结束。`ack(tag, generation)` / `nack(tag, generation)` 是分开的事件名称，与消费确认方法是不同用途。监听器可用 `on/once/off` 管理，异常触发 `callbackError`；异步监听器的完成不阻塞后续事件。关闭只结束句柄、丢弃尚未排序的事件，不伪造 broker nack。等待序号空缺的确认记录与排队/未确认发布共用有界容量，达到上限时拒绝新发布。
+
+`channel.nextPublishSeqNo` 是下一次实际开始发送时使用的序号快照，不能预留序号；排队操作尚未开始时它可能不变。恢复重新建立通道后从 1 开始。普通物理句柄/事件的 `generation` 为 0，恢复通道从 1 开始并随物理通道更换递增，用来区分新旧句柄；旧句柄不转换成新消息，也不自动重发。恢复通道离线时不能查询该序号。正常连接关闭仍等待已发送的确认，全局确认超时仍会关闭连接。
 
 大正文使用 `publishStream(exchange, routingKey, source, bodySize, options)`。`source` 是逐块产生 `Uint8Array` 的同步或异步 iterable，`bodySize` 为准确字节数（非负安全整数或 UInt64 范围的 BigInt）；AMQP 头部必须先声明长度。API 不扫描或拼接整个源，socket 背压时暂停写帧并等待 `drain`，最多提前拉取一个源块。
 
@@ -293,7 +313,7 @@ connection.on('queueNameChanged', ({previous, current}) => console.log({previous
 
 ## 验证与成熟度
 
-0.15 的 **122 项核心测试在 JS 与 Wasm-GC 分别通过**，包含之前的 220 组 Pika 1.3.2 独立字节向量及会话状态测试。接收端 **25 组线路故障、8 组真实 broker 流程**继续通过；12 MiB get、16 MiB TLS consume 和 12 MiB mandatory return 的正文/属性与原版 Go 对照一致。此前 **22 组流式发送/背压故障组、7 组真实 broker 大消息流程**继续通过，其中 2/12/16 MiB 与原版 Go 收发一致，32 MiB 独立慢端验证发送源停顿。**18 组网络故障、25 组恢复故障、22 项原有 RabbitMQ 流程及 6 组真实恢复流程**继续回归；原有浏览器核心、CLI 与 7 项帧审查 CLI 场景也通过。
+0.16 的 **122 项核心测试在 JS 与 Wasm-GC 分别通过**，包含之前的 220 组 Pika 1.3.2 独立字节向量及会话状态测试。接收端 **25 组线路故障、8 组真实 broker 流程**继续通过；12 MiB get、16 MiB TLS consume 和 12 MiB mandatory return 的正文/属性与原版 Go 对照一致。此前 **22 组流式发送/背压故障组、7 组真实 broker 大消息流程**继续通过，其中 2/12/16 MiB 与原版 Go 收发一致，32 MiB 独立慢端验证发送源停顿。**18 组网络故障、25 组恢复故障、22 项原有 RabbitMQ 流程及 6 组真实恢复流程**继续回归；原有浏览器核心、CLI 与 7 项帧审查 CLI 场景也通过。
 
 本轮重新运行 **23 组真实子进程 CLI 线路检查、12 组真实 broker 文件/管道流程**；5 组文件、stdin、TCP/TLS 正文和属性与固定 Go 程序比较一致。包括写完文件后才 ack、目标竞争创建、截断/超时、接收限额、输出断管/停顿后的完整重投；没有增加 MoonBit 核心测试计数。
 
@@ -301,7 +321,9 @@ connection.on('queueNameChanged', ({previous, current}) => console.log({previous
 
 本轮另有 **15 组通道选项/流控测试**；**18 条方法报文、1 组服务器 flow 通知/自动回复和 9 个真实 broker 场景**与固定 Go 参考一致。QoS 超范围拒绝与暂停后自动阻止新发布共 2 项差异单独记录。完整清单和证据边界见 [API-COMPATIBILITY.md](API-COMPATIBILITY.md) 与 [TESTING.md](TESTING.md)。
 
-本轮新增 **21 组独立消费者取消线路/恢复测试**；**6 条原库方法报文、9 个真实 broker 场景**一致。并发 RPC 调度、标签复用与离线取消共 3 项差异独立记录；重连完成后取消与原库一致。源码、报告和现有限制见 [当前证据清单](evidence/consumer-cancel-upgrade.json)。
+此前 **21 组独立消费者取消线路/恢复测试**；**6 条原库方法报文、9 个真实 broker 场景**一致。并发 RPC 调度、标签复用与离线取消共 3 项差异独立记录；重连完成后取消与原库一致。历史证据见 [0.15 清单](evidence/consumer-cancel-upgrade.json)。
+
+本轮新增 **21 组发布确认线路测试**；**19 条方法报文、6 个 peer 结果和 9 个真实 broker 场景**与固定 Go 参考一致。零标签累计确认与非法未来标签的 2 项既有差异单列。确认句柄、事件顺序、局部取消、重连代数和当前源码指纹见 [当前证据清单](evidence/confirmations-upgrade.json)。
 
 真实服务器为 Ubuntu 发行的 RabbitMQ **4.0.5**、Erlang/OTP **27**，通过 Windows Node 24 的 TCP/TLS 访问本机 WSL 临时实例。验证了二进制分片、64 位属性、确认、退回、重投、消费取消、交换机路由、事务、通道错误隔离、心跳、错误凭证、TLS 信任/主机名和消息 CLI。认证新增 12 组故障/生命周期、10 组真实 broker（含双向 TLS、重连和 CLI）验证；30 个原库认证响应及 9 个独立协商对照通过，AMQPLAIN 只归一化无语义差异的字段顺序。证据及复现见 [TESTING.md](TESTING.md)、`evidence/client-validation.json`、`evidence/rabbitmq-validation.json`。恢复另与固定 amqp091-go 提交 `a0195c6baf35db642d13651cb28938f899062e7c` 的原生程序比较一个重复断线场景，3 次确认消费与 2 次队列更名一致。各验证层覆盖重叠，不相加声称上游案例数。凭证更新新增 10 组故障、10 组真实 OAuth broker、6 个原库逐字节报文及 6 个真实 broker 结果对照通过。OAuth 服务器采用一次性 RS256 静态密钥；未接入远程授权服务器/JWKS/OIDC。自动删除恢复另有 13 组独立故障测试、2 组真实关闭/服务端取消流程，以及 10 个原生 Go/Node 真实重连场景：9 一致、1 个上述空解绑登记差异；重连后以被动声明验证存在/404，并确认存活队列仍能发布和取消息。跨通道依赖恢复新增 8 组线路故障和 6 组真实 broker 验证；另以原生 Go 验证了两项既有边界（缺少兄弟通道的队列或路由恢复），本实现改进这两种行为，没有计作原库一致案例。性能记录仅为 4 KiB 消息、8 个在途发布的单机确认样例和单进程恢复延时观察。
 
@@ -327,4 +349,4 @@ Node 字段表用普通对象，支持 boolean、signed int32、字符串、null
 
 参考：[RabbitMQ 规格](https://www.rabbitmq.com/docs/specification)、[amqp091-go](https://github.com/rabbitmq/amqp091-go)。Pika 仅是独立验证工具，无运行期依赖。
 
-本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，0.15 本地增量归档另附同提交 ZIP/bundle；历史合集未更新。未上传、未发布、未添加远程仓库。
+本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，0.16 本地增量归档另附同提交 ZIP/bundle；历史合集未更新。未上传、未发布、未添加远程仓库。

@@ -33,6 +33,7 @@ jobs:
       - run: node tools/test-nowait.mjs
       - run: node tools/test-channel-options.mjs
       - run: node tools/test-consumer-cancel.mjs
+      - run: node tools/test-confirmations.mjs
       - run: node tools/test-recovery.mjs
       - run: node tools/test-authentication.mjs
       - run: node tools/test-secret-update.mjs

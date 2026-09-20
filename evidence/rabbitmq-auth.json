@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T17:37:14.367Z",
+  "utc": "2026-09-20T11:20:25.693Z",
   "node": "v24.11.0",
   "platform": "win32",
   "broker": "RabbitMQ 4.0.5-10ubuntu5 / Erlang OTP 27",
@@ -37,16 +37,17 @@
     "broker CLI performs AMQPLAIN and certificate EXTERNAL message roundtrips"
   ],
   "sources": {
-    "tools/evidence-source.mjs": "999255ad3c0484ded40ebeac9854e83299c4b40016dab1af6f28b8be49d054e0",
+    "tools/evidence-source.mjs": "a09090a7e53a2b18c920cce0c00f2d638cfa54b4a9be3311c5c01c1f93be84ea",
     "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
+    "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
     "authentication.mbt": "09505b81f862c30d7f2bc24502188068475904ed5c858a8f38897060fa6397b6",
     "session.mbt": "83a95ee1ccb550399ccc0db9f08b3a1ab1e467098b53e467332ae741b503f48b",
     "cmd/web/authentication.mbt": "9c57e3bcbad42ef3f9a417eafadf12c99829dbfcb453df4683076d7567c4d3e4",
     "cmd/web/session.mbt": "77a46d26771f0f9afc04283bcf301353985c1f61e159b357d5fd20642e9ab5fb",
     "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
-    "tools/client.mjs": "b701c6fec98e356cd7752853be34e3367aba2d33d441cf0dd4d27051d1ab35e6",
+    "tools/client.mjs": "19e014615d91ccef85166cbc3ac2a2fab173ee1647bfcea9c1eb07e6b6839c4a",
     "tools/recovery.mjs": "f9bb94945bc9dc9fa95c624ee692c8d5859a744591f51c51252deb1b2861a427",
-    "tools/recovery-channel.mjs": "4329e08320c75c373903b14a07a14c206433be360effab238ee4e139e26c3b20",
+    "tools/recovery-channel.mjs": "6c7709db98f69d749d7b0cb87b6f53cbc7e2439dccfc20e75487efd69c2f5fe4",
     "tools/recovery-state.mjs": "78435fc7a882bfa4e7f349602db597d9778cf1f0558f7459475e8e562fff683e",
     "tools/broker.mjs": "3906562cee29a765dfa3f0c23c25574a5593b807461bde59471ba0abc55b2fa0",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",

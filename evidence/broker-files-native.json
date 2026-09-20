@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T17:39:35.635Z",
+  "utc": "2026-09-20T11:21:32.210Z",
   "node": "v24.11.0",
   "platform": "win32",
   "passed": 12,
@@ -113,15 +113,16 @@
     }
   ],
   "sources": {
-    "tools/evidence-source.mjs": "999255ad3c0484ded40ebeac9854e83299c4b40016dab1af6f28b8be49d054e0",
+    "tools/evidence-source.mjs": "a09090a7e53a2b18c920cce0c00f2d638cfa54b4a9be3311c5c01c1f93be84ea",
     "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
+    "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
     "tools/broker.mjs": "3906562cee29a765dfa3f0c23c25574a5593b807461bde59471ba0abc55b2fa0",
     "tools/broker-files.mjs": "863f1095cf1840fd26fbe00766f1a36033368b5ffafe79332e0b7c32b6c65a71",
     "tools/broker-output.mjs": "da4590872c673ab2dcac813c05d95279bf507a2e5fadfc528b8932cda23fa3b2",
     "tools/broker-output-worker.mjs": "6043be63dfdfb3482218a0d14bd15785ae16a62ea11d1d355d8a2b843fb8dbce",
     "tools/broker-test-process.mjs": "22ced655b539ac84ee4b893ccb96b4263c219cfc1a16220bdf82ac2f854de1ff",
     "tools/test-broker-files-native.mjs": "455842ddde3dd91f619e32e4bc452839ffb50bc80e7eb63353cac871be68840b",
-    "tools/client.mjs": "b701c6fec98e356cd7752853be34e3367aba2d33d441cf0dd4d27051d1ab35e6",
+    "tools/client.mjs": "19e014615d91ccef85166cbc3ac2a2fab173ee1647bfcea9c1eb07e6b6839c4a",
     "tools/inbound.mjs": "472f83ff6abb1d1516ad46254f4a90219170630bf1506bb917fd35b1688e341f",
     "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
     "tools/receive-reference.go": "0e0db50f1abe3ee383c6825f89ee1f2f508ea0d4f092abe318b72f0763bac19c",

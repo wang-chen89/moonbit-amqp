@@ -1,0 +1,44 @@
+PASS normal and transaction publications return null without allocating confirm sequence
+PASS individual handles settle out of order while events and split notifications stay ordered
+PASS cumulative ack completes each publication exactly once
+PASS cumulative nack completes each publication exactly once
+PASS zero-tag multiple confirmation covers all outstanding handles
+PASS wait cancellation and timeout release only their own listeners and preserve confirmation
+PASS waiter limit is bounded and cancelled waiters immediately release capacity
+PASS broker confirm timeout settles handles false and retains the connection failure reason
+PASS channel close completes pending handles without fabricating broker nack events
+PASS connection destroy preserves acknowledged results and fails only unresolved handles
+PASS future confirmation fails closed without settling unrelated handle as acknowledged
+PASS duplicate confirmation fails closed without settling unrelated handle as acknowledged
+PASS throwing and rejected confirmation observers cannot corrupt protocol or other observers
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The error is expected to be an instance of "TypeError". Received "Error"
+
+Error message:
+
+Unconfirmed, unsequenced or queued publish limit: 1024
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-confirmations.mjs:70:25
+    at async fixture (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/recovery-peer.mjs:73:7)
+    at async test (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-confirmations.mjs:9:123)
+    at async file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-confirmations.mjs:68:1 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: Error: Unconfirmed, unsequenced or queued publish limit: 1024
+      at #publication (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/client.mjs:555:85)
+      at #publishBuffer (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/client.mjs:535:31)
+      at Channel.publishWithDeferredConfirm (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/client.mjs:527:31)
+      at file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-confirmations.mjs:70:49
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async fixture (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/recovery-peer.mjs:73:7)
+      at async test (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-confirmations.mjs:9:123)
+      at async file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-confirmations.mjs:68:1,
+  expected: [Function: TypeError],
+  operator: 'rejects',
+  diff: 'simple'
+}
+
+Node.js v24.11.0

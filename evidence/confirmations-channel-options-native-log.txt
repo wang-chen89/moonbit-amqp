@@ -1,0 +1,13 @@
+18 native channel option method frames matched
+1 native server flow notification and automatic reply sequence matched
+2 explicit native QoS range and paused-publication differences verified
+PASS native channel option broker qos-size
+PASS native channel option broker qos-max
+PASS native channel option broker flow-true
+PASS native channel option broker flow-false
+PASS native channel option broker immediate
+PASS native channel option broker immediate-stream
+PASS native channel option broker no-local
+PASS native channel option broker no-local-nowait
+PASS native channel option broker recovery
+9 real channel option broker groups passed; 9 native scenarios matched; 2 explained differences

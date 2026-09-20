@@ -1,6 +1,7 @@
 import {randomUUID} from 'node:crypto';
 import {Lifecycle, notice, snapshot, identity} from './recovery-state.mjs';
 import {checkConsumerSignal,observeConsumerSignal} from './consumer-signal.mjs';
+import {confirmationView,emitConfirmation} from './confirmations.mjs';
 
 export class RecoveringChannel extends Lifecycle {
   #connection; #physical; #generation = 0; #offset = 0n; #lastTag = 0n;
@@ -12,6 +13,7 @@ export class RecoveringChannel extends Lifecycle {
   get _raw() { return this.#physical; }
   get _consumers() { return this.#consumers; }
   get _generation() { return this.#generation; }
+  get nextPublishSeqNo() { return this._active().nextPublishSeqNo; }
   _active(topology = false) { this.#connection._active(this,topology); return this.#physical; }
   async _open(connection) {
     const claim=++this.#opening;
@@ -22,6 +24,7 @@ export class RecoveringChannel extends Lifecycle {
     raw.on('return', message => { if (this.#physical === raw) {if(message.type==='messageStart'&&!this.listenerCount('return'))message.body.discard().catch(()=>{});notice(this,'return',message);} });
     raw.on('callbackError', error => notice(this,'callbackError',error));
     raw.on('flow', active => { if(this.#physical===raw)notice(this,'flow',active); });
+    raw.on('confirm', value => { if(this.#physical===raw)emitConfirmation(this,Object.freeze({...value,generation:this.#generation})); });
     raw.on('cancel', (tag,details) => {
       if (this.#physical !== raw) return;
       const entry=this.#consumers.get(tag)??this.#pendingConsumers.get(tag);this.#consumers.delete(tag);
@@ -143,6 +146,18 @@ export class RecoveringChannel extends Lifecycle {
   publishStream(exchange,key,source,bodySize,options={}) {
     try{return this._active().publishStream(exchange,exchange===''?this.#connection.resolveQueue(key):key,source,bodySize,options);}
     catch(error){return Promise.reject(error);}
+  }
+  publishWithDeferredConfirm(exchange,key,body,options={}) {
+    return this.#deferredPublish('publishWithDeferredConfirm',exchange,key,[body,options]);
+  }
+  publishStreamWithDeferredConfirm(exchange,key,source,bodySize,options={}) {
+    return this.#deferredPublish('publishStreamWithDeferredConfirm',exchange,key,[source,bodySize,options]);
+  }
+  #deferredPublish(method,exchange,key,args) {
+    try {
+      const raw=this._active(),generation=this.#generation;
+      return raw[method](exchange,exchange===''?this.#connection.resolveQueue(key):key,...args).then(handle=>confirmationView(handle,generation));
+    }catch(error){return Promise.reject(error);}
   }
   #delivery(message,raw,generation) {
     if (raw !== this.#physical || raw.closed || generation !== this.#generation || this.closed) return undefined;

@@ -1,0 +1,15 @@
+{
+  "utc": "2026-09-19T18:39:58.3981383Z",
+  "status": "Reproduced invalid publication signal capacity leak before validation fix",
+  "exitCode": 1,
+  "baselineCommit": "1cbcde2fc149c3adb71dbfa9efec9549a79190bc",
+  "sources": {
+    "tools/client.mjs": "b4ede1687972a20b91365f9548241df35f5cdfcfb37b76ef8376efaa2d812fec",
+    "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
+    "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
+    "tools/test-confirmations.mjs": "65d838be457fd30cc94ff2c3a5458745e8ae9f48977a7fe2761c5e48a1e2046f",
+    "evidence/confirmations-signal-initial.txt": "4a259eda9867a5ddd8fa2bde993a283206343584926518f0e3036dc0c790127a",
+    "evidence/confirmations-signal-initial.patch": "589a6c731499c40f119dba0c7afaeff425e97209b6c6f58c21f4d8a2342e53f8"
+  },
+  "scope": "Repeated invalid signal objects consumed publication slots before throwing. A 1025-call rejection test reached the capacity error instead of TypeError. Patch reconstructs the pre-fix client from baseline; unchanged confirmation helper and final fixture are source-bound."
+}

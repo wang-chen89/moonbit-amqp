@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T17:39:41.082Z",
+  "utc": "2026-09-20T11:21:05.869Z",
   "node": "v24.11.0",
   "passed": 8,
   "tests": [
@@ -132,15 +132,15 @@
       },
       "processMemory": {
         "initial": {
-          "rss": 73830400,
-          "heapTotal": 27557888,
-          "heapUsed": 8326920,
-          "external": 3087587,
-          "arrayBuffers": 286858
+          "rss": 71380992,
+          "heapTotal": 28082176,
+          "heapUsed": 8430592,
+          "external": 2760035,
+          "arrayBuffers": 286924
         },
         "peak": {
-          "rss": 227074048,
-          "external": 4872521
+          "rss": 246353920,
+          "external": 5314649
         },
         "note": "Whole Node process observation, not an RSS guarantee or upstream throughput comparison."
       }
@@ -177,31 +177,32 @@
       },
       "processMemory": {
         "initial": {
-          "rss": 218075136,
-          "heapTotal": 172142592,
-          "heapUsed": 41295104,
-          "external": 3478198,
-          "arrayBuffers": 974642
+          "rss": 243646464,
+          "heapTotal": 194514944,
+          "heapUsed": 112889552,
+          "external": 4981937,
+          "arrayBuffers": 2477578
         },
         "peak": {
-          "rss": 225255424,
-          "external": 4575438
+          "rss": 243646464,
+          "external": 5017550
         },
         "note": "Whole Node process observation, not an RSS guarantee or upstream throughput comparison."
       }
     }
   ],
   "sources": {
-    "tools/evidence-source.mjs": "999255ad3c0484ded40ebeac9854e83299c4b40016dab1af6f28b8be49d054e0",
+    "tools/evidence-source.mjs": "a09090a7e53a2b18c920cce0c00f2d638cfa54b4a9be3311c5c01c1f93be84ea",
     "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
+    "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
     "session.mbt": "83a95ee1ccb550399ccc0db9f08b3a1ab1e467098b53e467332ae741b503f48b",
     "receive_stream.mbt": "189d08894d96e52044c93f958c135efba5e2c5a8d969264b9a22099681d7f1c0",
     "cmd/web/session.mbt": "77a46d26771f0f9afc04283bcf301353985c1f61e159b357d5fd20642e9ab5fb",
     "cmd/web/authentication.mbt": "9c57e3bcbad42ef3f9a417eafadf12c99829dbfcb453df4683076d7567c4d3e4",
-    "tools/client.mjs": "b701c6fec98e356cd7752853be34e3367aba2d33d441cf0dd4d27051d1ab35e6",
+    "tools/client.mjs": "19e014615d91ccef85166cbc3ac2a2fab173ee1647bfcea9c1eb07e6b6839c4a",
     "tools/inbound.mjs": "472f83ff6abb1d1516ad46254f4a90219170630bf1506bb917fd35b1688e341f",
     "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
-    "tools/recovery-channel.mjs": "4329e08320c75c373903b14a07a14c206433be360effab238ee4e139e26c3b20",
+    "tools/recovery-channel.mjs": "6c7709db98f69d749d7b0cb87b6f53cbc7e2439dccfc20e75487efd69c2f5fe4",
     "tools/recovery.mjs": "f9bb94945bc9dc9fa95c624ee692c8d5859a744591f51c51252deb1b2861a427",
     "tools/receive-reference.go": "0e0db50f1abe3ee383c6825f89ee1f2f508ea0d4f092abe318b72f0763bac19c",
     "tools/test-receive-native.mjs": "f3c64f30888ab984150e9297cd4bcf1f88bf21c69503ff544679f30ee2d908c6",

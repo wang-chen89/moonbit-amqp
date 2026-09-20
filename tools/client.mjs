@@ -7,6 +7,7 @@ import {snapshotAuthentication,authenticationPlan,responseBytes} from './authent
 import {SendQueue,waitFor,aborted} from './outbound.mjs';
 import {IncomingBodies} from './inbound.mjs';
 import {checkConsumerSignal,observeConsumerSignal} from './consumer-signal.mjs';
+import {createConfirmation,emitConfirmation} from './confirmations.mjs';
 
 function checked(text) {
   if (text.startsWith('ERROR:')) throw Error(text.slice(7));
@@ -315,11 +316,13 @@ export class Connection extends EventEmitter {
 export class Channel extends EventEmitter {
   #connection; #pending; #closed = false; #consumers = new Map(); #id;
   #mode = 'normal'; #nextConfirm = 1n; #confirms = new Map();
+  #nextNotice=1n; #confirmationEvents=new Map();
   #sends; #sendAbort=new AbortController(); #publications=0;
   #subscriptions=new Map(); #consumerCancels=new Set(); #waitingRPC;
   constructor(connection, id) { super(); this.#connection = connection; this.#id = id; this.#sends=new SendQueue(connection.maxBufferedBytes); }
   get id() { return this.#id; }
   get closed() { return this.#closed; }
+  get nextPublishSeqNo() { return this.#nextConfirm; }
   async _flushOutput() { if(this.#closed)return;await this.#sends.idle();await Promise.allSettled([...this.#confirms.values()].map(p=>p.promise)); }
   _rpc(name, args, expected, apply = e => e.args, automatic = false) {
     if (this.#closed) return Promise.reject(Error('Channel closed'));
@@ -376,12 +379,20 @@ export class Channel extends EventEmitter {
     if (e.name === 'basic.ack' || e.name === 'basic.nack') {
       const tag = BigInt(e.args['delivery-tag']), multiple = e.args.multiple;
       if (this.#mode !== 'confirm' || (tag >= this.#nextConfirm) || (!multiple && !this.#confirms.has(tag))) throw Error('Invalid publisher confirmation');
+      const ack=e.name==='basic.ack',last=multiple&&tag===0n?this.#nextConfirm-1n:tag;
       for (const [seq, p] of this.#confirms) {
-        if (seq === tag || (multiple && (tag === 0n || seq <= tag))) {
+        if (seq === last || (multiple && seq <= last)) {
           clearTimeout(p.timer); this.#confirms.delete(seq);
-          if (e.name === 'basic.ack') p.resolve({deliveryTag: seq});
+          p.settle(ack);
+          if (ack) p.resolve({deliveryTag: seq});
           else p.reject(Error(`Publisher nack: ${seq}`));
         }
+      }
+      if(multiple){for(let seq=this.#nextNotice;seq<=last;seq++)this.#confirmationEvents.set(seq,ack);}
+      else this.#confirmationEvents.set(tag,ack);
+      while(!this.#closed && this.#confirmationEvents.has(this.#nextNotice)) {
+        const seq=this.#nextNotice++,ack=this.#confirmationEvents.get(seq);this.#confirmationEvents.delete(seq);
+        emitConfirmation(this,Object.freeze({deliveryTag:seq,ack,generation:0}));
       }
     } else if (e.name === 'basic.return') {
       if(!this.emit('return', delivery(e))&&e.type==='messageStart')e.body.discard().catch(()=>{});
@@ -414,8 +425,8 @@ export class Channel extends EventEmitter {
     this.#waitingRPC?.reject(error);this.#waitingRPC=undefined;
     for(const entry of this.#subscriptions.values())this.#forgetConsumer(entry,error);
     this.#consumerCancels.clear();
-    for (const p of this.#confirms.values()) { clearTimeout(p.timer); p.reject(error); }
-    this.#confirms.clear(); this.#consumers.clear(); this.emit('close', error);
+    for (const p of this.#confirms.values()) { clearTimeout(p.timer); p.settle(false,error);p.reject(error); }
+    this.#confirms.clear();this.#confirmationEvents.clear(); this.#consumers.clear(); this.emit('close', error);
   }
   declareQueue(queue = '', {passive = false, durable = false, exclusive = false, autoDelete = false, noWait = false, arguments: args = {}} = {}) {
     return this.#request('queue.declare', [0, queue, passive, durable, exclusive, autoDelete, noWait, args], ['queue.declare-ok'],noWait,()=>({queue,'message-count':0,'consumer-count':0}));
@@ -510,37 +521,53 @@ export class Channel extends EventEmitter {
   txCommit() { if (this.#mode !== 'transaction') return Promise.reject(Error('Not in transaction mode')); return this._rpc('tx.commit', [], ['tx.commit-ok']); }
   txRollback() { if (this.#mode !== 'transaction') return Promise.reject(Error('Not in transaction mode')); return this._rpc('tx.rollback', [], ['tx.rollback-ok']); }
   publish(exchange,routingKey,body,options={}) {
+    return this.#publishBuffer(exchange,routingKey,body,options,false);
+  }
+  publishWithDeferredConfirm(exchange,routingKey,body,options={}) {
+    return this.#publishBuffer(exchange,routingKey,body,options,true);
+  }
+  #publishBuffer(exchange,routingKey,body,options,deferredConfirm) {
     try{
       if(!(typeof body==='string'||body instanceof Uint8Array))throw TypeError('Body must be string or bytes');
       const length=typeof body==='string'?Buffer.byteLength(body):body.byteLength;
       if(length>this.#connection.maxBufferedBytes)throw Error('Buffered body limit; use publishStream');
       const bytes=Buffer.from(body);
-      return this.#publication(exchange,routingKey,[bytes],BigInt(bytes.length),options,bytes.length);
+      return this.#publication(exchange,routingKey,[bytes],BigInt(bytes.length),options,bytes.length,deferredConfirm);
     }catch(error){return Promise.reject(error);}
   }
   publishStream(exchange,routingKey,source,bodySize,options={}) {
+    return this.#publishStream(exchange,routingKey,source,bodySize,options,false);
+  }
+  publishStreamWithDeferredConfirm(exchange,routingKey,source,bodySize,options={}) {
+    return this.#publishStream(exchange,routingKey,source,bodySize,options,true);
+  }
+  #publishStream(exchange,routingKey,source,bodySize,options,deferredConfirm) {
     try{
       if(typeof bodySize!=='bigint'&&(!Number.isSafeInteger(bodySize)||bodySize<0))throw TypeError('Invalid declared body size');
       const size=BigInt(bodySize);if(size<0n||size>0xffffffffffffffffn)throw TypeError('Invalid declared body size');
       if(!source||!(typeof source[Symbol.asyncIterator]==='function'||typeof source[Symbol.iterator]==='function'))throw TypeError('Source must be an iterable of byte chunks');
-      return this.#publication(exchange,routingKey,source,size,options,0);
+      return this.#publication(exchange,routingKey,source,size,options,0,deferredConfirm);
     }catch(error){return Promise.reject(error);}
   }
-  #publication(exchange,key,source,size,{properties={},mandatory=false,immediate=false,signal}={},bytes) {
+  #publication(exchange,key,source,size,{properties={},mandatory=false,immediate=false,signal}={},bytes,deferredConfirm) {
     if(typeof mandatory!=='boolean'||typeof immediate!=='boolean')return Promise.reject(TypeError('Invalid publish flags'));
+    if(signal!==undefined && !(signal instanceof AbortSignal))return Promise.reject(TypeError('Invalid publication signal'));
     if(this.#closed||this.#connection.closing||this.#mode==='selecting')return Promise.reject(Error('Channel unavailable'));
-    if(this.#publications>=1024)return Promise.reject(Error('Unconfirmed or queued publish limit: 1024'));
+    if(this.#publications+this.#confirmationEvents.size>=1024)return Promise.reject(Error('Unconfirmed, unsequenced or queued publish limit: 1024'));
     const encoded=JSON.stringify(properties),confirm=this.#mode==='confirm';let pending,seq;
     this.#publications++;
     const sending=this.#sends.run(async()=>{
       await this.#connection._publishStream(this.id,exchange,key,source,size,encoded,mandatory,immediate,[this.#sendAbort.signal,signal],()=>{
-        if(confirm){seq=this.#nextConfirm++;pending=deferred();pending.promise.catch(()=>{});this.#confirms.set(seq,pending);}
+        if(confirm){seq=this.#nextConfirm++;pending={...deferred(),...createConfirmation(seq)};pending.promise.catch(()=>{});this.#confirms.set(seq,pending);}
       });
       if(pending&&this.#confirms.has(seq))pending.timer=setTimeout(()=>this.#connection._fail(Error(`Publisher confirm timeout: ${seq}`)),this.#connection.timeout);
     },{bytes,signal});
-    return sending.then(()=>pending?.promise).catch(error=>{
-      if(pending){clearTimeout(pending.timer);this.#confirms.delete(seq);pending.reject(error);}throw error;
-    }).finally(()=>{this.#publications--;});
+    const sent=sending.catch(error=>{
+      if(pending){clearTimeout(pending.timer);this.#confirms.delete(seq);pending.settle(false,error);pending.reject(error);}throw error;
+    });
+    const confirmed=sent.then(()=>pending?.promise).finally(()=>{this.#publications--;});
+    confirmed.catch(()=>{});
+    return deferredConfirm?sent.then(()=>pending?.handle??null):confirmed;
   }
   close() { this.#connection._discardIncomingChannel(this.id);return this._rpc('channel.close', [200, 'normal close', 0, 0], ['channelClosed']); }
 }

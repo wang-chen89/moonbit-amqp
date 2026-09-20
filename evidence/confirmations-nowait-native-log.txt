@@ -1,0 +1,11 @@
+15 native no-wait method frames matched
+PASS explicit native Confirm(true) waiting difference
+PASS native no-wait broker operations
+PASS native no-wait broker consumer
+PASS native no-wait broker anonymous
+PASS native no-wait broker missing-queue
+PASS native no-wait broker missing-exchange
+PASS native no-wait broker delete-if-empty
+PASS native no-wait broker cancel-requeue
+PASS native no-wait broker recovery
+8 real no-wait broker groups passed; 8 native scenarios matched; 1 explained confirm difference

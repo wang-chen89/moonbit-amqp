@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T17:48:31.186689+00:00",
+  "utc": "2026-09-19T18:31:22.660431+00:00",
   "referenceCommit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "scope": "Syntactic exported-name functions/methods on exported receiver types in root non-test Go files. Includes conditional Fuzz; excludes unexported receivers and does not inventory struct fields, constants, interfaces or generated behavior. No full compatibility or coverage percentage claim.",
   "declarationCount": 106,
@@ -165,16 +165,16 @@
       "file": "channel.go",
       "line": 848,
       "buildConstraint": "",
-      "hostEquivalent": "每次发布 Promise",
-      "boundary": "部分；尚缺独立确认订阅，不能将 Promise 当作完全相同的通知契约"
+      "hostEquivalent": "confirm / ack / nack 事件",
+      "boundary": "按发布顺序通知，句柄可先乱序结束；恢复保留监听并重置序号，代数区分新旧；事件不是 Go channel 阻塞契约"
     },
     {
       "name": "Channel.NotifyPublish",
       "file": "channel.go",
       "line": 893,
       "buildConstraint": "",
-      "hostEquivalent": "每次发布 Promise",
-      "boundary": "部分；尚缺独立确认订阅，不能将 Promise 当作完全相同的通知契约"
+      "hostEquivalent": "confirm / ack / nack 事件",
+      "boundary": "按发布顺序通知，句柄可先乱序结束；恢复保留监听并重置序号，代数区分新旧；事件不是 Go channel 阻塞契约"
     },
     {
       "name": "Channel.Qos",
@@ -309,32 +309,32 @@
       "file": "channel.go",
       "line": 1844,
       "buildConstraint": "",
-      "hostEquivalent": "publish / publishStream 的 Promise",
-      "boundary": "支持 mandatory/immediate、可等待确认/取消；仍缺独立确认句柄与原库全部 context 语义"
+      "hostEquivalent": "publish / publishStream",
+      "boundary": "支持 mandatory/immediate；确认模式等待确认而 Go 普通 Publish 只等待发送；发送 signal 可中断 I/O，非完整 context 等价"
     },
     {
       "name": "Channel.PublishWithContext",
       "file": "channel.go",
       "line": 1886,
       "buildConstraint": "",
-      "hostEquivalent": "publish / publishStream 的 Promise",
-      "boundary": "支持 mandatory/immediate、可等待确认/取消；仍缺独立确认句柄与原库全部 context 语义"
+      "hostEquivalent": "publish / publishStream",
+      "boundary": "支持 mandatory/immediate；确认模式等待确认而 Go 普通 Publish 只等待发送；发送 signal 可中断 I/O，非完整 context 等价"
     },
     {
       "name": "Channel.PublishWithDeferredConfirm",
       "file": "channel.go",
       "line": 1901,
       "buildConstraint": "",
-      "hostEquivalent": "publish / publishStream 的 Promise",
-      "boundary": "支持 mandatory/immediate、可等待确认/取消；仍缺独立确认句柄与原库全部 context 语义"
+      "hostEquivalent": "publishWithDeferredConfirm / publishStreamWithDeferredConfirm",
+      "boundary": "发送后返回只读确认句柄；非确认模式为 null；signal 取消仍按本地发送契约"
     },
     {
       "name": "Channel.PublishWithDeferredConfirmWithContext",
       "file": "channel.go",
       "line": 1956,
       "buildConstraint": "",
-      "hostEquivalent": "publish / publishStream 的 Promise",
-      "boundary": "支持 mandatory/immediate、可等待确认/取消；仍缺独立确认句柄与原库全部 context 语义"
+      "hostEquivalent": "publishWithDeferredConfirm / publishStreamWithDeferredConfirm",
+      "boundary": "发送后返回只读确认句柄；非确认模式为 null；signal 取消仍按本地发送契约"
     },
     {
       "name": "Channel.Get",
@@ -421,8 +421,8 @@
       "file": "channel.go",
       "line": 2193,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "nextPublishSeqNo",
+      "boundary": "实际发送开始时分配的 BigInt 序号快照，不预留；恢复通道离线时不能查询"
     },
     {
       "name": "Channel.Reconnect",
@@ -445,32 +445,32 @@
       "file": "confirms.go",
       "line": 218,
       "buildConstraint": "",
-      "hostEquivalent": "发布 Promise",
-      "boundary": "部分；没有单独的 Done/Acked/WaitContext 句柄，取消含义也不同"
+      "hostEquivalent": "句柄 done / acked / wait({signal, timeout})",
+      "boundary": "局部等待独立取消；nack/关闭为 false，关闭另保留 error；预取消优先拒绝，非 Go select 调度复刻"
     },
     {
       "name": "DeferredConfirmation.Acked",
       "file": "confirms.go",
       "line": 225,
       "buildConstraint": "",
-      "hostEquivalent": "发布 Promise",
-      "boundary": "部分；没有单独的 Done/Acked/WaitContext 句柄，取消含义也不同"
+      "hostEquivalent": "句柄 done / acked / wait({signal, timeout})",
+      "boundary": "局部等待独立取消；nack/关闭为 false，关闭另保留 error；预取消优先拒绝，非 Go select 调度复刻"
     },
     {
       "name": "DeferredConfirmation.Wait",
       "file": "confirms.go",
       "line": 236,
       "buildConstraint": "",
-      "hostEquivalent": "发布 Promise",
-      "boundary": "部分；没有单独的 Done/Acked/WaitContext 句柄，取消含义也不同"
+      "hostEquivalent": "句柄 done / acked / wait({signal, timeout})",
+      "boundary": "局部等待独立取消；nack/关闭为 false，关闭另保留 error；预取消优先拒绝，非 Go select 调度复刻"
     },
     {
       "name": "DeferredConfirmation.WaitContext",
       "file": "confirms.go",
       "line": 244,
       "buildConstraint": "",
-      "hostEquivalent": "发布 Promise",
-      "boundary": "部分；没有单独的 Done/Acked/WaitContext 句柄，取消含义也不同"
+      "hostEquivalent": "句柄 done / acked / wait({signal, timeout})",
+      "boundary": "局部等待独立取消；nack/关闭为 false，关闭另保留 error；预取消优先拒绝，非 Go select 调度复刻"
     },
     {
       "name": "NewConnectionProperties",

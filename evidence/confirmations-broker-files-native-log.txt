@@ -1,0 +1,13 @@
+PASS 12 MiB CLI file publication is received byte-exact by pinned Go
+PASS 3 MiB unknown stdin publication matches pinned Go
+PASS 16 MiB TLS known stdin publication matches pinned Go
+PASS 12 MiB pinned Go publication is atomically saved and acknowledged by CLI
+PASS 16 MiB pinned Go publication reaches raw stdout over verified TLS
+PASS empty file roundtrip and empty queue remain distinguishable
+PASS receive size refusal requeues the complete message and removes partial file
+PASS existing output remains intact and queued message is not consumed
+PASS broken raw stdout exits with error and broker redelivers the whole body
+PASS blocked raw stdout times out and broker retains the unacknowledged body
+PASS broker size rejection is reported without publishing a partial message
+PASS TLS hostname refusal removes the unopened receive output
+12 real broker file CLI groups passed; 5 native byte/property comparisons matched

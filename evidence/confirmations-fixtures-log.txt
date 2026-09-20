@@ -1,0 +1,22 @@
+PASS normal and transaction publications return null without allocating confirm sequence
+PASS individual handles settle out of order while events and split notifications stay ordered
+PASS cumulative ack completes each publication exactly once
+PASS cumulative nack completes each publication exactly once
+PASS zero-tag multiple confirmation covers all outstanding handles
+PASS wait cancellation and timeout release only their own listeners and preserve confirmation
+PASS waiter limit is bounded and cancelled waiters immediately release capacity
+PASS broker confirm timeout settles handles false and retains the connection failure reason
+PASS channel close completes pending handles without fabricating broker nack events
+PASS connection destroy preserves acknowledged results and fails only unresolved handles
+PASS future confirmation fails closed without settling unrelated handle as acknowledged
+PASS duplicate confirmation fails closed without settling unrelated handle as acknowledged
+PASS throwing and rejected confirmation observers cannot corrupt protocol or other observers
+PASS local failures and pre-aborted publication do not consume sequence numbers
+PASS streamed deferred publication returns its handle only after the source finishes
+PASS nack is a false deferred result while ordinary publication still rejects
+PASS stream source failure rejects the send and closes the connection
+PASS normal connection close drains deferred confirmations before shutdown
+PASS unsequenced event buffer and outstanding handles share bounded publication capacity
+PASS connection recovery preserves observers, closes old handles and resets tagged generations
+PASS single-channel recovery resets its confirms while healthy sibling sequence survives
+21 publisher confirmation fixture groups passed

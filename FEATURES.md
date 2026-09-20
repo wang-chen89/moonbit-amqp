@@ -13,6 +13,7 @@
 | 发布与消费 | QoS、get/consume/cancel、ack/nack/reject、确认、mandatory 退回、事务、交换机/队列 | 22 项 RabbitMQ 4.0.5 流程含 TLS、实际 CLI 和有界计时样例；通道故障隔离 |
 | noWait 方法 | 11 个宿主方法支持不占回复槽位的有序发送，消费预登记/取消迟到投递处理，拓扑选项恢复 | 17 线路/恢复组、15 原库方法报文字节一致、8 broker 业务/恢复结果一致；Confirm(true) 等待差异单列，其他 Go 场景使用 Confirm(false)；本地完成不证明 broker 接受 |
 | 消费者独立取消 | consume 的 AbortSignal、注册/普通 RPC 后有序取消、监听器释放、标签复用与逻辑订阅恢复 | 21 线路组、6 原库报文/9 broker 结果一致；并发 RPC 调度、标签复用、离线取消共 3 项差异单列；离线仅移除消费者意图，保留拓扑 |
+| 发布确认句柄与通知 | 普通/流式延后确认句柄、独立可取消等待、排序 confirm/ack/nack 事件、下一序号、跨恢复代数 | 21 线路组，19 原库报文/6 peer 结果/9 broker 结果一致；零标签批量确认与非法未来标签的 2 项既有差异单列；事件接口不是 Go channel 调度模型 |
 | 通道选项与 flow | UInt32 QoS size、noLocal 消费、两种正文 API 的 immediate、主动 flow/服务器通知与恢复选项保留 | 2 核心组、15 线路组、18 原库报文/1 通知回复序列/9 broker 结果一致；QoS 越界与暂停发布的 2 项差异明确保留；RabbitMQ 4.0.5 拒绝非零 size、immediate、flow(false)，noLocal 不隔离本连接消息 |
 | 认证 | PLAIN/AMQPLAIN/EXTERNAL、客户端优先选择/locale、自定义静态或异步初始响应、重连重新协商、mTLS CLI | 30 个原库响应、9 个原库协商、12 组宿主故障和 10 组 RabbitMQ/证书/重连/CLI；不做 SASLprep，PLAIN NUL 验证有意更严格 |
 | 连接内凭证更新 | connection.update-secret/确认配对、独立等待、超时/关闭处理和恢复不重放；应用提供器支持新令牌重连 | 5 核心组、10 故障组、10 真实 OAuth 组；原库 6 报文/6 broker 结果一致；过期替代令牌先确认后拒绝的边界保留 |
@@ -25,7 +26,7 @@
 
 ## 仍需完善
 
-[API-COMPATIBILITY.md](API-COMPATIBILITY.md) 逐项映射固定参考库的 106 个公开名函数/方法声明，并给出可用对应接口或缺口。该数字不是独立能力数或完成比例，不包括所有结构字段、常量和接口。仍缺完整 context 语义、确认事件/序号/独立等待句柄、URI/自定义传输、连接元数据以及恢复查询/策略的完整接口与行为验证。
+[API-COMPATIBILITY.md](API-COMPATIBILITY.md) 逐项映射固定参考库的 106 个公开名函数/方法声明，并给出可用对应接口或缺口。该数字不是独立能力数或完成比例，不包括所有结构字段、常量和接口。仍缺完整 context/Go channel 通知语义、URI/自定义传输、连接元数据以及恢复查询/策略的完整接口与行为验证。
 
 尚缺上游恢复/API 全量边界、外部拓扑与并发恢复的完整验证、更多真实身份提供器与认证失败策略验证、完整客户端扩展、端到端资源/性能调优和生产规模背压压力验证。Node 每通道只允许一个 RPC，确认发布可并行。未测代表性吞吐、长时间运行、不同操作系统网络宿主或多版本 broker。JS/Wasm-GC 核心均通过 122 项；Node 网络实测平台为 Windows 24 + WSL RabbitMQ。方法层是线路格式校验，不执行全部域断言、保留字段和 broker 业务规则。
 

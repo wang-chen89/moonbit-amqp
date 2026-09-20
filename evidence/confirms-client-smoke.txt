@@ -1,0 +1,19 @@
+PASS configuration rejects plaintext by default and invalid numeric values
+PASS fragmented handshake and graceful close
+PASS handshake timeout destroys socket
+PASS abort during handshake
+PASS RPC timeout rejects all channels and closes connection
+PASS abort terminates pending RPC
+PASS premature EOF with partial message rejects get
+PASS connection close rejects RPC and acknowledges peer
+PASS out-of-order single and cumulative publisher confirmations
+PASS publisher nack rejects only affected publish
+PASS future confirmation tag fails closed
+PASS unconfirmed publish timeout closes connection
+PASS missing broker heartbeat fails idle connection
+PASS bad frame terminator fails pending request
+PASS oversized frame rejected from header without waiting for body
+PASS invalid local publish leaves confirmation sequence usable
+PASS broker blocked event prevents publishing until unblocked
+PASS session bridge malformed table does not throw outside error result
+Client fixtures: 18 passed

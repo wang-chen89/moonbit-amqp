@@ -1,0 +1,13 @@
+6 native consumer cancellation method frames matched across 2 RPC sequences
+PASS native consumer cancellation broker pre-aborted
+PASS native consumer cancellation broker active
+PASS native consumer cancellation broker no-wait
+PASS native consumer cancellation broker shared
+PASS native consumer cancellation broker unacked
+PASS native consumer cancellation broker siblings
+PASS native consumer cancellation broker auto-delete
+PASS native consumer cancellation broker cancel-before-recovery
+PASS explicit native consumer lifecycle difference manual-reuse
+PASS native consumer cancellation broker recovery-after
+PASS explicit native consumer lifecycle difference offline-cancel
+9 real consumer cancellation broker groups passed; 9 native scenarios matched; 3 explained differences

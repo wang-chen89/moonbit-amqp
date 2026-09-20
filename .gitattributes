@@ -2,3 +2,5 @@
 *.png -text
 *.jpg -text
 *.wasm -text
+# Reproduction patches retain literal context markers and source-bound bytes.
+evidence/*.patch -text -whitespace

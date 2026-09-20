@@ -291,3 +291,17 @@ node tools/test-stream-native.mjs
 - 代理阻断重连期间取消 context，留出 50 ms 让 Go watcher 运行，其在关闭通道上的 Cancel 不移除恢复登记；恢复后仍消费。本版去掉该消费者意图。原库在正常重连后仍能按 context 取消，不能将离线差异概括为原库信号不支持恢复。
 
 取消不自动确认/重投，已经交付的流式正文仍须排空；注册 Promise 不是取消完成通知。完整 context、所有恢复交错和离线自动删除行为没有宣称对齐。本轮旧网络/恢复/认证/凭证更新/自动删除/依赖/收发流/文件 CLI/noWait/flow 的 source-bound 证据均按当前宿主重跑，既有差异保留。`consumer-cancel-upgrade.json` 绑定最终源码与证据；只记录本机样例和内存观察，没有新增吞吐/生产性能追平结论，其余 19 项未在本轮重测。
+
+## 0.16 发布确认句柄、排序通知与序号
+
+`node tools/test-confirmations.mjs` 的 21 组独立线路检查验证非确认/事务模式返回 null、发送完成与确认完成分离、乱序句柄/排序事件、批量 ack/nack、零标签、非法/重复确认、局部取消/超时、等待者与乱序记录容量、监听器异常、发送流失败、正常关闭排空，以及全连接/单通道恢复的序号与代数。等待者结束会移除信号监听；1024 个等待槽位和 1024 个发布/排序容量边界均有检查。核心没有改变，JS/Wasm-GC 各 122 项；新脚本加入 verify 和 CI 配置，远程 CI 未运行。
+
+`tools/confirmations-reference.go` 调用固定未修改的 amqp091-go `PublishWithDeferredConfirm`、`GetNextPublishSeqNo`、`NotifyPublish/NotifyConfirm`、`Done/Acked/Wait/WaitContext`。仍核验 72 个上游源码文件，构建指纹见 `confirmations-reference-build.json`。按先前 replace 方法编译后设置 `AMQP_CONFIRMATIONS_REFERENCE` 与 `RABBITMQ_ROOT`，运行 `node tools/test-confirmations-native.mjs`。
+
+6 个独立 peer 场景的结果一致：普通模式、乱序、批量 ack、批量 nack、独立取消/超时等待、通道关闭；这些场景同时比较 19 条方法报文字节和各正文 SHA-256。9 个真实 RabbitMQ 场景结果一致：普通、事务、确认消息、1 MiB 流式发送、mandatory 退回、预取消、双通道、连接恢复和单通道恢复。mandatory 可同时得到肯定发布确认与 NO_ROUTE 退回；恢复后的序号为 1，原监听继续通知，旧已确认句柄保持原结果。代数字段是本地补充观察，不冒充 Go API 字段。
+
+2 项既有宿主差异分别保留，不计匹配：零标签 multiple 在本版完成所有未确认句柄，固定 Go 在 60 ms 观察窗内仍等待，随后显式累计标签才完成；未来非法标签在本版关闭连接并使句柄失败，固定 Go 仍保持连接并等待后续有效确认。这里的人工 peer 检查不代表真实 broker 会发送非法序号。局部 wait 取消与发送 source signal 的含义不同；Go 发布 context 在调用开始后不打断 I/O，本版发送取消仍保留原有关闭不完整正文连接的契约。
+
+新确认接口是 Promise/事件形式，不是 Go channel 的阻塞、关闭或 goroutine 调度复刻。局部预取消优先拒绝已结束句柄的 wait；普通 channel close 令 wait 返回 false，并额外保留 error，不伪造 nack 通知。原库/真实 broker 既有 source-bound 套件全部按当前宿主重跑，历史差异保留；最终 `confirmations-upgrade.json` 绑定源码与报告。完整 context/恢复/通知交错、URI/传输/元数据、多平台/版本/集群/长期与生产性能仍未完成，其余 19 项本轮未重测。
+
+资源复查还复现了原有发送入口的无效 signal 泄漏：1025 次 `{signal: {}}` 本地失败错误占用发布额度，正常发布随后被上限拒绝。`confirmations-signal-initial.json/.txt/.patch` 保存修复前指纹、失败与客户端 diff；现在在登记前验证 AbortSignal，连续无效调用后仍能从序号 1 正常发送并确认。该回归属于上述本地失败组，没有另增重复计数。
