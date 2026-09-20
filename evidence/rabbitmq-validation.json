@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-20T14:49:21.582Z",
+  "at": "2026-09-20T15:19:26.347Z",
   "node": "v24.11.0",
   "platform": "win32",
   "oracle": "RabbitMQ 4.0.5-10ubuntu5 on Erlang/OTP 27, Ubuntu distribution packages, unmodified binaries",
@@ -35,9 +35,9 @@
     "warmupBatches": 4,
     "measuredBatches": 16,
     "messages": 128,
-    "medianBatchMs": 44.013600000000224,
-    "p95BatchMs": 48.274500000000444,
-    "confirmedMessagesPerSecond": 180.813562147246,
+    "medianBatchMs": 44.124299999999494,
+    "p95BatchMs": 48.356300000000374,
+    "confirmedMessagesPerSecond": 179.3227930757863,
     "scope": "one Windows Node/WSL loopback run; nonpersistent messages, exclusive classic queue; not a production or upstream throughput comparison"
   },
   "packages": {
@@ -60,17 +60,18 @@
     "erlang-asn1_1%3a27.3.4.6+dfsg-1_amd64.deb": "b2d3f1a35d642727631ff138070d5a4f410bb0066f67a1efbf11ad61dc51fa6d"
   },
   "sources": {
-    "tools/evidence-source.mjs": "5e95adfba0b9dd595266f91f88372d41f58a12288138ffb7b5bb6bf369eca9d9",
+    "tools/evidence-source.mjs": "5b5bc6277d326cda62e39fce99dacbca21b4af52d2f16833c14eb975934596ba",
+    "tools/connection-strategy.mjs": "6278c52a2e4c83031b746ba0e869a460ce0c02b88ef882cebd7f5671ca948586",
     "tools/topology-strategy.mjs": "48734ab45117f89e7c56220b583f4cbe8bd87bad625e4c68b2d6e61b0441a3a6",
     "tools/close-deadline.mjs": "0277a8786a0d3eebe24084c69431232fbc0aa433cd9999ca6297c34105343768",
     "tools/outbound.mjs": "bc9cc59a8df9669ae010138e4dd89fa801462c96f6440ed4ba48db45c7fe7f39",
     "tools/recovery-control.mjs": "9c20dd1e5142a900c0af1d84eea338a09ab1b83ef4d12c47066f486b241e3a69",
-    "tools/recovery.mjs": "f1efcd0ce820d957f95d0528cc98adca0755c2923e5e840d4a75b0d3fc6faaf8",
+    "tools/recovery.mjs": "359b6bf6a2967ea38198200d9a5aae9739ae7f2e4483c6971818a87250cbf417",
     "tools/recovery-state.mjs": "322925ae7632a2ea5241e2054fc4f8088bc9445b23757a88da75f98a9631c1ef",
-    "tools/recovery-channel.mjs": "4ad872eacb6fa8db467304e105966493395ed6e7395a237ccd55d7fe738fa2fb",
+    "tools/recovery-channel.mjs": "8f8b4f44e4b6c30509530a0b2e50d0f3ab49b3eec83537e72136e8750aa30810",
     "tools/topology-query.mjs": "26fdbf28aa2b51eb8bf1a7bfb81b1a004ef0207ae071989ab8aaaab5070493e6",
     "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
-    "connection_metadata.mbt": "f4ca4bf6568337fe432d90b53003e6ef86274b355b655b7738ae09846d98d18e",
+    "connection_metadata.mbt": "575835f99259cf2aae033f070579880762c5a812a81afbc4f52beebf1f0bd14f",
     "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
     "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
     "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
@@ -83,9 +84,9 @@
     "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
     "session.mbt": "2e32e207bb10de94aa665c1855147c150b8dfbd203eab2d4d43515a50d55526d",
     "cmd/web/session.mbt": "77a46d26771f0f9afc04283bcf301353985c1f61e159b357d5fd20642e9ab5fb",
-    "tools/client.mjs": "fa84aae2eb5896ae04dc6afa3cf866b7bdcd5626fa636ad91d8d95db95607ab6",
+    "tools/client.mjs": "c4836d1c198377be1f282b365836bbe36c08a4dfe44ccc76ed15f2d20ef18c3f",
     "tools/broker.mjs": "3906562cee29a765dfa3f0c23c25574a5593b807461bde59471ba0abc55b2fa0",
-    "web/engine.mjs": "33819d94532cdacd7d9be1c6b1806f9a07461c4e12940c085b89b21d35fcb93f",
+    "web/engine.mjs": "383b318ab47872c514132049c175a57052c09788f63e8609e03b9b08232bd914",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
     "tools/test-rabbitmq.mjs": "b356e7d2d894728b877d493a143e20e1f3a000f776c0d3afe89659d23df52365"
   }

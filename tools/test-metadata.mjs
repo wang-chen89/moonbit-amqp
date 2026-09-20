@@ -10,7 +10,7 @@ const tests=[];
 async function test(name,action){const watchdog=setTimeout(()=>{throw Error('Metadata fixture timeout: '+name);},10000);try{await action();tests.push(name);console.log('PASS '+name);}finally{clearTimeout(watchdog);}}
 const capabilities={'publisher_confirms':true,'consumer_cancel_notify':true,'connection.blocked':true,'basic.nack':true};
 await test('default identity factory returns independently mutable identity tables',async()=>{
- const a=newConnectionProperties(),b=newConnectionProperties();assert.deepEqual(a,{product:'moonbit-amqp',version:'0.23.0',platform:'moonbit'});a.product='changed';assert.equal(b.product,'moonbit-amqp');assert(!Object.hasOwn(b,'capabilities'));
+ const a=newConnectionProperties(),b=newConnectionProperties();assert.deepEqual(a,{product:'moonbit-amqp',version:'0.24.0',platform:'moonbit'});a.product='changed';assert.equal(b.product,'moonbit-amqp');assert(!Object.hasOwn(b,'capabilities'));
 });
 await test('default client metadata equals independently decoded start-ok properties',()=>fixture({},async({open,state})=>{
  const c=await open();assert.deepEqual(clientProperties(state)[0],{...newConnectionProperties(),capabilities});assert.deepEqual(c.clientProperties,clientProperties(state)[0]);assert.deepEqual(c.config.properties,c.clientProperties);await c.close();

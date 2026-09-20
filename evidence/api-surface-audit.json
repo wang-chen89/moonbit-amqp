@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T14:38:02.510085+00:00",
+  "utc": "2026-09-20T15:15:04.045046+00:00",
   "referenceCommit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "scope": "Syntactic exported-name functions/methods on exported receiver types in root non-test Go files. Includes conditional Fuzz; excludes unexported receivers and does not inventory struct fields, constants, interfaces or generated behavior. No full compatibility or coverage percentage claim.",
   "declarationCount": 106,
@@ -773,16 +773,16 @@
       "file": "recovery.go",
       "line": 249,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "DefaultConnectionRecovery.onConnectionClose(connection, error, context)",
+      "boundary": "22 本地组、10 peer/12 broker 已测状态和结果一致；已有失效资源的显式关闭清理差异单列，非 Go goroutine/通知等价"
     },
     {
       "name": "DefaultConnectionRecovery.OnChannelClose",
       "file": "recovery.go",
       "line": 271,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "DefaultConnectionRecovery.onChannelClose(channel, error, context)",
+      "boundary": "22 本地组、10 peer/12 broker 已测状态和结果一致；已有失效资源的显式关闭清理差异单列，非 Go goroutine/通知等价"
     },
     {
       "name": "DefaultTopologyRecovery.RecoverTopology",

@@ -47,6 +47,6 @@ const connection = await connect(process.env.AMQP_URI, {
 
 开发前策略配置被静默忽略，证据见 topology-strategy-initial.json。开发阶段原生对照揭示单通道拓扑失败被重复尝试并终止打开通道，历史报告见 topology-strategy-native-initial.json；最终对照已修复此差异。开发阶段的已处理错误被再次判为致命错误，复现见 topology-strategy-handled-error-initial.json；最终两组捕获/回退测试已修复。当前报告 topology-strategy-native.json 没有未解释的已测结果差异，但受限上下文及 Promise/事件接口不等同 Go 可变对象与 goroutine/channel 调度，不宣称完整行为或性能追平。
 
-自定义 ConnectionRecovery（决定连接/通道断开后的恢复动作）、完整通知/context/网络期限/TLS、多平台/版本、所有并发交错与代表性原生性能仍未完成。
+自定义 ConnectionRecovery 已在 0.24 提供；完整通知/context/网络期限/TLS、多平台/版本、所有并发交错与代表性原生性能仍未完成。
 
 本轮确认回归曾在固定 Go 的单通道恢复场景发生 504；channel StateOpen 早于后续拓扑恢复完成，原对照程序等待条件不足。现通过委托 DefaultTopologyRecovery 的完成信号再继续业务 RPC，未修改原库或以延时掩盖失败。初次日志与依据保留于 topology-strategy-confirmations-native-initial-failure.txt / topology-strategy-confirmations-wait-fix.json。

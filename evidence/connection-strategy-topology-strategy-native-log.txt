@@ -1,0 +1,21 @@
+MATCH topology strategy peer delegate
+MATCH topology strategy peer replace
+MATCH topology strategy peer dynamic
+MATCH topology strategy peer retry
+MATCH topology strategy peer exhaust
+MATCH topology strategy peer disabled
+MATCH topology strategy peer channel
+MATCH topology strategy peer skipped
+MATCH topology strategy peer no-channels
+MATCH topology strategy peer channel-fail
+MATCH topology strategy broker delegate
+MATCH topology strategy broker replace
+MATCH topology strategy broker dynamic
+MATCH topology strategy broker retry
+MATCH topology strategy broker exhaust
+MATCH topology strategy broker disabled
+MATCH topology strategy broker channel
+MATCH topology strategy broker skipped
+MATCH topology strategy broker no-channels
+MATCH topology strategy broker channel-fail
+10 native strategy peer and 12 broker outcomes matched; 0 explicit difference; 1 local delivery scenario passed

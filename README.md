@@ -1,6 +1,6 @@
 # AMQP 0-9-1 编解码与消息客户端
 
-本地候选版 **0.23.0**。MoonBit 实现帧/方法/属性编解码、连接认证协商和通道状态机；Node.js 提供 TCP/TLS、RPC、心跳和消息发布/消费宿主。仓库独立，当前仅供本地审查。
+本地候选版 **0.24.0**。MoonBit 实现帧/方法/属性编解码、连接认证协商和通道状态机；Node.js 提供 TCP/TLS、RPC、心跳和消息发布/消费宿主。仓库独立，当前仅供本地审查。
 
 ```sh
 moon test --target js
@@ -331,15 +331,17 @@ connection.on('queueNameChanged', ({previous, current}) => console.log({previous
 
 自定义拓扑恢复、默认委托及动态声明见 [TOPOLOGY-STRATEGY.md](TOPOLOGY-STRATEGY.md)。
 
+自定义连接/通道恢复决策、无动作/延迟策略与默认委托见 [CONNECTION-STRATEGY.md](CONNECTION-STRATEGY.md)。
+
 ## 验证与成熟度
 
-0.23 的 **138 项核心测试在 JS 与 Wasm-GC 分别通过**，完整本地 verify 通过，含新增 25 组自定义拓扑策略检查及已有 fixture/CLI/畸形输入回归。
+0.24 的 **138 项核心测试在 JS 与 Wasm-GC 分别通过**，完整本地 verify 通过，含新增 22 组自定义连接恢复策略检查及已有 fixture/CLI/畸形输入回归。
 
-固定未修改 Go 原库的 **10 个 peer 场景与 12 个真实 RabbitMQ 场景**，在策略次数、通道范围、返回类别、拓扑登记及资源状态等已测字段一致；broker 额外检查实际队列存在情况，含 TLS。另有 1 个本地连续两次重连后确认发布/原订阅投递流程。已修复原生对照发现的单通道拓扑失败重试边界，见 [自定义拓扑策略](TOPOLOGY-STRATEGY.md)。
+固定未修改 Go 原库的 **10 个 peer 场景与 12 个真实 RabbitMQ 场景**，在决策回调次数、物理会话/取消状态、拓扑保留与恢复结果等已测字段一致，含 TLS 与确认投递。策略关闭已失效资源时的清理差异在两侧各 2 例单列，不计一致；原始错误和逻辑状态没有冒充 Go 调度等价。另有 1 个本地延迟决策后的原订阅投递流程，见 [自定义恢复决策](CONNECTION-STRATEGY.md)。
 
-共重跑 16 个原生/broker 命令，形成 36 份当前源码绑定报告；其余 10 份历史原生/broker 报告未重跑。精确范围见 [本轮清单](evidence/topology-strategy-upgrade.json)。各既有差异与改进保留原计数，不计为匹配。
+共重跑 17 个原生/broker 命令，形成 38 份当前源码绑定报告；其余 10 份历史原生/broker 报告未重跑。精确范围见 [本轮清单](evidence/connection-strategy-upgrade.json)。各既有差异与改进保留原计数，不计为匹配。
 
-运行环境为 Windows Node 24 和 WSL RabbitMQ 4.0.5/Erlang 27；各层覆盖重叠，不相加计算追平比例。仅记录本机示例和基础确认样本，**未建立代表性原生性能或生产负载追平**。完整 TLS 状态、Go context/通知/网络截止时间、自定义 ConnectionRecovery 与所有恢复交错、多版本/平台/集群和长期验证仍缺。历史范围见 [TESTING.md](TESTING.md) 与 [API-COMPATIBILITY.md](API-COMPATIBILITY.md)。协议范围为 AMQP 0-9-1。
+运行环境为 Windows Node 24 和 WSL RabbitMQ 4.0.5/Erlang 27；各层覆盖重叠，不相加计算追平比例。仅记录本机示例和基础确认样本，**未建立代表性原生性能或生产负载追平**。完整 TLS 状态、Go context/通知/网络截止时间、所有恢复交错、多版本/平台/集群和长期验证仍缺。历史范围见 [TESTING.md](TESTING.md) 与 [API-COMPATIBILITY.md](API-COMPATIBILITY.md)。协议范围为 AMQP 0-9-1。
 
 ## 限制
 
@@ -361,4 +363,4 @@ Node 字段表用普通对象，支持 boolean、signed int32、字符串、null
 
 参考：[RabbitMQ 规格](https://www.rabbitmq.com/docs/specification)、[amqp091-go](https://github.com/rabbitmq/amqp091-go)。Pika 仅是独立验证工具，无运行期依赖。
 
-本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，0.23 本地增量归档另附同提交 ZIP/bundle；历史合集未更新。未上传、未发布、未添加远程仓库。
+本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，0.24 本地增量归档另附同提交 ZIP/bundle；历史合集未更新。未上传、未发布、未添加远程仓库。

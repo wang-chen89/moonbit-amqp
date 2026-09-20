@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T14:53:19.663Z",
+  "utc": "2026-09-20T15:20:24.948Z",
   "node": "v24.11.0",
   "passed": 8,
   "tests": [
@@ -132,15 +132,15 @@
       },
       "processMemory": {
         "initial": {
-          "rss": 84041728,
-          "heapTotal": 57176064,
-          "heapUsed": 20522360,
-          "external": 3090757,
-          "arrayBuffers": 419248
+          "rss": 84516864,
+          "heapTotal": 56913920,
+          "heapUsed": 20583256,
+          "external": 2894185,
+          "arrayBuffers": 419256
         },
         "peak": {
-          "rss": 158420992,
-          "external": 4605825
+          "rss": 220274688,
+          "external": 4744711
         },
         "note": "Whole Node process observation, not an RSS guarantee or upstream throughput comparison."
       }
@@ -177,32 +177,33 @@
       },
       "processMemory": {
         "initial": {
-          "rss": 156983296,
-          "heapTotal": 105619456,
-          "heapUsed": 55529104,
-          "external": 3883133,
-          "arrayBuffers": 1376153
+          "rss": 213221376,
+          "heapTotal": 162377728,
+          "heapUsed": 55920304,
+          "external": 3793051,
+          "arrayBuffers": 1286071
         },
         "peak": {
-          "rss": 210354176,
-          "external": 4161684
+          "rss": 216887296,
+          "external": 4399130
         },
         "note": "Whole Node process observation, not an RSS guarantee or upstream throughput comparison."
       }
     }
   ],
   "sources": {
-    "tools/evidence-source.mjs": "5e95adfba0b9dd595266f91f88372d41f58a12288138ffb7b5bb6bf369eca9d9",
+    "tools/evidence-source.mjs": "5b5bc6277d326cda62e39fce99dacbca21b4af52d2f16833c14eb975934596ba",
+    "tools/connection-strategy.mjs": "6278c52a2e4c83031b746ba0e869a460ce0c02b88ef882cebd7f5671ca948586",
     "tools/topology-strategy.mjs": "48734ab45117f89e7c56220b583f4cbe8bd87bad625e4c68b2d6e61b0441a3a6",
     "tools/close-deadline.mjs": "0277a8786a0d3eebe24084c69431232fbc0aa433cd9999ca6297c34105343768",
     "tools/outbound.mjs": "bc9cc59a8df9669ae010138e4dd89fa801462c96f6440ed4ba48db45c7fe7f39",
     "tools/recovery-control.mjs": "9c20dd1e5142a900c0af1d84eea338a09ab1b83ef4d12c47066f486b241e3a69",
-    "tools/recovery.mjs": "f1efcd0ce820d957f95d0528cc98adca0755c2923e5e840d4a75b0d3fc6faaf8",
+    "tools/recovery.mjs": "359b6bf6a2967ea38198200d9a5aae9739ae7f2e4483c6971818a87250cbf417",
     "tools/recovery-state.mjs": "322925ae7632a2ea5241e2054fc4f8088bc9445b23757a88da75f98a9631c1ef",
-    "tools/recovery-channel.mjs": "4ad872eacb6fa8db467304e105966493395ed6e7395a237ccd55d7fe738fa2fb",
+    "tools/recovery-channel.mjs": "8f8b4f44e4b6c30509530a0b2e50d0f3ab49b3eec83537e72136e8750aa30810",
     "tools/topology-query.mjs": "26fdbf28aa2b51eb8bf1a7bfb81b1a004ef0207ae071989ab8aaaab5070493e6",
     "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
-    "connection_metadata.mbt": "f4ca4bf6568337fe432d90b53003e6ef86274b355b655b7738ae09846d98d18e",
+    "connection_metadata.mbt": "575835f99259cf2aae033f070579880762c5a812a81afbc4f52beebf1f0bd14f",
     "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
     "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
     "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
@@ -214,14 +215,14 @@
     "receive_stream.mbt": "189d08894d96e52044c93f958c135efba5e2c5a8d969264b9a22099681d7f1c0",
     "cmd/web/session.mbt": "77a46d26771f0f9afc04283bcf301353985c1f61e159b357d5fd20642e9ab5fb",
     "cmd/web/authentication.mbt": "007c9d1407e295f973f608933292e2e33f9c9e275cc7dd50b7718094a63b2809",
-    "tools/client.mjs": "fa84aae2eb5896ae04dc6afa3cf866b7bdcd5626fa636ad91d8d95db95607ab6",
+    "tools/client.mjs": "c4836d1c198377be1f282b365836bbe36c08a4dfe44ccc76ed15f2d20ef18c3f",
     "tools/inbound.mjs": "472f83ff6abb1d1516ad46254f4a90219170630bf1506bb917fd35b1688e341f",
     "tools/receive-reference.go": "0e0db50f1abe3ee383c6825f89ee1f2f508ea0d4f092abe318b72f0763bac19c",
     "tools/test-receive-native.mjs": "f3c64f30888ab984150e9297cd4bcf1f88bf21c69503ff544679f30ee2d908c6",
     "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
     "evidence/receive-reference-build.json": "0fac38895af8f0124999844277fc0a8e465d162c262342bd5d433b92c22012ca",
-    "web/engine.mjs": "33819d94532cdacd7d9be1c6b1806f9a07461c4e12940c085b89b21d35fcb93f"
+    "web/engine.mjs": "383b318ab47872c514132049c175a57052c09788f63e8609e03b9b08232bd914"
   },
   "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "binarySha256": "a016335103c37cb250e6f5efc2ce1165b87f149346f78fe66917afb97e00cbf1",

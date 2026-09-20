@@ -1,0 +1,13 @@
+MATCH native transport dial
+MATCH native transport open
+MATCH native transport generic
+MATCH native transport default
+MATCH broker transport routed TCP
+MATCH broker transport established TCP
+MATCH broker transport generic byte transport
+MATCH broker transport default dial
+MATCH broker transport routed verified TLS
+MATCH broker transport established verified TLS
+MATCH broker transport routed mutual TLS EXTERNAL
+PASS custom TLS dial is reinvoked and topology confirmed publish/get recover
+6 native transport results and 7 broker results matched; 2 local TLS cases passed

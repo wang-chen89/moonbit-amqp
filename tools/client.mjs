@@ -13,6 +13,7 @@ import {createConfirmation,emitConfirmation} from './confirmations.mjs';
 import {openOptions,validateTransportOptions,suppliedTLS,startTransport,finishTransportHandshake} from './transport.mjs';
 export {defaultDial} from './transport.mjs';
 export {DefaultTopologyRecovery} from './topology-strategy.mjs';
+export {DefaultConnectionRecovery} from './connection-strategy.mjs';
 import {emptyTopologyConfiguration} from './topology-query.mjs';
 import {RecoveryCancellation,recoveryClosed} from './recovery-control.mjs';
 import {closeDeadlineMillis,closeDeadlineError,connectionClosedError,armCloseDeadline} from './close-deadline.mjs';

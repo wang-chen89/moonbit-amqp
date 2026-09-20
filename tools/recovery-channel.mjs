@@ -23,6 +23,7 @@ export class RecoveringChannel extends Lifecycle {
     const raw = await connection.openChannel();
     if (claim!==this.#opening || this.closed || this.#connection.closed) { if(!raw.closed)await raw.close(); throw Error('Closed or superseded during channel recovery'); }
     this.#physical = raw; this.#generation++; this.#offset = this.#lastTag;
+    this.#connection._channelOpened(this);
     this.#deliveries=[];this.#deliveryBytes=0;
     raw.on('return', message => { if (this.#physical === raw) {if(message.type==='messageStart'&&!this.listenerCount('return'))message.body.discard().catch(()=>{});notice(this,'return',message);} });
     raw.on('callbackError', error => notice(this,'callbackError',error));
@@ -44,10 +45,10 @@ export class RecoveringChannel extends Lifecycle {
     if(raw.closed||claim!==this.#opening||this.closed||this.#connection.closed)throw Error('Channel closed or superseded while opening');
     return raw;
   }
-  _lost(error) {
+  _lost(error,awaitingPolicy=false) {
     this.#opening++;this.#deliveries=[];this.#deliveryBytes=0;
     for(const entry of [...this.#consumers.values(),...this.#pendingConsumers.values()])if(entry.cancelRequested)this.#cancelOffline(entry);
-    if (!this.closed) this._state('reconnecting',error);
+    if (!this.closed) this._state(awaitingPolicy?'disconnected':'reconnecting',error);
   }
   _restored() { if (!this.closed) {this._state('open');this._drain();} }
   _stop(error) { this.#opening++;this.#generation++;this.#deliveries=[];this.#deliveryBytes=0;for(const entry of [...this.#consumers.values(),...this.#pendingConsumers.values()])entry.dispose?.();this.#consumers.clear();this.#pendingConsumers.clear();this._state('closed',error); }

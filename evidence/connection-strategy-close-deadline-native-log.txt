@@ -1,0 +1,19 @@
+MATCH close deadline peer success
+MATCH close deadline peer zero
+MATCH close deadline peer timeout
+MATCH close deadline peer expired
+MATCH close deadline peer already
+MATCH close deadline peer recovery-timeout
+MATCH close deadline peer recovery-cancel
+MATCH close deadline peer unconfirmed
+MATCH close deadline peer eof
+MATCH close deadline broker success
+MATCH close deadline broker zero
+MATCH close deadline broker expired
+MATCH close deadline broker already
+MATCH close deadline broker recovery-cancel
+MATCH close deadline broker TLS success
+MATCH close deadline broker TLS zero
+MATCH close deadline broker TLS expired
+MATCH close deadline broker TLS recovery-success
+9 native peer and 11 broker close resource/results matched; 2 explicit differences; 1 local delivery scenario passed

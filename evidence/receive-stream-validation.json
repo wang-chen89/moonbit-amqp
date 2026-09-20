@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T14:46:28.023Z",
+  "utc": "2026-09-20T15:15:38.398Z",
   "node": "v24.11.0",
   "passed": 25,
   "tests": [
@@ -32,7 +32,7 @@
   "observations": [
     {
       "name": "12 MiB held consumer",
-      "senderBytesBeforeResume": 318864,
+      "senderBytesBeforeResume": 384272,
       "bufferedBodyBytes": 0,
       "maxObservedBodyBytes": 61320,
       "bufferedChunks": 0,
@@ -63,17 +63,18 @@
     }
   ],
   "sources": {
-    "tools/evidence-source.mjs": "5e95adfba0b9dd595266f91f88372d41f58a12288138ffb7b5bb6bf369eca9d9",
+    "tools/evidence-source.mjs": "5b5bc6277d326cda62e39fce99dacbca21b4af52d2f16833c14eb975934596ba",
+    "tools/connection-strategy.mjs": "6278c52a2e4c83031b746ba0e869a460ce0c02b88ef882cebd7f5671ca948586",
     "tools/topology-strategy.mjs": "48734ab45117f89e7c56220b583f4cbe8bd87bad625e4c68b2d6e61b0441a3a6",
     "tools/close-deadline.mjs": "0277a8786a0d3eebe24084c69431232fbc0aa433cd9999ca6297c34105343768",
     "tools/outbound.mjs": "bc9cc59a8df9669ae010138e4dd89fa801462c96f6440ed4ba48db45c7fe7f39",
     "tools/recovery-control.mjs": "9c20dd1e5142a900c0af1d84eea338a09ab1b83ef4d12c47066f486b241e3a69",
-    "tools/recovery.mjs": "f1efcd0ce820d957f95d0528cc98adca0755c2923e5e840d4a75b0d3fc6faaf8",
+    "tools/recovery.mjs": "359b6bf6a2967ea38198200d9a5aae9739ae7f2e4483c6971818a87250cbf417",
     "tools/recovery-state.mjs": "322925ae7632a2ea5241e2054fc4f8088bc9445b23757a88da75f98a9631c1ef",
-    "tools/recovery-channel.mjs": "4ad872eacb6fa8db467304e105966493395ed6e7395a237ccd55d7fe738fa2fb",
+    "tools/recovery-channel.mjs": "8f8b4f44e4b6c30509530a0b2e50d0f3ab49b3eec83537e72136e8750aa30810",
     "tools/topology-query.mjs": "26fdbf28aa2b51eb8bf1a7bfb81b1a004ef0207ae071989ab8aaaab5070493e6",
     "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
-    "connection_metadata.mbt": "f4ca4bf6568337fe432d90b53003e6ef86274b355b655b7738ae09846d98d18e",
+    "connection_metadata.mbt": "575835f99259cf2aae033f070579880762c5a812a81afbc4f52beebf1f0bd14f",
     "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
     "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
     "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
@@ -86,12 +87,12 @@
     "receive_stream_test.mbt": "49c36575d466f0fb66254d86f921932615b6ac51b841a2855691875c5c2da9d5",
     "cmd/web/session.mbt": "77a46d26771f0f9afc04283bcf301353985c1f61e159b357d5fd20642e9ab5fb",
     "cmd/web/authentication.mbt": "007c9d1407e295f973f608933292e2e33f9c9e275cc7dd50b7718094a63b2809",
-    "tools/client.mjs": "fa84aae2eb5896ae04dc6afa3cf866b7bdcd5626fa636ad91d8d95db95607ab6",
+    "tools/client.mjs": "c4836d1c198377be1f282b365836bbe36c08a4dfe44ccc76ed15f2d20ef18c3f",
     "tools/inbound.mjs": "472f83ff6abb1d1516ad46254f4a90219170630bf1506bb917fd35b1688e341f",
     "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
     "tools/receive-peer.mjs": "39bc524b5d683a189c692d60b9dd8cc2cf509616e46bd5c03e6640c750b30516",
     "tools/test-receive-stream.mjs": "5f188a52e168e6145687379209250ca83a69e8edab27db0635bd780e332bb0e9",
-    "web/engine.mjs": "33819d94532cdacd7d9be1c6b1806f9a07461c4e12940c085b89b21d35fcb93f"
+    "web/engine.mjs": "383b318ab47872c514132049c175a57052c09788f63e8609e03b9b08232bd914"
   },
   "scope": "Opt-in incoming async byte streams; bounded shared body buffer and independent AMQP wire peer. Does not bound user-retained chunks, decoder/bridge temporaries or process RSS."
 }

@@ -1,0 +1,25 @@
+MATCH connection strategy peer connection-default
+MATCH connection strategy peer connection-noop
+MATCH connection strategy peer connection-manual
+MATCH connection strategy peer connection-delay
+DIFFERENCE policy close cleanup connection-close
+MATCH connection strategy peer channel-default
+MATCH connection strategy peer channel-noop
+MATCH connection strategy peer channel-manual
+DIFFERENCE policy close cleanup channel-close
+MATCH connection strategy peer exhaust
+MATCH connection strategy peer explicit-close
+MATCH connection strategy peer off
+MATCH connection strategy broker connection-default
+MATCH connection strategy broker connection-noop
+MATCH connection strategy broker connection-manual
+MATCH connection strategy broker connection-delay
+DIFFERENCE policy close cleanup connection-close
+MATCH connection strategy broker channel-default
+MATCH connection strategy broker channel-noop
+MATCH connection strategy broker channel-manual
+DIFFERENCE policy close cleanup channel-close
+MATCH connection strategy broker exhaust
+MATCH connection strategy broker explicit-close
+MATCH connection strategy broker off
+10 native connection strategy peer and 12 broker outcomes matched; 1 explicit differences; 1 local delivery scenario passed

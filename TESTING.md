@@ -10,7 +10,21 @@
 CI files are prepared locally; remote CI has not run because this repository has not been uploaded. Compatibility beyond README scope remains unverified.
 
 
-## 0.23 当前自定义拓扑策略验证
+## 0.24 当前自定义连接恢复策略验证
+
+- `connection-strategy-verify.txt`：JS/Wasm-GC 各 138 项及全部本地检查，含 22 新决策组。
+- `connection-strategy-native.json`：10 peer/12 broker 的回调/拨号次数、物理关闭、配置、取消与拓扑登记等字段一致，含 TLS 和确认投递；1 本地延迟恢复后原订阅投递。
+- 策略显式关闭已经失效资源的清理差异单列：两侧各有 connection-close/channel-close 共 4 个结果，不算一致。错误表示和逻辑状态保留但不算完整 Go 行为匹配。
+- `connection-strategy-initial.json` 记录配置被忽略的实现前复现；首次原生清理差异日志保留。17 个原生/broker 命令与全部本地 fixture 形成 38 份当前源码报告；10 份历史原生/broker 报告未重跑，详见 `connection-strategy-upgrade.json`。
+
+```powershell
+./verify.ps1 -MoonPath /absolute/path/to/moon.exe
+$env:AMQP_CONNECTION_STRATEGY_REFERENCE='/absolute/path/to/connection-strategy-oracle.exe'
+$env:RABBITMQ_ROOT='/path/to/extracted/rabbitmq/root'
+node tools/test-connection-strategy-native.mjs
+```
+
+## 0.23 历史自定义拓扑策略验证
 
 - `topology-strategy-verify.txt`：JS/Wasm-GC 各 138 项及全部本地检查，含 25 新策略组。
 - `topology-strategy-native.json`：10 peer/12 broker 的调用次数、通道范围、拨号、返回、关闭、跳过项及拓扑登记一致；真实 broker 包括队列存在性和 TLS；另有连续两次真实重连后的确认投递。

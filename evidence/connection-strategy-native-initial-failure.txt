@@ -1,0 +1,58 @@
+MATCH connection strategy peer connection-default
+MATCH connection strategy peer connection-noop
+MATCH connection strategy peer connection-manual
+MATCH connection strategy peer connection-delay
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: connection-close
++ actual - expected
+
+  {
+    channelCalls: 1,
++   channelCancelled: true,
+-   channelCancelled: false,
+    channelTransportClosed: true,
+    connectionCalls: 1,
+    connectionCancelled: true,
+    dials: 1,
+    recoveryEnabled: false,
++   tracked: false,
+-   tracked: true,
+    transportClosed: true
+  }
+
+    at compare (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-connection-strategy-native.mjs:31:237)
+    at file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-connection-strategy-native.mjs:34:143
+    at async fixture (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/recovery-peer.mjs:73:7)
+    at async file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-connection-strategy-native.mjs:33:25 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: {
+    connectionCalls: 1,
+    channelCalls: 1,
+    dials: 1,
+    transportClosed: true,
+    channelTransportClosed: true,
+    connectionCancelled: true,
+    channelCancelled: true,
+    recoveryEnabled: false,
+    tracked: false
+  },
+  expected: {
+    connectionCalls: 1,
+    channelCalls: 1,
+    dials: 1,
+    transportClosed: true,
+    channelTransportClosed: true,
+    connectionCancelled: true,
+    channelCancelled: false,
+    recoveryEnabled: false,
+    tracked: true
+  },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.11.0

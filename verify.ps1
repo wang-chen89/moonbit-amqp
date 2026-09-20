@@ -66,6 +66,8 @@ try {
   if ($LASTEXITCODE -ne 0) {throw 'close deadline fixtures failed'}
   node tools/test-topology-strategy.mjs
   if ($LASTEXITCODE -ne 0) {throw 'topology strategy fixtures failed'}
+  node tools/test-connection-strategy.mjs
+  if ($LASTEXITCODE -ne 0) {throw 'connection strategy fixtures failed'}
   node tools/test-secret-update.mjs
   if ($LASTEXITCODE -ne 0) {throw 'credential update fixtures failed'}
   node tools/test-autodelete.mjs
