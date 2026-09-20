@@ -1,0 +1,9 @@
+file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-rabbitmq.mjs:41
+  throw Error('WSL localhost forwarder did not become ready');
+        ^
+
+Error: WSL localhost forwarder did not become ready
+    at localReady (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-rabbitmq.mjs:41:9)
+    at async file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-rabbitmq.mjs:47:3
+
+Node.js v24.11.0

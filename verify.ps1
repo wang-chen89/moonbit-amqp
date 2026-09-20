@@ -56,6 +56,8 @@ try {
   if ($LASTEXITCODE -ne 0) {throw 'URI connection fixtures failed'}
   node tools/test-metadata.mjs
   if ($LASTEXITCODE -ne 0) {throw 'connection metadata fixtures failed'}
+  node tools/test-transport.mjs
+  if ($LASTEXITCODE -ne 0) {throw 'custom transport fixtures failed'}
   node tools/test-secret-update.mjs
   if ($LASTEXITCODE -ne 0) {throw 'credential update fixtures failed'}
   node tools/test-autodelete.mjs

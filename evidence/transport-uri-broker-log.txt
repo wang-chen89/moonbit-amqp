@@ -1,0 +1,20 @@
+MATCH TCP decoded built-in credentials and root virtual host
+MATCH URI repeated authentication candidates select AMQPLAIN first
+MATCH explicit SASL overrides URI candidates
+MATCH URI heartbeat and explicit channel max precedence
+MATCH explicit virtual host overrides a URI nonexistent virtual host
+MATCH URI missing virtual host is rejected
+MATCH bad password fails authentication
+MATCH TLS uses URI CA file and explicit server identity
+MATCH TLS AMQPLAIN query authenticates with server verification
+MATCH URI client certificate pair authenticates with EXTERNAL
+MATCH URI certificate without a key does not enable client authentication
+MATCH URI unknown certificate identity is rejected
+MATCH URI untrusted client certificate is rejected
+MATCH URI wrong server identity fails verification
+MATCH URI server CA trust failure is rejected
+MATCH explicit TLS configuration ignores URI file and SNI parameters
+MATCH TCP URI ignores TLS query parameters
+MATCH TLS query with zero heartbeat negotiates broker interval
+PASS URI TLS credential bytes survive file removal and reconnection; confirmed messaging succeeds twice
+18 broker URI results matched; 1 local recovery scenario passed

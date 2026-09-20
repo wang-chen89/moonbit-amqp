@@ -67,7 +67,7 @@ async function fixture(options, action) {
       } catch(e){errors.push(e);socket.destroy();}
     });
   });
-  await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(0,options.listenHost??'127.0.0.1',resolve);});
+  await new Promise((resolve,reject)=>{server.once('error',reject);if(options.listenPath)server.listen(options.listenPath,resolve);else server.listen(0,options.listenHost??'127.0.0.1',resolve);});
   const opts={host:options.listenHost??'127.0.0.1',port:server.address().port,username:'demo',password:'test',allowInsecureAuth:true,heartbeat:0,timeout:800};
   const open=async more=>{const c=await connect({...opts,...more});connections.push(c);return c;};
   try{await action({open,opts,state});assert.deepEqual(errors,[]);}

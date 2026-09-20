@@ -1,8 +1,8 @@
-# 原库接口对应与剩余差距 · 0.18
+# 原库接口对应与剩余差距 · 0.19
 
 基准为已核验的 amqp091-go 提交 `a0195c6baf35db642d13651cb28938f899062e7c`。下表来自根目录非测试 Go 源文件的 106 条导出命名函数/方法声明，排除非导出接收者，包含构建标签下的 Fuzz。它不是 106 项独立功能，也不涵盖所有结构体字段、常量、接口或运行行为；不能据此计算“追平百分比”。逐条源位置、构建标签和文件 SHA-256 见 [接口清单](evidence/api-surface-audit.json)。
 
-“有入口”仅指已有对应操作及所注明的有限验证，不代表完整兼容。当前优先差距包括：完整 context/Go channel 通知语义、完整 TLS 状态/自定义传输、显式重连与可读拓扑快照，以及完整恢复/长期/多版本/性能验证。
+“有入口”仅指已有对应操作及所注明的有限验证，不代表完整兼容。当前优先差距包括：完整 context/Go channel 通知语义、完整 TLS 状态/网络截止时间、显式重连与可读拓扑快照，以及完整恢复/长期/多版本/性能验证。
 
 0.13 为 11 个宿主方法补 noWait 选项，队列与交换机被动声明复用原方法选项。15 条原库报文逐字节一致；8 个真实 broker 场景结果一致。另有一个明确差异：固定 Go 的 Confirm(true) 仍等待 RabbitMQ 按 no-wait 抑制的回复，本实现不等待且能继续获得发布确认。该项单独记录，未计为行为一致。其余 8 个 Go broker 场景使用 Confirm(false) 隔离此限制。
 
@@ -15,6 +15,8 @@
 0.17 补 URI 解析、格式化、凭证转换及实际连接入口；623 个原生解析结果与 18 个 broker 结果一致。6 个输入边界差异样本另列；URI TLS 字节快照恢复单独计为本地能力。精确默认值和优先级见 [URI.md](URI.md)。
 
 0.18 新增属性/地址/TLS/版本查询与属性配置：7 个原生 peer 元数据结果、5 个自定义属性表和 7 个 broker 结果一致；1 个本地 TLS 1.3 恢复。库身份与调用方属性别名差异单列。修复 URI 机制名大小写，详见 [连接元数据](CONNECTION-METADATA.md)。结构字段不在这 106 个声明计数内，新增字段查询也没有计入完成百分比。
+
+0.19 新增自定义拨号、Open 和默认拨号器：6 原生传输结果、7 broker 结果一致，2 本地 TLS 场景；22 本地检查覆盖内存流、背压、期限、所有权和恢复。见 [自定义传输](TRANSPORT.md)。
 
 | 原库声明 | 本版入口/对应能力 | 边界 |
 |---|---|---|
@@ -75,12 +77,12 @@
 | `DeferredConfirmation.Wait` | 句柄 done / acked / wait({signal, timeout}) | 局部等待独立取消；nack/关闭为 false，关闭另保留 error；预取消优先拒绝，非 Go select 调度复刻 |
 | `DeferredConfirmation.WaitContext` | 句柄 done / acked / wait({signal, timeout}) | 局部等待独立取消；nack/关闭为 false，关闭另保留 error；预取消优先拒绝，非 Go select 调度复刻 |
 | `NewConnectionProperties` | MoonBit new_connection_properties / Node newConnectionProperties | 新默认身份表；product/version/platform 标识本库，值不同于 Go；连接时统一覆盖 capabilities |
-| `DefaultDial` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
-| `Dial` | connect(uri, options) / connect({uri, ...options}) | 支持 URI、TLS/EXTERNAL、自定义 properties；有默认值/资源与属性别名差异；自定义 Dial/全部配置语义仍缺 |
-| `DialTLS` | connect(uri, options) / connect({uri, ...options}) | 支持 URI、TLS/EXTERNAL、自定义 properties；有默认值/资源与属性别名差异；自定义 Dial/全部配置语义仍缺 |
-| `DialTLS_ExternalAuth` | connect(uri, options) / connect({uri, ...options}) | 支持 URI、TLS/EXTERNAL、自定义 properties；有默认值/资源与属性别名差异；自定义 Dial/全部配置语义仍缺 |
-| `DialConfig` | connect(uri, options) / connect({uri, ...options}) | 支持 URI、TLS/EXTERNAL、自定义 properties；有默认值/资源与属性别名差异；自定义 Dial/全部配置语义仍缺 |
-| `Open` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `DefaultDial` | defaultDial(timeout)(network, address, {signal}) | TCP/IPv4/IPv6/Windows 命名管道已验证；握手期限完成后清除；异步 Promise 与总期限有差异，Unix-domain socket 平台执行仍待验证 |
+| `Dial` | connect(uri, options) / connect({uri, ...options}) | 支持 URI、TLS/EXTERNAL、自定义 properties/dial 与恢复重新拨号；默认值/资源/属性别名、总期限和 Go 完整调度仍有差异 |
+| `DialTLS` | connect(uri, options) / connect({uri, ...options}) | 支持 URI、TLS/EXTERNAL、自定义 properties/dial 与恢复重新拨号；默认值/资源/属性别名、总期限和 Go 完整调度仍有差异 |
+| `DialTLS_ExternalAuth` | connect(uri, options) / connect({uri, ...options}) | 支持 URI、TLS/EXTERNAL、自定义 properties/dial 与恢复重新拨号；默认值/资源/属性别名、总期限和 Go 完整调度仍有差异 |
+| `DialConfig` | connect(uri, options) / connect({uri, ...options}) | 支持 URI、TLS/EXTERNAL、自定义 properties/dial 与恢复重新拨号；默认值/资源/属性别名、总期限和 Go 完整调度仍有差异 |
+| `Open` | open(stream, options) / Connection.open | 已连接二进制 Duplex/已有 TLS；库接管关闭；单次物理连接，不自动推断重建方式；总期限与 Node 流校验不同于 Go |
 | `Connection.UpdateSecret` | updateSecret | 有入口；原版报文和 OAuth broker 有限对照 |
 | `Connection.LocalAddr` | localAddress / connectionInfo.localAddress | 真实 IPv4/IPv6 端点副本；关闭后保留最后物理快照，重连更新 |
 | `Connection.RemoteAddr` | remoteAddress / connectionInfo.remoteAddress | 真实 IPv4/IPv6 端点副本；已与独立 peer 两端地址及 Go 核对 |
@@ -125,4 +127,4 @@
 | `URI.AMQPlainAuth` | URI::amqplain_auth | 产生 MoonBit AMQPLAIN LOGIN/PASSWORD 凭证 |
 | `URI.String` | URI::to_string / parseURI(...).canonical | 包含密码，仅序列化 TLS 查询；提供 redacted；并非完整配置往返 |
 
-此外，Go Config 的自定义 Dial、属性别名、完整 TLS 状态、若干默认值和无限制参数约定尚未完整对齐。服务端 Properties/Locales/Major/Minor 与配置查询已通过新增字段入口提供有限对照。当前资源上限、Promise/回调、文本/字节表示及异常形态均有本地契约，不能只按方法名称宣布兼容。Go 的日志与 String/Error 辅助方法可用目标语言惯用形式设计，但仍需逐项确定可观察行为。所有 20 项完整追平目标保持未完成。
+此外，Go Config 的全部拨号/期限行为、属性别名、完整 TLS 状态、若干默认值和无限制参数约定尚未完整对齐。服务端 Properties/Locales/Major/Minor 与配置查询已通过新增字段入口提供有限对照。当前资源上限、Promise/回调、文本/字节表示及异常形态均有本地契约，不能只按方法名称宣布兼容。Go 的日志与 String/Error 辅助方法可用目标语言惯用形式设计，但仍需逐项确定可观察行为。所有 20 项完整追平目标保持未完成。

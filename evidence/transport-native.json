@@ -1,0 +1,261 @@
+{
+  "utc": "2026-09-20T12:53:25.676Z",
+  "node": "v24.11.0",
+  "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
+  "binarySha256": "468ee24e970948860f2e54d16fb8ae6bbf8b98140645d0eee8f4ed46b49ce879",
+  "peerMatches": 6,
+  "brokerMatches": 7,
+  "localPassed": 2,
+  "peers": [
+    {
+      "mode": "dial",
+      "result": {
+        "ack": true,
+        "body": "",
+        "vhost": "/",
+        "mechanism": "PLAIN",
+        "channelMax": 8,
+        "frameMax": 8192,
+        "heartbeat": 1,
+        "tls": false
+      },
+      "calls": [
+        {
+          "network": "tcp",
+          "address": "route.invalid:12345"
+        }
+      ],
+      "transportClosed": true,
+      "queueMethodHex": "00000f7472616e73706f72742d70726f62650c00000000",
+      "bodyHex": "7472616e73706f7274206d657373616765"
+    },
+    {
+      "mode": "open",
+      "result": {
+        "ack": true,
+        "body": "",
+        "vhost": "/",
+        "mechanism": "PLAIN",
+        "channelMax": 8,
+        "frameMax": 8192,
+        "heartbeat": 1,
+        "tls": false
+      },
+      "calls": [],
+      "transportClosed": true,
+      "queueMethodHex": "00000f7472616e73706f72742d70726f62650c00000000",
+      "bodyHex": "7472616e73706f7274206d657373616765"
+    },
+    {
+      "mode": "generic",
+      "result": {
+        "ack": true,
+        "body": "",
+        "vhost": "/",
+        "mechanism": "PLAIN",
+        "channelMax": 8,
+        "frameMax": 8192,
+        "heartbeat": 1,
+        "tls": false
+      },
+      "calls": [],
+      "transportClosed": true,
+      "queueMethodHex": "00000f7472616e73706f72742d70726f62650c00000000",
+      "bodyHex": "7472616e73706f7274206d657373616765"
+    },
+    {
+      "mode": "default",
+      "result": {
+        "ack": true,
+        "body": "",
+        "vhost": "/",
+        "mechanism": "PLAIN",
+        "channelMax": 8,
+        "frameMax": 8192,
+        "heartbeat": 1,
+        "tls": false
+      },
+      "calls": [],
+      "transportClosed": true,
+      "queueMethodHex": "00000f7472616e73706f72742d70726f62650c00000000",
+      "bodyHex": "7472616e73706f7274206d657373616765"
+    },
+    {
+      "mode": "dial-error",
+      "errorIdentity": true
+    },
+    {
+      "mode": "default-handshake-timeout",
+      "transportClosed": true
+    }
+  ],
+  "brokers": [
+    {
+      "name": "routed TCP",
+      "result": {
+        "ack": true,
+        "body": "transport message",
+        "vhost": "/",
+        "mechanism": "PLAIN",
+        "channelMax": 16,
+        "frameMax": 8192,
+        "heartbeat": 1,
+        "tls": false
+      },
+      "calls": [
+        {
+          "network": "tcp",
+          "address": "route.invalid:12345"
+        }
+      ],
+      "transportClosed": true
+    },
+    {
+      "name": "established TCP",
+      "result": {
+        "ack": true,
+        "body": "transport message",
+        "vhost": "/",
+        "mechanism": "PLAIN",
+        "channelMax": 16,
+        "frameMax": 8192,
+        "heartbeat": 1,
+        "tls": false
+      },
+      "calls": [],
+      "transportClosed": true
+    },
+    {
+      "name": "generic byte transport",
+      "result": {
+        "ack": true,
+        "body": "transport message",
+        "vhost": "/",
+        "mechanism": "PLAIN",
+        "channelMax": 16,
+        "frameMax": 8192,
+        "heartbeat": 1,
+        "tls": false
+      },
+      "calls": [],
+      "transportClosed": true
+    },
+    {
+      "name": "default dial",
+      "result": {
+        "ack": true,
+        "body": "transport message",
+        "vhost": "/",
+        "mechanism": "PLAIN",
+        "channelMax": 16,
+        "frameMax": 8192,
+        "heartbeat": 1,
+        "tls": false
+      },
+      "calls": [],
+      "transportClosed": true
+    },
+    {
+      "name": "routed verified TLS",
+      "result": {
+        "ack": true,
+        "body": "transport message",
+        "vhost": "/",
+        "mechanism": "PLAIN",
+        "channelMax": 16,
+        "frameMax": 8192,
+        "heartbeat": 1,
+        "tls": true
+      },
+      "calls": [
+        {
+          "network": "tcp",
+          "address": "route.invalid:12345"
+        }
+      ],
+      "transportClosed": true
+    },
+    {
+      "name": "established verified TLS",
+      "result": {
+        "ack": true,
+        "body": "transport message",
+        "vhost": "/",
+        "mechanism": "PLAIN",
+        "channelMax": 16,
+        "frameMax": 8192,
+        "heartbeat": 1,
+        "tls": true
+      },
+      "calls": [],
+      "transportClosed": true
+    },
+    {
+      "name": "routed mutual TLS EXTERNAL",
+      "result": {
+        "ack": true,
+        "body": "transport message",
+        "vhost": "/",
+        "mechanism": "EXTERNAL",
+        "channelMax": 16,
+        "frameMax": 8192,
+        "heartbeat": 1,
+        "tls": true
+      },
+      "calls": [
+        {
+          "network": "tcp",
+          "address": "route.invalid:12345"
+        }
+      ],
+      "transportClosed": true
+    }
+  ],
+  "localTests": [
+    "TLS identity failure closes custom dial socket",
+    "custom TLS dial is reinvoked and topology confirmed publish/get recover"
+  ],
+  "packages": {
+    "rabbitmq-server_4.0.5-10ubuntu5_all.deb": "facf754e045a705aca30b82b7728ac7b3f123d2b7f7838575b246fe0bd2ad05e",
+    "libsctp1_1.0.21+dfsg-1build2_amd64.deb": "92924c463cf0e6630b1e9fd3969d45b21558f7ecbf0c9ef12c80523669f8a271",
+    "erlang-xmerl_1%3a27.3.4.6+dfsg-1_amd64.deb": "7480288faf6f4870a62e9de14c56cd4e6b92bebf4c26e1d35123bab10c92d1fc",
+    "erlang-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "f2769fae5be10c5c7048f2d1f62c5d41c9202c016b48138b039a6887c44c4757",
+    "erlang-syntax-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "06a238505a33eb31b4479cdcc003719bcf37cdff8922e0496296407bcafee2f4",
+    "erlang-ssl_1%3a27.3.4.6+dfsg-1_amd64.deb": "f194e4197bd209a2e3b219190f545c5fa3735369b6d8e36b8616a20dac767b64",
+    "erlang-snmp_1%3a27.3.4.6+dfsg-1_amd64.deb": "ce4c7681a5ee8d8c9f8fab0fc1b6297e2dab573f6991e24bc592770bd1e4cd4d",
+    "erlang-runtime-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "dfe9a6452a7073faf6be4e2f4ac4e5513458294d5949fa10040b77f5d522970a",
+    "erlang-public-key_1%3a27.3.4.6+dfsg-1_amd64.deb": "8cb55457e13ff6b00ff9ea80df4b13360dbb4df9c4bc1dbbbdc3ad4d9658ee8c",
+    "erlang-parsetools_1%3a27.3.4.6+dfsg-1_amd64.deb": "bd846ef7ca9d58f48ee54123a7138ec1812aa7aa813ebdffce21fc5fd6f45d78",
+    "erlang-os-mon_1%3a27.3.4.6+dfsg-1_amd64.deb": "b1cc339e3dfc237440069314dcdb082dc812cea57c1494679efbd642c22b9775",
+    "erlang-mnesia_1%3a27.3.4.6+dfsg-1_amd64.deb": "527c4881cb83a0c89e6d621adae20b4e301b8220311e59a839a443c4bf7edca6",
+    "erlang-inets_1%3a27.3.4.6+dfsg-1_amd64.deb": "f075fa56cd4464a63eb26d7d90d834a2b31446d9707c527029fa15915ae1f9ed",
+    "erlang-eldap_1%3a27.3.4.6+dfsg-1_amd64.deb": "4c40df00f11f0b459d0d5221b167e05e2eb57f63d82a61fed61541481093aa57",
+    "erlang-crypto_1%3a27.3.4.6+dfsg-1_amd64.deb": "1a2de05e72695135d4c091cbb7f74e5c291f3c763d4ced4b18e48d78a2a73d3a",
+    "erlang-base_1%3a27.3.4.6+dfsg-1_amd64.deb": "8e7ababa5b1ddbe72e135faa78d15755268dfbb7cdfc25a5a8144f3e2d5754df",
+    "erlang-asn1_1%3a27.3.4.6+dfsg-1_amd64.deb": "b2d3f1a35d642727631ff138070d5a4f410bb0066f67a1efbf11ad61dc51fa6d"
+  },
+  "sources": {
+    "tools/evidence-source.mjs": "bc423777ed720b419d4ead72d596930464589c8d1a38b727902303f175ced014",
+    "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
+    "connection_metadata.mbt": "4e9efe9ff13516915819c6db4c08d1880cc7709a5108b1d46a784410242a550d",
+    "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
+    "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
+    "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
+    "uri.mbt": "fb8755671ef6cc4afc4d3a51da45f3baf8df45a6ce1a9ffd3126b495d7df7d1e",
+    "cmd/web/uri.mbt": "277acacb4d51d0a13e470e7132a74ffc592fc13dec72855ec2881e9ea1e7ba54",
+    "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
+    "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
+    "tools/client.mjs": "d037422790d7263903432838d4ba27f3170a5dbc0f699b5d6db69103a718b224",
+    "tools/recovery.mjs": "96e400666ceebc95fd1a9ef92fd7b913b6426f8cd396dcdebe9fa40af42c4dee",
+    "tools/recovery-peer.mjs": "ce2f414bffcb07a848143cd34c1e737340e15078f4b3f0cb25f0e829a35118fe",
+    "tools/metadata-peer.mjs": "687b569f03a40832de7c4aa5c0a61add6089a905972a30abba15717aabc105f4",
+    "tools/transport-peer.mjs": "677561ad79da2d95aec438502f0408ea7157c9786213e20382c3cafec2fb4a5c",
+    "tools/transport-reference.go": "b45b2f28152b6cd775e302a15c2173f1be776e8c29609879e42adddfdc6808c6",
+    "tools/test-transport-native.mjs": "09a8a51c5f29a29eed71fc4edc8fa2503f7b447ca1772e003f73855309d27082",
+    "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
+    "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
+    "evidence/transport-reference-build.json": "29b20de4271b2ec86cfc859da8bbf9f3d79487ef3f2ec71b1ef959916078b66e",
+    "web/engine.mjs": "a581253b54ae52918e911d1d924188751e8e458f336a629a2c9df71dcb4cfbfe"
+  },
+  "scope": "Six native transport successes/failures, queue method bytes/custom property tables/message bodies, and seven real broker results compared. TLS failure and custom TLS recovery are separately local. Node async factories, cancellation, total timeout and stream ownership guards are documented host contracts, not exact Go scheduler/network parity."
+}

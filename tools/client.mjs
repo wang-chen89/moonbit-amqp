@@ -1,5 +1,3 @@
-import net from 'node:net';
-import tls from 'node:tls';
 import {EventEmitter} from 'node:events';
 import {randomUUID} from 'node:crypto';
 import * as core from '../web/engine.mjs';
@@ -12,6 +10,8 @@ import {SendQueue,waitFor,aborted} from './outbound.mjs';
 import {IncomingBodies} from './inbound.mjs';
 import {checkConsumerSignal,observeConsumerSignal} from './consumer-signal.mjs';
 import {createConfirmation,emitConfirmation} from './confirmations.mjs';
+import {openOptions,validateTransportOptions,suppliedTLS,startTransport,finishTransportHandshake} from './transport.mjs';
+export {defaultDial} from './transport.mjs';
 
 function checked(text) {
   if (text.startsWith('ERROR:')) throw Error(text.slice(7));
@@ -48,11 +48,17 @@ export class Connection extends EventEmitter {
     await connection.#ready.promise;
     return connection;
   }
+  static async open(stream, options = {}) {
+    const connection = new Connection(openOptions(stream, options));
+    await connection.#ready.promise;
+    return connection;
+  }
   constructor(options = {}) {
     super();
     options=snapshotProperties(snapshotAuthentication(connectionOptions(options)));
+    validateTransportOptions(options);
     const {host = 'localhost', port = options.tls ? 5671 : 5672, username = 'guest', password = 'guest', vhost = '/', heartbeat = 60, frameMax = 131072, channelMax = 64, timeout = 10000, signal, allowInsecureAuth = false} = options;
-    if (!options.tls && !allowInsecureAuth) throw Error('SASL over TCP requires allowInsecureAuth: true; use TLS for protected credentials');
+    if (!options.tls && !suppliedTLS(options) && !allowInsecureAuth) throw Error('SASL over TCP requires allowInsecureAuth: true; use TLS for protected credentials');
     if (typeof host !== 'string' || typeof username !== 'string' || typeof password !== 'string' || typeof vhost !== 'string') throw TypeError('Expected string connection options');
     if(options.locale!==undefined&&(typeof options.locale!=='string'||!options.locale.isWellFormed()||!options.locale.length||Buffer.byteLength(options.locale)>255||options.locale.includes(' ')))throw TypeError('Invalid authentication locale');
     integer(port, 1, 65535, 'port'); integer(heartbeat, 0, 65535, 'heartbeat');
@@ -68,38 +74,43 @@ export class Connection extends EventEmitter {
     const initial = JSON.parse(checked(core.session_open_auth_properties(this.#key, JSON.stringify(auth.descriptors), vhost, options.locale??'en_US', channelMax, frameMax, heartbeat, options.streamBodies??false, propertiesJSON(options))));
     this.#limits = initial;
     this.#metadata=JSON.parse(checked(core.session_metadata(this.#key)));
-    try {
-      this.#socket = options.tls ? tls.connect({...options.tls, host, port}) : net.connect({host, port});
-    } catch (e) { core.session_drop(this.#key); throw e; }
     this.#tlsName=options.tls?(options.tls.servername||host):'';
-    this.#tlsInfo=tlsSnapshot(this.#socket,this.#tlsName);
-    this.#socket.setNoDelay(true);
-    this.#socket.on(options.tls ? 'secureConnect' : 'connect', () => {
-      try { this.#transportReady=true;this.#addresses=socketAddresses(this.#socket);this.#tlsInfo=tlsSnapshot(this.#socket,this.#tlsName,true);this.#write(initial.output); } catch (e) { this._fail(e); }
-    });
-    this.#socket.on('data', bytes => {
-      try {
-        this.#lastRead = performance.now();
-        if(this.#receiving){
-          if(this.#pendingInput.length)throw Error('Overlapping paused socket input');
-          if(bytes.length>1048576)throw Error('Socket input chunk limit exceeded');
-          this.#socket.pause();this.#pendingInput=bytes;this.#pumpRead();return;
-        }
-        // MoonBit bridge accepts bounded chunks, independent of socket chunk sizing.
-        for (let i = 0; i < bytes.length; i += 65536) this.#process(core.session_feed(this.#key, bytes.subarray(i, i + 65536).toString('hex')));
-      } catch (e) { this._fail(e); }
-    });
-    this.#socket.on('error', e => this._fail(e));
-    this.#socket.on('end', () => {
-      this.#readEnded=true;if(!this.#pendingInput.length)this.#finishRead();
-    });
-    this.#socket.on('close', () => { if (!this.#closed&&!(this.#readEnded&&this.#pendingInput.length)) this._fail(Error('Socket closed')); });
+    this.#tlsInfo=tlsSnapshot({},this.#tlsName);
+    this.#ready.promise.catch(()=>{});
     this.#connectTimer = setTimeout(() => this._fail(Error('AMQP handshake timeout')), timeout);
     if (signal) {
       this.#signal = signal;
       this.#abort = () => this._fail(signal.reason instanceof Error ? signal.reason : Error('Aborted'));
       signal.addEventListener('abort', this.#abort, {once: true});
     }
+    startTransport(options,this.#authAbort.signal,stream=>{
+      this.#socket=stream;
+      stream.on('error',error=>{if(stream===this.#socket)this._fail(error);});
+      stream.once('close',()=>{if(stream===this.#socket&&!this.#closed&&!(this.#readEnded&&this.#pendingInput.length))this._fail(Error('Socket closed'));});
+    },stream=>this.#attachTransport(stream,initial.output)).catch(error=>this._fail(error));
+  }
+  #attachTransport(stream,output) {
+    if(this.#closed){stream.destroy();return;}
+    this.#socket=stream;stream.setNoDelay?.(true);
+    this.#transportReady=true;this.#addresses=socketAddresses(stream);
+    if(!this.#tlsName)this.#tlsName=stream.servername||'';
+    this.#tlsInfo=tlsSnapshot(stream,this.#tlsName,true);
+    this.#socket.on('data', bytes => {
+      try {
+        if(!(bytes instanceof Uint8Array))throw TypeError('Transport must yield bytes');
+        if(!Buffer.isBuffer(bytes))bytes=Buffer.from(bytes.buffer,bytes.byteOffset,bytes.byteLength);
+        this.#lastRead = performance.now();
+        if(this.#pendingInput.length)throw Error('Overlapping paused socket input');
+        if(this.#receiving&&bytes.length>1048576)throw Error('Socket input chunk limit exceeded');
+        // A Duplex may push replies synchronously inside write(). Pause first and
+        // decode on the next turn so replies cannot re-enter an active send.
+        this.#socket.pause();this.#pendingInput=bytes;this.#resumeRead();
+      } catch (e) { this._fail(e); }
+    });
+    this.#socket.on('end', () => {
+      this.#readEnded=true;if(!this.#pendingInput.length)this.#finishRead();
+    });
+    this.#write(output);stream.resume();
   }
   get closed() { return this.#closed; }
   get closing() { return this.#closing; }
@@ -118,23 +129,23 @@ export class Connection extends EventEmitter {
   get limits() { const {channelMax, frameMax, heartbeat} = this.#limits; return {channelMax, frameMax, heartbeat}; }
   get timeout() { return this.#timeout; }
   get maxBufferedBytes() { return this.#maxBuffered; }
-  get writeStats() { return {socketBufferedBytes:this.#socket.writableLength,maxObservedSocketBytes:this.#maxWritten,drainWaits:this.#drainWaits,streamingChannels:this.#streaming.size,deferredProtocolBytes:this.#deferredBytes}; }
+  get writeStats() { return {socketBufferedBytes:this.#socket?.writableLength??0,maxObservedSocketBytes:this.#maxWritten,drainWaits:this.#drainWaits,streamingChannels:this.#streaming.size,deferredProtocolBytes:this.#deferredBytes}; }
   get readStats() { return this.#receiving?{...this.#receiving.stats,pendingInputBytes:this.#pendingInput.length}:undefined; }
   #finishRead(){if(this.#closed)return;try{checked(core.session_finish(this.#key));this._fail(Error('Unexpected EOF'));}catch(error){this._fail(error);}}
   #resumeRead(){
-    if(this.#closed||this.#readScheduled||this.#receiving.paused)return;
+    if(this.#closed||this.#readScheduled||this.#receiving?.paused)return;
     // Yield between decode batches so a hot connection cannot starve other sockets or timers.
-    this.#readScheduled=true;setImmediate(()=>{this.#readScheduled=false;if(this.#closed||this.#receiving.paused)return;if(this.#readBackpressured){this.#readBackpressured=false;this.#lastRead=performance.now();}if(this.#pendingInput.length)this.#pumpRead();else if(this.#readEnded)this.#finishRead();else this.#socket.resume();});
+    this.#readScheduled=true;setImmediate(()=>{this.#readScheduled=false;if(this.#closed||this.#receiving?.paused)return;if(this.#readBackpressured){this.#readBackpressured=false;this.#lastRead=performance.now();}if(this.#pendingInput.length)this.#pumpRead();else if(this.#readEnded)this.#finishRead();else this.#socket.resume();});
   }
   #pumpRead(){
     if(this.#closed||this.#readPumping)return;this.#readPumping=true;
     try{
-      if(this.#pendingInput.length&&!this.#receiving.paused&&!this.#closed){
+      if(this.#pendingInput.length&&!this.#receiving?.paused&&!this.#closed){
         const bytes=this.#pendingInput.subarray(0,65536);this.#pendingInput=this.#pendingInput.subarray(bytes.length);
         this.#process(core.session_feed(this.#key,bytes.toString('hex')));
       }
-      if(this.#receiving.paused)this.#readBackpressured=true;
-      if(!this.#closed){if(!this.#pendingInput.length&&this.#readEnded)this.#finishRead();else if(!this.#receiving.paused)this.#resumeRead();}
+      if(this.#receiving?.paused)this.#readBackpressured=true;
+      if(!this.#closed){if(!this.#pendingInput.length&&this.#readEnded)this.#finishRead();else if(!this.#receiving?.paused)this.#resumeRead();}
     }catch(error){this._fail(error);}finally{this.#readPumping=false;}
   }
   _assertIncomingComplete(channel,tag,multiple=false){this.#receiving?.assertComplete(channel,tag,multiple);}
@@ -186,6 +197,7 @@ export class Connection extends EventEmitter {
       } else if (e.type === 'ready') {
         this.#authProviders=[];
         clearTimeout(this.#connectTimer);
+        finishTransportHandshake(this.#socket);
         if (result.heartbeat) {
           this.#timer = setInterval(() => {
             try {
@@ -294,7 +306,7 @@ export class Connection extends EventEmitter {
     if(this.#secretUpdate){clearTimeout(this.#secretUpdate.timer);this.#secretUpdate.reject(error);this.#secretUpdate=undefined;}
     for (const ch of this.#channels.values()) ch._terminate(error);
     this.#channels.clear(); core.session_drop(this.#key);
-    if (graceful) this.#socket.end(); else this.#socket.destroy();
+    if (graceful) this.#socket?.end(()=>this.#socket.destroy()); else this.#socket?.destroy();
     this.emit('close', error);
   }
   async openChannel() {
@@ -601,3 +613,5 @@ export const connect = async (options, overrides) => {
   }
   return Connection.connect(options);
 };
+
+export const open = (stream, options) => Connection.open(stream, options);

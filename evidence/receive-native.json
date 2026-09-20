@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T11:21:05.869Z",
+  "utc": "2026-09-20T12:58:03.866Z",
   "node": "v24.11.0",
   "passed": 8,
   "tests": [
@@ -132,15 +132,15 @@
       },
       "processMemory": {
         "initial": {
-          "rss": 71380992,
-          "heapTotal": 28082176,
-          "heapUsed": 8430592,
-          "external": 2760035,
-          "arrayBuffers": 286924
+          "rss": 77623296,
+          "heapTotal": 56651776,
+          "heapUsed": 20556960,
+          "external": 3088937,
+          "arrayBuffers": 419246
         },
         "peak": {
-          "rss": 246353920,
-          "external": 5314649
+          "rss": 152150016,
+          "external": 4604005
         },
         "note": "Whole Node process observation, not an RSS guarantee or upstream throughput comparison."
       }
@@ -177,39 +177,46 @@
       },
       "processMemory": {
         "initial": {
-          "rss": 243646464,
-          "heapTotal": 194514944,
-          "heapUsed": 112889552,
-          "external": 4981937,
-          "arrayBuffers": 2477578
+          "rss": 151257088,
+          "heapTotal": 104570880,
+          "heapUsed": 55240696,
+          "external": 3922268,
+          "arrayBuffers": 1417106
         },
         "peak": {
-          "rss": 243646464,
-          "external": 5017550
+          "rss": 201986048,
+          "external": 4168063
         },
         "note": "Whole Node process observation, not an RSS guarantee or upstream throughput comparison."
       }
     }
   ],
   "sources": {
-    "tools/evidence-source.mjs": "a09090a7e53a2b18c920cce0c00f2d638cfa54b4a9be3311c5c01c1f93be84ea",
+    "tools/evidence-source.mjs": "bc423777ed720b419d4ead72d596930464589c8d1a38b727902303f175ced014",
+    "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
+    "connection_metadata.mbt": "4e9efe9ff13516915819c6db4c08d1880cc7709a5108b1d46a784410242a550d",
+    "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
+    "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
+    "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
+    "uri.mbt": "fb8755671ef6cc4afc4d3a51da45f3baf8df45a6ce1a9ffd3126b495d7df7d1e",
+    "cmd/web/uri.mbt": "277acacb4d51d0a13e470e7132a74ffc592fc13dec72855ec2881e9ea1e7ba54",
     "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
     "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
-    "session.mbt": "83a95ee1ccb550399ccc0db9f08b3a1ab1e467098b53e467332ae741b503f48b",
+    "session.mbt": "2e32e207bb10de94aa665c1855147c150b8dfbd203eab2d4d43515a50d55526d",
     "receive_stream.mbt": "189d08894d96e52044c93f958c135efba5e2c5a8d969264b9a22099681d7f1c0",
     "cmd/web/session.mbt": "77a46d26771f0f9afc04283bcf301353985c1f61e159b357d5fd20642e9ab5fb",
-    "cmd/web/authentication.mbt": "9c57e3bcbad42ef3f9a417eafadf12c99829dbfcb453df4683076d7567c4d3e4",
-    "tools/client.mjs": "19e014615d91ccef85166cbc3ac2a2fab173ee1647bfcea9c1eb07e6b6839c4a",
+    "cmd/web/authentication.mbt": "007c9d1407e295f973f608933292e2e33f9c9e275cc7dd50b7718094a63b2809",
+    "tools/client.mjs": "d037422790d7263903432838d4ba27f3170a5dbc0f699b5d6db69103a718b224",
     "tools/inbound.mjs": "472f83ff6abb1d1516ad46254f4a90219170630bf1506bb917fd35b1688e341f",
     "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
     "tools/recovery-channel.mjs": "6c7709db98f69d749d7b0cb87b6f53cbc7e2439dccfc20e75487efd69c2f5fe4",
-    "tools/recovery.mjs": "f9bb94945bc9dc9fa95c624ee692c8d5859a744591f51c51252deb1b2861a427",
+    "tools/recovery.mjs": "96e400666ceebc95fd1a9ef92fd7b913b6426f8cd396dcdebe9fa40af42c4dee",
     "tools/receive-reference.go": "0e0db50f1abe3ee383c6825f89ee1f2f508ea0d4f092abe318b72f0763bac19c",
     "tools/test-receive-native.mjs": "f3c64f30888ab984150e9297cd4bcf1f88bf21c69503ff544679f30ee2d908c6",
     "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
     "evidence/receive-reference-build.json": "0fac38895af8f0124999844277fc0a8e465d162c262342bd5d433b92c22012ca",
-    "web/engine.mjs": "28381c963d442f191df87990728372343c97c8d0bceae2ea6efe6b1fa9225f36"
+    "web/engine.mjs": "a581253b54ae52918e911d1d924188751e8e458f336a629a2c9df71dcb4cfbfe"
   },
   "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "binarySha256": "a016335103c37cb250e6f5efc2ce1165b87f149346f78fe66917afb97e00cbf1",

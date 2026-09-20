@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T12:22:55.500Z",
+  "utc": "2026-09-20T12:53:54.583Z",
   "node": "v24.11.0",
   "passed": 14,
   "tests": [
@@ -19,8 +19,9 @@
     "metadata bridge errors stay redacted and legacy session open exports still work"
   ],
   "sources": {
-    "tools/evidence-source.mjs": "5934a9304f0145abca3cbdbac65efb46d5f1942c5e08033bf088d9a90f78320b",
-    "connection_metadata.mbt": "e0095c3cf877de13da96420ec5d281b12f69fde1cb557a9992a97eae1f8c22c9",
+    "tools/evidence-source.mjs": "bc423777ed720b419d4ead72d596930464589c8d1a38b727902303f175ced014",
+    "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
+    "connection_metadata.mbt": "4e9efe9ff13516915819c6db4c08d1880cc7709a5108b1d46a784410242a550d",
     "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
     "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
     "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
@@ -31,12 +32,12 @@
     "session.mbt": "2e32e207bb10de94aa665c1855147c150b8dfbd203eab2d4d43515a50d55526d",
     "authentication.mbt": "8653598bda374f5b638bf5cf8f754a95996cf6e99f6f68a707777ecf65f0653c",
     "cmd/web/authentication.mbt": "007c9d1407e295f973f608933292e2e33f9c9e275cc7dd50b7718094a63b2809",
-    "tools/client.mjs": "f8d06cba7bfaf3c813350d6090e8212a88bfa0344179cd8ef9e7d47d58e5b48e",
+    "tools/client.mjs": "d037422790d7263903432838d4ba27f3170a5dbc0f699b5d6db69103a718b224",
     "tools/recovery.mjs": "96e400666ceebc95fd1a9ef92fd7b913b6426f8cd396dcdebe9fa40af42c4dee",
-    "tools/recovery-peer.mjs": "df3bc8857f9a7b2368d64b3564f6c06ea6fa98f9128e8f29addb8743b63b9ddf",
+    "tools/recovery-peer.mjs": "ce2f414bffcb07a848143cd34c1e737340e15078f4b3f0cb25f0e829a35118fe",
     "tools/metadata-peer.mjs": "687b569f03a40832de7c4aa5c0a61add6089a905972a30abba15717aabc105f4",
-    "tools/test-metadata.mjs": "8ade0f366b2199a8d2b0c1d9efbcd4c51d39977dd37e39a4cba74aa6542361ac",
-    "web/engine.mjs": "1524505ec209621830c1b2c901bc38ebf4ac03b7750a1a7c33669773c173eb26"
+    "tools/test-metadata.mjs": "72503fa89e48061ddee323b6e8a8fdc31aba8d1cab9c81c142c73ff073e50ede",
+    "web/engine.mjs": "a581253b54ae52918e911d1d924188751e8e458f336a629a2c9df71dcb4cfbfe"
   },
   "scope": "Independent byte peer verifies actual properties and metadata snapshots, validation, endpoint mapping, protocol neutrality and connection versus channel recovery generations. TLS and native reference comparisons are separate."
 }

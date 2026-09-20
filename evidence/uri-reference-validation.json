@@ -1,15 +1,15 @@
 {
-  "utc": "2026-09-20T12:23:24.334Z",
+  "utc": "2026-09-20T12:53:34.516Z",
   "node": "v24.11.0",
   "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "binarySha256": "f2b7aef1baf6193e0b14d6b8c520d0da1237c7b026c82e9146e8d2915eda82da",
   "matched": 623,
   "explicitDifferences": 6,
   "sources": {
-    "tools/evidence-source.mjs": "5934a9304f0145abca3cbdbac65efb46d5f1942c5e08033bf088d9a90f78320b",
+    "tools/evidence-source.mjs": "bc423777ed720b419d4ead72d596930464589c8d1a38b727902303f175ced014",
     "uri.mbt": "fb8755671ef6cc4afc4d3a51da45f3baf8df45a6ce1a9ffd3126b495d7df7d1e",
     "cmd/web/uri.mbt": "277acacb4d51d0a13e470e7132a74ffc592fc13dec72855ec2881e9ea1e7ba54",
-    "web/engine.mjs": "1524505ec209621830c1b2c901bc38ebf4ac03b7750a1a7c33669773c173eb26",
+    "web/engine.mjs": "a581253b54ae52918e911d1d924188751e8e458f336a629a2c9df71dcb4cfbfe",
     "tools/test-uri-reference.mjs": "0161612bba0bdef85424355deff7fc7b57f0498815f85e7de4a12843a991b34f",
     "tools/uri-reference.go": "3e6b3b94e7053244f2e73018829510fff459caca1b2a48833c78f38f4c2ab2cf"
   },

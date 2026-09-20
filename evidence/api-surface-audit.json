@@ -485,8 +485,8 @@
       "file": "connection.go",
       "line": 210,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "defaultDial(timeout)(network, address, {signal})",
+      "boundary": "TCP/IPv4/IPv6/Windows 命名管道已验证；握手期限完成后清除；异步 Promise 与总期限有差异，Unix-domain socket 平台执行仍待验证"
     },
     {
       "name": "Dial",
@@ -494,7 +494,7 @@
       "line": 235,
       "buildConstraint": "",
       "hostEquivalent": "connect(uri, options) / connect({uri, ...options})",
-      "boundary": "支持 URI、TLS/EXTERNAL、自定义 properties；有默认值/资源与属性别名差异；自定义 Dial/全部配置语义仍缺"
+      "boundary": "支持 URI、TLS/EXTERNAL、自定义 properties/dial 与恢复重新拨号；默认值/资源/属性别名、总期限和 Go 完整调度仍有差异"
     },
     {
       "name": "DialTLS",
@@ -502,7 +502,7 @@
       "line": 249,
       "buildConstraint": "",
       "hostEquivalent": "connect(uri, options) / connect({uri, ...options})",
-      "boundary": "支持 URI、TLS/EXTERNAL、自定义 properties；有默认值/资源与属性别名差异；自定义 Dial/全部配置语义仍缺"
+      "boundary": "支持 URI、TLS/EXTERNAL、自定义 properties/dial 与恢复重新拨号；默认值/资源/属性别名、总期限和 Go 完整调度仍有差异"
     },
     {
       "name": "DialTLS_ExternalAuth",
@@ -510,7 +510,7 @@
       "line": 268,
       "buildConstraint": "",
       "hostEquivalent": "connect(uri, options) / connect({uri, ...options})",
-      "boundary": "支持 URI、TLS/EXTERNAL、自定义 properties；有默认值/资源与属性别名差异；自定义 Dial/全部配置语义仍缺"
+      "boundary": "支持 URI、TLS/EXTERNAL、自定义 properties/dial 与恢复重新拨号；默认值/资源/属性别名、总期限和 Go 完整调度仍有差异"
     },
     {
       "name": "DialConfig",
@@ -518,15 +518,15 @@
       "line": 281,
       "buildConstraint": "",
       "hostEquivalent": "connect(uri, options) / connect({uri, ...options})",
-      "boundary": "支持 URI、TLS/EXTERNAL、自定义 properties；有默认值/资源与属性别名差异；自定义 Dial/全部配置语义仍缺"
+      "boundary": "支持 URI、TLS/EXTERNAL、自定义 properties/dial 与恢复重新拨号；默认值/资源/属性别名、总期限和 Go 完整调度仍有差异"
     },
     {
       "name": "Open",
       "file": "connection.go",
       "line": 381,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "open(stream, options) / Connection.open",
+      "boundary": "已连接二进制 Duplex/已有 TLS；库接管关闭；单次物理连接，不自动推断重建方式；总期限与 Node 流校验不同于 Go"
     },
     {
       "name": "Connection.UpdateSecret",

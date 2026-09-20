@@ -10,7 +10,22 @@
 CI files are prepared locally; remote CI has not run because this repository has not been uploaded. Compatibility beyond README scope remains unverified.
 
 
-## 0.18 当前连接元数据验证
+## 0.19 当前自定义传输验证
+
+- `transport-verify.txt`：JS/Wasm-GC 各 138 项与全部本地 fixture/CLI/畸形输入检查；22 新传输组。
+- `transport-native.json`：6 原生传输结果、7 broker 结果一致；另计 TLS 失败清理和自定义 TLS 恢复 2 个本地场景。
+- 原库由 `transport-reference.go` 调用，72 文件未修改，适配器及二进制指纹见 `transport-reference-build.json`。
+- 重跑 metadata-native、uri-reference-validation、uri-broker-validation、rabbitmq-validation、confirmations-native、stream-native、receive-native。其余 14 份历史原生/broker 报告保留旧指纹，不计为本轮执行。
+- 无自定义传输/生产负载性能追平结论；Go 与 Node 的总期限、调度、网络和流校验范围见 TRANSPORT.md。
+
+```powershell
+./verify.ps1 -MoonPath /absolute/path/to/moon.exe
+$env:AMQP_TRANSPORT_REFERENCE='/absolute/path/to/transport-oracle.exe'
+$env:RABBITMQ_ROOT='/path/to/extracted/rabbitmq/root'
+node tools/test-transport-native.mjs
+```
+
+## 0.18 历史连接元数据验证
 
 - `metadata-verify.txt`：JS/Wasm-GC 各 138 项以及全部现有本地 fixture/CLI/异常输入回归；含 14 元数据组、14 URI 组。
 - `metadata-native.json`：固定 Go 原库 7 个独立 peer 元数据结果、5 份自定义属性表、7 个真实 broker 结果一致；1 个本地 TLS 1.3 恢复。真实校对 IPv4/IPv6 客户端与服务器两端地址。TLS 1.2 两侧固定相同套件，不将不同协商结果当成属性读取错误。

@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T12:22:22.933Z",
+  "utc": "2026-09-20T12:53:20.853Z",
   "node": "v24.11.0",
   "passed": 22,
   "tests": [
@@ -59,8 +59,9 @@
     }
   ],
   "sources": {
-    "tools/evidence-source.mjs": "5934a9304f0145abca3cbdbac65efb46d5f1942c5e08033bf088d9a90f78320b",
-    "connection_metadata.mbt": "e0095c3cf877de13da96420ec5d281b12f69fde1cb557a9992a97eae1f8c22c9",
+    "tools/evidence-source.mjs": "bc423777ed720b419d4ead72d596930464589c8d1a38b727902303f175ced014",
+    "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
+    "connection_metadata.mbt": "4e9efe9ff13516915819c6db4c08d1880cc7709a5108b1d46a784410242a550d",
     "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
     "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
     "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
@@ -73,12 +74,12 @@
     "publish_stream_test.mbt": "967420c566722e4a5990a68987a51144fd7031224343552ceffde5f5bca3b1f0",
     "cmd/web/publish_stream.mbt": "78bd1662496a37dd89512596ffbc99d083fd39605dc3eeaa02fe42ffa3f7248a",
     "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
-    "tools/client.mjs": "f8d06cba7bfaf3c813350d6090e8212a88bfa0344179cd8ef9e7d47d58e5b48e",
+    "tools/client.mjs": "d037422790d7263903432838d4ba27f3170a5dbc0f699b5d6db69103a718b224",
     "tools/recovery-channel.mjs": "6c7709db98f69d749d7b0cb87b6f53cbc7e2439dccfc20e75487efd69c2f5fe4",
     "tools/recovery.mjs": "96e400666ceebc95fd1a9ef92fd7b913b6426f8cd396dcdebe9fa40af42c4dee",
     "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
     "tools/test-stream.mjs": "a777946698ffbbcef993f6dde250b23f5ca16537281c29a39a49b5d4e5e8e653",
-    "web/engine.mjs": "1524505ec209621830c1b2c901bc38ebf4ac03b7750a1a7c33669773c173eb26"
+    "web/engine.mjs": "a581253b54ae52918e911d1d924188751e8e458f336a629a2c9df71dcb4cfbfe"
   },
   "scope": "Independent wire fixtures; outbound streaming only. Source-owned chunk storage excluded from sender buffer bound."
 }
