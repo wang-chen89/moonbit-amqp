@@ -1,0 +1,15 @@
+MATCH topology peer all/basic
+MATCH topology peer transient/basic
+MATCH topology peer none/basic
+MATCH topology peer off/basic
+MATCH topology peer all/duplicates
+MATCH topology peer all/mutations
+MATCH topology peer all/close
+MATCH topology broker all/basic
+MATCH topology broker transient/basic
+MATCH topology broker none/basic
+MATCH topology broker off/basic
+MATCH topology broker all/duplicates
+MATCH topology broker all/mutations
+MATCH topology broker all/close
+7 native topology results and 7 broker results matched; 3 local recovery cases passed; 1 explicit difference

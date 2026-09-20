@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T12:53:31.308Z",
+  "utc": "2026-09-20T13:15:13.670Z",
   "node": "v24.11.0",
   "passed": 25,
   "tests": [
@@ -63,9 +63,13 @@
     }
   ],
   "sources": {
-    "tools/evidence-source.mjs": "bc423777ed720b419d4ead72d596930464589c8d1a38b727902303f175ced014",
+    "tools/evidence-source.mjs": "d3e0e0c596403cd1eb69cb95fffe2bf064ce584b9807e2c9eae0ae4b1a145eee",
+    "tools/recovery.mjs": "2350d4803c65df43aa72d80c4c095cdeb0757128f5b486c05fa6910cbae18eaa",
+    "tools/recovery-state.mjs": "252af8db222d6da70a5e499af2538f7e1026fb0b6634c1ffc30653f5b6d68a5d",
+    "tools/recovery-channel.mjs": "2a3044fbe998e25f56b735b23aa7160ca4bb448947f6e8446ce31a44b76f5abc",
+    "tools/topology-query.mjs": "26fdbf28aa2b51eb8bf1a7bfb81b1a004ef0207ae071989ab8aaaab5070493e6",
     "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
-    "connection_metadata.mbt": "4e9efe9ff13516915819c6db4c08d1880cc7709a5108b1d46a784410242a550d",
+    "connection_metadata.mbt": "b3844afc5a7255d85cb5877e3ac3df28a28250165a843565c76f8dc410528a37",
     "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
     "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
     "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
@@ -78,15 +82,13 @@
     "receive_stream_test.mbt": "49c36575d466f0fb66254d86f921932615b6ac51b841a2855691875c5c2da9d5",
     "cmd/web/session.mbt": "77a46d26771f0f9afc04283bcf301353985c1f61e159b357d5fd20642e9ab5fb",
     "cmd/web/authentication.mbt": "007c9d1407e295f973f608933292e2e33f9c9e275cc7dd50b7718094a63b2809",
-    "tools/client.mjs": "d037422790d7263903432838d4ba27f3170a5dbc0f699b5d6db69103a718b224",
+    "tools/client.mjs": "33e2731a3f4458f4db59f831ef5ffe94ba475b4c1990149e04e550887f65fde9",
     "tools/inbound.mjs": "472f83ff6abb1d1516ad46254f4a90219170630bf1506bb917fd35b1688e341f",
     "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
-    "tools/recovery.mjs": "96e400666ceebc95fd1a9ef92fd7b913b6426f8cd396dcdebe9fa40af42c4dee",
-    "tools/recovery-channel.mjs": "6c7709db98f69d749d7b0cb87b6f53cbc7e2439dccfc20e75487efd69c2f5fe4",
     "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
     "tools/receive-peer.mjs": "39bc524b5d683a189c692d60b9dd8cc2cf509616e46bd5c03e6640c750b30516",
     "tools/test-receive-stream.mjs": "5f188a52e168e6145687379209250ca83a69e8edab27db0635bd780e332bb0e9",
-    "web/engine.mjs": "a581253b54ae52918e911d1d924188751e8e458f336a629a2c9df71dcb4cfbfe"
+    "web/engine.mjs": "bb184ca5269865886c5e0cd4c605716c752c123bcfcb3dbb2c075f3370239fa7"
   },
   "scope": "Opt-in incoming async byte streams; bounded shared body buffer and independent AMQP wire peer. Does not bound user-retained chunks, decoder/bridge temporaries or process RSS."
 }

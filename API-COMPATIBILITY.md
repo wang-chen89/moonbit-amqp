@@ -1,8 +1,8 @@
-# 原库接口对应与剩余差距 · 0.19
+# 原库接口对应与剩余差距 · 0.20
 
 基准为已核验的 amqp091-go 提交 `a0195c6baf35db642d13651cb28938f899062e7c`。下表来自根目录非测试 Go 源文件的 106 条导出命名函数/方法声明，排除非导出接收者，包含构建标签下的 Fuzz。它不是 106 项独立功能，也不涵盖所有结构体字段、常量、接口或运行行为；不能据此计算“追平百分比”。逐条源位置、构建标签和文件 SHA-256 见 [接口清单](evidence/api-surface-audit.json)。
 
-“有入口”仅指已有对应操作及所注明的有限验证，不代表完整兼容。当前优先差距包括：完整 context/Go channel 通知语义、完整 TLS 状态/网络截止时间、显式重连与可读拓扑快照，以及完整恢复/长期/多版本/性能验证。
+“有入口”仅指已有对应操作及所注明的有限验证，不代表完整兼容。当前优先差距包括：完整 context/Go channel 通知语义、完整 TLS 状态/网络截止时间、显式重连与恢复查询的剩余终止边界，以及完整恢复/长期/多版本/性能验证。
 
 0.13 为 11 个宿主方法补 noWait 选项，队列与交换机被动声明复用原方法选项。15 条原库报文逐字节一致；8 个真实 broker 场景结果一致。另有一个明确差异：固定 Go 的 Confirm(true) 仍等待 RabbitMQ 按 no-wait 抑制的回复，本实现不等待且能继续获得发布确认。该项单独记录，未计为行为一致。其余 8 个 Go broker 场景使用 Confirm(false) 隔离此限制。
 
@@ -18,6 +18,8 @@
 
 0.19 新增自定义拨号、Open 和默认拨号器：6 原生传输结果、7 broker 结果一致，2 本地 TLS 场景；22 本地检查覆盖内存流、背压、期限、所有权和恢复。见 [自定义传输](TRANSPORT.md)。
 
+0.20 新增恢复配置与拓扑快照：14 本地组、7 peer/7 broker 一致，3 本地真实恢复；修复关闭通道残留登记。嵌套参数别名差异及异常终止查询风险见 [拓扑查询](TOPOLOGY.md)。
+
 | 原库声明 | 本版入口/对应能力 | 边界 |
 |---|---|---|
 | `PlainAuth.String` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
@@ -28,7 +30,7 @@
 | `AMQPlainAuth.Response` | sasl 提供器 / Authentication | 有限认证响应/协商对照；表示形式与对象 API 不同 |
 | `ExternalAuth.Mechanism` | sasl 提供器 / Authentication | 有限认证响应/协商对照；表示形式与对象 API 不同 |
 | `ExternalAuth.Response` | sasl 提供器 / Authentication | 有限认证响应/协商对照；表示形式与对象 API 不同 |
-| `TopologyConfiguration.Clone` | 恢复对象内部 topology | 部分；没有等价的只读配置快照/Clone API，不建议依赖内部可变 Map |
+| `TopologyConfiguration.Clone` | structuredClone(topologyConfiguration()) | 每次查询已深复制，可再复制；原库嵌套 Args 共享引用的差异单列 |
 | `Channel.Close` | close / closed / openChannel | 有入口；关闭、编号重用和恢复已有有限验证 |
 | `Channel.IsClosed` | close / closed / openChannel | 有入口；关闭、编号重用和恢复已有有限验证 |
 | `Channel.NotifyStateChange` | 恢复对象 stateChange / ready / recovered | 部分；普通物理对象无同形状态事件 |
@@ -71,7 +73,7 @@
 | `Channel.Reject` | cancel / get / txSelect / txCommit / txRollback / recover / ack / nack / reject | 有入口；有限线路与 broker 对照，不代表全部交错 |
 | `Channel.GetNextPublishSeqNo` | nextPublishSeqNo | 实际发送开始时分配的 BigInt 序号快照，不预留；恢复通道离线时不能查询 |
 | `Channel.Reconnect` | 自动恢复 / waitForReady | 部分；没有用户显式重连入口 |
-| `Channel.TopologyConfiguration` | 恢复对象内部 topology | 部分；没有等价的只读配置快照/Clone API，不建议依赖内部可变 Map |
+| `Channel.TopologyConfiguration` | topologyConfiguration(global=false) | 本地/全局实体及通道最后 QoS；7 peer/7 broker 一致，3 本地恢复；未覆盖所有恢复交错 |
 | `DeferredConfirmation.Done` | 句柄 done / acked / wait({signal, timeout}) | 局部等待独立取消；nack/关闭为 false，关闭另保留 error；预取消优先拒绝，非 Go select 调度复刻 |
 | `DeferredConfirmation.Acked` | 句柄 done / acked / wait({signal, timeout}) | 局部等待独立取消；nack/关闭为 false，关闭另保留 error；预取消优先拒绝，非 Go select 调度复刻 |
 | `DeferredConfirmation.Wait` | 句柄 done / acked / wait({signal, timeout}) | 局部等待独立取消；nack/关闭为 false，关闭另保留 error；预取消优先拒绝，非 Go select 调度复刻 |
@@ -96,11 +98,11 @@
 | `Connection.IsClosed` | close / closed / openChannel | 有入口；关闭、编号重用和恢复已有有限验证 |
 | `Connection.Channel` | close / closed / openChannel | 有入口；关闭、编号重用和恢复已有有限验证 |
 | `Connection.Reconnect` | 自动恢复 / waitForReady | 部分；没有用户显式重连入口 |
-| `Connection.IsRecoveryEnabled` | connect 的 recovery 选项 | 配置能力部分对应；无全部同形只读查询入口 |
-| `Connection.IsTopologyRecoveryEnabled` | connect 的 recovery 选项 | 配置能力部分对应；无全部同形只读查询入口 |
-| `Connection.IsConnectionRecoveryEnabled` | connect 的 recovery 选项 | 配置能力部分对应；无全部同形只读查询入口 |
-| `Connection.MaxRetryCount` | connect 的 recovery 选项 | 配置能力部分对应；无全部同形只读查询入口 |
-| `Connection.RetryInterval` | connect 的 recovery 选项 | 配置能力部分对应；无全部同形只读查询入口 |
+| `Connection.IsRecoveryEnabled` | recoveryEnabled | 活动及显式 close 已原生对照；间隔毫秒；恢复耗尽等异常终止路径仍有兼容风险，见 TOPOLOGY.md |
+| `Connection.IsTopologyRecoveryEnabled` | topologyRecoveryEnabled | 活动及显式 close 已原生对照；间隔毫秒；恢复耗尽等异常终止路径仍有兼容风险，见 TOPOLOGY.md |
+| `Connection.IsConnectionRecoveryEnabled` | connectionRecoveryEnabled | 活动及显式 close 已原生对照；间隔毫秒；恢复耗尽等异常终止路径仍有兼容风险，见 TOPOLOGY.md |
+| `Connection.MaxRetryCount` | maxRetryCount | 活动及显式 close 已原生对照；间隔毫秒；恢复耗尽等异常终止路径仍有兼容风险，见 TOPOLOGY.md |
+| `Connection.RetryInterval` | retryInterval | 活动及显式 close 已原生对照；间隔毫秒；恢复耗尽等异常终止路径仍有兼容风险，见 TOPOLOGY.md |
 | `Delivery.Ack` | channel.ack/nack/reject(message.args.delivery-tag) | 能力通过通道提供；消息不是绑定确认方法的 Go Delivery 对象 |
 | `Delivery.Reject` | channel.ack/nack/reject(message.args.delivery-tag) | 能力通过通道提供；消息不是绑定确认方法的 Go Delivery 对象 |
 | `Delivery.Nack` | channel.ack/nack/reject(message.args.delivery-tag) | 能力通过通道提供；消息不是绑定确认方法的 Go Delivery 对象 |
@@ -112,7 +114,7 @@
 | `TopologyRecoveryEntityType.String` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
 | `TopologyRecoveryEntity.Error` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
 | `TopologyRecoveryEntity.Unwrap` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
-| `ReconnectionConfig.Clone` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `ReconnectionConfig.Clone` | connection.reconnectionConfig | 每次取得独立配置副本，毫秒间隔；终止后保留配置，未提供动态写回 |
 | `DefaultConnectionRecovery.OnConnectionClose` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
 | `DefaultConnectionRecovery.OnChannelClose` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
 | `DefaultTopologyRecovery.RecoverTopology` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |

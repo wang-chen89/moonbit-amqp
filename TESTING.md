@@ -10,7 +10,24 @@
 CI files are prepared locally; remote CI has not run because this repository has not been uploaded. Compatibility beyond README scope remains unverified.
 
 
-## 0.19 当前自定义传输验证
+## 0.20 当前恢复查询/拓扑验证
+
+- `topology-verify.txt`：JS/Wasm-GC 各 138 项，完整本地检查含 14 新拓扑组。
+- `topology-close-initial.json`：0.19 源码复现显式关闭通道仍保留 idle 队列登记；固定 Go 已移除。新本地/原生检查验证修复。
+- `topology-native.json`：7 peer/7 broker 完整分阶段结果一致；3 个本地真实恢复场景；原库嵌套 Args 别名单列 1 差异。
+- `topology-reference-build.json`：原库 72 文件未修改，公开 API 调用程序与二进制分别记录指纹。
+- 当前共 30 份源码绑定报告：完整本地 fixture 加 13 个原生/broker 命令。另 10 份历史原生/broker 报告未重跑，精确列表见 `topology-upgrade.json`。
+- 本轮还重跑自动删除（9 一致/1 差异）、跨通道依赖（2 项明确改进）、本地恢复（6 组）与 Go 两次断线场景，保留各自证明边界。
+- 异常终止后 enabled 查询尚无原生执行，源码审查风险见 `topology-terminal-query-audit.json`。无完整策略/恢复交错/代表性性能结论。
+
+```powershell
+./verify.ps1 -MoonPath /absolute/path/to/moon.exe
+$env:AMQP_TOPOLOGY_REFERENCE='/absolute/path/to/topology-oracle.exe'
+$env:RABBITMQ_ROOT='/path/to/extracted/rabbitmq/root'
+node tools/test-topology-native.mjs
+```
+
+## 0.19 历史自定义传输验证
 
 - `transport-verify.txt`：JS/Wasm-GC 各 138 项与全部本地 fixture/CLI/畸形输入检查；22 新传输组。
 - `transport-native.json`：6 原生传输结果、7 broker 结果一致；另计 TLS 失败清理和自定义 TLS 恢复 2 个本地场景。

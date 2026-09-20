@@ -14,6 +14,7 @@ export class RecoveringChannel extends Lifecycle {
   get _consumers() { return this.#consumers; }
   get _generation() { return this.#generation; }
   get nextPublishSeqNo() { return this._active().nextPublishSeqNo; }
+  topologyConfiguration(global=false) { return this.#connection._topologyConfiguration(this.id,global); }
   _active(topology = false) { this.#connection._active(this,topology); return this.#physical; }
   async _open(connection) {
     const claim=++this.#opening;
@@ -91,8 +92,8 @@ export class RecoveringChannel extends Lifecycle {
   declareExchange(exchange,type='direct',options={}) {
     options=snapshot(options);
     return this.#record('declareExchange',[exchange,type,options],value=>{
-      if(!options.passive)this.#connection.topology.exchanges.set(exchange,{name:exchange,type,options,owner:this.id}); return value;
-    },options.passive||this.#connection.topology.exchanges.has(exchange)?0:1);
+      if(!options.passive)this.#connection.topology.record('exchanges',exchange,{name:exchange,type,options,owner:this.id}); return value;
+    },options.passive||this.#connection.topology.hasRecord('exchanges',exchange,this.id)?0:1);
   }
   deleteExchange(exchange,options={}) {
     return this.#call('deleteExchange',[exchange,snapshot(options)],value=>{this.#connection.topology.removeExchange(exchange);return value;},true);
@@ -102,9 +103,9 @@ export class RecoveringChannel extends Lifecycle {
     const previous=this.#connection.topology.queue(queue);
     return this.#record('declareQueue',[previous?.current??queue,options],value=>{
       const key=this.#connection.topology.key(value.queue);
-      if(!options.passive)this.#connection.topology.queues.set(key,{key,current:value.queue,requested:previous?.requested??queue,options,owner:this.id});
+      if(!options.passive)this.#connection.topology.record('queues',key,{key,current:value.queue,requested:previous?.requested??queue,declared:previous?.current??queue,options,owner:this.id});
       this.#lastQueue=key; return value;
-    },options.passive||previous?0:1);
+    },options.passive||this.#connection.topology.hasRecord('queues',previous?.key??queue,this.id)?0:1);
   }
   deleteQueue(queue,options={}) {
     const key=this._queue(queue);
@@ -116,7 +117,7 @@ export class RecoveringChannel extends Lifecycle {
     const key=identity({...entry,owner:0});
     entry.options=snapshot(options);
     this._active(true);const release=this.#connection.topology.pendingBinding(exchange);
-    try {return await this.#record('bindQueue',[this._resolved(queue),exchange,routingKey,entry.args,entry.options],value=>{this.#connection.topology.bindings.set(key,entry);return value;},this.#connection.topology.bindings.has(key)?0:1);}finally{release();}
+    try {return await this.#record('bindQueue',[this._resolved(queue),exchange,routingKey,entry.args,entry.options],value=>{this.#connection.topology.record('bindings',key,entry);return value;},this.#connection.topology.hasRecord('bindings',key,this.id)?0:1);}finally{release();}
   }
   unbindQueue(queue,exchange,routingKey='',args={}) {
     const entry={queue:this._queue(queue),exchange,routingKey,args:snapshot(args),owner:0};
@@ -127,13 +128,13 @@ export class RecoveringChannel extends Lifecycle {
     const key=identity({...entry,owner:0});
     entry.options=snapshot(options);
     this._active(true);const release=this.#connection.topology.pendingBinding(source);
-    try {return await this.#record('bindExchange',[destination,source,routingKey,entry.args,entry.options],value=>{this.#connection.topology.exchangeBindings.set(key,entry);return value;},this.#connection.topology.exchangeBindings.has(key)?0:1);}finally{release();}
+    try {return await this.#record('bindExchange',[destination,source,routingKey,entry.args,entry.options],value=>{this.#connection.topology.record('exchangeBindings',key,entry);return value;},this.#connection.topology.hasRecord('exchangeBindings',key,this.id)?0:1);}finally{release();}
   }
   unbindExchange(destination,source,routingKey='',args={},options={}) {
     const entry={destination,source,routingKey,args:snapshot(args),owner:0};
     return this.#call('unbindExchange',[destination,source,routingKey,entry.args,snapshot(options)],value=>{this.#connection.topology.removeBinding(identity(entry),true);return value;},true);
   }
-  qos(count,global=false,options={}) { const saved=snapshot(options);return this.#call('qos',[count,global,saved],value=>{this.#qos.set(global,{count,options:saved});return value;},true); }
+  qos(count,global=false,options={}) { const saved=snapshot(options);return this.#call('qos',[count,global,saved],value=>{this.#qos.set(global,{count,options:saved});this.#connection.topology.recordQos(this.id,{prefetchCount:count,prefetchSize:saved.prefetchSize??0,global});return value;},true); }
   flow(active) { return this.#call('flow',[active]); }
   async confirmSelect(options={}) { await this.#call('confirmSelect',[snapshot(options)],()=>{this.#mode='confirm';},true); }
   async txSelect() { await this.#call('txSelect',[],()=>{this.#mode='transaction';},true); }
@@ -235,8 +236,9 @@ export class RecoveringChannel extends Lifecycle {
   async close() {
     if(this.closed)return;
     const raw=this.#physical,queues=new Set([...this.#consumers.values()].map(c=>c.queue));
-    this._stop(Error('Channel closed by application'));this.#connection._removeChannel(this);
+    this._stop(Error('Channel closed by application'));
     for(const key of queues)this.#connection._consumerGone(key);
+    this.#connection._removeChannel(this);
     if(raw&&!raw.closed) {
       try { await raw.close(); }
       catch(error) { if(!raw.closed)this.#connection._raw.destroy(Error('Channel close interrupted an outstanding recovery RPC',{cause:error})); }

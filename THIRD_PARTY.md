@@ -72,3 +72,5 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 0.18 连接属性与元数据参照同一固定 Go 原库的 connection.go、Table.SetClientConnectionName 和 TLS 公共状态。`tools/metadata-reference.go` 为原创只读查询/连接适配器，原库 72 文件再次校验未改动；MoonBit 与 Node 实现独立编写。默认身份及调用方表别名差异保留，不伪造为 Go 相同实现。
 
 0.19 自定义传输参考固定 Go 原库 connection.go 的 DefaultDial、DialConfig、Open、期限清理与重连拨号流程。transport-reference.go 是原创公共 API 适配器；72 个上游文件校验未改动，未复制或分发 Go 运行期代码。Node Duplex 实现独立编写，期限/调度差异明确披露。
+
+0.20 恢复配置与拓扑查询参考同一固定 Go 原库的 TopologyConfiguration、Clone、IsRecoveryEnabled、重试配置查询及关闭清理。topology-reference.go 为原创公开 API 适配器；72 个上游文件校验未改动，Node 所有权记录与快照实现独立编写。嵌套参数别名差异及异常终止查询待验证边界已披露。

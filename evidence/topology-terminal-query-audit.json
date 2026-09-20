@@ -1,0 +1,12 @@
+{
+  "utc": "2026-09-20T13:23:10.842839+00:00",
+  "referenceCommit": "a0195c6baf35db642d13651cb28938f899062e7c",
+  "referenceFile": "connection.go",
+  "referenceSHA256": "29683a2abf2046d6abfc4d2e8d86c1c0aaaf36d73054dea14183e9d04942a66b",
+  "scope": "Read-only source review; terminal retry-exhaustion query behavior has NOT been executed against native Go.",
+  "observations": {
+    "upstream": "IsRecoveryEnabled reads closeInit plus Recovery.ReconnectionConfig.MaxRetryCount. cleanup/closeResources clear resources and lifecycle but do not directly set closeInit. DefaultConnectionRecovery.OnConnectionClose calls cleanup after a failed Reconnect.",
+    "local": "Terminal state disables recoveryEnabled and returns zero for maxRetryCount/retryInterval."
+  },
+  "remaining": "Execute native retry-exhaustion and explicit termination cases to determine the complete observable query contract. Do not count these paths as native matches."
+}

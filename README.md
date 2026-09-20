@@ -1,6 +1,6 @@
 # AMQP 0-9-1 编解码与消息客户端
 
-本地候选版 **0.19.0**。MoonBit 实现帧/方法/属性编解码、连接认证协商和通道状态机；Node.js 提供 TCP/TLS、RPC、心跳和消息发布/消费宿主。仓库独立，当前仅供本地审查。
+本地候选版 **0.20.0**。MoonBit 实现帧/方法/属性编解码、连接认证协商和通道状态机；Node.js 提供 TCP/TLS、RPC、心跳和消息发布/消费宿主。仓库独立，当前仅供本地审查。
 
 ```sh
 moon test --target js
@@ -321,17 +321,19 @@ connection.on('queueNameChanged', ({previous, current}) => console.log({previous
 
 断线时未完成 RPC/确认可能已经在 broker 执行，均以失败结束，**不会自动重放或重发消息**。事务恢复只恢复模式，旧事务中的未提交发布不重发。投递标签跨恢复单调递增，旧通道的 ack/nack/reject 标签被拒绝；重投递仍可能发生，业务应按自身需求处理重复。`close()`、`destroy()` 和连接级 AbortSignal 是终止操作，停止重试；`waitForReady({signal, timeout})` 的取消只结束本次等待。状态和事件细节见 [TESTING.md](TESTING.md)。
 
-默认最多记录 4096 个拓扑实体/绑定，每通道最多 1024 个消费者，普通模式的恢复阶段最多缓冲 1024 条投递或 8 MiB 正文，超限会触发连接故障；流式模式采用前述共享接收水位和早期回调契约。恢复仅由 Node 客户端提供；MoonBit 会话 API 仍由调用方负责网络与生命周期。
+默认最多记录 4096 个按通道分别计数的拓扑实体/绑定，每通道最多 1024 个消费者，普通模式的恢复阶段最多缓冲 1024 条投递或 8 MiB 正文，超限会触发连接故障；流式模式采用前述共享接收水位和早期回调契约。恢复仅由 Node 客户端提供；MoonBit 会话 API 仍由调用方负责网络与生命周期。
+
+恢复配置与本地/全局拓扑快照用法见 [TOPOLOGY.md](TOPOLOGY.md)。显式关闭通道移除其恢复登记，重复登记的其它所有者继续保留；关闭连接后实时拓扑清空，先前取得的深复制快照保持有效。
 
 ## 验证与成熟度
 
-0.19 的 **138 项核心测试在 JS 与 Wasm-GC 分别通过**，完整本地 verify 通过，含新增 22 组自定义传输检查，以及原有元数据、URI、流式收发、认证、恢复和 CLI 回归。
+0.20 的 **138 项核心测试在 JS 与 Wasm-GC 分别通过**，完整本地 verify 通过，含新增 14 组恢复查询/拓扑检查及全部已有宿主、CLI 和畸形输入回归。
 
-固定未修改 Go 原库的 **6 个传输结果、7 个真实 broker 结果一致**；4 个传输成功场景核对队列报文、属性表和消息正文。真实 broker 覆盖路由、已有流、TLS 和双向认证；TLS 验证失败清理和自定义 TLS 恢复另计 2 个本地场景。纯内存、通用 Duplex、真实 IPv6 和 Windows 命名管道也通过本地检查。用法与差异见 [自定义传输](TRANSPORT.md) 和 [本轮清单](evidence/transport-upgrade.json)。
+固定未修改 Go 原库的 **7 个拓扑查询结果、7 个真实 broker 结果一致**；另有 3 个本地恢复场景。修复显式关闭通道后保留孤立恢复登记的问题，支持重复所有者和匿名队列恢复改名。嵌套参数复制的 1 项差异明确保留；异常终止的 enabled 查询尚待原生验证。见 [拓扑用法](TOPOLOGY.md) 和 [本轮清单](evidence/topology-upgrade.json)。
 
-针对传输和接收调度变化，重跑元数据原生对照（7 peer / 5 属性表 / 7 broker）、URI（623 解析 / 18 broker）、基础 RabbitMQ 22 项、原生确认（19 报文 / 6 peer / 9 broker），以及大正文发送 7 组和接收 8 组（各含 3 个原生对照）。既有元数据、URI、确认差异保留；其余 14 份历史原生/broker 报告未重跑，不作为当前源码新执行证据。
+重跑自定义传输、元数据、URI、基础 RabbitMQ、原生确认、双向大正文、自动删除、跨通道依赖，以及本地/Go 真实恢复检查，共 13 个原生/broker 命令。当前源码绑定报告共 30 份；其余 10 份历史原生/broker 报告未重跑，不作为当前源码新执行证据。各既有差异及明确改进保留原计数，不计为匹配。
 
-运行环境为 Windows Node 24 和 WSL RabbitMQ 4.0.5/Erlang 27；各层覆盖重叠，不相加计算追平比例。仅记录本机示例和基础确认样本，**未建立代表性原生性能或生产负载追平**。完整 TLS 状态、Go context/通知/网络截止时间、恢复查询与策略、多版本/平台/集群和长期验证仍缺。历史范围见 [TESTING.md](TESTING.md) 与 [API-COMPATIBILITY.md](API-COMPATIBILITY.md)。协议范围为 AMQP 0-9-1。
+运行环境为 Windows Node 24 和 WSL RabbitMQ 4.0.5/Erlang 27；各层覆盖重叠，不相加计算追平比例。仅记录本机示例和基础确认样本，**未建立代表性原生性能或生产负载追平**。完整 TLS 状态、Go context/通知/网络截止时间、恢复查询剩余边界与策略、多版本/平台/集群和长期验证仍缺。历史范围见 [TESTING.md](TESTING.md) 与 [API-COMPATIBILITY.md](API-COMPATIBILITY.md)。协议范围为 AMQP 0-9-1。
 
 ## 限制
 
@@ -353,4 +355,4 @@ Node 字段表用普通对象，支持 boolean、signed int32、字符串、null
 
 参考：[RabbitMQ 规格](https://www.rabbitmq.com/docs/specification)、[amqp091-go](https://github.com/rabbitmq/amqp091-go)。Pika 仅是独立验证工具，无运行期依赖。
 
-本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，0.19 本地增量归档另附同提交 ZIP/bundle；历史合集未更新。未上传、未发布、未添加远程仓库。
+本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，0.20 本地增量归档另附同提交 ZIP/bundle；历史合集未更新。未上传、未发布、未添加远程仓库。

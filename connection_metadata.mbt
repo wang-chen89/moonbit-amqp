@@ -3,7 +3,7 @@
 pub fn new_connection_properties() -> Array[(String, FieldValue)] {
   [
     ("product", LongString(b"moonbit-amqp")),
-    ("version", LongString(b"0.19.0")),
+    ("version", LongString(b"0.20.0")),
     ("platform", LongString(b"moonbit")),
   ]
 }

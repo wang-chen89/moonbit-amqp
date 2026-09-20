@@ -12,6 +12,7 @@ import {checkConsumerSignal,observeConsumerSignal} from './consumer-signal.mjs';
 import {createConfirmation,emitConfirmation} from './confirmations.mjs';
 import {openOptions,validateTransportOptions,suppliedTLS,startTransport,finishTransportHandshake} from './transport.mjs';
 export {defaultDial} from './transport.mjs';
+import {emptyTopologyConfiguration} from './topology-query.mjs';
 
 function checked(text) {
   if (text.startsWith('ERROR:')) throw Error(text.slice(7));
@@ -113,6 +114,14 @@ export class Connection extends EventEmitter {
     this.#write(output);stream.resume();
   }
   get closed() { return this.#closed; }
+  get recoveryEnabled() { return false; }
+  get connectionRecoveryEnabled() { return false; }
+  get topologyRecoveryEnabled() { return false; }
+  get maxRetryCount() { return 0; }
+  get retryInterval() { return 0; }
+  get reconnectionConfig() { return null; }
+  get recoveryConfig() { return null; }
+  topologyConfiguration() { return emptyTopologyConfiguration(); }
   get closing() { return this.#closing; }
   get clientProperties() { return cloneMetadata(this.#metadata.clientProperties); }
   get serverProperties() { return cloneMetadata(this.#metadata.serverProperties); }
@@ -354,6 +363,7 @@ export class Channel extends EventEmitter {
   #subscriptions=new Map(); #consumerCancels=new Set(); #waitingRPC;
   constructor(connection, id) { super(); this.#connection = connection; this.#id = id; this.#sends=new SendQueue(connection.maxBufferedBytes); }
   get id() { return this.#id; }
+  topologyConfiguration(global=false) { if(typeof global!=='boolean')throw TypeError('Invalid topology scope');return emptyTopologyConfiguration(); }
   get closed() { return this.#closed; }
   get nextPublishSeqNo() { return this.#nextConfirm; }
   async _flushOutput() { if(this.#closed)return;await this.#sends.idle();await Promise.allSettled([...this.#confirms.values()].map(p=>p.promise)); }

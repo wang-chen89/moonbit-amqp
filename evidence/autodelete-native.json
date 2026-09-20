@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T11:21:03.516Z",
+  "utc": "2026-09-20T13:18:09.795Z",
   "cases": 10,
   "matched": 9,
   "explainedDifferences": 1,
@@ -646,20 +646,28 @@
     "erlang-asn1_1%3a27.3.4.6+dfsg-1_amd64.deb": "b2d3f1a35d642727631ff138070d5a4f410bb0066f67a1efbf11ad61dc51fa6d"
   },
   "sources": {
-    "tools/evidence-source.mjs": "a09090a7e53a2b18c920cce0c00f2d638cfa54b4a9be3311c5c01c1f93be84ea",
+    "tools/evidence-source.mjs": "d3e0e0c596403cd1eb69cb95fffe2bf064ce584b9807e2c9eae0ae4b1a145eee",
+    "tools/recovery.mjs": "2350d4803c65df43aa72d80c4c095cdeb0757128f5b486c05fa6910cbae18eaa",
+    "tools/recovery-state.mjs": "252af8db222d6da70a5e499af2538f7e1026fb0b6634c1ffc30653f5b6d68a5d",
+    "tools/recovery-channel.mjs": "2a3044fbe998e25f56b735b23aa7160ca4bb448947f6e8446ce31a44b76f5abc",
+    "tools/topology-query.mjs": "26fdbf28aa2b51eb8bf1a7bfb81b1a004ef0207ae071989ab8aaaab5070493e6",
+    "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
+    "connection_metadata.mbt": "b3844afc5a7255d85cb5877e3ac3df28a28250165a843565c76f8dc410528a37",
+    "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
+    "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
+    "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
+    "uri.mbt": "fb8755671ef6cc4afc4d3a51da45f3baf8df45a6ce1a9ffd3126b495d7df7d1e",
+    "cmd/web/uri.mbt": "277acacb4d51d0a13e470e7132a74ffc592fc13dec72855ec2881e9ea1e7ba54",
     "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
     "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
-    "tools/recovery.mjs": "f9bb94945bc9dc9fa95c624ee692c8d5859a744591f51c51252deb1b2861a427",
-    "tools/recovery-channel.mjs": "6c7709db98f69d749d7b0cb87b6f53cbc7e2439dccfc20e75487efd69c2f5fe4",
-    "tools/recovery-state.mjs": "78435fc7a882bfa4e7f349602db597d9778cf1f0558f7459475e8e562fff683e",
-    "tools/client.mjs": "19e014615d91ccef85166cbc3ac2a2fab173ee1647bfcea9c1eb07e6b6839c4a",
+    "tools/client.mjs": "33e2731a3f4458f4db59f831ef5ffe94ba475b4c1990149e04e550887f65fde9",
     "tools/autodelete-reference.go": "2ce1349229c3df548b0689dc3bcb50ec43a53de0ec4e40e2bb3841f1ad28fbc9",
     "tools/autodelete-scenarios.json": "4d5461e34ac5773ab86784b957b5a5c044fa6ff827966aa88a06e15127d9e3c5",
     "tools/test-autodelete-native.mjs": "cccd17ff04899893abacb490a73031e066a24302c7d1b34a64f56deb8c1fe96d",
     "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
     "evidence/autodelete-reference-build.json": "7b6e8a402bf827b98b3e2a4692c771de49136c5039b863a5678749553d26dea1",
-    "web/engine.mjs": "28381c963d442f191df87990728372343c97c8d0bceae2ea6efe6b1fa9225f36"
+    "web/engine.mjs": "bb184ca5269865886c5e0cd4c605716c752c123bcfcb3dbb2c075f3370239fa7"
   },
   "scope": "Ten identical operation scenarios in unmodified pinned Go and Node: nine matches, one explicit never-bound no-op unbind bookkeeping difference. Before/after recovery snapshots, intermediate cross-channel checkpoints, confirmed survivor and passive broker probes; not full API conformance."
 }

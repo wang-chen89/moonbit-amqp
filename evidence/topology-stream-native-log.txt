@@ -1,0 +1,8 @@
+PASS buffered 2 MiB TCP matches pinned Go body and properties
+PASS stream 12 MiB TCP matches pinned Go body and properties
+PASS stream 16 MiB verified TLS matches pinned Go body and properties
+PASS 12 MiB streamed transaction commits only after commit-ok and rollback discards
+PASS mandatory streamed unroutable body is returned before publisher confirmation
+PASS receiver keeps its explicit 8 MiB assembly limit for large returned content
+PASS broker 16 MiB size cap rejects 32 MiB on its channel while sibling remains usable
+7 real streaming broker groups passed; 3 native large publication comparisons matched

@@ -53,9 +53,9 @@ await test('a pending binding prevents the last acknowledged unbind from prematu
  const pending=b.bindQueue('q','e','pending');await delay(10);await a.unbindQueue('q','e','old');assert(c.topology.exchanges.has('e'));
  socket(state).write(method(b._raw.id,50,21));await pending;await reconnect(c,state);assert(c.topology.exchanges.has('e'));await b.unbindQueue('q','e','pending');assert(!c.topology.exchanges.has('e'));
 },{onMethod(e){if(e.peer===1&&e.cls===50&&e.id===20&&e.args.includes(Buffer.from('pending')))return true;}});
-await test('explicit channel close forgets its last auto-delete consumer but preserves an unused queue',async({open,state})=>{
+await test('explicit channel close forgets its last auto-delete consumer and channel-owned declarations',async({open,state})=>{
  const c=await open(config),a=await c.openChannel(),b=await c.openChannel();await chain(a);await a.declareQueue('idle',{autoDelete:true});await a.consume('q',()=>{},{consumerTag:'only'});await a.close();
- assert(!c.topology.queue('q'));assert.equal(c.topology.exchanges.size,0);assert(c.topology.queue('idle'));await reconnect(c,state);assert(c.topology.queue('idle'));assert.equal(b.state,'open');
+ assert(!c.topology.queue('q'));assert.equal(c.topology.exchanges.size,0);assert(!c.topology.queue('idle'));await reconnect(c,state);assert(!c.topology.queue('idle'));assert.equal(b.state,'open');
 });
 await test('broker cancellation cascades and repeated cancellation cannot resurrect records',async({open,state})=>{
  const c=await open(config),ch=await c.openChannel();await chain(ch);await ch.consume('q',()=>{},{consumerTag:'server'});

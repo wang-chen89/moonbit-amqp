@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T12:57:40.455Z",
+  "utc": "2026-09-20T13:17:34.429Z",
   "node": "v24.11.0",
   "passed": 7,
   "tests": [
@@ -124,14 +124,14 @@
       },
       "processMemory": {
         "before": {
-          "rss": 54767616,
-          "heapTotal": 11644928,
-          "heapUsed": 9401272,
-          "external": 2510906,
-          "arrayBuffers": 37795
+          "rss": 56152064,
+          "heapTotal": 14790656,
+          "heapUsed": 10274184,
+          "external": 2503584,
+          "arrayBuffers": 30473
         },
         "peak": {
-          "rss": 96378880,
+          "rss": 99368960,
           "external": 5251575
         },
         "samplePeriodMs": 10,
@@ -154,15 +154,15 @@
       },
       "processMemory": {
         "before": {
-          "rss": 98803712,
-          "heapTotal": 52015104,
-          "heapUsed": 21269328,
-          "external": 7089629,
-          "arrayBuffers": 4586073
+          "rss": 101597184,
+          "heapTotal": 52539392,
+          "heapUsed": 17455840,
+          "external": 6991373,
+          "arrayBuffers": 4487817
         },
         "peak": {
-          "rss": 101167104,
-          "external": 7089629
+          "rss": 101597184,
+          "external": 6991373
         },
         "samplePeriodMs": 10,
         "note": "Whole Node process sample; includes bridge, GC and source buffers. Not an RSS bound or throughput comparison."
@@ -184,15 +184,15 @@
       },
       "processMemory": {
         "before": {
-          "rss": 116322304,
-          "heapTotal": 54538240,
-          "heapUsed": 20192928,
-          "external": 17602906,
-          "arrayBuffers": 15097744
+          "rss": 100978688,
+          "heapTotal": 50343936,
+          "heapUsed": 10308752,
+          "external": 2536626,
+          "arrayBuffers": 31464
         },
         "peak": {
-          "rss": 132661248,
-          "external": 17865256
+          "rss": 129675264,
+          "external": 3791692
         },
         "samplePeriodMs": 10,
         "note": "Whole Node process sample; includes bridge, GC and source buffers. Not an RSS bound or throughput comparison."
@@ -200,9 +200,13 @@
     }
   ],
   "sources": {
-    "tools/evidence-source.mjs": "bc423777ed720b419d4ead72d596930464589c8d1a38b727902303f175ced014",
+    "tools/evidence-source.mjs": "d3e0e0c596403cd1eb69cb95fffe2bf064ce584b9807e2c9eae0ae4b1a145eee",
+    "tools/recovery.mjs": "2350d4803c65df43aa72d80c4c095cdeb0757128f5b486c05fa6910cbae18eaa",
+    "tools/recovery-state.mjs": "252af8db222d6da70a5e499af2538f7e1026fb0b6634c1ffc30653f5b6d68a5d",
+    "tools/recovery-channel.mjs": "2a3044fbe998e25f56b735b23aa7160ca4bb448947f6e8446ce31a44b76f5abc",
+    "tools/topology-query.mjs": "26fdbf28aa2b51eb8bf1a7bfb81b1a004ef0207ae071989ab8aaaab5070493e6",
     "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
-    "connection_metadata.mbt": "4e9efe9ff13516915819c6db4c08d1880cc7709a5108b1d46a784410242a550d",
+    "connection_metadata.mbt": "b3844afc5a7255d85cb5877e3ac3df28a28250165a843565c76f8dc410528a37",
     "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
     "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
     "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
@@ -213,15 +217,14 @@
     "session.mbt": "2e32e207bb10de94aa665c1855147c150b8dfbd203eab2d4d43515a50d55526d",
     "publish_stream.mbt": "7bea19d02cf97ae7d24997595a0d9cc2855544a59906ad4b4ef8db88ef2e5501",
     "cmd/web/publish_stream.mbt": "78bd1662496a37dd89512596ffbc99d083fd39605dc3eeaa02fe42ffa3f7248a",
-    "tools/client.mjs": "d037422790d7263903432838d4ba27f3170a5dbc0f699b5d6db69103a718b224",
+    "tools/client.mjs": "33e2731a3f4458f4db59f831ef5ffe94ba475b4c1990149e04e550887f65fde9",
     "tools/outbound.mjs": "e605059a41d29aa1a6a828ec9c860490b78c1740de003431ac1fd0bf79615d42",
-    "tools/recovery-channel.mjs": "6c7709db98f69d749d7b0cb87b6f53cbc7e2439dccfc20e75487efd69c2f5fe4",
     "tools/stream-reference.go": "d5c6bd4bf2a91796ff3d50e0503110fa0e1ee027b90e2ee7960dcc6d2d1fbc16",
     "tools/test-stream-native.mjs": "77daa107b823f7432217cd9840986ea097bf8d107db36c752e7220cad0efeb00",
     "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
     "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
     "evidence/stream-reference-build.json": "ad1e9cfbaf6c2011305305bdd2d9bb752e4a59830e723805860070ae4925f5a8",
-    "web/engine.mjs": "a581253b54ae52918e911d1d924188751e8e458f336a629a2c9df71dcb4cfbfe"
+    "web/engine.mjs": "bb184ca5269865886c5e0cd4c605716c752c123bcfcb3dbb2c075f3370239fa7"
   },
   "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "binarySha256": "ea1f1a9b03c4144df27343062f39e07337ada527a8a7ccc71217f369b23c98e0",

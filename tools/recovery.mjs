@@ -1,5 +1,6 @@
 import {Lifecycle, Topology, notice, delay} from './recovery-state.mjs';
 import {RecoveringChannel} from './recovery-channel.mjs';
+import {emptyTopologyConfiguration} from './topology-query.mjs';
 
 function number(value,min,max,name) {
   if(!Number.isInteger(value)||value<min||value>max)throw TypeError(`Invalid recovery ${name}`);
@@ -11,6 +12,7 @@ export class RecoveringConnection extends Lifecycle {
   #channelTasks=new Map(); #channelSerial=Promise.resolve(); #skipped=[];
   #cancelledQueues=new Map();
   #generation=0;
+  #recovery;
   static async connect(options,dial) {
     const connection=new RecoveringConnection(options,dial);
     try { connection.#install(await dial(connection.#options));connection._state('open');return connection; }
@@ -20,7 +22,7 @@ export class RecoveringConnection extends Lifecycle {
     super();
     const config=options.recovery===true?{}:options.recovery;
     if(!config||typeof config!=='object')throw TypeError('Invalid recovery configuration');
-    this.recovery=Object.freeze({maxRetries:number(config.maxRetries??5,1,1000000,'maxRetries'),
+    this.#recovery=Object.freeze({maxRetries:number(config.maxRetries??5,1,1000000,'maxRetries'),
       retryDelay:number(config.retryDelay??5000,0,2147483647,'retryDelay'),
       retryJitter:number(config.retryJitter??500,0,60000,'retryJitter'),
       topology:config.topology??'all',onTopologyError:config.onTopologyError});
@@ -36,6 +38,19 @@ export class RecoveringConnection extends Lifecycle {
     }
   }
   get _raw() { return this.#physical; }
+  get recovery() { return this.#recovery; }
+  get recoveryEnabled() { return !this.closed&&this.state!=='closing'; }
+  get connectionRecoveryEnabled() { return this.recoveryEnabled; }
+  get topologyRecoveryEnabled() { return this.recoveryEnabled&&this.#recovery.topology!=='none'; }
+  get maxRetryCount() { return this.recoveryEnabled?this.#recovery.maxRetries:0; }
+  get retryInterval() { return this.recoveryEnabled?this.#recovery.retryDelay:0; }
+  get reconnectionConfig() { return {maxRetryCount:this.#recovery.maxRetries,retryInterval:this.#recovery.retryDelay}; }
+  get recoveryConfig() { const {onTopologyError,...config}=this.#recovery;return {...config,maxTopologyEntries:this.topology.limit,hasTopologyErrorHandler:Boolean(onTopologyError)}; }
+  _topologyConfiguration(owner,global) {
+    if(typeof global!=='boolean')throw TypeError('Invalid topology scope');
+    return this.#recovery.topology==='none'?emptyTopologyConfiguration():this.topology.configuration(owner,global);
+  }
+  topologyConfiguration() { return this._topologyConfiguration(undefined,true); }
   get limits() { return this.#physical?.limits; }
   get timeout() { return this.#physical?.timeout??this.#options.timeout??10000; }
   get authenticationMechanism() { return this.#physical?.authenticationMechanism; }
@@ -80,7 +95,7 @@ export class RecoveringConnection extends Lifecycle {
     try { await channel._open(this.#physical);channel._restored();return channel; }
     catch(error) { this.#channels.delete(channel.id);channel._stop(error);throw error; }
   }
-  _removeChannel(channel) { this.#channels.delete(channel.id); }
+  _removeChannel(channel) { this.#channels.delete(channel.id);this.topology.forgetOwner(channel.id); }
   _removeQueue(name) { const key=this.topology.removeQueue(name);this.#cancelledQueues.delete(key);for(const ch of this.#channels.values())ch._removeQueue(key); }
   _consumerGone(key) {
     const queue=this.topology.queue(key);
@@ -102,7 +117,7 @@ export class RecoveringConnection extends Lifecycle {
     const token={},session=this.#physical;this.#channelTasks.set(channel,token);
     const task=this.#channelSerial.then(()=>this.#restoreChannel(channel,error,token,session));
     this.#channelSerial=task.catch(()=>{});
-    task.catch(e=>{channel._stop(e);this.#channels.delete(channel.id);})
+    task.catch(e=>{channel._stop(e);this._removeChannel(channel);})
       .finally(()=>{if(this.#channelTasks.get(channel)===token)this.#channelTasks.delete(channel);});
   }
   async #restoreConnection(cause) {

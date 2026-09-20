@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T12:27:12.010072+00:00",
+  "utc": "2026-09-20T13:23:10.837668+00:00",
   "referenceCommit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "scope": "Syntactic exported-name functions/methods on exported receiver types in root non-test Go files. Includes conditional Fuzz; excludes unexported receivers and does not inventory struct fields, constants, interfaces or generated behavior. No full compatibility or coverage percentage claim.",
   "declarationCount": 106,
@@ -93,8 +93,8 @@
       "file": "channel.go",
       "line": 194,
       "buildConstraint": "",
-      "hostEquivalent": "恢复对象内部 topology",
-      "boundary": "部分；没有等价的只读配置快照/Clone API，不建议依赖内部可变 Map"
+      "hostEquivalent": "structuredClone(topologyConfiguration())",
+      "boundary": "每次查询已深复制，可再复制；原库嵌套 Args 共享引用的差异单列"
     },
     {
       "name": "Channel.Close",
@@ -437,8 +437,8 @@
       "file": "channel.go",
       "line": 2521,
       "buildConstraint": "",
-      "hostEquivalent": "恢复对象内部 topology",
-      "boundary": "部分；没有等价的只读配置快照/Clone API，不建议依赖内部可变 Map"
+      "hostEquivalent": "topologyConfiguration(global=false)",
+      "boundary": "本地/全局实体及通道最后 QoS；7 peer/7 broker 一致，3 本地恢复；未覆盖所有恢复交错"
     },
     {
       "name": "DeferredConfirmation.Done",
@@ -637,40 +637,40 @@
       "file": "connection.go",
       "line": 1760,
       "buildConstraint": "",
-      "hostEquivalent": "connect 的 recovery 选项",
-      "boundary": "配置能力部分对应；无全部同形只读查询入口"
+      "hostEquivalent": "recoveryEnabled",
+      "boundary": "活动及显式 close 已原生对照；间隔毫秒；恢复耗尽等异常终止路径仍有兼容风险，见 TOPOLOGY.md"
     },
     {
       "name": "Connection.IsTopologyRecoveryEnabled",
       "file": "connection.go",
       "line": 1781,
       "buildConstraint": "",
-      "hostEquivalent": "connect 的 recovery 选项",
-      "boundary": "配置能力部分对应；无全部同形只读查询入口"
+      "hostEquivalent": "topologyRecoveryEnabled",
+      "boundary": "活动及显式 close 已原生对照；间隔毫秒；恢复耗尽等异常终止路径仍有兼容风险，见 TOPOLOGY.md"
     },
     {
       "name": "Connection.IsConnectionRecoveryEnabled",
       "file": "connection.go",
       "line": 1800,
       "buildConstraint": "",
-      "hostEquivalent": "connect 的 recovery 选项",
-      "boundary": "配置能力部分对应；无全部同形只读查询入口"
+      "hostEquivalent": "connectionRecoveryEnabled",
+      "boundary": "活动及显式 close 已原生对照；间隔毫秒；恢复耗尽等异常终止路径仍有兼容风险，见 TOPOLOGY.md"
     },
     {
       "name": "Connection.MaxRetryCount",
       "file": "connection.go",
       "line": 1808,
       "buildConstraint": "",
-      "hostEquivalent": "connect 的 recovery 选项",
-      "boundary": "配置能力部分对应；无全部同形只读查询入口"
+      "hostEquivalent": "maxRetryCount",
+      "boundary": "活动及显式 close 已原生对照；间隔毫秒；恢复耗尽等异常终止路径仍有兼容风险，见 TOPOLOGY.md"
     },
     {
       "name": "Connection.RetryInterval",
       "file": "connection.go",
       "line": 1816,
       "buildConstraint": "",
-      "hostEquivalent": "connect 的 recovery 选项",
-      "boundary": "配置能力部分对应；无全部同形只读查询入口"
+      "hostEquivalent": "retryInterval",
+      "boundary": "活动及显式 close 已原生对照；间隔毫秒；恢复耗尽等异常终止路径仍有兼容风险，见 TOPOLOGY.md"
     },
     {
       "name": "Delivery.Ack",
@@ -765,8 +765,8 @@
       "file": "recovery.go",
       "line": 109,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "connection.reconnectionConfig",
+      "boundary": "每次取得独立配置副本，毫秒间隔；终止后保留配置，未提供动态写回"
     },
     {
       "name": "DefaultConnectionRecovery.OnConnectionClose",
