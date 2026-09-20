@@ -84,18 +84,7 @@ fn Session::auth_response(
   self.emit(
     "connection.start-ok",
     [
-      Table([
-        ("product", LongString(b"moonbit-amqp")),
-        (
-          "capabilities",
-          TableValue([
-            ("publisher_confirms", Boolean(true)),
-            ("consumer_cancel_notify", Boolean(true)),
-            ("connection.blocked", Boolean(true)),
-            ("basic.nack", Boolean(true)),
-          ]),
-        ),
-      ]),
+      Table(self.client_properties()),
       ShortString(self.selected_auth),
       LongString(response),
       ShortString(self.locale),

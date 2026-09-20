@@ -23,6 +23,10 @@ pub struct Session {
   priv mut selected_auth : String
   priv locale : String
   priv vhost : String
+  priv client_properties_wire : Bytes
+  priv mut server_properties_wire : Bytes
+  priv mut server_locales : Array[String]
+  priv mut server_version : (Int, Int)?
   priv mut channel_limit : Int
   priv mut frame_limit : Int
   priv mut heartbeat_seconds : Int
@@ -43,6 +47,7 @@ pub fn Session::new(
   frame_max? : Int = 131072,
   heartbeat? : Int = 60,
   stream_bodies? : Bool = false,
+  properties? : Array[(String, FieldValue)] = [],
 ) -> Session raise FrameError {
   Session::with_authentication(
     [Authentication::plain(username, password)],
@@ -51,6 +56,7 @@ pub fn Session::new(
     frame_max~,
     heartbeat~,
     stream_bodies~,
+    properties~,
   )
 }
 
@@ -64,6 +70,7 @@ pub fn Session::with_authentication(
   frame_max? : Int = 131072,
   heartbeat? : Int = 60,
   stream_bodies? : Bool = false,
+  properties? : Array[(String, FieldValue)] = [],
 ) -> Session raise FrameError {
   if authentication.is_empty() ||
     authentication.length() > 32 ||
@@ -81,6 +88,10 @@ pub fn Session::with_authentication(
     @utf8.encode(vhost).length() > 255 {
     raise Invalid("invalid connection options")
   }
+  let client_properties_wire = normalize_connection_properties(properties)
+  if client_properties_wire.length() > frame_max - 12 {
+    raise Invalid("client properties exceed frame limit")
+  }
   {
     decoder: Decoder::new(),
     assembler: Assembler::new(strict_methods=true),
@@ -91,6 +102,10 @@ pub fn Session::with_authentication(
     selected_auth: "",
     locale,
     vhost,
+    client_properties_wire,
+    server_properties_wire: b"\x00\x00\x00\x00",
+    server_locales: [],
+    server_version: None,
     channel_limit: channel_max,
     frame_limit: frame_max,
     heartbeat_seconds: heartbeat,
@@ -333,10 +348,16 @@ pub fn Session::feed(
           is [
             Octet(0),
             Octet(9),
-            Table(_),
+            Table(server_properties),
             LongString(mechanisms),
             LongString(locales),
           ] {
+          self.server_properties_wire = encode_table(server_properties)
+          self.server_locales = @utf8.decode_lossy(locales)
+            .split(" ")
+            .map(s => s.to_owned())
+            .to_array()
+          self.server_version = Some((0, 9))
           let offered = @utf8.decode_lossy(mechanisms).split(" ").to_array()
           let has_locale = @utf8.decode_lossy(locales)
             .split(" ")

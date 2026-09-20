@@ -22,6 +22,10 @@ pub fn method_spec(Int, Int) -> MethodSpec?
 
 pub fn method_spec_by_name(String) -> MethodSpec?
 
+pub fn new_connection_properties() -> Array[(String, FieldValue)]
+
+pub fn normalize_connection_properties(Array[(String, FieldValue)]) -> Bytes raise FrameError
+
 pub fn parse_uri(String) -> URI raise FrameError
 
 pub fn protocol_header() -> Bytes
@@ -142,19 +146,25 @@ pub struct Session {
   // private fields
 }
 pub fn Session::authentication_mechanism(Self) -> String
+pub fn Session::client_properties(Self) -> Array[(String, FieldValue)] raise FrameError
 pub fn Session::feed(Self, Bytes) -> Array[SessionEvent] raise FrameError
 pub fn Session::finish(Self) -> Unit raise FrameError
 pub fn Session::heartbeat(Self) -> Bytes raise FrameError
 pub fn Session::limits(Self) -> (Int, Int, Int)
-pub fn Session::new(String, String, vhost? : String, channel_max? : Int, frame_max? : Int, heartbeat? : Int, stream_bodies? : Bool) -> Self raise FrameError
+pub fn Session::locale(Self) -> String
+pub fn Session::new(String, String, vhost? : String, channel_max? : Int, frame_max? : Int, heartbeat? : Int, stream_bodies? : Bool, properties? : Array[(String, FieldValue)]) -> Self raise FrameError
 pub fn Session::publish(Self, Int, String, String, Bytes, properties? : Array[(String, Argument)], mandatory? : Bool, immediate? : Bool) -> Unit raise FrameError
 pub fn Session::publish_body(Self, Int, Bytes) -> Unit raise FrameError
 pub fn Session::publish_start(Self, Int, String, String, UInt64, properties? : Array[(String, Argument)], mandatory? : Bool, immediate? : Bool) -> Unit raise FrameError
 pub fn Session::respond_authentication(Self, Bytes) -> Unit raise FrameError
 pub fn Session::send(Self, Int, Method) -> Unit raise FrameError
+pub fn Session::server_locales(Self) -> Array[String]
+pub fn Session::server_properties(Self) -> Array[(String, FieldValue)] raise FrameError
+pub fn Session::server_version(Self) -> (Int, Int)?
 pub fn Session::status(Self) -> String
 pub fn Session::take_output(Self) -> Array[Bytes]
-pub fn Session::with_authentication(Array[Authentication], vhost? : String, locale? : String, channel_max? : Int, frame_max? : Int, heartbeat? : Int, stream_bodies? : Bool) -> Self raise FrameError
+pub fn Session::virtual_host(Self) -> String
+pub fn Session::with_authentication(Array[Authentication], vhost? : String, locale? : String, channel_max? : Int, frame_max? : Int, heartbeat? : Int, stream_bodies? : Bool, properties? : Array[(String, FieldValue)]) -> Self raise FrameError
 
 pub(all) enum SessionEvent {
   Ready

@@ -26,7 +26,7 @@ await test('URI normalization distinguishes URI and existing object defaults',as
  assert.throws(()=>connectionOptions('amqps://host',{tls:false}),/TLS/);
 });
 await test('URI transport rejects invalid ranges and mechanisms before opening a socket',()=>fixture({},async({opts,state})=>{
- for(const suffix of ['/?heartbeat=-1','/?heartbeat=65536','/?connection_timeout=-1','/?connection_timeout=2147483648','/?auth_mechanism=PLAIN','/?auth_mechanism='])
+ for(const suffix of ['/?heartbeat=-1','/?heartbeat=65536','/?connection_timeout=-1','/?connection_timeout=2147483648','/?auth_mechanism=unknown','/?auth_mechanism='])
   await assert.rejects(connect(address(opts.port,suffix),{allowInsecureAuth:true}));
  for(const input of ['amqp://host:0','amqp://host:65536'])await assert.rejects(connect(input,{allowInsecureAuth:true}),/port/);
  assert.equal(state.accepted,0);
@@ -61,6 +61,12 @@ await test('URI repeated SASL candidates use client order and explicit SASL over
  const uri=address(opts.port,'/?auth_mechanism=amqplain&auth_mechanism=plain');
  const a=await connect(uri,{allowInsecureAuth:true,timeout:800});try{assert.equal(a.authenticationMechanism,'AMQPLAIN');await a.close();}finally{a.destroy();}
  const b=await connect(uri,{allowInsecureAuth:true,timeout:800,sasl:[{mechanism:'PLAIN'}]});try{assert.equal(b.authenticationMechanism,'PLAIN');await b.close();}finally{b.destroy();}
+}));
+await test('URI authentication identifiers are case insensitive like upstream DialConfig',()=>fixture({mechanisms:'PLAIN AMQPLAIN'},async({opts})=>{
+ for(const name of ['PLAIN','PlAiN','plaın','AMQPLAIN','aMqPlAiN']) {
+  const c=await connect(address(opts.port,'/?auth_mechanism='+encodeURIComponent(name)),{allowInsecureAuth:true,timeout:800});
+  try{assert.equal(c.authenticationMechanism,name.toUpperCase());await c.close();}finally{c.destroy();}
+ }
 }));
 await test('URI connection_timeout drives handshake expiry',()=>fixture({noStart:true},async({opts,state})=>{
  await assert.rejects(connect(address(opts.port,'/?connection_timeout=40'),{allowInsecureAuth:true}),/handshake timeout/);assert.equal(state.accepted,1);

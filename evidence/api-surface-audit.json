@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T11:54:44.922308+00:00",
+  "utc": "2026-09-20T12:27:12.010072+00:00",
   "referenceCommit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "scope": "Syntactic exported-name functions/methods on exported receiver types in root non-test Go files. Includes conditional Fuzz; excludes unexported receivers and does not inventory struct fields, constants, interfaces or generated behavior. No full compatibility or coverage percentage claim.",
   "declarationCount": 106,
@@ -477,8 +477,8 @@
       "file": "connection.go",
       "line": 109,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "MoonBit new_connection_properties / Node newConnectionProperties",
+      "boundary": "新默认身份表；product/version/platform 标识本库，值不同于 Go；连接时统一覆盖 capabilities"
     },
     {
       "name": "DefaultDial",
@@ -494,7 +494,7 @@
       "line": 235,
       "buildConstraint": "",
       "hostEquivalent": "connect(uri, options) / connect({uri, ...options})",
-      "boundary": "18 URI broker 结果一致；TLS/EXTERNAL 用 scheme、tls、sasl 选项选择；有资源上限和默认值差异，Properties/Dial 等配置仍缺"
+      "boundary": "支持 URI、TLS/EXTERNAL、自定义 properties；有默认值/资源与属性别名差异；自定义 Dial/全部配置语义仍缺"
     },
     {
       "name": "DialTLS",
@@ -502,7 +502,7 @@
       "line": 249,
       "buildConstraint": "",
       "hostEquivalent": "connect(uri, options) / connect({uri, ...options})",
-      "boundary": "18 URI broker 结果一致；TLS/EXTERNAL 用 scheme、tls、sasl 选项选择；有资源上限和默认值差异，Properties/Dial 等配置仍缺"
+      "boundary": "支持 URI、TLS/EXTERNAL、自定义 properties；有默认值/资源与属性别名差异；自定义 Dial/全部配置语义仍缺"
     },
     {
       "name": "DialTLS_ExternalAuth",
@@ -510,7 +510,7 @@
       "line": 268,
       "buildConstraint": "",
       "hostEquivalent": "connect(uri, options) / connect({uri, ...options})",
-      "boundary": "18 URI broker 结果一致；TLS/EXTERNAL 用 scheme、tls、sasl 选项选择；有资源上限和默认值差异，Properties/Dial 等配置仍缺"
+      "boundary": "支持 URI、TLS/EXTERNAL、自定义 properties；有默认值/资源与属性别名差异；自定义 Dial/全部配置语义仍缺"
     },
     {
       "name": "DialConfig",
@@ -518,7 +518,7 @@
       "line": 281,
       "buildConstraint": "",
       "hostEquivalent": "connect(uri, options) / connect({uri, ...options})",
-      "boundary": "18 URI broker 结果一致；TLS/EXTERNAL 用 scheme、tls、sasl 选项选择；有资源上限和默认值差异，Properties/Dial 等配置仍缺"
+      "boundary": "支持 URI、TLS/EXTERNAL、自定义 properties；有默认值/资源与属性别名差异；自定义 Dial/全部配置语义仍缺"
     },
     {
       "name": "Open",
@@ -541,24 +541,24 @@
       "file": "connection.go",
       "line": 427,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "localAddress / connectionInfo.localAddress",
+      "boundary": "真实 IPv4/IPv6 端点副本；关闭后保留最后物理快照，重连更新"
     },
     {
       "name": "Connection.RemoteAddr",
       "file": "connection.go",
       "line": 439,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "remoteAddress / connectionInfo.remoteAddress",
+      "boundary": "真实 IPv4/IPv6 端点副本；已与独立 peer 两端地址及 Go 核对"
     },
     {
       "name": "Connection.ConnectionState",
       "file": "connection.go",
       "line": 451,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "tlsState / connectionInfo.tlsState",
+      "boundary": "证书/协议/密码套件/授权/ALPN/恢复等 Node 快照；有 TLS 1.2 对照和本地 TLS 1.3 恢复；缺完整 VerifiedChains/OCSP/SCT/exporter 语义"
     },
     {
       "name": "Connection.NotifyStateChange",
@@ -837,8 +837,8 @@
       "file": "types.go",
       "line": 450,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "properties.connection_name",
+      "boundary": "配置同名字段并发到 start-ok；快照不原地修改调用方表"
     },
     {
       "name": "ParseURI",

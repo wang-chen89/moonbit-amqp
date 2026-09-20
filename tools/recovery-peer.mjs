@@ -12,7 +12,7 @@ const long=s=>cat(u32(Buffer.byteLength(s)),Buffer.from(s));
 const frame=(type,ch,payload)=>cat(Buffer.from([type]),u16(ch),u32(payload.length),payload,Buffer.from([206]));
 const method=(ch,cls,id,...args)=>frame(1,ch,cat(u16(cls),u16(id),...args));
 const ack=(ch,tag,multiple=false,nack=false)=>method(ch,60,nack?120:80,u64(tag),Buffer.from([multiple?1:0]));
-const started=(options,peer)=>method(0,10,10,Buffer.from([0,9]),u32(0),long(typeof options.mechanisms==='function'?options.mechanisms(peer):options.mechanisms??'PLAIN'),long(options.locales??'en_US'));
+const started=(options,peer)=>options.start?.(peer)??method(0,10,10,Buffer.from([0,9]),u32(0),long(typeof options.mechanisms==='function'?options.mechanisms(peer):options.mechanisms??'PLAIN'),long(options.locales??'en_US'));
 const delay=ms=>new Promise(r=>setTimeout(r,ms));
 
 async function fixture(options, action) {
@@ -67,8 +67,8 @@ async function fixture(options, action) {
       } catch(e){errors.push(e);socket.destroy();}
     });
   });
-  await new Promise(r=>server.listen(0,'127.0.0.1',r));
-  const opts={host:'127.0.0.1',port:server.address().port,username:'demo',password:'test',allowInsecureAuth:true,heartbeat:0,timeout:800};
+  await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(0,options.listenHost??'127.0.0.1',resolve);});
+  const opts={host:options.listenHost??'127.0.0.1',port:server.address().port,username:'demo',password:'test',allowInsecureAuth:true,heartbeat:0,timeout:800};
   const open=async more=>{const c=await connect({...opts,...more});connections.push(c);return c;};
   try{await action({open,opts,state});assert.deepEqual(errors,[]);}
   finally{for(const c of connections)c.destroy();for(const s of sockets)s.destroy();await new Promise(r=>server.close(r));}

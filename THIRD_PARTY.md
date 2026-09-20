@@ -67,3 +67,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 0.17 URI 行为参照同一固定 Go 提交的 uri.go、connection.go 及 Go 1.26 net/url；MoonBit 解析器和 Node 适配器为本地实现。对照输入包含 uri_test.go 中 22 条协议规格矩阵（上游版权 Sean Treadway/SoundCloud 与 VMware，BSD-2-Clause，完整许可保留在 `spec/amqp091-go-URI-LICENSE`），其余输入和调用程序为原创。固定原库和 Go 标准库没有作为运行期代码或二进制分发。规范化/资源与字节字符串差异独立披露于 URI.md。
+
+
+0.18 连接属性与元数据参照同一固定 Go 原库的 connection.go、Table.SetClientConnectionName 和 TLS 公共状态。`tools/metadata-reference.go` 为原创只读查询/连接适配器，原库 72 文件再次校验未改动；MoonBit 与 Node 实现独立编写。默认身份及调用方表别名差异保留，不伪造为 Go 相同实现。

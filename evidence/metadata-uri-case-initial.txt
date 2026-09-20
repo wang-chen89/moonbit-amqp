@@ -1,0 +1,26 @@
+PASS URI parser returns frozen records and explicit credential redaction
+PASS URI normalization distinguishes URI and existing object defaults
+PASS URI transport rejects invalid ranges and mechanisms before opening a socket
+PASS URI TCP authentication retains explicit opt-in and early cancellation
+PASS function entry sends exact decoded credentials and vhost
+PASS static entry sends exact decoded credentials and vhost
+PASS constructor entry sends exact decoded credentials and vhost
+PASS object entry sends exact decoded credentials and vhost
+PASS URI heartbeat overrides options while nonempty vhost and channel limits win
+PASS URI repeated SASL candidates use client order and explicit SASL overrides the URI
+file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/uri.mjs:48
+      if(!['plain','amqplain','external'].includes(name))throw TypeError('Unsupported URI authentication mechanism');
+                                                               ^
+
+TypeError: Unsupported URI authentication mechanism
+    at file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/uri.mjs:48:64
+    at Array.map (<anonymous>)
+    at connectionOptions (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/uri.mjs:47:36)
+    at connect (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/client.mjs:578:34)
+    at file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-uri.mjs:67:17
+    at fixture (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/recovery-peer.mjs:73:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async test (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-uri.mjs:10:34)
+    at async file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-uri.mjs:65:1
+
+Node.js v24.11.0

@@ -10,6 +10,7 @@ export class RecoveringConnection extends Lifecycle {
   #lifetime=new AbortController(); #external; #abort; #task; #closing;
   #channelTasks=new Map(); #channelSerial=Promise.resolve(); #skipped=[];
   #cancelledQueues=new Map();
+  #generation=0;
   static async connect(options,dial) {
     const connection=new RecoveringConnection(options,dial);
     try { connection.#install(await dial(connection.#options));connection._state('open');return connection; }
@@ -40,6 +41,15 @@ export class RecoveringConnection extends Lifecycle {
   get authenticationMechanism() { return this.#physical?.authenticationMechanism; }
   get readStats() { return this.#physical?.readStats; }
   get writeStats() { return this.#physical?.writeStats; }
+  get clientProperties() { return this.#physical?.clientProperties; }
+  get serverProperties() { return this.#physical?.serverProperties; }
+  get serverLocales() { return this.#physical?.serverLocales; }
+  get serverVersion() { return this.#physical?.serverVersion; }
+  get localAddress() { return this.#physical?.localAddress; }
+  get remoteAddress() { return this.#physical?.remoteAddress; }
+  get tlsState() { return this.#physical?.tlsState; }
+  get config() { return this.#physical?.config; }
+  get connectionInfo() { const info=this.#physical?.connectionInfo;return info?{...info,state:this.state,generation:this.#generation}:undefined; }
   resolveQueue(name) { return this.topology.resolve(name); }
   async updateSecret(secret,reason='Credential refreshed') {
     if(this.state!=='open'||this.#physical?.closed)throw Error('Connection recovery in progress or closed');
@@ -53,7 +63,7 @@ export class RecoveringConnection extends Lifecycle {
   }
   #install(raw) {
     if(this.closed||this.state==='closing') { raw.destroy();throw Error('Connection closed during recovery'); }
-    this.#physical=raw;
+    this.#physical=raw;this.#generation++;
     for(const name of ['blocked','unblocked'])raw.on(name,event=>{if(raw===this.#physical)notice(this,name,event);});
     raw.on('close',error=>{
       if(raw!==this.#physical||this.closed||this.state==='closing'||this.state==='reconnecting')return;

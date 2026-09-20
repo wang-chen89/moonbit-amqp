@@ -45,8 +45,9 @@ export function connectionOptions(input={},overrides) {
   options.timeout=options.timeout??(uri.connectionTimeout===0n?30000:bounded(uri.connectionTimeout,1,2147483647,'connection_timeout'));
   if(options.sasl===undefined&&uri.authMechanism.length) {
     options.sasl=uri.authMechanism.map(name=>{
-      if(!['plain','amqplain','external'].includes(name))throw TypeError('Unsupported URI authentication mechanism');
-      return {mechanism:name.toUpperCase(),username:uri.username,password:uri.password};
+      const mechanism=name.toUpperCase();
+      if(!['PLAIN','AMQPLAIN','EXTERNAL'].includes(mechanism))throw TypeError('Unsupported URI authentication mechanism');
+      return {mechanism,username:uri.username,password:uri.password};
     });
   }
   if(uri.scheme==='amqps') {

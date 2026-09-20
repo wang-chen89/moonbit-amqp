@@ -29,6 +29,31 @@ pub fn session_open_stream_auth(
 }
 
 ///|
+pub fn session_open_auth_properties(
+  key : String,
+  authentication : String,
+  vhost : String,
+  locale : String,
+  channel_max : Int,
+  frame_max : Int,
+  heartbeat : Int,
+  stream_bodies : Bool,
+  properties : String,
+) -> String {
+  open_auth(
+    key,
+    authentication,
+    vhost,
+    locale,
+    channel_max,
+    frame_max,
+    heartbeat,
+    stream_bodies,
+    properties~,
+  )
+}
+
+///|
 fn open_auth(
   key : String,
   authentication : String,
@@ -38,12 +63,14 @@ fn open_auth(
   frame_max : Int,
   heartbeat : Int,
   stream_bodies : Bool,
+  properties? : String = "{}",
 ) -> String {
   try {
     if key.length() > 128 ||
       sessions.contains(key) ||
       sessions.length() >= 64 ||
-      authentication.length() > 4194304 {
+      authentication.length() > 4194304 ||
+      properties.length() > 2097152 {
       raise Failure("session or authentication size limit")
     }
     let candidates = match @json.parse(authentication) {
@@ -77,6 +104,7 @@ fn open_auth(
       frame_max~,
       heartbeat~,
       stream_bodies~,
+      properties=parse_client_properties(properties),
     )
     sessions[key] = s
     result(s, [])

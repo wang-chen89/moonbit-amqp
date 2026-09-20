@@ -28,7 +28,7 @@ try {
 | heartbeat | URI 查询优先于 `options.heartbeat`，二者均无时为 10 秒；显式 0 保留并参与原有协商。 |
 | channelMax | 非零显式选项优先，其次 URI `channel_max`，否则 2047。 |
 | timeout | 显式选项优先，其次非零 `connection_timeout`（毫秒），否则 30000。仍用于握手与原有 RPC/确认计时。 |
-| SASL | 显式 `options.sasl` 优先；否则按重复 `auth_mechanism` 顺序选择。允许小写 plain、amqplain、external；未提供时 PLAIN。 |
+| SASL | 显式 `options.sasl` 优先；否则按重复 `auth_mechanism` 顺序选择。允许 plain、amqplain、external，0.18 起不区分大小写；未提供时 PLAIN。 |
 | TLS | URI scheme 决定是否启用。amqps 的显式 `options.tls` 整体覆盖 URI TLS 参数。amqp 忽略 TLS 配置。 |
 
 原有不含 URI 的对象入口默认值保持原样：heartbeat 60、timeout 10000、channelMax 64。URI 入口 frameMax 仍默认 131072，保留本项目资源上限；并非 Go 的所有无限制/默认值语义。Go 配置中显式零 heartbeat 与本项目显式零选项的含义也不完全相同。`options.timeout` 是本项目扩展优先级。
@@ -51,4 +51,4 @@ URI 文件在首次连接前读取并保存为字节快照；自动重连重复�
 
 固定未修改 amqp091-go `a0195c6baf35db642d13651cb28938f899062e7c`，Go 1.26 构建，623 条解析/规范化/接受与拒绝结果一致，含上游 22 条 URI 规格矩阵。独立列出 6 条差异样本：无效 UTF-8 凭证/路径/片段、片段中的原始控制字符、无效 UTF-8 查询对和 64 KiB 输入上限。Go 的字节字符串、URL 解析器版本与本项目 UTF-8 字符串/资源约束不能完全等同。
 
-新增 10 个核心测试、13 组线路/配置检查；真实 RabbitMQ 的 18 个原库连接结果一致（成功均确认发布并取回消息；失败场景确认拒绝）。另有 1 个本地 TLS 文件快照恢复场景，未计作 Go 一致案例。见 [解析对照](evidence/uri-reference-validation.json)、[线路检查](evidence/uri-validation.json)、[真实连接](evidence/uri-broker-validation.json)。未验证所有 DNS、代理、IPv6 网络、系统信任库、平台或 broker 版本；解析相同不证明这些环境都兼容。
+URI 原有 10 个核心测试，0.18 为大小写修复增加 1 组，现有 14 组线路/配置检查；真实 RabbitMQ 的 18 个原库连接结果一致（成功均确认发布并取回消息；失败场景确认拒绝）。另有 1 个本地 TLS 文件快照恢复场景，未计作 Go 一致案例。见 [解析对照](evidence/uri-reference-validation.json)、[线路检查](evidence/uri-validation.json)、[真实连接](evidence/uri-broker-validation.json)。未验证所有 DNS、代理、IPv6 网络、系统信任库、平台或 broker 版本；解析相同不证明这些环境都兼容。

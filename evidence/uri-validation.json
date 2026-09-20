@@ -1,7 +1,7 @@
 {
-  "utc": "2026-09-20T11:49:23.316Z",
+  "utc": "2026-09-20T12:22:55.214Z",
   "node": "v24.11.0",
-  "passed": 13,
+  "passed": 14,
   "tests": [
     "URI parser returns frozen records and explicit credential redaction",
     "URI normalization distinguishes URI and existing object defaults",
@@ -13,23 +13,27 @@
     "object entry sends exact decoded credentials and vhost",
     "URI heartbeat overrides options while nonempty vhost and channel limits win",
     "URI repeated SASL candidates use client order and explicit SASL overrides the URI",
+    "URI authentication identifiers are case insensitive like upstream DialConfig",
     "URI connection_timeout drives handshake expiry",
     "URI TLS override ignores URI file parameters and snapshots its property object",
     "URI recovery retains decoded endpoint credentials and ignores later caller mutation"
   ],
   "sources": {
-    "tools/evidence-source.mjs": "64f53014dfe264fb2c8f67a0694bcac6bbe1cca1d253d3aa366e26765612b366",
-    "tools/uri.mjs": "7a6b1596fe7558fa3c7fe3d771ec80710da821319f5a1100c1bba5e2f2068865",
+    "tools/evidence-source.mjs": "5934a9304f0145abca3cbdbac65efb46d5f1942c5e08033bf088d9a90f78320b",
+    "connection_metadata.mbt": "e0095c3cf877de13da96420ec5d281b12f69fde1cb557a9992a97eae1f8c22c9",
+    "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
+    "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
+    "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
     "uri.mbt": "fb8755671ef6cc4afc4d3a51da45f3baf8df45a6ce1a9ffd3126b495d7df7d1e",
     "cmd/web/uri.mbt": "277acacb4d51d0a13e470e7132a74ffc592fc13dec72855ec2881e9ea1e7ba54",
     "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
     "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
-    "tools/client.mjs": "00bcd2e79fed0c198d7ea6bb37ce5a2e956a2f927a20367b9f90097d7e2fa578",
+    "tools/client.mjs": "f8d06cba7bfaf3c813350d6090e8212a88bfa0344179cd8ef9e7d47d58e5b48e",
     "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
-    "tools/recovery.mjs": "f9bb94945bc9dc9fa95c624ee692c8d5859a744591f51c51252deb1b2861a427",
-    "tools/recovery-peer.mjs": "2938b1f6187d9f322c0b47e0498dda341ccb863a7e797501ce14cc5088864190",
-    "tools/test-uri.mjs": "cd8d2144b6b386ecc5022d23605353429bfd9960053cd776ed94aa1c4ec59878",
-    "web/engine.mjs": "9cd7ddaaf817195c10b5bcdcad33d59e244b29c85effff83df0848641c0b8c41"
+    "tools/recovery.mjs": "96e400666ceebc95fd1a9ef92fd7b913b6426f8cd396dcdebe9fa40af42c4dee",
+    "tools/recovery-peer.mjs": "df3bc8857f9a7b2368d64b3564f6c06ea6fa98f9128e8f29addb8743b63b9ddf",
+    "tools/test-uri.mjs": "603dc89af749d180e6bf416e30802d4fba9688f1872b418032fa14d5f533ad3d",
+    "web/engine.mjs": "1524505ec209621830c1b2c901bc38ebf4ac03b7750a1a7c33669773c173eb26"
   },
   "scope": "Actual MoonBit URI parser and transport entry against independent TCP peer; TLS file normalization is checked here, real TLS and native broker comparison separately."
 }

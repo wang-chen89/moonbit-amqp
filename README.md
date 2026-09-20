@@ -1,6 +1,6 @@
 # AMQP 0-9-1 编解码与消息客户端
 
-本地候选版 **0.17.0**。MoonBit 实现帧/方法/属性编解码、连接认证协商和通道状态机；Node.js 提供 TCP/TLS、RPC、心跳和消息发布/消费宿主。仓库独立，当前仅供本地审查。
+本地候选版 **0.18.0**。MoonBit 实现帧/方法/属性编解码、连接认证协商和通道状态机；Node.js 提供 TCP/TLS、RPC、心跳和消息发布/消费宿主。仓库独立，当前仅供本地审查。
 
 ```sh
 moon test --target js
@@ -74,6 +74,10 @@ try {
 ### URI 地址
 
 `connect(uri, options)` 与 `connect({uri, ...options})` 已支持 AMQP URI，包括账号/虚拟主机转义、重复 SASL 选择、TLS 证书文件与参数优先级。MoonBit 提供 `parse_uri`、URI 格式化/脱敏和凭证转换。用法、默认值、输入边界及有意差异见 [URI.md](URI.md)。原有对象入口默认值保持不变。
+
+### 连接属性和元数据
+
+连接可传 `properties` 自定义客户端属性，包括 `connection_name`；通过 `clientProperties`、`serverProperties`、`serverLocales`、`serverVersion`、`localAddress`、`remoteAddress`、`tlsState`、`config` 和 `connectionInfo` 查询。结果是独立副本，重连更新连接代数与网络信息，关闭后保留最后快照。用法和精确范围见 [CONNECTION-METADATA.md](CONNECTION-METADATA.md)。
 
 ### 发布确认句柄与事件
 
@@ -317,13 +321,13 @@ connection.on('queueNameChanged', ({previous, current}) => console.log({previous
 
 ## 验证与成熟度
 
-0.17 的 **132 项核心测试在 JS 与 Wasm-GC 分别通过**，其中新增 10 项 URI 测试。原有 `verify.ps1` 的网络、恢复、确认、认证、流式收发、CLI、畸形输入及示例检查通过；新增 13 组 URI 线路/配置检查通过。
+0.18 的 **138 项核心测试在 JS 与 Wasm-GC 分别通过**，其中新增 6 项元数据测试。完整本地 verify 通过，含 14 组新元数据线路/恢复检查及 14 组 URI 检查。
 
-固定 Go 原库对照：**623 条 URI 解析/规范化结果一致，6 条输入边界差异单列；18 个真实 RabbitMQ URI 连接结果一致**。另验证 1 个 TLS 证书文件快照恢复场景，单独计为本地能力。完整参数、证据和限制见 [URI.md](URI.md) 与 [当前清单](evidence/uri-upgrade.json)。
+固定未修改 Go 原库对照：**7 个独立 peer 元数据结果、5 份自定义客户端属性表、7 个真实 broker 结果一致**，包括 IPv4/IPv6 地址和 TLS 1.2 的证书/密码套件。TLS 1.3 重连与确认消息往返另计 1 个本地场景。默认库身份和属性别名两类差异单列，不宣称完整 Go TLS 状态等价。见 [本轮证据](evidence/metadata-upgrade.json)。
 
-针对连接入口变动，重跑原有 **22 项 RabbitMQ 基础流程**和发布确认原生回归（**19 条报文、6 个 peer 结果、9 个 broker 结果**一致；既有 2 项确认序号差异保留）。其余历史原生/broker 证据保留原源码指纹，本轮没有全部重跑，不能据其旧报告声称当前源码完整回归。各层覆盖重叠，不相加计算追平比例。
+同时修正 URI 认证机制名大小写：0.17 的拒绝已保留复现，本轮真实原库连接验证混合大小写及 Unicode simple-case。重跑 URI 的 623 条解析对照、18 个真实连接结果（既有 6 条输入边界差异保留），原有 22 项基础 RabbitMQ 流程，以及发布确认原生回归（19 条报文、6 个 peer、9 个 broker 结果一致，既有 2 项序号差异保留）。其它历史原生/broker 报告仍是旧源码证据，本轮没有全部重跑。
 
-环境为 Windows Node 24 与 WSL RabbitMQ 4.0.5/Erlang 27。仅有本机示例计时与基础确认样本，**未建立代表性原生性能或生产负载追平**。仍缺连接元数据、自定义传输、完整恢复/通知/context 语义、多版本/平台/集群和长期验证。历史版本详情及独立差异见 [TESTING.md](TESTING.md) 与 [API-COMPATIBILITY.md](API-COMPATIBILITY.md)。协议范围为 AMQP 0-9-1。
+运行环境为 Windows Node 24 和 WSL RabbitMQ 4.0.5/Erlang 27；各层覆盖重叠，不相加计算追平比例。仅记录本机示例和基础确认样本，**未建立代表性原生性能或生产负载追平**。自定义传输、完整 TLS 状态、恢复/通知/context 语义、多版本/平台/集群和长期验证仍缺。历史范围见 [TESTING.md](TESTING.md) 与 [API-COMPATIBILITY.md](API-COMPATIBILITY.md)。协议范围为 AMQP 0-9-1。
 
 ## 限制
 
@@ -345,4 +349,4 @@ Node 字段表用普通对象，支持 boolean、signed int32、字符串、null
 
 参考：[RabbitMQ 规格](https://www.rabbitmq.com/docs/specification)、[amqp091-go](https://github.com/rabbitmq/amqp091-go)。Pika 仅是独立验证工具，无运行期依赖。
 
-本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，0.17 本地增量归档另附同提交 ZIP/bundle；历史合集未更新。未上传、未发布、未添加远程仓库。
+本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，0.18 本地增量归档另附同提交 ZIP/bundle；历史合集未更新。未上传、未发布、未添加远程仓库。

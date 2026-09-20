@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-20T11:45:36.944Z",
+  "at": "2026-09-20T12:22:15.897Z",
   "node": "v24.11.0",
   "passed": 18,
   "tests": [
@@ -23,19 +23,22 @@
     "session bridge malformed table does not throw outside error result"
   ],
   "sources": {
-    "tools/evidence-source.mjs": "64f53014dfe264fb2c8f67a0694bcac6bbe1cca1d253d3aa366e26765612b366",
-    "tools/uri.mjs": "7a6b1596fe7558fa3c7fe3d771ec80710da821319f5a1100c1bba5e2f2068865",
+    "tools/evidence-source.mjs": "5934a9304f0145abca3cbdbac65efb46d5f1942c5e08033bf088d9a90f78320b",
+    "connection_metadata.mbt": "e0095c3cf877de13da96420ec5d281b12f69fde1cb557a9992a97eae1f8c22c9",
+    "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
+    "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
+    "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
     "uri.mbt": "fb8755671ef6cc4afc4d3a51da45f3baf8df45a6ce1a9ffd3126b495d7df7d1e",
     "cmd/web/uri.mbt": "277acacb4d51d0a13e470e7132a74ffc592fc13dec72855ec2881e9ea1e7ba54",
     "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
     "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
-    "authentication.mbt": "09505b81f862c30d7f2bc24502188068475904ed5c858a8f38897060fa6397b6",
-    "cmd/web/authentication.mbt": "9c57e3bcbad42ef3f9a417eafadf12c99829dbfcb453df4683076d7567c4d3e4",
+    "authentication.mbt": "8653598bda374f5b638bf5cf8f754a95996cf6e99f6f68a707777ecf65f0653c",
+    "cmd/web/authentication.mbt": "007c9d1407e295f973f608933292e2e33f9c9e275cc7dd50b7718094a63b2809",
     "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
-    "session.mbt": "83a95ee1ccb550399ccc0db9f08b3a1ab1e467098b53e467332ae741b503f48b",
+    "session.mbt": "2e32e207bb10de94aa665c1855147c150b8dfbd203eab2d4d43515a50d55526d",
     "cmd/web/session.mbt": "77a46d26771f0f9afc04283bcf301353985c1f61e159b357d5fd20642e9ab5fb",
-    "tools/client.mjs": "00bcd2e79fed0c198d7ea6bb37ce5a2e956a2f927a20367b9f90097d7e2fa578",
-    "web/engine.mjs": "9cd7ddaaf817195c10b5bcdcad33d59e244b29c85effff83df0848641c0b8c41",
+    "tools/client.mjs": "f8d06cba7bfaf3c813350d6090e8212a88bfa0344179cd8ef9e7d47d58e5b48e",
+    "web/engine.mjs": "1524505ec209621830c1b2c901bc38ebf4ac03b7750a1a7c33669773c173eb26",
     "tools/test-client.mjs": "1edcef349e9a593ca0b27ba965472f661933c511abdeb4d96df02c5df97aa480"
   }
 }

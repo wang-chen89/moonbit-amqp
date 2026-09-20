@@ -10,7 +10,24 @@
 CI files are prepared locally; remote CI has not run because this repository has not been uploaded. Compatibility beyond README scope remains unverified.
 
 
-## 0.17 当前 URI 验证
+## 0.18 当前连接元数据验证
+
+- `metadata-verify.txt`：JS/Wasm-GC 各 138 项以及全部现有本地 fixture/CLI/异常输入回归；含 14 元数据组、14 URI 组。
+- `metadata-native.json`：固定 Go 原库 7 个独立 peer 元数据结果、5 份自定义属性表、7 个真实 broker 结果一致；1 个本地 TLS 1.3 恢复。真实校对 IPv4/IPv6 客户端与服务器两端地址。TLS 1.2 两侧固定相同套件，不将不同协商结果当成属性读取错误。
+- `metadata-uri-case-initial.*`：保留 0.17 仅接受小写的失败日志、测试增量及源指纹。原库 setSASL 使用不区分大小写的机制名，本轮 broker 对照证明修复。
+- 当前重跑 `uri-reference-validation.json`、`uri-broker-validation.json`、`rabbitmq-validation.json`、`confirmations-native.json`；其它历史原生/broker 报告不作为当前源码新执行证据。
+- 元数据比较归一化 Go map 顺序和公开数值/二进制表示；不归一化实际值差异。默认库身份与属性别名共 2 类差异另列。完整 TLS 验证链/OCSP/SCT/exporter 不在已实现范围。
+
+```powershell
+./verify.ps1 -MoonPath /absolute/path/to/moon.exe
+$env:AMQP_METADATA_REFERENCE='/absolute/path/to/metadata-oracle.exe'
+$env:RABBITMQ_ROOT='/path/to/extracted/rabbitmq/root'
+node tools/test-metadata-native.mjs
+```
+
+原生适配器 `tools/metadata-reference.go` 使用固定且未修改的 Go 原库，构建信息/72 文件指纹保存在 `metadata-reference-build.json`。本轮只记录本机示例和基础确认计时，没有元数据/URI/整体原生性能追平证据。
+
+## 0.17 历史 URI 验证
 
 - `evidence/uri-verify.txt`：原有完整 verify 脚本通过，JS/Wasm-GC 各 132 项；新增 URI 线路检查由 `uri-fixture-log.txt` 单独记录。现 verify.ps1 已纳入该入口。
 - `uri-reference-validation.json`：623 条固定 Go 解析/规范化对照，6 条明确差异；原库 72 文件哈希与适配器/二进制哈希见 `uri-reference-build.json`。

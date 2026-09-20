@@ -6,6 +6,8 @@ import * as core from '../web/engine.mjs';
 import {snapshotAuthentication,authenticationPlan,responseBytes} from './authentication.mjs';
 import {connectionOptions} from './uri.mjs';
 export {parseURI} from './uri.mjs';
+import {snapshotProperties,propertiesJSON,cloneMetadata,socketAddresses,tlsSnapshot} from './connection-metadata.mjs';
+export {newConnectionProperties} from './connection-metadata.mjs';
 import {SendQueue,waitFor,aborted} from './outbound.mjs';
 import {IncomingBodies} from './inbound.mjs';
 import {checkConsumerSignal,observeConsumerSignal} from './consumer-signal.mjs';
@@ -37,6 +39,7 @@ export class Connection extends EventEmitter {
   #channels = new Map(); #closeWait; #limits; #maxBuffered; #timeout;
   #authProviders=[]; #authAbort=new AbortController(); #authenticationMechanism='';
   #secretUpdate;
+  #metadata; #addresses={localAddress:null,remoteAddress:null}; #tlsInfo; #tlsName; #transportReady=false;
   #publishWrites; #streaming=new Map(); #deferredBytes=0;
   #maxWritten=0; #drainWaits=0;
   #receiving; #pendingInput=Buffer.alloc(0); #readScheduled=false; #readPumping=false; #readEnded=false; #readBackpressured=false;
@@ -47,7 +50,7 @@ export class Connection extends EventEmitter {
   }
   constructor(options = {}) {
     super();
-    options=snapshotAuthentication(connectionOptions(options));
+    options=snapshotProperties(snapshotAuthentication(connectionOptions(options)));
     const {host = 'localhost', port = options.tls ? 5671 : 5672, username = 'guest', password = 'guest', vhost = '/', heartbeat = 60, frameMax = 131072, channelMax = 64, timeout = 10000, signal, allowInsecureAuth = false} = options;
     if (!options.tls && !allowInsecureAuth) throw Error('SASL over TCP requires allowInsecureAuth: true; use TLS for protected credentials');
     if (typeof host !== 'string' || typeof username !== 'string' || typeof password !== 'string' || typeof vhost !== 'string') throw TypeError('Expected string connection options');
@@ -62,14 +65,17 @@ export class Connection extends EventEmitter {
     if(options.streamBodies)this.#receiving=new IncomingBodies({highWaterMark:receiveHighWaterMark,frameMax,timeout:this.#timeout,changed:()=>this.#resumeRead(),fail:error=>this._fail(error)});
     if (signal?.aborted) throw signal.reason ?? Error('Aborted');
     const auth=authenticationPlan(options.sasl);this.#authProviders=auth.providers;
-    const initial = JSON.parse(checked((options.streamBodies?core.session_open_stream_auth:core.session_open_auth)(this.#key, JSON.stringify(auth.descriptors), vhost, options.locale??'en_US', channelMax, frameMax, heartbeat)));
+    const initial = JSON.parse(checked(core.session_open_auth_properties(this.#key, JSON.stringify(auth.descriptors), vhost, options.locale??'en_US', channelMax, frameMax, heartbeat, options.streamBodies??false, propertiesJSON(options))));
     this.#limits = initial;
+    this.#metadata=JSON.parse(checked(core.session_metadata(this.#key)));
     try {
       this.#socket = options.tls ? tls.connect({...options.tls, host, port}) : net.connect({host, port});
     } catch (e) { core.session_drop(this.#key); throw e; }
+    this.#tlsName=options.tls?(options.tls.servername||host):'';
+    this.#tlsInfo=tlsSnapshot(this.#socket,this.#tlsName);
     this.#socket.setNoDelay(true);
     this.#socket.on(options.tls ? 'secureConnect' : 'connect', () => {
-      try { this.#write(initial.output); } catch (e) { this._fail(e); }
+      try { this.#transportReady=true;this.#addresses=socketAddresses(this.#socket);this.#tlsInfo=tlsSnapshot(this.#socket,this.#tlsName,true);this.#write(initial.output); } catch (e) { this._fail(e); }
     });
     this.#socket.on('data', bytes => {
       try {
@@ -97,6 +103,18 @@ export class Connection extends EventEmitter {
   }
   get closed() { return this.#closed; }
   get closing() { return this.#closing; }
+  get clientProperties() { return cloneMetadata(this.#metadata.clientProperties); }
+  get serverProperties() { return cloneMetadata(this.#metadata.serverProperties); }
+  get serverLocales() { return [...this.#metadata.serverLocales]; }
+  get serverVersion() { return cloneMetadata(this.#metadata.serverVersion); }
+  get localAddress() { return cloneMetadata(this.#addresses.localAddress); }
+  get remoteAddress() { return cloneMetadata(this.#addresses.remoteAddress); }
+  get tlsState() {
+    if(!this.#closed&&this.#transportReady)this.#tlsInfo=tlsSnapshot(this.#socket,this.#tlsName,true);
+    return cloneMetadata(this.#tlsInfo);
+  }
+  get config() { return {vhost:this.#metadata.vhost,locale:this.#metadata.locale,...this.limits,authenticationMechanism:this.#authenticationMechanism,properties:this.clientProperties}; }
+  get connectionInfo() { return {...cloneMetadata(this.#metadata),...cloneMetadata(this.#addresses),tlsState:this.tlsState,limits:this.limits,authenticationMechanism:this.#authenticationMechanism,closed:this.#closed}; }
   get limits() { const {channelMax, frameMax, heartbeat} = this.#limits; return {channelMax, frameMax, heartbeat}; }
   get timeout() { return this.#timeout; }
   get maxBufferedBytes() { return this.#maxBuffered; }
@@ -148,6 +166,7 @@ export class Connection extends EventEmitter {
   #process(text,owner=0) {
     const result = typeof text==='string'?JSON.parse(checked(text)):text;
     this.#authenticationMechanism=result.authenticationMechanism;
+    if(!this.#metadata.serverVersion&&result.state!=='start')this.#metadata=JSON.parse(checked(core.session_metadata(this.#key)));
     this.#limits = {channelMax: result.channelMax, frameMax: result.frameMax, heartbeat: result.heartbeat};
     if(this.#receiving)this.#receiving.frameMax=result.frameMax;
     this.#write(result.output,owner);
@@ -575,7 +594,7 @@ export class Channel extends EventEmitter {
 }
 
 export const connect = async (options, overrides) => {
-  options=snapshotAuthentication(connectionOptions(options,overrides));
+  options=snapshotProperties(snapshotAuthentication(connectionOptions(options,overrides)));
   if (options?.recovery) {
     const {RecoveringConnection} = await import('./recovery.mjs');
     return RecoveringConnection.connect(options, opts => Connection.connect(opts));

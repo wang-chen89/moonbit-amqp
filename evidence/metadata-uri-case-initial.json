@@ -1,0 +1,14 @@
+{
+  "utc": "2026-09-20T12:04:30.552Z",
+  "baseline": "8f99d0d431defbe7d52485fe269ccd6a7d857ba7",
+  "expected": "URI auth_mechanism is case insensitive in pinned Go Config.setSASL",
+  "actual": "0.17 rejects uppercase/mixed-case before socket open",
+  "sources": {
+    "tools/client.mjs": "00bcd2e79fed0c198d7ea6bb37ce5a2e956a2f927a20367b9f90097d7e2fa578",
+    "tools/uri.mjs": "7a6b1596fe7558fa3c7fe3d771ec80710da821319f5a1100c1bba5e2f2068865",
+    "tools/test-uri.mjs": "603dc89af749d180e6bf416e30802d4fba9688f1872b418032fa14d5f533ad3d",
+    "web/engine.mjs": "9cd7ddaaf817195c10b5bcdcad33d59e244b29c85effff83df0848641c0b8c41",
+    "evidence/metadata-uri-case-initial.txt": "6741be60d79c4e710cfce94efe2f8a7119ddcc5f51e66c40be135cd5167b195a",
+    "evidence/metadata-uri-case-initial.patch": "d355bd2a184b946acd96374274b10a8145f458862124215d842453893faf3218"
+  }
+}
