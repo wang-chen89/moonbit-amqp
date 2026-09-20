@@ -268,6 +268,15 @@ export class Connection extends EventEmitter {
   _sendQueued(channel,name,args,beforeSend,signals=[]) {
     return this.#publishWrites.run(async()=>{await this.#writable(signals);beforeSend?.();this._send(channel,name,args);},{signal:signals[0]});
   }
+  _publishBuffer(channel,exchange,key,body,properties,mandatory,immediate,signals,onStart) {
+    return this.#publishWrites.run(async()=>{
+      await this.#writable(signals);
+      // Validate and encode the entire small message before assigning a confirm
+      // sequence. One write avoids separating its method/header from its body.
+      const result=JSON.parse(checked(core.session_publish_flags(this.#key,channel,exchange,key,body.toString('hex'),properties,mandatory,immediate)));
+      onStart();this.#process(result,channel);
+    },{signal:signals[0]});
+  }
   async _publishStream(channel,exchange,key,source,size,properties,mandatory,immediate,signals,onStart) {
     let iterator,started=false,completed=false,remaining=size;
     const physical=this.#channels.get(channel);
@@ -597,7 +606,7 @@ export class Channel extends EventEmitter {
       const length=typeof body==='string'?Buffer.byteLength(body):body.byteLength;
       if(length>this.#connection.maxBufferedBytes)throw Error('Buffered body limit; use publishStream');
       const bytes=Buffer.from(body);
-      return this.#publication(exchange,routingKey,[bytes],BigInt(bytes.length),options,bytes.length,deferredConfirm);
+      return this.#publication(exchange,routingKey,[bytes],BigInt(bytes.length),options,bytes.length,deferredConfirm,bytes.length<=65536?bytes:undefined);
     }catch(error){return Promise.reject(error);}
   }
   publishStream(exchange,routingKey,source,bodySize,options={}) {
@@ -614,7 +623,7 @@ export class Channel extends EventEmitter {
       return this.#publication(exchange,routingKey,source,size,options,0,deferredConfirm);
     }catch(error){return Promise.reject(error);}
   }
-  #publication(exchange,key,source,size,{properties={},mandatory=false,immediate=false,signal}={},bytes,deferredConfirm) {
+  #publication(exchange,key,source,size,{properties={},mandatory=false,immediate=false,signal}={},bytes,deferredConfirm,bufferedBody) {
     if(typeof mandatory!=='boolean'||typeof immediate!=='boolean')return Promise.reject(TypeError('Invalid publish flags'));
     if(signal!==undefined && !(signal instanceof AbortSignal))return Promise.reject(TypeError('Invalid publication signal'));
     if(this.#closed||this.#connection.closing||this.#mode==='selecting')return Promise.reject(Error('Channel unavailable'));
@@ -622,9 +631,11 @@ export class Channel extends EventEmitter {
     const encoded=JSON.stringify(properties),confirm=this.#mode==='confirm';let pending,seq;
     this.#publications++;
     const sending=this.#sends.run(async()=>{
-      await this.#connection._publishStream(this.id,exchange,key,source,size,encoded,mandatory,immediate,[this.#sendAbort.signal,signal],()=>{
+      const onStart=()=>{
         if(confirm){seq=this.#nextConfirm++;pending={...deferred(),...createConfirmation(seq)};pending.promise.catch(()=>{});this.#confirms.set(seq,pending);}
-      });
+      };
+      if(bufferedBody!==undefined)await this.#connection._publishBuffer(this.id,exchange,key,bufferedBody,encoded,mandatory,immediate,[this.#sendAbort.signal,signal],onStart);
+      else await this.#connection._publishStream(this.id,exchange,key,source,size,encoded,mandatory,immediate,[this.#sendAbort.signal,signal],onStart);
       if(pending&&this.#confirms.has(seq))pending.timer=setTimeout(()=>this.#connection._fail(Error(`Publisher confirm timeout: ${seq}`)),this.#connection.timeout);
     },{bytes,signal});
     const sent=sending.catch(error=>{

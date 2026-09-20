@@ -13,6 +13,19 @@ function* chunks(size,chunkSize=65536){for(let offset=0;offset<size;offset+=chun
 const sha=size=>{const h=createHash('sha256');for(const b of chunks(size))h.update(b);return h.digest('hex');};
 const event=(target,name)=>once(target,name,{signal:AbortSignal.timeout(6000)});
 
+await test('buffered publication boundaries preserve binary content, caller snapshots and confirm order',()=>fixture({...confirmed,frameMax:4096},async({open,state})=>{
+ const c=await open(),ch=await c.openChannel();await ch.confirmSelect();
+ const sizes=[0,1,4088,4089,65536,65537],pending=[],hashes=[];
+ for(const size of sizes){
+  const body=Buffer.alloc(size);for(let i=0;i<size;i++)body[i]=(i*31+17)%256;
+  hashes.push(createHash('sha256').update(body).digest('hex'));
+  pending.push(ch.publish('','q',body,{properties:{'content-type':'application/octet-stream'}}));body.fill(0);
+ }
+ assert.deepEqual((await Promise.all(pending)).map(value=>value.deliveryTag),sizes.map((_,i)=>BigInt(i+1)));
+ assert.deepEqual(state.messages.map(value=>value.bytes),sizes);
+ assert.deepEqual(state.messages.map(value=>value.sha256),hashes);assert(state.maxFrame<=4096);
+}));
+
 await test('pre-aborted waits observe later input rejection and queue close suppresses deferred work',async()=>{
  const controller=new AbortController();controller.abort(Error('cancelled'));let called=0;
  await assert.rejects(waitFor(Promise.reject(Error('late input')),100,[controller.signal]),/cancelled/);

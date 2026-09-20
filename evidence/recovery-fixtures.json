@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T15:37:54.431Z",
+  "utc": "2026-09-20T16:38:14.608Z",
   "scope": "Independently encoded TCP peer; actual RabbitMQ integration is separate.",
   "passed": 25,
   "tests": [
@@ -52,7 +52,7 @@
     "authentication.mbt": "8653598bda374f5b638bf5cf8f754a95996cf6e99f6f68a707777ecf65f0653c",
     "cmd/web/authentication.mbt": "007c9d1407e295f973f608933292e2e33f9c9e275cc7dd50b7718094a63b2809",
     "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
-    "tools/client.mjs": "c4836d1c198377be1f282b365836bbe36c08a4dfe44ccc76ed15f2d20ef18c3f",
+    "tools/client.mjs": "9c4e865856262321cad5579fd71524d04ebfa57be4919e32c74398b2337c51f9",
     "tools/recovery-peer.mjs": "ce2f414bffcb07a848143cd34c1e737340e15078f4b3f0cb25f0e829a35118fe",
     "tools/test-recovery.mjs": "ea972fa91d9d97cd4cd456a95a52cc5705472bb52b7a1342ed335b75b179c009",
     "web/engine.mjs": "50dbb50240e56a92b2a9316f3f7a43c1a4c6768bb87d173cd3bd5953cbc5033e"

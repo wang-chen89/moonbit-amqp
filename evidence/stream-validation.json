@@ -1,8 +1,9 @@
 {
-  "utc": "2026-09-20T15:37:26.740Z",
+  "utc": "2026-09-20T16:29:06.745Z",
   "node": "v24.11.0",
-  "passed": 22,
+  "passed": 23,
   "tests": [
+    "buffered publication boundaries preserve binary content, caller snapshots and confirm order",
     "pre-aborted waits observe later input rejection and queue close suppresses deferred work",
     "12 MiB lazy binary source hashes correctly using negotiated 4096 byte frames",
     "buffered publish above the previous 1 MiB limit snapshots caller bytes",
@@ -52,7 +53,7 @@
       "writeStats": {
         "socketBufferedBytes": 0,
         "maxObservedSocketBytes": 65544,
-        "drainWaits": 389,
+        "drainWaits": 386,
         "streamingChannels": 0,
         "deferredProtocolBytes": 0
       }
@@ -82,9 +83,9 @@
     "publish_stream.mbt": "7bea19d02cf97ae7d24997595a0d9cc2855544a59906ad4b4ef8db88ef2e5501",
     "publish_stream_test.mbt": "967420c566722e4a5990a68987a51144fd7031224343552ceffde5f5bca3b1f0",
     "cmd/web/publish_stream.mbt": "78bd1662496a37dd89512596ffbc99d083fd39605dc3eeaa02fe42ffa3f7248a",
-    "tools/client.mjs": "c4836d1c198377be1f282b365836bbe36c08a4dfe44ccc76ed15f2d20ef18c3f",
+    "tools/client.mjs": "9c4e865856262321cad5579fd71524d04ebfa57be4919e32c74398b2337c51f9",
     "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
-    "tools/test-stream.mjs": "a777946698ffbbcef993f6dde250b23f5ca16537281c29a39a49b5d4e5e8e653",
+    "tools/test-stream.mjs": "2a9d6e19b34c03190604e2431aca48f850f138e32e8c503e8f9aa66b09025a36",
     "web/engine.mjs": "50dbb50240e56a92b2a9316f3f7a43c1a4c6768bb87d173cd3bd5953cbc5033e"
   },
   "scope": "Independent wire fixtures; outbound streaming only. Source-owned chunk storage excluded from sender buffer bound."
