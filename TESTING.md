@@ -10,7 +10,23 @@
 CI files are prepared locally; remote CI has not run because this repository has not been uploaded. Compatibility beyond README scope remains unverified.
 
 
-## 0.21 当前恢复控制验证
+## 0.22 当前限时关闭验证
+
+- `close-deadline-verify.txt`：JS/Wasm-GC 各 138 项与全部本地检查，含 17 新限时关闭组。
+- `close-deadline-native.json`：9 peer/11 broker 的返回类别、资源和取消状态一致；原始通知、错误和耗时完整保留。broker 包含 TLS 与透明代理扣留 close-ok。另 1 个本地真实确认发布/get 后关闭流程。
+- 2 类差异：Node close 事件与 Go NotifyClose 载荷；恢复锁/异步拨号的等待边界。没有完整通知、时间精度或调度匹配断言。
+- `close-deadline-native-initial.json` 保留最初原生观察与原始程序；`close-deadline-owned-stream-initial.json` 记录开发阶段逻辑关闭但 Duplex final 不结束时流未销毁的复现；新增本地检查验证修复。
+- 15 个原生/broker 命令与完整本地 fixture 共 34 份当前源码绑定报告；另 10 份历史原生/broker 报告未重跑。清单见 `close-deadline-upgrade.json`。
+- 72 个原库文件和 17 broker 包再次校验；二进制与调用程序指纹见 `close-deadline-reference-build.json`。计时只验证局部期限行为，不代表整体性能追平。
+
+```powershell
+./verify.ps1 -MoonPath /absolute/path/to/moon.exe
+$env:AMQP_CLOSE_DEADLINE_REFERENCE='/absolute/path/to/close-deadline-oracle.exe'
+$env:RABBITMQ_ROOT='/path/to/extracted/rabbitmq/root'
+node tools/test-close-deadline-native.mjs
+```
+
+## 0.21 历史恢复控制验证
 
 - `recovery-control-verify.txt`：JS/Wasm-GC 各 138 项与全部本地检查，含 14 新恢复控制组。
 - `recovery-control-native.json`：7 peer/7 broker 查询/取消阶段一致；每侧 4 个完整结果一致；额外 1 个 broker 活跃消费者差异对照；3 个本地真实恢复场景。

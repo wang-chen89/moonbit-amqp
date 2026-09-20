@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T13:47:20.317Z",
+  "utc": "2026-09-20T14:11:34.732Z",
   "scope": "Independently encoded TCP peer; actual RabbitMQ integration is separate.",
   "passed": 25,
   "tests": [
@@ -30,14 +30,16 @@
     "a channel recovery notification permits a new topology RPC"
   ],
   "sources": {
-    "tools/evidence-source.mjs": "0e45358bb6d040269e379eb7c1783f7602ac076d72eca85eb57d0c4ef3d79777",
+    "tools/evidence-source.mjs": "53b3722a895b12d016cbcf61dc293db59e966d2511829d19e559d40113949aa1",
+    "tools/close-deadline.mjs": "0277a8786a0d3eebe24084c69431232fbc0aa433cd9999ca6297c34105343768",
+    "tools/outbound.mjs": "bc9cc59a8df9669ae010138e4dd89fa801462c96f6440ed4ba48db45c7fe7f39",
     "tools/recovery-control.mjs": "9c20dd1e5142a900c0af1d84eea338a09ab1b83ef4d12c47066f486b241e3a69",
-    "tools/recovery.mjs": "b3635fff2aec21dcacd20542805a741a0317ab3a8c9d9cd21047cc67e58dcb77",
+    "tools/recovery.mjs": "35e5f0af878b96270b09aab74a8ea999b401fe365b0a27244e422bf720aa7bfc",
     "tools/recovery-state.mjs": "322925ae7632a2ea5241e2054fc4f8088bc9445b23757a88da75f98a9631c1ef",
     "tools/recovery-channel.mjs": "03cf31ab6a455287b95259653d61e9bb30d02ac2b44a110e241fc3352763189d",
     "tools/topology-query.mjs": "26fdbf28aa2b51eb8bf1a7bfb81b1a004ef0207ae071989ab8aaaab5070493e6",
     "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
-    "connection_metadata.mbt": "63ac63787d604be174175e5c6e2452a186bc545c0c2875bd2f25a3d189713d0e",
+    "connection_metadata.mbt": "e8869fa59f1ae42c2e7f0332164b33c78b53f2ec4e9b63f9ba46f3c6adb9e0b7",
     "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
     "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
     "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
@@ -48,9 +50,9 @@
     "authentication.mbt": "8653598bda374f5b638bf5cf8f754a95996cf6e99f6f68a707777ecf65f0653c",
     "cmd/web/authentication.mbt": "007c9d1407e295f973f608933292e2e33f9c9e275cc7dd50b7718094a63b2809",
     "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
-    "tools/client.mjs": "31d2fbfaecc74f765f2522cd3eff6434b6383cd9e385815988db0b6c834b393d",
+    "tools/client.mjs": "348c7aede1e6a75455154b481df84ab17aa23d9bf1d876a4d38d1264dcb7f501",
     "tools/recovery-peer.mjs": "ce2f414bffcb07a848143cd34c1e737340e15078f4b3f0cb25f0e829a35118fe",
     "tools/test-recovery.mjs": "ea972fa91d9d97cd4cd456a95a52cc5705472bb52b7a1342ed335b75b179c009",
-    "web/engine.mjs": "5867ee044d58c0bc47110858fbfe35dbf3a994e376724b9237deb4fb6d724b2c"
+    "web/engine.mjs": "9ccf99426f07f28f2aba8ed5d7a160ef48b5147fe927d2808b9adf60175a99b2"
   }
 }

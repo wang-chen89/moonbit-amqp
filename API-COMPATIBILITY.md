@@ -1,8 +1,8 @@
-# 原库接口对应与剩余差距 · 0.21
+# 原库接口对应与剩余差距 · 0.22
 
 基准为已核验的 amqp091-go 提交 `a0195c6baf35db642d13651cb28938f899062e7c`。下表来自根目录非测试 Go 源文件的 106 条导出命名函数/方法声明，排除非导出接收者，包含构建标签下的 Fuzz。它不是 106 项独立功能，也不涵盖所有结构体字段、常量、接口或运行行为；不能据此计算“追平百分比”。逐条源位置、构建标签和文件 SHA-256 见 [接口清单](evidence/api-surface-audit.json)。
 
-“有入口”仅指已有对应操作及所注明的有限验证，不代表完整兼容。当前优先差距包括：完整 context/Go channel 通知语义、完整 TLS 状态/网络截止时间、自定义恢复策略、CloseDeadline 与恢复控制交错，以及完整恢复/长期/多版本/性能验证。
+“有入口”仅指已有对应操作及所注明的有限验证，不代表完整兼容。当前优先差距包括：完整 context/Go channel 通知语义、完整 TLS 状态/网络截止时间、自定义恢复策略、完整关闭期限与恢复控制交错，以及完整恢复/长期/多版本/性能验证。
 
 0.13 为 11 个宿主方法补 noWait 选项，队列与交换机被动声明复用原方法选项。15 条原库报文逐字节一致；8 个真实 broker 场景结果一致。另有一个明确差异：固定 Go 的 Confirm(true) 仍等待 RabbitMQ 按 no-wait 抑制的回复，本实现不等待且能继续获得发布确认。该项单独记录，未计为行为一致。其余 8 个 Go broker 场景使用 Confirm(false) 隔离此限制。
 
@@ -21,6 +21,8 @@
 0.20 新增恢复配置与拓扑快照：14 本地组、7 peer/7 broker 一致，3 本地真实恢复；修复关闭通道残留登记。嵌套参数别名差异见 [拓扑查询](TOPOLOGY.md)；当时的耗尽查询风险已在 0.21 实测并修正。
 
 0.21 补显式重连、耗尽查询和取消通知：14 本地组；每侧 7 查询/取消序列一致、4 完整结果一致；3 类差异单列。见 [恢复控制](RECOVERY-CONTROL.md)。
+
+0.22 补绝对期限关闭：17 本地组，9 peer/11 broker 的返回类别和资源状态一致，1 本地真实投递关闭；两类通知/调度差异见 [限时关闭](CLOSE-DEADLINE.md)。
 
 | 原库声明 | 本版入口/对应能力 | 边界 |
 |---|---|---|
@@ -96,7 +98,7 @@
 | `Connection.NotifyRecoveryCancel` | notifyRecoveryCancel() | 当前生命周期的共享 Promise；关闭/耗尽完成，普通断线不完成；不同于 Go channel 调度 |
 | `Connection.NotifyBlocked` | close / return / cancel / blocked / unblocked 事件 | 事件接口不同于 Go channel；监听者阻塞/关闭语义不相同 |
 | `Connection.Close` | close / closed / openChannel | 有入口；关闭、编号重用和恢复已有有限验证 |
-| `Connection.CloseDeadline` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `Connection.CloseDeadline` | closeDeadline(Date / integer Unix milliseconds / null) | 17 本地组、9 peer/11 broker 返回类别及关闭/取消状态一致；通知与恢复拨号等待差异单列；毫秒精度，非完整 Go I/O deadline 等价 |
 | `Connection.IsClosed` | close / closed / openChannel | 有入口；关闭、编号重用和恢复已有有限验证 |
 | `Connection.Channel` | close / closed / openChannel | 有入口；关闭、编号重用和恢复已有有限验证 |
 | `Connection.Reconnect` | reconnect() | 活跃连接不拨号；并发加入当前恢复；耗尽后可显式重试；原库新建通道 panic 的差异单列 |

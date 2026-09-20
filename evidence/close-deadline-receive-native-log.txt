@@ -1,0 +1,9 @@
+PASS 12 MiB TCP get matches pinned Go bytes and properties
+PASS 16 MiB verified TLS consumer matches pinned Go bytes and properties
+PASS discard then negative acknowledgement requeues the full original body
+PASS prefetch one withholds the next stream until explicit acknowledgement
+PASS 12 MiB mandatory return matches pinned Go and permits publisher confirmation
+PASS disconnect fails the old body and recovered get redelivers it with a fresh tag
+PASS closing an unread delivery channel requeues its body and keeps sibling usable
+PASS legacy buffer mode preserves the 8 MiB receiving bound
+8 real incoming streaming broker groups passed; 3 native body/property comparisons matched

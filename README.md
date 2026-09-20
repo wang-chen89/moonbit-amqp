@@ -1,6 +1,6 @@
 # AMQP 0-9-1 编解码与消息客户端
 
-本地候选版 **0.21.0**。MoonBit 实现帧/方法/属性编解码、连接认证协商和通道状态机；Node.js 提供 TCP/TLS、RPC、心跳和消息发布/消费宿主。仓库独立，当前仅供本地审查。
+本地候选版 **0.22.0**。MoonBit 实现帧/方法/属性编解码、连接认证协商和通道状态机；Node.js 提供 TCP/TLS、RPC、心跳和消息发布/消费宿主。仓库独立，当前仅供本地审查。
 
 ```sh
 moon test --target js
@@ -327,13 +327,15 @@ connection.on('queueNameChanged', ({previous, current}) => console.log({previous
 
 显式重连、耗尽后再次尝试和恢复取消通知见 [RECOVERY-CONTROL.md](RECOVERY-CONTROL.md)。恢复耗尽后配置仍启用，连接实际状态仍为 closed；显式 close/destroy/AbortSignal 会永久禁止该对象再次重连。
 
+绝对期限关闭入口 `closeDeadline(Date | Unix毫秒 | null)` 见 [CLOSE-DEADLINE.md](CLOSE-DEADLINE.md)。它会结束排队发送和关闭握手，期限到达时销毁传输；需要发布确认时请先等待确认完成。
+
 ## 验证与成熟度
 
-0.21 的 **138 项核心测试在 JS 与 Wasm-GC 分别通过**，完整本地 verify 通过，含 14 组新增恢复控制检查及全部已有 fixture/CLI/畸形输入回归。
+0.22 的 **138 项核心测试在 JS 与 Wasm-GC 分别通过**，完整本地 verify 通过，含新增 17 组限时关闭检查及全部已有 fixture/CLI/畸形输入回归。
 
-固定未修改 Go 原库在独立 peer 和真实 RabbitMQ 中，各有 **7 个查询/取消阶段序列一致，4 个完整操作结果一致**。另有一个活跃消费者 broker 差异对照和 3 个本地真实恢复场景，覆盖耗尽后新通道确认发布/get、活跃通道重放及显式关闭禁止复活。幂等 close、原库耗尽后新通道 panic、活跃消费者重复订阅共 3 类差异单列，见 [恢复控制](RECOVERY-CONTROL.md)。
+固定未修改 Go 原库的 **9 个 peer 场景与 11 个真实 RabbitMQ 场景**，在返回结果类别及资源/取消状态方面一致，含 TLS 和代理扣留 close-ok。另有 1 个本地真实确认发布/get 后关闭流程。通知载荷与恢复中等待拨号的 2 类差异单列；没有把这些有限字段匹配称为完整 API 等价。自定义流 final 卡住时的资源残留已修复，见 [限时关闭](CLOSE-DEADLINE.md)。
 
-共重跑 14 个原生/broker 命令，形成 32 份当前源码绑定报告；其余 10 份历史原生/broker 报告未重跑。当前精确范围见 [本轮清单](evidence/recovery-control-upgrade.json)。各既有差异与改进保留原计数，不计为匹配。
+共重跑 15 个原生/broker 命令，形成 34 份当前源码绑定报告；其余 10 份历史原生/broker 报告未重跑。精确范围见 [本轮清单](evidence/close-deadline-upgrade.json)。各既有差异与改进保留原计数，不计为匹配。
 
 运行环境为 Windows Node 24 和 WSL RabbitMQ 4.0.5/Erlang 27；各层覆盖重叠，不相加计算追平比例。仅记录本机示例和基础确认样本，**未建立代表性原生性能或生产负载追平**。完整 TLS 状态、Go context/通知/网络截止时间、自定义恢复策略与所有恢复交错、多版本/平台/集群和长期验证仍缺。历史范围见 [TESTING.md](TESTING.md) 与 [API-COMPATIBILITY.md](API-COMPATIBILITY.md)。协议范围为 AMQP 0-9-1。
 
@@ -357,4 +359,4 @@ Node 字段表用普通对象，支持 boolean、signed int32、字符串、null
 
 参考：[RabbitMQ 规格](https://www.rabbitmq.com/docs/specification)、[amqp091-go](https://github.com/rabbitmq/amqp091-go)。Pika 仅是独立验证工具，无运行期依赖。
 
-本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，0.21 本地增量归档另附同提交 ZIP/bundle；历史合集未更新。未上传、未发布、未添加远程仓库。
+本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，0.22 本地增量归档另附同提交 ZIP/bundle；历史合集未更新。未上传、未发布、未添加远程仓库。

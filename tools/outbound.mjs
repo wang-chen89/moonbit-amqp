@@ -6,7 +6,7 @@ export function waitFor(promise, timeout, signals=[]) {
     const finish=(error,value)=>{if(settled)return;settled=true;clearTimeout(timer);for(const {signal,fn} of handlers)signal.removeEventListener('abort',fn);error?reject(error):resolve(value);};
     Promise.resolve(promise).then(value=>finish(undefined,value),error=>finish(error));
     for(const {signal,fn} of handlers){if(signal.aborted){finish(aborted(signal));return;}signal.addEventListener('abort',fn,{once:true});}
-    timer=setTimeout(()=>finish(Error('Publication progress timeout')),timeout);
+    if(timeout!==null)timer=setTimeout(()=>finish(Error('Publication progress timeout')),timeout);
   });
 }
 

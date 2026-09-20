@@ -62,6 +62,8 @@ try {
   if ($LASTEXITCODE -ne 0) {throw 'topology query fixtures failed'}
   node tools/test-recovery-control.mjs
   if ($LASTEXITCODE -ne 0) {throw 'recovery control fixtures failed'}
+  node tools/test-close-deadline.mjs
+  if ($LASTEXITCODE -ne 0) {throw 'close deadline fixtures failed'}
   node tools/test-secret-update.mjs
   if ($LASTEXITCODE -ne 0) {throw 'credential update fixtures failed'}
   node tools/test-autodelete.mjs

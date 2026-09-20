@@ -2,6 +2,7 @@ import {Lifecycle, Topology, notice, delay} from './recovery-state.mjs';
 import {RecoveringChannel} from './recovery-channel.mjs';
 import {emptyTopologyConfiguration} from './topology-query.mjs';
 import {recoveryClosed} from './recovery-control.mjs';
+import {closeDeadlineMillis,connectionClosedError} from './close-deadline.mjs';
 
 function number(value,min,max,name) {
   if(!Number.isInteger(value)||value<min||value>max)throw TypeError(`Invalid recovery ${name}`);
@@ -264,6 +265,21 @@ export class RecoveringConnection extends Lifecycle {
     this.#channels.clear();this.#cancelledQueues.clear();this.topology.clear();this.#channelTasks.clear();this.#channelSerial=Promise.resolve();
   }
   destroy(error=Error('Connection destroyed by application')) { this.#closeIntent=true;this.#external?.removeEventListener('abort',this.#abort);this.#stop(error); }
+  async closeDeadline(deadline) {
+    const time=closeDeadlineMillis(deadline);
+    this.#closeIntent=true;this.#external?.removeEventListener('abort',this.#abort);
+    if(this.#closing||this.closed)throw connectionClosedError();
+    const graceful=this.state==='open'&&!this.#physical?.closed;
+    this._state('closing');
+    if(!graceful)this.#lifetime.abort(connectionClosedError());
+    this.#closing=(async()=>{
+      let failure;
+      try{if(!graceful)throw connectionClosedError();await this.#physical.closeDeadline(time);}
+      catch(error){failure=error;throw error;}
+      finally{this.#stop(failure??Error('Connection closed by application'));}
+    })();
+    return this.#closing;
+  }
   close() {
     this.#closeIntent=true;this.#external?.removeEventListener('abort',this.#abort);
     if(this.#closing)return this.#closing;

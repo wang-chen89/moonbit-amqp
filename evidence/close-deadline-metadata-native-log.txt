@@ -1,0 +1,16 @@
+MATCH metadata peer default
+MATCH metadata peer empty
+MATCH metadata peer custom
+MATCH metadata peer caps
+MATCH metadata peer only-caps
+MATCH metadata peer mutate
+MATCH metadata peer ipv6
+MATCH metadata broker TCP properties and endpoint state
+MATCH metadata broker TCP URI mixed-case PLAIN mechanism
+MATCH metadata broker TCP URI mixed-case AMQPLAIN mechanism
+MATCH metadata broker TCP URI Unicode simple-case PLAIN mechanism
+MATCH metadata broker verified TLS 1.2 certificate cipher and server identity
+MATCH metadata broker mutual TLS EXTERNAL local and peer certificate metadata
+MATCH metadata broker explicit unverified TLS reports unauthorized transport
+PASS TLS 1.3 metadata survives connection replacement and final close; confirmed message roundtrip succeeds
+7 native peer metadata results, 5 client tables and 7 broker results matched; 1 local TLS recovery passed; 2 differences recorded

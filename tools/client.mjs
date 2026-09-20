@@ -14,6 +14,7 @@ import {openOptions,validateTransportOptions,suppliedTLS,startTransport,finishTr
 export {defaultDial} from './transport.mjs';
 import {emptyTopologyConfiguration} from './topology-query.mjs';
 import {RecoveryCancellation,recoveryClosed} from './recovery-control.mjs';
+import {closeDeadlineMillis,closeDeadlineError,connectionClosedError,armCloseDeadline} from './close-deadline.mjs';
 
 function checked(text) {
   if (text.startsWith('ERROR:')) throw Error(text.slice(7));
@@ -39,6 +40,7 @@ export class Connection extends EventEmitter {
   #recoveryCancellation=new RecoveryCancellation();
   #key = randomUUID(); #socket; #timer; #abort; #signal; #ready = deferred();
   #connectTimer; #closed = false; #closing = false; #lastRead = performance.now(); #lastWrite = 0;
+  #deadlineClosing=false;
   #channels = new Map(); #closeWait; #limits; #maxBuffered; #timeout;
   #authProviders=[]; #authAbort=new AbortController(); #authenticationMechanism='';
   #secretUpdate;
@@ -252,11 +254,11 @@ export class Connection extends EventEmitter {
     if (this.#closed) throw Error('Connection closed');
     this.#process(core.session_send(this.#key, channel, name, typeof args==='string'?args:JSON.stringify(args)));
   }
-  async #writable(signals) {
+  async #writable(signals,timeout=this.#timeout) {
     while(this.#socket.writableNeedDrain){
       this.#drainWaits++;
       let listener;const drained=new Promise(resolve=>{listener=resolve;this.#socket.once('drain',listener);});
-      try{await waitFor(drained,this.#timeout,[this.#authAbort.signal,...signals]);}finally{this.#socket.off('drain',listener);}
+      try{await waitFor(drained,timeout,[this.#authAbort.signal,...signals]);}finally{this.#socket.off('drain',listener);}
     }
     if(this.#closed)throw Error('Connection closed');
     for(const signal of signals)if(signal?.aborted)throw aborted(signal);
@@ -319,7 +321,7 @@ export class Connection extends EventEmitter {
     if(this.#secretUpdate){clearTimeout(this.#secretUpdate.timer);this.#secretUpdate.reject(error);this.#secretUpdate=undefined;}
     for (const ch of this.#channels.values()) ch._terminate(error);
     this.#channels.clear(); core.session_drop(this.#key);
-    if (graceful) this.#socket?.end(()=>this.#socket.destroy()); else this.#socket?.destroy();
+    if (graceful&&!this.#deadlineClosing) this.#socket?.end(()=>this.#socket.destroy()); else this.#socket?.destroy();
     this.emit('close', error);
   }
   async openChannel() {
@@ -345,17 +347,27 @@ export class Connection extends EventEmitter {
       return pending.promise;
     } catch(error) {return Promise.reject(error);}
   }
-  async close() {
+  close() { return this.#closeWithDeadline(Date.now()+this.#timeout,false); }
+  async closeDeadline(deadline) {
+    const time=closeDeadlineMillis(deadline);
+    if(this.#closed||this.#closing){this.#recoveryCancellation.cancel();throw connectionClosedError();}
+    return this.#closeWithDeadline(time,true);
+  }
+  async #closeWithDeadline(deadline,explicit) {
     this.#recoveryCancellation.cancel();
     if (this.#closed) return;
     if (this.#closing) return this.#closeWait.promise;
-    this.#closing = true; this.#closeWait = deferred();
+    this.#closing = true;this.#deadlineClosing=explicit; this.#closeWait = deferred();
     this.#receiving?.discardAll();
     this.#closeWait.promise.catch(()=>{});
-    const timer = setTimeout(() => this._fail(Error('Close timeout')), this.#timeout);
-    try { await Promise.all([...this.#channels.values()].map(ch=>ch._flushOutput()));await this._sendQueued(0, 'connection.close', [200, 'normal close', 0, 0]); await this.#closeWait.promise; }
+    const stopTimer=armCloseDeadline(deadline,()=>this._fail(explicit?closeDeadlineError():Error('Close timeout')));
+    try {
+      await Promise.all([...this.#channels.values()].map(ch=>ch._flushOutput(!explicit)));
+      await this.#publishWrites.run(async()=>{await this.#writable([],explicit?null:this.#timeout);this._send(0,'connection.close',[200,'normal close',0,0]);});
+      await this.#closeWait.promise;
+    }
     catch (error) { this.#closeWait.promise.catch(() => {}); this._fail(error); throw error; }
-    finally { clearTimeout(timer); }
+    finally { stopTimer(); }
   }
   destroy(reason = Error('Connection destroyed')) { this._fail(reason); }
 }
@@ -374,7 +386,7 @@ export class Channel extends EventEmitter {
   topologyConfiguration(global=false) { if(typeof global!=='boolean')throw TypeError('Invalid topology scope');return emptyTopologyConfiguration(); }
   get closed() { return this.#closed; }
   get nextPublishSeqNo() { return this.#nextConfirm; }
-  async _flushOutput() { if(this.#closed)return;await this.#sends.idle();await Promise.allSettled([...this.#confirms.values()].map(p=>p.promise)); }
+  async _flushOutput(confirmations=true) { if(this.#closed)return;await this.#sends.idle();if(confirmations)await Promise.allSettled([...this.#confirms.values()].map(p=>p.promise)); }
   _rpc(name, args, expected, apply = e => e.args, automatic = false) {
     if (this.#closed) return Promise.reject(Error('Channel closed'));
     if (this.#connection.closing) return Promise.reject(Error('Connection closing'));
