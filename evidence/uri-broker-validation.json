@@ -1,0 +1,237 @@
+{
+  "utc": "2026-09-20T11:48:46.190Z",
+  "node": "v24.11.0",
+  "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
+  "binarySha256": "f2b7aef1baf6193e0b14d6b8c520d0da1237c7b026c82e9146e8d2915eda82da",
+  "matched": 18,
+  "comparisons": [
+    {
+      "name": "TCP decoded built-in credentials and root virtual host",
+      "result": {
+        "ok": true,
+        "mechanism": "PLAIN",
+        "vhost": "/",
+        "channelMax": 16,
+        "frameMax": 8192,
+        "heartbeat": 4,
+        "body": "URI connection probe",
+        "tls": false
+      }
+    },
+    {
+      "name": "URI repeated authentication candidates select AMQPLAIN first",
+      "result": {
+        "ok": true,
+        "mechanism": "AMQPLAIN",
+        "vhost": "/",
+        "channelMax": 16,
+        "frameMax": 8192,
+        "heartbeat": 4,
+        "body": "URI connection probe",
+        "tls": false
+      }
+    },
+    {
+      "name": "explicit SASL overrides URI candidates",
+      "result": {
+        "ok": true,
+        "mechanism": "PLAIN",
+        "vhost": "/",
+        "channelMax": 16,
+        "frameMax": 8192,
+        "heartbeat": 4,
+        "body": "URI connection probe",
+        "tls": false
+      }
+    },
+    {
+      "name": "URI heartbeat and explicit channel max precedence",
+      "result": {
+        "ok": true,
+        "mechanism": "PLAIN",
+        "vhost": "/",
+        "channelMax": 2,
+        "frameMax": 8192,
+        "heartbeat": 3,
+        "body": "URI connection probe",
+        "tls": false
+      }
+    },
+    {
+      "name": "explicit virtual host overrides a URI nonexistent virtual host",
+      "result": {
+        "ok": true,
+        "mechanism": "PLAIN",
+        "vhost": "/",
+        "channelMax": 16,
+        "frameMax": 8192,
+        "heartbeat": 2,
+        "body": "URI connection probe",
+        "tls": false
+      }
+    },
+    {
+      "name": "URI missing virtual host is rejected",
+      "result": {
+        "ok": false
+      }
+    },
+    {
+      "name": "bad password fails authentication",
+      "result": {
+        "ok": false
+      }
+    },
+    {
+      "name": "TLS uses URI CA file and explicit server identity",
+      "result": {
+        "ok": true,
+        "mechanism": "PLAIN",
+        "vhost": "/",
+        "channelMax": 16,
+        "frameMax": 8192,
+        "heartbeat": 4,
+        "body": "URI connection probe",
+        "tls": true
+      }
+    },
+    {
+      "name": "TLS AMQPLAIN query authenticates with server verification",
+      "result": {
+        "ok": true,
+        "mechanism": "AMQPLAIN",
+        "vhost": "/",
+        "channelMax": 16,
+        "frameMax": 8192,
+        "heartbeat": 4,
+        "body": "URI connection probe",
+        "tls": true
+      }
+    },
+    {
+      "name": "URI client certificate pair authenticates with EXTERNAL",
+      "result": {
+        "ok": true,
+        "mechanism": "EXTERNAL",
+        "vhost": "/",
+        "channelMax": 16,
+        "frameMax": 8192,
+        "heartbeat": 4,
+        "body": "URI connection probe",
+        "tls": true
+      }
+    },
+    {
+      "name": "URI certificate without a key does not enable client authentication",
+      "result": {
+        "ok": false
+      }
+    },
+    {
+      "name": "URI unknown certificate identity is rejected",
+      "result": {
+        "ok": false
+      }
+    },
+    {
+      "name": "URI untrusted client certificate is rejected",
+      "result": {
+        "ok": false
+      }
+    },
+    {
+      "name": "URI wrong server identity fails verification",
+      "result": {
+        "ok": false
+      }
+    },
+    {
+      "name": "URI server CA trust failure is rejected",
+      "result": {
+        "ok": false
+      }
+    },
+    {
+      "name": "explicit TLS configuration ignores URI file and SNI parameters",
+      "result": {
+        "ok": true,
+        "mechanism": "PLAIN",
+        "vhost": "/",
+        "channelMax": 16,
+        "frameMax": 8192,
+        "heartbeat": 4,
+        "body": "URI connection probe",
+        "tls": true
+      }
+    },
+    {
+      "name": "TCP URI ignores TLS query parameters",
+      "result": {
+        "ok": true,
+        "mechanism": "PLAIN",
+        "vhost": "/",
+        "channelMax": 16,
+        "frameMax": 8192,
+        "heartbeat": 4,
+        "body": "URI connection probe",
+        "tls": false
+      }
+    },
+    {
+      "name": "TLS query with zero heartbeat negotiates broker interval",
+      "result": {
+        "ok": true,
+        "mechanism": "PLAIN",
+        "vhost": "/",
+        "channelMax": 4,
+        "frameMax": 8192,
+        "heartbeat": 4,
+        "body": "URI connection probe",
+        "tls": true
+      }
+    }
+  ],
+  "localPassed": 1,
+  "tests": [
+    "URI TLS credential bytes survive file removal and reconnection; confirmed messaging succeeds twice"
+  ],
+  "packages": {
+    "rabbitmq-server_4.0.5-10ubuntu5_all.deb": "facf754e045a705aca30b82b7728ac7b3f123d2b7f7838575b246fe0bd2ad05e",
+    "libsctp1_1.0.21+dfsg-1build2_amd64.deb": "92924c463cf0e6630b1e9fd3969d45b21558f7ecbf0c9ef12c80523669f8a271",
+    "erlang-xmerl_1%3a27.3.4.6+dfsg-1_amd64.deb": "7480288faf6f4870a62e9de14c56cd4e6b92bebf4c26e1d35123bab10c92d1fc",
+    "erlang-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "f2769fae5be10c5c7048f2d1f62c5d41c9202c016b48138b039a6887c44c4757",
+    "erlang-syntax-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "06a238505a33eb31b4479cdcc003719bcf37cdff8922e0496296407bcafee2f4",
+    "erlang-ssl_1%3a27.3.4.6+dfsg-1_amd64.deb": "f194e4197bd209a2e3b219190f545c5fa3735369b6d8e36b8616a20dac767b64",
+    "erlang-snmp_1%3a27.3.4.6+dfsg-1_amd64.deb": "ce4c7681a5ee8d8c9f8fab0fc1b6297e2dab573f6991e24bc592770bd1e4cd4d",
+    "erlang-runtime-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "dfe9a6452a7073faf6be4e2f4ac4e5513458294d5949fa10040b77f5d522970a",
+    "erlang-public-key_1%3a27.3.4.6+dfsg-1_amd64.deb": "8cb55457e13ff6b00ff9ea80df4b13360dbb4df9c4bc1dbbbdc3ad4d9658ee8c",
+    "erlang-parsetools_1%3a27.3.4.6+dfsg-1_amd64.deb": "bd846ef7ca9d58f48ee54123a7138ec1812aa7aa813ebdffce21fc5fd6f45d78",
+    "erlang-os-mon_1%3a27.3.4.6+dfsg-1_amd64.deb": "b1cc339e3dfc237440069314dcdb082dc812cea57c1494679efbd642c22b9775",
+    "erlang-mnesia_1%3a27.3.4.6+dfsg-1_amd64.deb": "527c4881cb83a0c89e6d621adae20b4e301b8220311e59a839a443c4bf7edca6",
+    "erlang-inets_1%3a27.3.4.6+dfsg-1_amd64.deb": "f075fa56cd4464a63eb26d7d90d834a2b31446d9707c527029fa15915ae1f9ed",
+    "erlang-eldap_1%3a27.3.4.6+dfsg-1_amd64.deb": "4c40df00f11f0b459d0d5221b167e05e2eb57f63d82a61fed61541481093aa57",
+    "erlang-crypto_1%3a27.3.4.6+dfsg-1_amd64.deb": "1a2de05e72695135d4c091cbb7f74e5c291f3c763d4ced4b18e48d78a2a73d3a",
+    "erlang-base_1%3a27.3.4.6+dfsg-1_amd64.deb": "8e7ababa5b1ddbe72e135faa78d15755268dfbb7cdfc25a5a8144f3e2d5754df",
+    "erlang-asn1_1%3a27.3.4.6+dfsg-1_amd64.deb": "b2d3f1a35d642727631ff138070d5a4f410bb0066f67a1efbf11ad61dc51fa6d"
+  },
+  "sources": {
+    "tools/evidence-source.mjs": "64f53014dfe264fb2c8f67a0694bcac6bbe1cca1d253d3aa366e26765612b366",
+    "tools/uri.mjs": "7a6b1596fe7558fa3c7fe3d771ec80710da821319f5a1100c1bba5e2f2068865",
+    "uri.mbt": "fb8755671ef6cc4afc4d3a51da45f3baf8df45a6ce1a9ffd3126b495d7df7d1e",
+    "cmd/web/uri.mbt": "277acacb4d51d0a13e470e7132a74ffc592fc13dec72855ec2881e9ea1e7ba54",
+    "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
+    "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
+    "tools/client.mjs": "00bcd2e79fed0c198d7ea6bb37ce5a2e956a2f927a20367b9f90097d7e2fa578",
+    "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
+    "tools/recovery.mjs": "f9bb94945bc9dc9fa95c624ee692c8d5859a744591f51c51252deb1b2861a427",
+    "tools/recovery-channel.mjs": "6c7709db98f69d749d7b0cb87b6f53cbc7e2439dccfc20e75487efd69c2f5fe4",
+    "tools/recovery-state.mjs": "78435fc7a882bfa4e7f349602db597d9778cf1f0558f7459475e8e562fff683e",
+    "tools/rabbitmq-harness.mjs": "54cd2d6678c94b6b41a5c360ed4fa2c975316523f607c9154dfa8e52f131b320",
+    "tools/rabbitmq-reference.py": "03c66595e439a3297c7970196509df1c6358bb72fa75938e5411f5201e365c1a",
+    "tools/test-uri-broker.mjs": "69d97d008e0048bd672ad0e3ea9fc832be7159075f21a8b08bdf04507c4b360e",
+    "tools/uri-reference.go": "3e6b3b94e7053244f2e73018829510fff459caca1b2a48833c78f38f4c2ab2cf",
+    "evidence/uri-reference-build.json": "5cb388b46d26a3390f1f3317669fd86a5036ee20f39756d665abee2d6df6c286",
+    "web/engine.mjs": "9cd7ddaaf817195c10b5bcdcad33d59e244b29c85effff83df0848641c0b8c41"
+  },
+  "scope": "Pinned unmodified Go and Node connect through URI to disposable RabbitMQ 4.0.5; success means confirmed publish and get with equal negotiated limits. TLS uses verification, real CA/client files, identity/trust failures. Recovery file snapshot is a separately counted local extension, not a native equivalence claim."
+}

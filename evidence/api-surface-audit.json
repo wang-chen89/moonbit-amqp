@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-19T18:31:22.660431+00:00",
+  "utc": "2026-09-20T11:54:44.922308+00:00",
   "referenceCommit": "a0195c6baf35db642d13651cb28938f899062e7c",
   "scope": "Syntactic exported-name functions/methods on exported receiver types in root non-test Go files. Includes conditional Fuzz; excludes unexported receivers and does not inventory struct fields, constants, interfaces or generated behavior. No full compatibility or coverage percentage claim.",
   "declarationCount": 106,
@@ -493,32 +493,32 @@
       "file": "connection.go",
       "line": 235,
       "buildConstraint": "",
-      "hostEquivalent": "connect(options)",
-      "boundary": "部分；有 TCP/TLS/EXTERNAL 配置，尚缺 URL 解析等价入口和全部配置项"
+      "hostEquivalent": "connect(uri, options) / connect({uri, ...options})",
+      "boundary": "18 URI broker 结果一致；TLS/EXTERNAL 用 scheme、tls、sasl 选项选择；有资源上限和默认值差异，Properties/Dial 等配置仍缺"
     },
     {
       "name": "DialTLS",
       "file": "connection.go",
       "line": 249,
       "buildConstraint": "",
-      "hostEquivalent": "connect(options)",
-      "boundary": "部分；有 TCP/TLS/EXTERNAL 配置，尚缺 URL 解析等价入口和全部配置项"
+      "hostEquivalent": "connect(uri, options) / connect({uri, ...options})",
+      "boundary": "18 URI broker 结果一致；TLS/EXTERNAL 用 scheme、tls、sasl 选项选择；有资源上限和默认值差异，Properties/Dial 等配置仍缺"
     },
     {
       "name": "DialTLS_ExternalAuth",
       "file": "connection.go",
       "line": 268,
       "buildConstraint": "",
-      "hostEquivalent": "connect(options)",
-      "boundary": "部分；有 TCP/TLS/EXTERNAL 配置，尚缺 URL 解析等价入口和全部配置项"
+      "hostEquivalent": "connect(uri, options) / connect({uri, ...options})",
+      "boundary": "18 URI broker 结果一致；TLS/EXTERNAL 用 scheme、tls、sasl 选项选择；有资源上限和默认值差异，Properties/Dial 等配置仍缺"
     },
     {
       "name": "DialConfig",
       "file": "connection.go",
       "line": 281,
       "buildConstraint": "",
-      "hostEquivalent": "connect(options)",
-      "boundary": "部分；有 TCP/TLS/EXTERNAL 配置，尚缺 URL 解析等价入口和全部配置项"
+      "hostEquivalent": "connect(uri, options) / connect({uri, ...options})",
+      "boundary": "18 URI broker 结果一致；TLS/EXTERNAL 用 scheme、tls、sasl 选项选择；有资源上限和默认值差异，Properties/Dial 等配置仍缺"
     },
     {
       "name": "Open",
@@ -845,32 +845,32 @@
       "file": "uri.go",
       "line": 81,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "MoonBit parse_uri / Node parseURI",
+      "boundary": "623 解析/格式化结果一致，6 输入边界差异另列；文本必须有效 UTF-8，输入限 64 KiB"
     },
     {
       "name": "URI.PlainAuth",
       "file": "uri.go",
       "line": 179,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "URI::plain_auth",
+      "boundary": "产生 MoonBit PLAIN 初始凭证；仍拒绝嵌入 NUL"
     },
     {
       "name": "URI.AMQPlainAuth",
       "file": "uri.go",
       "line": 188,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "URI::amqplain_auth",
+      "boundary": "产生 MoonBit AMQPLAIN LOGIN/PASSWORD 凭证"
     },
     {
       "name": "URI.String",
       "file": "uri.go",
       "line": 195,
       "buildConstraint": "",
-      "hostEquivalent": "无等价公开入口",
-      "boundary": "待补齐或逐项验证；不是已完成能力"
+      "hostEquivalent": "URI::to_string / parseURI(...).canonical",
+      "boundary": "包含密码，仅序列化 TLS 查询；提供 redacted；并非完整配置往返"
     }
   ]
 }

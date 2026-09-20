@@ -1,8 +1,8 @@
-# 原库接口对应与剩余差距 · 0.16
+# 原库接口对应与剩余差距 · 0.17
 
 基准为已核验的 amqp091-go 提交 `a0195c6baf35db642d13651cb28938f899062e7c`。下表来自根目录非测试 Go 源文件的 106 条导出命名函数/方法声明，排除非导出接收者，包含构建标签下的 Fuzz。它不是 106 项独立功能，也不涵盖所有结构体字段、常量、接口或运行行为；不能据此计算“追平百分比”。逐条源位置、构建标签和文件 SHA-256 见 [接口清单](evidence/api-surface-audit.json)。
 
-“有入口”仅指已有对应操作及所注明的有限验证，不代表完整兼容。当前优先差距包括：完整 context/Go channel 通知语义、连接属性/地址/TLS 状态/自定义传输/URL、显式重连与可读拓扑快照，以及完整恢复/长期/多版本/性能验证。
+“有入口”仅指已有对应操作及所注明的有限验证，不代表完整兼容。当前优先差距包括：完整 context/Go channel 通知语义、连接属性/地址/TLS 状态/自定义传输、显式重连与可读拓扑快照，以及完整恢复/长期/多版本/性能验证。
 
 0.13 为 11 个宿主方法补 noWait 选项，队列与交换机被动声明复用原方法选项。15 条原库报文逐字节一致；8 个真实 broker 场景结果一致。另有一个明确差异：固定 Go 的 Confirm(true) 仍等待 RabbitMQ 按 no-wait 抑制的回复，本实现不等待且能继续获得发布确认。该项单独记录，未计为行为一致。其余 8 个 Go broker 场景使用 Confirm(false) 隔离此限制。
 
@@ -11,6 +11,8 @@
 0.15 新增独立消费者 AbortSignal，21 组线路/恢复检查通过。两个序列 6 条方法报文、9 个真实 broker 场景一致；并发 RPC 调度、标签复用、离线取消 3 项差异另列。离线取消只移除消费者意图，保留未确认删除的拓扑。原库正常重连后取消也有效。
 
 0.16 补齐确认句柄、排序 confirm/ack/nack 事件及下一发布序号。21 组线路检查、19 条原库方法报文、6 个 peer 结果和 9 个真实 broker 结果通过。零标签 multiple 与非法未来标签的 2 项既有差异另列，不计匹配；保留原有发送取消和等待确认的本地契约。
+
+0.17 补 URI 解析、格式化、凭证转换及实际连接入口；623 个原生解析结果与 18 个 broker 结果一致。6 个输入边界差异样本另列；URI TLS 字节快照恢复单独计为本地能力。精确默认值和优先级见 [URI.md](URI.md)。
 
 | 原库声明 | 本版入口/对应能力 | 边界 |
 |---|---|---|
@@ -72,10 +74,10 @@
 | `DeferredConfirmation.WaitContext` | 句柄 done / acked / wait({signal, timeout}) | 局部等待独立取消；nack/关闭为 false，关闭另保留 error；预取消优先拒绝，非 Go select 调度复刻 |
 | `NewConnectionProperties` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
 | `DefaultDial` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
-| `Dial` | connect(options) | 部分；有 TCP/TLS/EXTERNAL 配置，尚缺 URL 解析等价入口和全部配置项 |
-| `DialTLS` | connect(options) | 部分；有 TCP/TLS/EXTERNAL 配置，尚缺 URL 解析等价入口和全部配置项 |
-| `DialTLS_ExternalAuth` | connect(options) | 部分；有 TCP/TLS/EXTERNAL 配置，尚缺 URL 解析等价入口和全部配置项 |
-| `DialConfig` | connect(options) | 部分；有 TCP/TLS/EXTERNAL 配置，尚缺 URL 解析等价入口和全部配置项 |
+| `Dial` | connect(uri, options) / connect({uri, ...options}) | 18 URI broker 结果一致；TLS/EXTERNAL 用 scheme、tls、sasl 选项选择；有资源上限和默认值差异，Properties/Dial 等配置仍缺 |
+| `DialTLS` | connect(uri, options) / connect({uri, ...options}) | 18 URI broker 结果一致；TLS/EXTERNAL 用 scheme、tls、sasl 选项选择；有资源上限和默认值差异，Properties/Dial 等配置仍缺 |
+| `DialTLS_ExternalAuth` | connect(uri, options) / connect({uri, ...options}) | 18 URI broker 结果一致；TLS/EXTERNAL 用 scheme、tls、sasl 选项选择；有资源上限和默认值差异，Properties/Dial 等配置仍缺 |
+| `DialConfig` | connect(uri, options) / connect({uri, ...options}) | 18 URI broker 结果一致；TLS/EXTERNAL 用 scheme、tls、sasl 选项选择；有资源上限和默认值差异，Properties/Dial 等配置仍缺 |
 | `Open` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
 | `Connection.UpdateSecret` | updateSecret | 有入口；原版报文和 OAuth broker 有限对照 |
 | `Connection.LocalAddr` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
@@ -116,9 +118,9 @@
 | `Error.GoString` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
 | `Table.Validate` | MoonBit 字段表编码校验 | 部分；字段类型方言和验证契约仍有明确差异 |
 | `Table.SetClientConnectionName` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
-| `ParseURI` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
-| `URI.PlainAuth` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
-| `URI.AMQPlainAuth` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
-| `URI.String` | 无等价公开入口 | 待补齐或逐项验证；不是已完成能力 |
+| `ParseURI` | MoonBit parse_uri / Node parseURI | 623 解析/格式化结果一致，6 输入边界差异另列；文本必须有效 UTF-8，输入限 64 KiB |
+| `URI.PlainAuth` | URI::plain_auth | 产生 MoonBit PLAIN 初始凭证；仍拒绝嵌入 NUL |
+| `URI.AMQPlainAuth` | URI::amqplain_auth | 产生 MoonBit AMQPLAIN LOGIN/PASSWORD 凭证 |
+| `URI.String` | URI::to_string / parseURI(...).canonical | 包含密码，仅序列化 TLS 查询；提供 redacted；并非完整配置往返 |
 
 此外，Go Config 的自定义 Properties/Dial、服务端属性、若干默认值和无限制参数约定尚未完整对齐。当前资源上限、Promise/回调、文本/字节表示及异常形态均有本地契约，不能只按方法名称宣布兼容。Go 的日志与 String/Error 辅助方法可用目标语言惯用形式设计，但仍需逐项确定可观察行为。所有 20 项完整追平目标保持未完成。

@@ -1,0 +1,9 @@
+file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/rabbitmq-harness.mjs:25
+   if(!ready)throw Error('WSL broker forwarding unavailable');
+                   ^
+
+Error: WSL broker forwarding unavailable
+    at withRabbit (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/rabbitmq-harness.mjs:25:20)
+    at async file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/test-uri-broker.mjs:22:1
+
+Node.js v24.11.0

@@ -15,6 +15,7 @@ options(
         "run",
         "inspect_wire",
         "schemas",
+        "uri_parse",
         "session_open",
         "session_open_auth",
         "session_open_stream_auth",

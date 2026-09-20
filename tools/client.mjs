@@ -4,6 +4,8 @@ import {EventEmitter} from 'node:events';
 import {randomUUID} from 'node:crypto';
 import * as core from '../web/engine.mjs';
 import {snapshotAuthentication,authenticationPlan,responseBytes} from './authentication.mjs';
+import {connectionOptions} from './uri.mjs';
+export {parseURI} from './uri.mjs';
 import {SendQueue,waitFor,aborted} from './outbound.mjs';
 import {IncomingBodies} from './inbound.mjs';
 import {checkConsumerSignal,observeConsumerSignal} from './consumer-signal.mjs';
@@ -38,14 +40,14 @@ export class Connection extends EventEmitter {
   #publishWrites; #streaming=new Map(); #deferredBytes=0;
   #maxWritten=0; #drainWaits=0;
   #receiving; #pendingInput=Buffer.alloc(0); #readScheduled=false; #readPumping=false; #readEnded=false; #readBackpressured=false;
-  static async connect(options = {}) {
-    const connection = new Connection(options);
+  static async connect(options = {}, overrides) {
+    const connection = new Connection(connectionOptions(options,overrides));
     await connection.#ready.promise;
     return connection;
   }
   constructor(options = {}) {
     super();
-    options=snapshotAuthentication(options);
+    options=snapshotAuthentication(connectionOptions(options));
     const {host = 'localhost', port = options.tls ? 5671 : 5672, username = 'guest', password = 'guest', vhost = '/', heartbeat = 60, frameMax = 131072, channelMax = 64, timeout = 10000, signal, allowInsecureAuth = false} = options;
     if (!options.tls && !allowInsecureAuth) throw Error('SASL over TCP requires allowInsecureAuth: true; use TLS for protected credentials');
     if (typeof host !== 'string' || typeof username !== 'string' || typeof password !== 'string' || typeof vhost !== 'string') throw TypeError('Expected string connection options');
@@ -572,8 +574,8 @@ export class Channel extends EventEmitter {
   close() { this.#connection._discardIncomingChannel(this.id);return this._rpc('channel.close', [200, 'normal close', 0, 0], ['channelClosed']); }
 }
 
-export const connect = async options => {
-  options=snapshotAuthentication(options);
+export const connect = async (options, overrides) => {
+  options=snapshotAuthentication(connectionOptions(options,overrides));
   if (options?.recovery) {
     const {RecoveringConnection} = await import('./recovery.mjs');
     return RecoveringConnection.connect(options, opts => Connection.connect(opts));

@@ -10,6 +10,27 @@
 CI files are prepared locally; remote CI has not run because this repository has not been uploaded. Compatibility beyond README scope remains unverified.
 
 
+## 0.17 当前 URI 验证
+
+- `evidence/uri-verify.txt`：原有完整 verify 脚本通过，JS/Wasm-GC 各 132 项；新增 URI 线路检查由 `uri-fixture-log.txt` 单独记录。现 verify.ps1 已纳入该入口。
+- `uri-reference-validation.json`：623 条固定 Go 解析/规范化对照，6 条明确差异；原库 72 文件哈希与适配器/二进制哈希见 `uri-reference-build.json`。
+- `uri-broker-validation.json`：18 个真实连接结果与原库一致；成功用确认发布/get 验证，拒绝覆盖密码、虚拟主机、客户端证书、服务器身份/信任。1 个本地 TLS 文件快照恢复场景单独计数。
+- `rabbitmq-validation.json` 与 `confirmations-native.json` 按当前入口重跑；其它历史原生/broker 报告保留原源码指纹，本轮未重新证明其对当前版本成立。全量本地 fixture 回归通过。
+- `uri-broker-forwarding-initial.txt` 保留首次 WSL localhost 转发未就绪错误；该次没有执行连接场景，清理后独立重试退出 0。
+- 性能仅有示例和基础确认样本，不是 URI 性能或全库吞吐追平。
+
+```powershell
+./verify.ps1 -MoonPath /absolute/path/to/moon.exe
+$env:AMQP_URI_REFERENCE='/absolute/path/to/uri-oracle.exe'
+node tools/test-uri-reference.mjs
+$env:RABBITMQ_ROOT='/path/to/extracted/rabbitmq/root'
+node tools/test-uri-broker.mjs
+```
+
+URI 参考适配器 `tools/uri-reference.go` 通过 go.mod 的 replace 指向固定、未修改的原库源码，再使用记录的 `GOOS=windows GOARCH=amd64 go build` 编译。只用新适配器调用 ParseURI/DialConfig 等公开入口；Heartbeat 的私有值通过只读 reflect 取数。测试 binary 不随源码分发。临时 broker 使用独立数据目录和端口，结束后关闭并清理；证书文件仅属于测试临时目录。
+
+以下各版本段落是各自执行时的记录，以对应源码指纹为准。
+
 ## 0.3 历史定向验证记录（并非当前状态）
 
 本次只运行受影响 AMQP 项目的 JS 测试、构建和检查入口，没有重复运行 20 项合集验证。80 项测试通过（包含已存的 220 组独立 Pika 字节向量），7 个新增 CLI 场景通过。新版 Wasm-GC 尚未重跑。

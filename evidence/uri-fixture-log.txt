@@ -1,0 +1,14 @@
+PASS URI parser returns frozen records and explicit credential redaction
+PASS URI normalization distinguishes URI and existing object defaults
+PASS URI transport rejects invalid ranges and mechanisms before opening a socket
+PASS URI TCP authentication retains explicit opt-in and early cancellation
+PASS function entry sends exact decoded credentials and vhost
+PASS static entry sends exact decoded credentials and vhost
+PASS constructor entry sends exact decoded credentials and vhost
+PASS object entry sends exact decoded credentials and vhost
+PASS URI heartbeat overrides options while nonempty vhost and channel limits win
+PASS URI repeated SASL candidates use client order and explicit SASL overrides the URI
+PASS URI connection_timeout drives handshake expiry
+PASS URI TLS override ignores URI file parameters and snapshots its property object
+PASS URI recovery retains decoded endpoint credentials and ignores later caller mutation
+13 URI connection fixture groups passed

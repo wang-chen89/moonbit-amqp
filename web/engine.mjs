@@ -75,6 +75,10 @@ function _M0TPB4IterGcE(param0, param1) {
   this.f = param0;
   this.size_hint = param1;
 }
+function _M0TPB4IterGyE(param0, param1) {
+  this.f = param0;
+  this.size_hint = param1;
+}
 function _M0TPB4IterGUsRPB4JsonEE(param0, param1) {
   this.f = param0;
   this.size_hint = param1;
@@ -181,6 +185,15 @@ function _M0TPB3MapGsRPB4JsonE(param0, param1, param2, param3, param4, param5, p
   this.head = param5;
   this.tail = param6;
 }
+function _M0TPB3MapGsRPB5ArrayGsEE(param0, param1, param2, param3, param4, param5, param6) {
+  this.entries = param0;
+  this.size = param1;
+  this.capacity = param2;
+  this.capacity_mask = param3;
+  this.grow_at = param4;
+  this.head = param5;
+  this.tail = param6;
+}
 function _M0TPB3MapGiRP211localreview4amqp7PendingE(param0, param1, param2, param3, param4, param5, param6) {
   this.entries = param0;
   this.size = param1;
@@ -234,6 +247,22 @@ function _M0TPB5EntryGsRP211localreview4amqp7SessionE(param0, param1, param2, pa
   this.key = param4;
   this.value = param5;
 }
+function _M0TPB5EntryGsRPB5ArrayGsEE(param0, param1, param2, param3, param4, param5) {
+  this.prev = param0;
+  this.next = param1;
+  this.psl = param2;
+  this.hash = param3;
+  this.key = param4;
+  this.value = param5;
+}
+function _M0TPB5EntryGsRPB4JsonE(param0, param1, param2, param3, param4, param5) {
+  this.prev = param0;
+  this.next = param1;
+  this.psl = param2;
+  this.hash = param3;
+  this.key = param4;
+  this.value = param5;
+}
 function _M0TPB5EntryGisE(param0, param1, param2, param3, param4, param5) {
   this.prev = param0;
   this.next = param1;
@@ -251,14 +280,6 @@ function _M0TPB5EntryGibE(param0, param1, param2, param3, param4, param5) {
   this.value = param5;
 }
 function _M0TPB5EntryGimE(param0, param1, param2, param3, param4, param5) {
-  this.prev = param0;
-  this.next = param1;
-  this.psl = param2;
-  this.hash = param3;
-  this.key = param4;
-  this.value = param5;
-}
-function _M0TPB5EntryGsRPB4JsonE(param0, param1, param2, param3, param4, param5) {
   this.prev = param0;
   this.next = param1;
   this.psl = param2;
@@ -298,6 +319,13 @@ function _M0TPB5EntryGsRPC15debug4ReprE(param0, param1, param2, param3, param4, 
   this.key = param4;
   this.value = param5;
 }
+function _M0DTPC16option6OptionGRPB5ArrayGsEE4None() {}
+_M0DTPC16option6OptionGRPB5ArrayGsEE4None.prototype.$tag = 0;
+const _M0DTPC16option6OptionGRPB5ArrayGsEE4None__ = new _M0DTPC16option6OptionGRPB5ArrayGsEE4None();
+function _M0DTPC16option6OptionGRPB5ArrayGsEE4Some(param0) {
+  this._0 = param0;
+}
+_M0DTPC16option6OptionGRPB5ArrayGsEE4Some.prototype.$tag = 1;
 function _M0TPB8MutLocalGORPB5EntryGsRPB4JsonEE(param0) {
   this.val = param0;
 }
@@ -557,14 +585,14 @@ function _M0DTPC16result6ResultGiRPB7FailureE2Ok(param0) {
   this._0 = param0;
 }
 _M0DTPC16result6ResultGiRPB7FailureE2Ok.prototype.$tag = 1;
-function _M0DTPC16result6ResultGmRPB7FailureE3Err(param0) {
+function _M0DTPC16result6ResultGlRPB7FailureE3Err(param0) {
   this._0 = param0;
 }
-_M0DTPC16result6ResultGmRPB7FailureE3Err.prototype.$tag = 0;
-function _M0DTPC16result6ResultGmRPB7FailureE2Ok(param0) {
+_M0DTPC16result6ResultGlRPB7FailureE3Err.prototype.$tag = 0;
+function _M0DTPC16result6ResultGlRPB7FailureE2Ok(param0) {
   this._0 = param0;
 }
-_M0DTPC16result6ResultGmRPB7FailureE2Ok.prototype.$tag = 1;
+_M0DTPC16result6ResultGlRPB7FailureE2Ok.prototype.$tag = 1;
 function _M0DTPC16result6ResultGdRPB7FailureE3Err(param0) {
   this._0 = param0;
 }
@@ -877,6 +905,52 @@ function _M0TP211localreview4amqp5Frame(param0, param1, param2) {
   this.channel = param1;
   this.payload = param2;
 }
+function _M0TPB9ArrayViewGyE(param0, param1, param2) {
+  this.buf = param0;
+  this.start = param1;
+  this.end = param2;
+}
+function _M0DTPC16result6ResultGlRP211localreview4amqp10FrameErrorE3Err(param0) {
+  this._0 = param0;
+}
+_M0DTPC16result6ResultGlRP211localreview4amqp10FrameErrorE3Err.prototype.$tag = 0;
+function _M0DTPC16result6ResultGlRP211localreview4amqp10FrameErrorE2Ok(param0) {
+  this._0 = param0;
+}
+_M0DTPC16result6ResultGlRP211localreview4amqp10FrameErrorE2Ok.prototype.$tag = 1;
+function _M0DTPC16result6ResultGRP211localreview4amqp3URIRP211localreview4amqp10FrameErrorE3Err(param0) {
+  this._0 = param0;
+}
+_M0DTPC16result6ResultGRP211localreview4amqp3URIRP211localreview4amqp10FrameErrorE3Err.prototype.$tag = 0;
+function _M0DTPC16result6ResultGRP211localreview4amqp3URIRP211localreview4amqp10FrameErrorE2Ok(param0) {
+  this._0 = param0;
+}
+_M0DTPC16result6ResultGRP211localreview4amqp3URIRP211localreview4amqp10FrameErrorE2Ok.prototype.$tag = 1;
+function _M0TPB8MutLocalGsE(param0) {
+  this.val = param0;
+}
+function _M0TPB9ArrayViewGUsRPB5ArrayGsEEE(param0, param1, param2) {
+  this.buf = param0;
+  this.start = param1;
+  this.end = param2;
+}
+function _M0TP211localreview4amqp3URI(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13) {
+  this.scheme = param0;
+  this.host = param1;
+  this.port = param2;
+  this.username = param3;
+  this.password = param4;
+  this.vhost = param5;
+  this.cert_file = param6;
+  this.ca_cert_file = param7;
+  this.key_file = param8;
+  this.server_name = param9;
+  this.auth_mechanism = param10;
+  this.heartbeat_seconds = param11;
+  this.connection_timeout = param12;
+  this.channel_max = param13;
+}
+const $bytes_literal$1 = new Uint8Array([48,49,50,51,52,53,54,55,56,57,65,66,67,68,69,70]);
 function _M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRP211localreview4amqp10FrameErrorE3Err(param0) {
   this._0 = param0;
 }
@@ -889,7 +963,75 @@ function _M0TP211localreview4amqp14Authentication(param0, param1) {
   this.mechanism = param0;
   this.response = param1;
 }
-const $bytes_literal$1 = new Uint8Array([65,77,81,80,0,0,9,1]);
+function _M0DTP211localreview4amqp10FieldValue7Boolean(param0) {
+  this._0 = param0;
+}
+_M0DTP211localreview4amqp10FieldValue7Boolean.prototype.$tag = 0;
+function _M0DTP211localreview4amqp10FieldValue7Signed8(param0) {
+  this._0 = param0;
+}
+_M0DTP211localreview4amqp10FieldValue7Signed8.prototype.$tag = 1;
+function _M0DTP211localreview4amqp10FieldValue9Unsigned8(param0) {
+  this._0 = param0;
+}
+_M0DTP211localreview4amqp10FieldValue9Unsigned8.prototype.$tag = 2;
+function _M0DTP211localreview4amqp10FieldValue8Signed16(param0) {
+  this._0 = param0;
+}
+_M0DTP211localreview4amqp10FieldValue8Signed16.prototype.$tag = 3;
+function _M0DTP211localreview4amqp10FieldValue10Unsigned16(param0) {
+  this._0 = param0;
+}
+_M0DTP211localreview4amqp10FieldValue10Unsigned16.prototype.$tag = 4;
+function _M0DTP211localreview4amqp10FieldValue8Signed32(param0) {
+  this._0 = param0;
+}
+_M0DTP211localreview4amqp10FieldValue8Signed32.prototype.$tag = 5;
+function _M0DTP211localreview4amqp10FieldValue10Unsigned32(param0) {
+  this._0 = param0;
+}
+_M0DTP211localreview4amqp10FieldValue10Unsigned32.prototype.$tag = 6;
+function _M0DTP211localreview4amqp10FieldValue8Signed64(param0) {
+  this._0 = param0;
+}
+_M0DTP211localreview4amqp10FieldValue8Signed64.prototype.$tag = 7;
+function _M0DTP211localreview4amqp10FieldValue11Float32Bits(param0) {
+  this._0 = param0;
+}
+_M0DTP211localreview4amqp10FieldValue11Float32Bits.prototype.$tag = 8;
+function _M0DTP211localreview4amqp10FieldValue11Float64Bits(param0) {
+  this._0 = param0;
+}
+_M0DTP211localreview4amqp10FieldValue11Float64Bits.prototype.$tag = 9;
+function _M0DTP211localreview4amqp10FieldValue7Decimal(param0, param1) {
+  this._0 = param0;
+  this._1 = param1;
+}
+_M0DTP211localreview4amqp10FieldValue7Decimal.prototype.$tag = 10;
+function _M0DTP211localreview4amqp10FieldValue10LongString(param0) {
+  this._0 = param0;
+}
+_M0DTP211localreview4amqp10FieldValue10LongString.prototype.$tag = 11;
+function _M0DTP211localreview4amqp10FieldValue9ByteArray(param0) {
+  this._0 = param0;
+}
+_M0DTP211localreview4amqp10FieldValue9ByteArray.prototype.$tag = 12;
+function _M0DTP211localreview4amqp10FieldValue9Timestamp(param0) {
+  this._0 = param0;
+}
+_M0DTP211localreview4amqp10FieldValue9Timestamp.prototype.$tag = 13;
+function _M0DTP211localreview4amqp10FieldValue10ArrayValue(param0) {
+  this._0 = param0;
+}
+_M0DTP211localreview4amqp10FieldValue10ArrayValue.prototype.$tag = 14;
+function _M0DTP211localreview4amqp10FieldValue10TableValue(param0) {
+  this._0 = param0;
+}
+_M0DTP211localreview4amqp10FieldValue10TableValue.prototype.$tag = 15;
+function _M0DTP211localreview4amqp10FieldValue4Void() {}
+_M0DTP211localreview4amqp10FieldValue4Void.prototype.$tag = 16;
+const _M0DTP211localreview4amqp10FieldValue4Void__ = new _M0DTP211localreview4amqp10FieldValue4Void();
+const $bytes_literal$2 = new Uint8Array([65,77,81,80,0,0,9,1]);
 function _M0DTPC16result6ResultGRP211localreview4amqp9AssemblerRP211localreview4amqp10FrameErrorE3Err(param0) {
   this._0 = param0;
 }
@@ -973,11 +1115,6 @@ function _M0TPB9ArrayViewGUibEE(param0, param1, param2) {
   this.end = param2;
 }
 function _M0TPB9ArrayViewGUimEE(param0, param1, param2) {
-  this.buf = param0;
-  this.start = param1;
-  this.end = param2;
-}
-function _M0TPB9ArrayViewGyE(param0, param1, param2) {
   this.buf = param0;
   this.start = param1;
   this.end = param2;
@@ -1067,75 +1204,7 @@ function _M0DTPC16result6ResultGRP211localreview4amqp10FieldValueRP211localrevie
   this._0 = param0;
 }
 _M0DTPC16result6ResultGRP211localreview4amqp10FieldValueRP211localreview4amqp10FrameErrorE2Ok.prototype.$tag = 1;
-function _M0DTP211localreview4amqp10FieldValue7Boolean(param0) {
-  this._0 = param0;
-}
-_M0DTP211localreview4amqp10FieldValue7Boolean.prototype.$tag = 0;
-function _M0DTP211localreview4amqp10FieldValue7Signed8(param0) {
-  this._0 = param0;
-}
-_M0DTP211localreview4amqp10FieldValue7Signed8.prototype.$tag = 1;
-function _M0DTP211localreview4amqp10FieldValue9Unsigned8(param0) {
-  this._0 = param0;
-}
-_M0DTP211localreview4amqp10FieldValue9Unsigned8.prototype.$tag = 2;
-function _M0DTP211localreview4amqp10FieldValue8Signed16(param0) {
-  this._0 = param0;
-}
-_M0DTP211localreview4amqp10FieldValue8Signed16.prototype.$tag = 3;
-function _M0DTP211localreview4amqp10FieldValue10Unsigned16(param0) {
-  this._0 = param0;
-}
-_M0DTP211localreview4amqp10FieldValue10Unsigned16.prototype.$tag = 4;
-function _M0DTP211localreview4amqp10FieldValue8Signed32(param0) {
-  this._0 = param0;
-}
-_M0DTP211localreview4amqp10FieldValue8Signed32.prototype.$tag = 5;
-function _M0DTP211localreview4amqp10FieldValue10Unsigned32(param0) {
-  this._0 = param0;
-}
-_M0DTP211localreview4amqp10FieldValue10Unsigned32.prototype.$tag = 6;
-function _M0DTP211localreview4amqp10FieldValue8Signed64(param0) {
-  this._0 = param0;
-}
-_M0DTP211localreview4amqp10FieldValue8Signed64.prototype.$tag = 7;
-function _M0DTP211localreview4amqp10FieldValue11Float32Bits(param0) {
-  this._0 = param0;
-}
-_M0DTP211localreview4amqp10FieldValue11Float32Bits.prototype.$tag = 8;
-function _M0DTP211localreview4amqp10FieldValue11Float64Bits(param0) {
-  this._0 = param0;
-}
-_M0DTP211localreview4amqp10FieldValue11Float64Bits.prototype.$tag = 9;
-function _M0DTP211localreview4amqp10FieldValue7Decimal(param0, param1) {
-  this._0 = param0;
-  this._1 = param1;
-}
-_M0DTP211localreview4amqp10FieldValue7Decimal.prototype.$tag = 10;
-function _M0DTP211localreview4amqp10FieldValue10LongString(param0) {
-  this._0 = param0;
-}
-_M0DTP211localreview4amqp10FieldValue10LongString.prototype.$tag = 11;
-function _M0DTP211localreview4amqp10FieldValue9ByteArray(param0) {
-  this._0 = param0;
-}
-_M0DTP211localreview4amqp10FieldValue9ByteArray.prototype.$tag = 12;
-function _M0DTP211localreview4amqp10FieldValue9Timestamp(param0) {
-  this._0 = param0;
-}
-_M0DTP211localreview4amqp10FieldValue9Timestamp.prototype.$tag = 13;
-function _M0DTP211localreview4amqp10FieldValue10ArrayValue(param0) {
-  this._0 = param0;
-}
-_M0DTP211localreview4amqp10FieldValue10ArrayValue.prototype.$tag = 14;
-function _M0DTP211localreview4amqp10FieldValue10TableValue(param0) {
-  this._0 = param0;
-}
-_M0DTP211localreview4amqp10FieldValue10TableValue.prototype.$tag = 15;
-function _M0DTP211localreview4amqp10FieldValue4Void() {}
-_M0DTP211localreview4amqp10FieldValue4Void.prototype.$tag = 16;
-const _M0DTP211localreview4amqp10FieldValue4Void__ = new _M0DTP211localreview4amqp10FieldValue4Void();
-const $bytes_literal$2 = new Uint8Array([109,111,111,110,98,105,116,45,97,109,113,112]);
+const $bytes_literal$3 = new Uint8Array([109,111,111,110,98,105,116,45,97,109,113,112]);
 function _M0DTPC16result6ResultGRP211localreview4amqp11BasicHeaderRP211localreview4amqp10FrameErrorE3Err(param0) {
   this._0 = param0;
 }
@@ -1223,7 +1292,7 @@ _M0DTPC16result6ResultGRPB5ArrayGRP211localreview4amqp12SessionEventERP211localr
 function _M0TPB8MutLocalGOUiRP211localreview4amqp14AuthenticationEE(param0) {
   this.val = param0;
 }
-const $bytes_literal$3 = new Uint8Array([0,42,0,42]);
+const $bytes_literal$4 = new Uint8Array([0,42,0,42]);
 function _M0DTPC16result6ResultGsRPB7FailureE3Err(param0) {
   this._0 = param0;
 }
@@ -1430,11 +1499,14 @@ function _M0FP15Error10to__string(_e) {
 }
 const _M0MPC16string6String4trimN7_2abindS6861 = "\t\n\r ";
 const _M0FPB4null = _M0DTPB4Json4Null__;
+const _M0MPB4Iter4nextN6constrS9855GRPC16string10StringViewE = 0;
+const _M0MPB4Iter4nextN6constrS9856GRPC16string10StringViewE = 0;
 const _M0MPB4Iter4nextN6constrS9855GcE = 0;
 const _M0MPB4Iter4nextN6constrS9856GcE = 0;
-const _M0MPB4Iter4nextN6constrS9855GUsRP211localreview4amqp12ArgumentKindEE = 0;
-const _M0MPB4Iter4nextN6constrS9856GUsRP211localreview4amqp12ArgumentKindEE = 0;
+const _M0MPB4Iter4nextN6constrS9855GyE = 0;
+const _M0MPB4Iter4nextN6constrS9856GyE = 0;
 const _M0MPB4Iter3newN6constrS9863GcE = 0;
+const _M0MPB4Iter3newN6constrS9863GyE = 0;
 const _M0MPB4Iter3newN6constrS9863GUsRPB4JsonEE = 0;
 const _M0FPC16double14not__a__number = $i64_reinterpret_f64(9221120237041090561n);
 const _M0FPC16double8infinity = $i64_reinterpret_f64(9218868437227405312n);
@@ -1535,8 +1607,8 @@ const _M0FPC14json17int__pow10__table = [1n, 10n, 100n, 1000n, 10000n, 100000n, 
 const _M0FPC14json12pow10__table = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000, 10000000000, 100000000000, 1e+012, 1e+013, 1e+014, 1e+015, 1e+016, 1e+017, 1e+018, 1e+019, 1e+020, 1e+021, 1e+022, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 const _M0IPC14json8JsonPathPB4Show6outputN7_2abindS1595 = "~/";
 const _M0FPC14json12checked__mulN6constrS1891 = 0n;
-const _M0FPB4seed = _M0FPB12random__seed();
 const _M0MPC16string10StringView4findN6constrS9865 = 0;
+const _M0FPB4seed = _M0FPB12random__seed();
 const _M0FPC15debug6renderN6constrS1705 = 16;
 const _bind = [];
 const _M0FP411localreview4amqp3cmd3web8sessions = _M0MPB3Map3MapGsRP211localreview4amqp7SessionE(new _M0TPB9ArrayViewGUsRP211localreview4amqp7SessionEE(_bind, 0, 0), undefined);
@@ -1544,7 +1616,10 @@ const _M0FPC28internal7strconv17check__underscoreN25_2atransition__table__222S23
 const _M0FPC28internal7strconv15parse__inf__nanN25_2atransition__table__304S312 = [14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 3, 4, 14, 14, 14, 14, 14, 14, 14, 7, 14, 14, 14, 14, 5, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 6, 14, 14, 14, 0, 14, 14, 14, 14, 14, 14, 14, 14, 14, 8, 14, 14, 14, 14, 14, 1, 14, 14, 9, 14, 14, 14, 14, 14, 14, 14, 14, 10, 14, 14, 14, 14, 14, 14, 11, 14, 14, 14, 14, 14, 14, 14, 14, 14, 12, 14, 14, 14, 14, 14, 14, 14, 14, 13, 14, 1, 14, 14, 14, 14, 14, 14, 14];
 const _M0IPC14json8JsonPathPC15debug5Debug8to__reprN6constrS1889 = "key";
 const _M0IPC14json8JsonPathPC15debug5Debug8to__reprN6constrS1890 = "index";
-function _M0FPC15abort5abortGRPB4JsonE(msg) {
+function _M0FPC15abort5abortGRPC16string10StringViewE(msg) {
+  return $panic();
+}
+function _M0FPC15abort5abortGkE(msg) {
   return $panic();
 }
 function _M0FPC15abort5abortGuE(msg) {
@@ -1718,6 +1793,9 @@ function _M0MPB13StringBuilder13write__objectGsE(self, obj) {
 function _M0MPB13StringBuilder13write__objectGRPC15error5ErrorE(self, obj) {
   _M0IP016_24default__implPB4Show6outputGRPC15error5ErrorE(obj, { self: self, method_table: _M0FP092moonbitlang_2fcore_2fbuiltin_2fStringBuilder_24as_24_40moonbitlang_2fcore_2fbuiltin_2eLogger });
 }
+function _M0MPB13StringBuilder13write__objectGiE(self, obj) {
+  _M0IP016_24default__implPB4Show6outputGiE(obj, { self: self, method_table: _M0FP092moonbitlang_2fcore_2fbuiltin_2fStringBuilder_24as_24_40moonbitlang_2fcore_2fbuiltin_2eLogger });
+}
 function _M0MPB13StringBuilder13write__objectGRPC16string10StringViewE(self, obj) {
   _M0IPC16string10StringViewPB4Show6output(obj, { self: self, method_table: _M0FP092moonbitlang_2fcore_2fbuiltin_2fStringBuilder_24as_24_40moonbitlang_2fcore_2fbuiltin_2eLogger });
 }
@@ -1786,6 +1864,9 @@ function _M0MPC14byte4Byte7to__hex(b) {
   _M0IPB13StringBuilderPB6Logger11write__char(_self, _M0MPC14byte4Byte7to__hexN14to__hex__digitS3978(_M0IPC14byte4BytePB3Div3div(b, 16)));
   _M0IPB13StringBuilderPB6Logger11write__char(_self, _M0MPC14byte4Byte7to__hexN14to__hex__digitS3978(_M0IPC14byte4BytePB3Mod3mod(b, 16)));
   return _M0MPB13StringBuilder10to__string(_self);
+}
+function _M0MPC16string10StringView6length(self) {
+  return self.end - self.start | 0;
 }
 function _M0MPC16string10StringView11sub_2einner(self, start, end) {
   const str_len = self.str.length;
@@ -1927,7 +2008,7 @@ function _M0MPC16string10StringView12view_2einner(self, start_offset, end_offset
     const _Some = end_offset;
     end_offset$2 = _Some;
   }
-  return start_offset >= 0 && (start_offset <= end_offset$2 && end_offset$2 <= (self.end - self.start | 0)) ? new _M0TPC16string10StringView(self.str, self.start + start_offset | 0, self.start + end_offset$2 | 0) : _M0FPC15abort5abortGRPB4JsonE("Invalid index for View");
+  return start_offset >= 0 && (start_offset <= end_offset$2 && end_offset$2 <= (self.end - self.start | 0)) ? new _M0TPC16string10StringView(self.str, self.start + start_offset | 0, self.start + end_offset$2 | 0) : _M0FPC15abort5abortGRPC16string10StringViewE("Invalid index for View");
 }
 function _M0MPC16uint646UInt648to__byte(self) {
   return (Number(BigInt.asIntN(32, self)) | 0) & 255;
@@ -1953,11 +2034,11 @@ function _M0IP016_24default__implPB2Eq10not__equalGsE(x, y) {
 function _M0IP016_24default__implPB2Eq10not__equalGOsE(x, y) {
   return !_M0IPC16option6OptionPB2Eq5equalGsE(x, y);
 }
-function _M0IP016_24default__implPB2Eq10not__equalGbE(x, y) {
-  return !(x === y);
-}
 function _M0IP016_24default__implPB2Eq10not__equalGRPC16string10StringViewE(x, y) {
   return !_M0IPC16string10StringViewPB2Eq5equal(x, y);
+}
+function _M0IP016_24default__implPB2Eq10not__equalGbE(x, y) {
+  return !(x === y);
 }
 function _M0FPB14avalanche__acc(acc) {
   let acc$2 = acc;
@@ -2046,6 +2127,22 @@ function _M0IP016_24default__implPB4Show10to__stringGRPB7FailureE(self) {
   _M0IPB7FailurePB4Show6output(self, { self: logger, method_table: _M0FP092moonbitlang_2fcore_2fbuiltin_2fStringBuilder_24as_24_40moonbitlang_2fcore_2fbuiltin_2eLogger });
   return _M0MPB13StringBuilder10to__string(logger);
 }
+function _M0MPB4Iter4nextGRPC16string10StringViewE(self) {
+  const _func = self.f;
+  const result = _func();
+  const _bind$2 = self.size_hint;
+  if (result === undefined) {
+    self.size_hint = _M0MPB4Iter4nextN6constrS9856GRPC16string10StringViewE;
+  } else {
+    if (_bind$2 === undefined) {
+    } else {
+      const _Some = _bind$2;
+      const _n = _Some;
+      self.size_hint = _n > 0 ? _n - 1 | 0 : _M0MPB4Iter4nextN6constrS9855GRPC16string10StringViewE;
+    }
+  }
+  return result;
+}
 function _M0MPB4Iter4nextGcE(self) {
   const _func = self.f;
   const result = _func();
@@ -2062,18 +2159,18 @@ function _M0MPB4Iter4nextGcE(self) {
   }
   return result;
 }
-function _M0MPB4Iter4nextGUsRP211localreview4amqp12ArgumentKindEE(self) {
+function _M0MPB4Iter4nextGyE(self) {
   const _func = self.f;
   const result = _func();
   const _bind$2 = self.size_hint;
-  if (result === undefined) {
-    self.size_hint = _M0MPB4Iter4nextN6constrS9856GUsRP211localreview4amqp12ArgumentKindEE;
+  if (result === -1) {
+    self.size_hint = _M0MPB4Iter4nextN6constrS9856GyE;
   } else {
     if (_bind$2 === undefined) {
     } else {
       const _Some = _bind$2;
       const _n = _Some;
-      self.size_hint = _n > 0 ? _n - 1 | 0 : _M0MPB4Iter4nextN6constrS9855GUsRP211localreview4amqp12ArgumentKindEE;
+      self.size_hint = _n > 0 ? _n - 1 | 0 : _M0MPB4Iter4nextN6constrS9855GyE;
     }
   }
   return result;
@@ -2090,6 +2187,17 @@ function _M0MPC15int645Int6418to__string_2einner(self, radix) {
 function _M0MPC16uint646UInt6418to__string_2einner(self, radix) {
   return _M0FPB22uint64__to__string__js(self, radix);
 }
+function _M0FPB22index__out__of__boundsGkE(len, index) {
+  const _string_builder = _M0MPB13StringBuilder21StringBuilder_2einner(60);
+  _M0IPB13StringBuilderPB6Logger13write__string(_string_builder, "index out of bounds: the len is from 0 to ");
+  _M0MPB13StringBuilder13write__objectGiE(_string_builder, len);
+  _M0IPB13StringBuilderPB6Logger13write__string(_string_builder, " but the index is ");
+  _M0MPB13StringBuilder13write__objectGiE(_string_builder, index);
+  return _M0FPC15abort5abortGkE(_M0MPB13StringBuilder10to__string(_string_builder));
+}
+function _M0MPC16string10StringView2at(self, index) {
+  return index >= 0 && index < (self.end - self.start | 0) ? self.str.charCodeAt(self.start + index | 0) : _M0FPB22index__out__of__boundsGkE(self.end - self.start | 0, index);
+}
 function _M0MPB4Iter3newGcE(f, size_hint) {
   let size_hint$2;
   if (size_hint === undefined) {
@@ -2100,6 +2208,17 @@ function _M0MPB4Iter3newGcE(f, size_hint) {
     size_hint$2 = _n > 0 ? _n : _M0MPB4Iter3newN6constrS9863GcE;
   }
   return new _M0TPB4IterGcE(f, size_hint$2);
+}
+function _M0MPB4Iter3newGyE(f, size_hint) {
+  let size_hint$2;
+  if (size_hint === undefined) {
+    size_hint$2 = undefined;
+  } else {
+    const _Some = size_hint;
+    const _n = _Some;
+    size_hint$2 = _n > 0 ? _n : _M0MPB4Iter3newN6constrS9863GyE;
+  }
+  return new _M0TPB4IterGyE(f, size_hint$2);
 }
 function _M0MPB4Iter3newGUsRPB4JsonEE(f, size_hint) {
   let size_hint$2;
@@ -2248,7 +2367,7 @@ function _M0MPC16string6String12view_2einner(self, start_offset, end_offset) {
     const _Some = end_offset;
     end_offset$2 = _Some;
   }
-  return start_offset >= 0 && (start_offset <= end_offset$2 && end_offset$2 <= self.length) ? new _M0TPC16string10StringView(self, start_offset, end_offset$2) : _M0FPC15abort5abortGRPB4JsonE("Invalid index for View");
+  return start_offset >= 0 && (start_offset <= end_offset$2 && end_offset$2 <= self.length) ? new _M0TPC16string10StringView(self, start_offset, end_offset$2) : _M0FPC15abort5abortGRPC16string10StringViewE("Invalid index for View");
 }
 function _M0MPC16string6String24char__length__eq_2einner(self, len, start_offset, end_offset) {
   let end_offset$2;
@@ -2562,12 +2681,15 @@ function _M0MPC16string10StringView4find(self, str) {
     }
   }
 }
+function _M0MPC16string6String4find(self, str) {
+  return _M0MPC16string10StringView4find(new _M0TPC16string10StringView(self, 0, self.length), str);
+}
 function _M0IPC16string6StringPB4Show10to__string(self) {
   return self;
 }
 function _M0MPC16string6String6repeat(self, n) {
   if (n < 0) {
-    return _M0FPC15abort5abortGRPB4JsonE("negative repeat count");
+    return _M0FPC15abort5abortGRPC16string10StringViewE("negative repeat count");
   } else {
     if (n === 0) {
       return "";
@@ -2602,7 +2724,7 @@ function _M0MPC16string6String6repeat(self, n) {
           }
           return _M0MPB13StringBuilder10to__string(buf);
         } else {
-          return _M0FPC15abort5abortGRPB4JsonE("repeat result too large");
+          return _M0FPC15abort5abortGRPC16string10StringViewE("repeat result too large");
         }
       }
     }
@@ -2611,6 +2733,184 @@ function _M0MPC16string6String6repeat(self, n) {
 function _M0MPC14char4Char10utf16__len(self) {
   const code = self;
   return code <= 65535 ? 1 : 2;
+}
+function _M0MPC16string10StringView8find__by(self, pred) {
+  const _bind$2 = self.str;
+  const _bind$3 = self.start;
+  const _bind$4 = self.end;
+  let _tmp = _bind$3;
+  let _tmp$2 = 0;
+  while (true) {
+    const _string_index = _tmp;
+    const offset = _tmp$2;
+    if (_string_index < _bind$4) {
+      let _decoded_next_string_index;
+      let _decoded_char;
+      _L: {
+        const _bind$5 = _bind$2.charCodeAt(_string_index);
+        if (_bind$5 >= 55296 && _bind$5 <= 56319 && (_string_index + 1 | 0) < _bind$4) {
+          const _bind$6 = _bind$2.charCodeAt(_string_index + 1 | 0);
+          if (_bind$6 >= 56320 && _bind$6 <= 57343) {
+            _decoded_next_string_index = _string_index + 2 | 0;
+            _decoded_char = _M0MPC13int3Int16unsafe__to__char((((Math.imul(_bind$5 - 55296 | 0, 1024) | 0) + _bind$6 | 0) - 56320 | 0) + 65536 | 0);
+            break _L;
+          } else {
+            _decoded_next_string_index = _string_index + 1 | 0;
+            _decoded_char = _M0MPC13int3Int16unsafe__to__char(_bind$5);
+            break _L;
+          }
+        } else {
+          _decoded_next_string_index = _string_index + 1 | 0;
+          _decoded_char = _M0MPC13int3Int16unsafe__to__char(_bind$5);
+          break _L;
+        }
+      }
+      if (pred(_decoded_char)) {
+        return offset;
+      }
+      _tmp = _decoded_next_string_index;
+      _tmp$2 = offset + _M0MPC14char4Char10utf16__len(_decoded_char) | 0;
+      continue;
+    } else {
+      return undefined;
+    }
+  }
+}
+function _M0FPB31rev__find__pattern__kmp__before(target, pattern, candidate_end) {
+  if (candidate_end > 0) {
+    const m = pattern.end - pattern.start | 0;
+    const table = _M0FPB19kmp__failure__table(pattern);
+    const scan_end = (candidate_end + m | 0) - 1 | 0;
+    let k = 0;
+    let best = -1;
+    let _tmp = 0;
+    while (true) {
+      const i = _tmp;
+      if (i < scan_end) {
+        const c = target.str.charCodeAt(target.start + i | 0);
+        while (true) {
+          if (k > 0 && _M0IPC16uint166UInt16PB2Eq10not__equal(c, pattern.str.charCodeAt(pattern.start + k | 0))) {
+            const _tmp$2 = k - 1 | 0;
+            k = _tmp$2 >>> 0 < table.length ? table[_tmp$2] : $oob();
+            continue;
+          } else {
+            break;
+          }
+        }
+        if (_M0IPC16uint166UInt16PB2Eq5equal(c, pattern.str.charCodeAt(pattern.start + k | 0))) {
+          k = k + 1 | 0;
+        }
+        if (k === m) {
+          best = (i - m | 0) + 1 | 0;
+          const _tmp$2 = k - 1 | 0;
+          k = _tmp$2 >>> 0 < table.length ? table[_tmp$2] : $oob();
+        }
+        _tmp = i + 1 | 0;
+        continue;
+      } else {
+        break;
+      }
+    }
+    return best >= 0 ? best : undefined;
+  } else {
+    return undefined;
+  }
+}
+function _M0FPB41rev__find__two__anchor__candidate__scalar(data, start, candidate_end, first, last_offset, last) {
+  let _tmp = candidate_end - 1 | 0;
+  while (true) {
+    const pos = _tmp;
+    if (pos >= start) {
+      if (_M0IPC16uint166UInt16PB2Eq5equal(data.charCodeAt(pos), first) && _M0IPC16uint166UInt16PB2Eq5equal(data.charCodeAt(pos + last_offset | 0), last)) {
+        return pos;
+      }
+      _tmp = pos - 1 | 0;
+      continue;
+    } else {
+      return -1;
+    }
+  }
+}
+function _M0FPB47rev__find__two__anchor__candidate__from__string(data, start, candidate_end, first, last_offset, last) {
+  return _M0FPB41rev__find__two__anchor__candidate__scalar(data, start, candidate_end, first, last_offset, last);
+}
+function _M0FPB27rev__find__by__two__anchors(target, pattern) {
+  const target_len = target.end - target.start | 0;
+  const pattern_len = pattern.end - pattern.start | 0;
+  const target_start = _M0MPC16string10StringView13start__offset(target);
+  const pattern_start = _M0MPC16string10StringView13start__offset(pattern);
+  const last_offset = pattern_len - 1 | 0;
+  const first = pattern.str.charCodeAt(pattern.start);
+  const last = pattern.str.charCodeAt(pattern.start + last_offset | 0);
+  const middle_len = last_offset - 1 | 0;
+  const last_candidate = target_len - pattern_len | 0;
+  let _tmp = (target_start + last_candidate | 0) + 1 | 0;
+  let _tmp$2 = 0;
+  while (true) {
+    const candidate_end = _tmp;
+    const failures = _tmp$2;
+    if (candidate_end > target_start) {
+      const found = _M0FPB47rev__find__two__anchor__candidate__from__string(_M0MPC16string10StringView4data(target), target_start, candidate_end, first, last_offset, last);
+      if (found < 0) {
+        return undefined;
+      }
+      if (_M0FPB21string__ranges__equal(_M0MPC16string10StringView4data(target), found + 1 | 0, _M0MPC16string10StringView4data(pattern), pattern_start + 1 | 0, middle_len)) {
+        return found - target_start | 0;
+      }
+      const candidate = found - target_start | 0;
+      const failures$2 = failures + 1 | 0;
+      const scanned = last_candidate - candidate | 0;
+      if (_M0FPB29two__anchor__should__fallback(failures$2, scanned)) {
+        return _M0FPB31rev__find__pattern__kmp__before(target, pattern, candidate);
+      }
+      _tmp = found;
+      _tmp$2 = failures$2;
+      continue;
+    } else {
+      return undefined;
+    }
+  }
+}
+function _M0FPB29rev__find__code__unit__scalar(data, start, end, code) {
+  let _tmp = end - 1 | 0;
+  while (true) {
+    const pos = _tmp;
+    if (pos >= start) {
+      if (_M0IPC16uint166UInt16PB2Eq5equal(data.charCodeAt(pos), code)) {
+        return pos;
+      }
+      _tmp = pos - 1 | 0;
+      continue;
+    } else {
+      return -1;
+    }
+  }
+}
+function _M0FPB35rev__find__code__unit__from__string(data, start, end, code) {
+  return _M0FPB29rev__find__code__unit__scalar(data, start, end, code);
+}
+function _M0FPB33rev__find__code__unit__from__view(target, start, end, code) {
+  const target_start = _M0MPC16string10StringView13start__offset(target);
+  const found = _M0FPB35rev__find__code__unit__from__string(_M0MPC16string10StringView4data(target), target_start + start | 0, target_start + end | 0, code);
+  return found < 0 ? -1 : found - target_start | 0;
+}
+function _M0MPC16string10StringView9rev__find(self, str) {
+  const pattern_len = str.end - str.start | 0;
+  switch (pattern_len) {
+    case 0: {
+      return self.end - self.start | 0;
+    }
+    case 1: {
+      const found = _M0FPB33rev__find__code__unit__from__view(self, 0, self.end - self.start | 0, str.str.charCodeAt(str.start));
+      return found < 0 ? undefined : found;
+    }
+    default: {
+      return pattern_len > (self.end - self.start | 0) ? undefined : _M0FPB27rev__find__by__two__anchors(self, str);
+    }
+  }
+}
+function _M0MPC16string6String9rev__find(self, str) {
+  return _M0MPC16string10StringView9rev__find(new _M0TPC16string10StringView(self, 0, self.length), str);
 }
 function _M0MPC16string10StringView11has__suffix(self, str) {
   const self_len = self.end - self.start | 0;
@@ -3079,7 +3379,7 @@ function _M0MPB4Iter3mapGcRPC16string10StringViewE(self, f) {
 }
 function _M0MPB4Iter3mapGssE(self, f) {
   return new _M0TPB4IterGsE(() => {
-    const _bind$2 = _M0MPB4Iter4nextGUsRP211localreview4amqp12ArgumentKindEE(self);
+    const _bind$2 = _M0MPB4Iter4nextGRPC16string10StringViewE(self);
     if (_bind$2 === undefined) {
       return undefined;
     } else {
@@ -3121,6 +3421,19 @@ function _M0MPC16string10StringView5split(self, sep) {
 function _M0MPC16string6String5split(self, sep) {
   return _M0MPC16string10StringView5split(new _M0TPC16string10StringView(self, 0, self.length), sep);
 }
+function _M0MPC16string10StringView11split__once(self, needle) {
+  const _bind$2 = _M0MPC16string10StringView4find(self, needle);
+  if (_bind$2 === undefined) {
+    return undefined;
+  } else {
+    const _Some = _bind$2;
+    const _index = _Some;
+    return { _0: _M0MPC16string10StringView12view_2einner(self, 0, _index), _1: _M0MPC16string10StringView12view_2einner(self, _index + (needle.end - needle.start | 0) | 0, undefined) };
+  }
+}
+function _M0MPC16string6String11split__once(self, needle) {
+  return _M0MPC16string10StringView11split__once(new _M0TPC16string10StringView(self, 0, self.length), needle);
+}
 function _M0MPB4Iter9to__arrayGRPC16string10StringViewE(self) {
   const _bind$2 = self.size_hint;
   let result;
@@ -3132,7 +3445,7 @@ function _M0MPB4Iter9to__arrayGRPC16string10StringViewE(self) {
     result = _M0MPC15array5Array13Array_2einnerGRPC16string10StringViewE(_n);
   }
   while (true) {
-    const _bind$3 = _M0MPB4Iter4nextGUsRP211localreview4amqp12ArgumentKindEE(self);
+    const _bind$3 = _M0MPB4Iter4nextGRPC16string10StringViewE(self);
     if (_bind$3 === undefined) {
       break;
     } else {
@@ -3143,6 +3456,63 @@ function _M0MPB4Iter9to__arrayGRPC16string10StringViewE(self) {
     }
   }
   return result;
+}
+function _M0MPC14char4Char20is__ascii__uppercase(self) {
+  return self >= 65 && self <= 90;
+}
+function _M0MPC16string10StringView9to__lower(self) {
+  const _bind$2 = _M0MPC16string10StringView8find__by(self, (c) => _M0MPC14char4Char20is__ascii__uppercase(c));
+  if (_bind$2 === undefined) {
+    return self;
+  } else {
+    const _Some = _bind$2;
+    const _idx = _Some;
+    const buf = _M0MPB13StringBuilder21StringBuilder_2einner(self.end - self.start | 0);
+    const head = _M0MPC16string10StringView12view_2einner(self, 0, _idx);
+    _M0IP016_24default__implPB6Logger16write__substringGRPB13StringBuilderE(buf, _M0MPC16string10StringView4data(head), _M0MPC16string10StringView13start__offset(head), head.end - head.start | 0);
+    const _bind$3 = _M0MPC16string10StringView12view_2einner(self, _idx, undefined);
+    const _bind$4 = _bind$3.str;
+    const _bind$5 = _bind$3.start;
+    const _bind$6 = _bind$3.end;
+    let _tmp = _bind$5;
+    while (true) {
+      const _string_index = _tmp;
+      if (_string_index < _bind$6) {
+        let _decoded_next_string_index;
+        let _decoded_char;
+        _L: {
+          const _bind$7 = _bind$4.charCodeAt(_string_index);
+          if (_bind$7 >= 55296 && _bind$7 <= 56319 && (_string_index + 1 | 0) < _bind$6) {
+            const _bind$8 = _bind$4.charCodeAt(_string_index + 1 | 0);
+            if (_bind$8 >= 56320 && _bind$8 <= 57343) {
+              _decoded_next_string_index = _string_index + 2 | 0;
+              _decoded_char = _M0MPC13int3Int16unsafe__to__char((((Math.imul(_bind$7 - 55296 | 0, 1024) | 0) + _bind$8 | 0) - 56320 | 0) + 65536 | 0);
+              break _L;
+            } else {
+              _decoded_next_string_index = _string_index + 1 | 0;
+              _decoded_char = _M0MPC13int3Int16unsafe__to__char(_bind$7);
+              break _L;
+            }
+          } else {
+            _decoded_next_string_index = _string_index + 1 | 0;
+            _decoded_char = _M0MPC13int3Int16unsafe__to__char(_bind$7);
+            break _L;
+          }
+        }
+        if (_M0MPC14char4Char20is__ascii__uppercase(_decoded_char)) {
+          _M0IPB13StringBuilderPB6Logger11write__char(buf, _decoded_char + 32 | 0);
+        } else {
+          _M0IPB13StringBuilderPB6Logger11write__char(buf, _decoded_char);
+        }
+        _tmp = _decoded_next_string_index;
+        continue;
+      } else {
+        break;
+      }
+    }
+    const _bind$7 = _M0MPB13StringBuilder10to__string(buf);
+    return new _M0TPC16string10StringView(_bind$7, 0, _bind$7.length);
+  }
 }
 function _M0MPC16string10StringView9get__char(self, idx) {
   if (idx >= 0 && idx < (self.end - self.start | 0)) {
@@ -3378,6 +3748,15 @@ function _M0MPC16option6Option6unwrapGRP211localreview4amqp10MethodSpecE(self) {
     return _Some;
   }
 }
+function _M0MPC16option6Option10unwrap__orGRPB5ArrayGsEE(self, default_) {
+  if (self.$tag === 1) {
+    const _Some = self;
+    const _t = _Some._0;
+    return _t;
+  } else {
+    return default_;
+  }
+}
 function _M0MPC16option6Option10unwrap__orGcE(self, default_) {
   if (self === -1) {
     return default_;
@@ -3500,6 +3879,14 @@ function _M0FPB8new__mapGsRPB4JsonE(capacity) {
   const _bind$5 = undefined;
   return new _M0TPB3MapGsRPB4JsonE(_bind$4, 0, capacity$2, _bind$2, _bind$3, _bind$5, -1);
 }
+function _M0FPB8new__mapGsRPB5ArrayGsEE(capacity) {
+  const capacity$2 = _M0MPC13int3Int20next__power__of__two(capacity);
+  const _bind$2 = capacity$2 - 1 | 0;
+  const _bind$3 = _M0FPB21calc__grow__threshold(capacity$2);
+  const _bind$4 = $make_array_len_and_init(capacity$2, undefined);
+  const _bind$5 = undefined;
+  return new _M0TPB3MapGsRPB5ArrayGsEE(_bind$4, 0, capacity$2, _bind$2, _bind$3, _bind$5, -1);
+}
 function _M0FPB8new__mapGiRP211localreview4amqp7PendingE(capacity) {
   const capacity$2 = _M0MPC13int3Int20next__power__of__two(capacity);
   const _bind$2 = capacity$2 - 1 | 0;
@@ -3551,6 +3938,18 @@ function _M0MPC13int3Int3max(self, other) {
   return self > other ? self : other;
 }
 function _M0MPB3Map20add__entry__to__tailGsRP211localreview4amqp7SessionE(self, idx, entry) {
+  const _bind$2 = self.tail;
+  if (_bind$2 === -1) {
+    self.head = entry;
+  } else {
+    const _tmp = self.entries;
+    _M0MPC16option6Option6unwrapGRP211localreview4amqp10MethodSpecE(_bind$2 >>> 0 < _tmp.length ? _tmp[_bind$2] : $oob()).next = entry;
+  }
+  self.tail = idx;
+  self.entries[idx] = entry;
+  self.size = self.size + 1 | 0;
+}
+function _M0MPB3Map20add__entry__to__tailGsRPB5ArrayGsEE(self, idx, entry) {
   const _bind$2 = self.tail;
   if (_bind$2 === -1) {
     self.head = entry;
@@ -3623,6 +4022,17 @@ function _M0MPB3Map20add__entry__to__tailGiRP211localreview4amqp13StreamPendingE
   self.size = self.size + 1 | 0;
 }
 function _M0MPB3Map10set__entryGsRP211localreview4amqp7SessionE(self, entry, new_idx) {
+  const _bind$2 = entry.next;
+  if (_bind$2 === undefined) {
+    self.tail = new_idx;
+  } else {
+    const _Some = _bind$2;
+    const _next = _Some;
+    _next.prev = new_idx;
+  }
+  self.entries[new_idx] = entry;
+}
+function _M0MPB3Map10set__entryGsRPB5ArrayGsEE(self, entry, new_idx) {
   const _bind$2 = entry.next;
   if (_bind$2 === undefined) {
     self.tail = new_idx;
@@ -3707,6 +4117,37 @@ function _M0MPB3Map10push__awayGsRP211localreview4amqp7SessionE(self, idx, entry
       if (psl > _curr_entry.psl) {
         entry$2.psl = psl;
         _M0MPB3Map10set__entryGsRP211localreview4amqp7SessionE(self, entry$2, idx$2);
+        _tmp = _curr_entry.psl + 1 | 0;
+        _tmp$2 = (idx$2 + 1 | 0) & self.capacity_mask;
+        _tmp$3 = _curr_entry;
+        continue;
+      } else {
+        _tmp = psl + 1 | 0;
+        _tmp$2 = (idx$2 + 1 | 0) & self.capacity_mask;
+        continue;
+      }
+    }
+  }
+}
+function _M0MPB3Map10push__awayGsRPB5ArrayGsEE(self, idx, entry) {
+  let _tmp = entry.psl + 1 | 0;
+  let _tmp$2 = (idx + 1 | 0) & self.capacity_mask;
+  let _tmp$3 = entry;
+  while (true) {
+    const psl = _tmp;
+    const idx$2 = _tmp$2;
+    const entry$2 = _tmp$3;
+    const _bind$2 = self.entries[idx$2];
+    if (_bind$2 === undefined) {
+      entry$2.psl = psl;
+      _M0MPB3Map10set__entryGsRPB5ArrayGsEE(self, entry$2, idx$2);
+      return;
+    } else {
+      const _Some = _bind$2;
+      const _curr_entry = _Some;
+      if (psl > _curr_entry.psl) {
+        entry$2.psl = psl;
+        _M0MPB3Map10set__entryGsRPB5ArrayGsEE(self, entry$2, idx$2);
         _tmp = _curr_entry.psl + 1 | 0;
         _tmp$2 = (idx$2 + 1 | 0) & self.capacity_mask;
         _tmp$3 = _curr_entry;
@@ -3904,6 +4345,36 @@ function _M0MPB3Map20rehash__place__entryGsRP211localreview4amqp7SessionE(self, 
     }
   }
 }
+function _M0MPB3Map20rehash__place__entryGsRPB5ArrayGsEE(self, outer) {
+  const hash = outer.hash;
+  let _tmp = 0;
+  let _tmp$2 = hash & self.capacity_mask;
+  while (true) {
+    const psl = _tmp;
+    const idx = _tmp$2;
+    const _bind$2 = self.entries[idx];
+    if (_bind$2 === undefined) {
+      outer.psl = psl;
+      outer.prev = self.tail;
+      _M0MPB3Map20add__entry__to__tailGsRPB5ArrayGsEE(self, idx, outer);
+      return undefined;
+    } else {
+      const _Some = _bind$2;
+      const _curr = _Some;
+      if (psl > _curr.psl) {
+        _M0MPB3Map10push__awayGsRPB5ArrayGsEE(self, idx, _curr);
+        outer.psl = psl;
+        outer.prev = self.tail;
+        _M0MPB3Map20add__entry__to__tailGsRPB5ArrayGsEE(self, idx, outer);
+        return undefined;
+      } else {
+        _tmp = psl + 1 | 0;
+        _tmp$2 = (idx + 1 | 0) & self.capacity_mask;
+        continue;
+      }
+    }
+  }
+}
 function _M0MPB3Map20rehash__place__entryGisE(self, outer) {
   const hash = outer.hash;
   let _tmp = 0;
@@ -4075,6 +4546,32 @@ function _M0MPB3Map4growGsRP211localreview4amqp7SessionE(self) {
       const next_in_chain = _e.next;
       _e.next = undefined;
       _M0MPB3Map20rehash__place__entryGsRP211localreview4amqp7SessionE(self, _e);
+      _tmp = next_in_chain;
+      continue;
+    }
+  }
+}
+function _M0MPB3Map4growGsRPB5ArrayGsEE(self) {
+  const old_head = self.head;
+  const new_capacity = self.capacity << 1;
+  self.entries = $make_array_len_and_init(new_capacity, undefined);
+  self.capacity = new_capacity;
+  self.capacity_mask = new_capacity - 1 | 0;
+  self.grow_at = _M0FPB21calc__grow__threshold(self.capacity);
+  self.size = 0;
+  self.head = undefined;
+  self.tail = -1;
+  let _tmp = old_head;
+  while (true) {
+    const x = _tmp;
+    if (x === undefined) {
+      return;
+    } else {
+      const _Some = x;
+      const _e = _Some;
+      const next_in_chain = _e.next;
+      _e.next = undefined;
+      _M0MPB3Map20rehash__place__entryGsRPB5ArrayGsEE(self, _e);
       _tmp = next_in_chain;
       continue;
     }
@@ -4256,6 +4753,98 @@ function _M0MPB3Map15set__with__hashGsRP211localreview4amqp7SessionE(self, key, 
     }
   }
 }
+function _M0MPB3Map15set__with__hashGsRPB5ArrayGsEE(self, key, value, hash) {
+  let _tmp = 0;
+  let _tmp$2 = hash & self.capacity_mask;
+  while (true) {
+    const psl = _tmp;
+    const idx = _tmp$2;
+    const _bind$2 = self.entries[idx];
+    if (_bind$2 === undefined) {
+      if (self.size >= self.grow_at) {
+        _M0MPB3Map4growGsRPB5ArrayGsEE(self);
+        _tmp = 0;
+        _tmp$2 = hash & self.capacity_mask;
+        continue;
+      }
+      const _bind$3 = self.tail;
+      const _bind$4 = undefined;
+      const entry = new _M0TPB5EntryGsRPB5ArrayGsEE(_bind$3, _bind$4, psl, hash, key, value);
+      _M0MPB3Map20add__entry__to__tailGsRPB5ArrayGsEE(self, idx, entry);
+      return undefined;
+    } else {
+      const _Some = _bind$2;
+      const _curr_entry = _Some;
+      if (_curr_entry.hash === hash && _curr_entry.key === key) {
+        _curr_entry.value = value;
+        return undefined;
+      }
+      if (psl > _curr_entry.psl) {
+        if (self.size >= self.grow_at) {
+          _M0MPB3Map4growGsRPB5ArrayGsEE(self);
+          _tmp = 0;
+          _tmp$2 = hash & self.capacity_mask;
+          continue;
+        }
+        _M0MPB3Map10push__awayGsRPB5ArrayGsEE(self, idx, _curr_entry);
+        const _bind$3 = self.tail;
+        const _bind$4 = undefined;
+        const entry = new _M0TPB5EntryGsRPB5ArrayGsEE(_bind$3, _bind$4, psl, hash, key, value);
+        _M0MPB3Map20add__entry__to__tailGsRPB5ArrayGsEE(self, idx, entry);
+        return undefined;
+      }
+      _tmp = psl + 1 | 0;
+      _tmp$2 = (idx + 1 | 0) & self.capacity_mask;
+      continue;
+    }
+  }
+}
+function _M0MPB3Map15set__with__hashGsRPB4JsonE(self, key, value, hash) {
+  let _tmp = 0;
+  let _tmp$2 = hash & self.capacity_mask;
+  while (true) {
+    const psl = _tmp;
+    const idx = _tmp$2;
+    const _bind$2 = self.entries[idx];
+    if (_bind$2 === undefined) {
+      if (self.size >= self.grow_at) {
+        _M0MPB3Map4growGsRP211localreview4amqp7SessionE(self);
+        _tmp = 0;
+        _tmp$2 = hash & self.capacity_mask;
+        continue;
+      }
+      const _bind$3 = self.tail;
+      const _bind$4 = undefined;
+      const entry = new _M0TPB5EntryGsRPB4JsonE(_bind$3, _bind$4, psl, hash, key, value);
+      _M0MPB3Map20add__entry__to__tailGsRP211localreview4amqp7SessionE(self, idx, entry);
+      return undefined;
+    } else {
+      const _Some = _bind$2;
+      const _curr_entry = _Some;
+      if (_curr_entry.hash === hash && _curr_entry.key === key) {
+        _curr_entry.value = value;
+        return undefined;
+      }
+      if (psl > _curr_entry.psl) {
+        if (self.size >= self.grow_at) {
+          _M0MPB3Map4growGsRP211localreview4amqp7SessionE(self);
+          _tmp = 0;
+          _tmp$2 = hash & self.capacity_mask;
+          continue;
+        }
+        _M0MPB3Map10push__awayGsRP211localreview4amqp7SessionE(self, idx, _curr_entry);
+        const _bind$3 = self.tail;
+        const _bind$4 = undefined;
+        const entry = new _M0TPB5EntryGsRPB4JsonE(_bind$3, _bind$4, psl, hash, key, value);
+        _M0MPB3Map20add__entry__to__tailGsRP211localreview4amqp7SessionE(self, idx, entry);
+        return undefined;
+      }
+      _tmp = psl + 1 | 0;
+      _tmp$2 = (idx + 1 | 0) & self.capacity_mask;
+      continue;
+    }
+  }
+}
 function _M0MPB3Map15set__with__hashGisE(self, key, value, hash) {
   let _tmp = 0;
   let _tmp$2 = hash & self.capacity_mask;
@@ -4386,52 +4975,6 @@ function _M0MPB3Map15set__with__hashGimE(self, key, value, hash) {
         const _bind$4 = undefined;
         const entry = new _M0TPB5EntryGimE(_bind$3, _bind$4, psl, hash, key, value);
         _M0MPB3Map20add__entry__to__tailGimE(self, idx, entry);
-        return undefined;
-      }
-      _tmp = psl + 1 | 0;
-      _tmp$2 = (idx + 1 | 0) & self.capacity_mask;
-      continue;
-    }
-  }
-}
-function _M0MPB3Map15set__with__hashGsRPB4JsonE(self, key, value, hash) {
-  let _tmp = 0;
-  let _tmp$2 = hash & self.capacity_mask;
-  while (true) {
-    const psl = _tmp;
-    const idx = _tmp$2;
-    const _bind$2 = self.entries[idx];
-    if (_bind$2 === undefined) {
-      if (self.size >= self.grow_at) {
-        _M0MPB3Map4growGsRP211localreview4amqp7SessionE(self);
-        _tmp = 0;
-        _tmp$2 = hash & self.capacity_mask;
-        continue;
-      }
-      const _bind$3 = self.tail;
-      const _bind$4 = undefined;
-      const entry = new _M0TPB5EntryGsRPB4JsonE(_bind$3, _bind$4, psl, hash, key, value);
-      _M0MPB3Map20add__entry__to__tailGsRP211localreview4amqp7SessionE(self, idx, entry);
-      return undefined;
-    } else {
-      const _Some = _bind$2;
-      const _curr_entry = _Some;
-      if (_curr_entry.hash === hash && _curr_entry.key === key) {
-        _curr_entry.value = value;
-        return undefined;
-      }
-      if (psl > _curr_entry.psl) {
-        if (self.size >= self.grow_at) {
-          _M0MPB3Map4growGsRP211localreview4amqp7SessionE(self);
-          _tmp = 0;
-          _tmp$2 = hash & self.capacity_mask;
-          continue;
-        }
-        _M0MPB3Map10push__awayGsRP211localreview4amqp7SessionE(self, idx, _curr_entry);
-        const _bind$3 = self.tail;
-        const _bind$4 = undefined;
-        const entry = new _M0TPB5EntryGsRPB4JsonE(_bind$3, _bind$4, psl, hash, key, value);
-        _M0MPB3Map20add__entry__to__tailGsRP211localreview4amqp7SessionE(self, idx, entry);
         return undefined;
       }
       _tmp = psl + 1 | 0;
@@ -4627,6 +5170,12 @@ function _M0MPB3Map15set__with__hashGsRPC15debug4ReprE(self, key, value, hash) {
 function _M0MPB3Map3setGsRP211localreview4amqp7SessionE(self, key, value) {
   _M0MPB3Map15set__with__hashGsRP211localreview4amqp7SessionE(self, key, value, _M0IPC16string6StringPB4Hash4hash(key));
 }
+function _M0MPB3Map3setGsRPB5ArrayGsEE(self, key, value) {
+  _M0MPB3Map15set__with__hashGsRPB5ArrayGsEE(self, key, value, _M0IPC16string6StringPB4Hash4hash(key));
+}
+function _M0MPB3Map3setGsRPB4JsonE(self, key, value) {
+  _M0MPB3Map15set__with__hashGsRPB4JsonE(self, key, value, _M0IPC16string6StringPB4Hash4hash(key));
+}
 function _M0MPB3Map3setGisE(self, key, value) {
   _M0MPB3Map15set__with__hashGisE(self, key, value, _M0IPC13int3IntPB4Hash4hash(key));
 }
@@ -4635,9 +5184,6 @@ function _M0MPB3Map3setGibE(self, key, value) {
 }
 function _M0MPB3Map3setGimE(self, key, value) {
   _M0MPB3Map15set__with__hashGimE(self, key, value, _M0IPC13int3IntPB4Hash4hash(key));
-}
-function _M0MPB3Map3setGsRPB4JsonE(self, key, value) {
-  _M0MPB3Map15set__with__hashGsRPB4JsonE(self, key, value, _M0IPC16string6StringPB4Hash4hash(key));
 }
 function _M0MPB3Map3setGiRP211localreview4amqp7PendingE(self, key, value) {
   _M0MPB3Map15set__with__hashGiRP211localreview4amqp7PendingE(self, key, value, _M0IPC13int3IntPB4Hash4hash(key));
@@ -4669,6 +5215,32 @@ function _M0MPB3Map3MapGsRPB4JsonE(arr, capacity) {
     if (_ < _bind$2) {
       const e = arr.buf[arr.start + _ | 0];
       _M0MPB3Map3setGsRPB4JsonE(m, e._0, e._1);
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return m;
+}
+function _M0MPB3Map3MapGsRPB5ArrayGsEE(arr, capacity) {
+  const length = arr.end - arr.start | 0;
+  let capacity$2;
+  if (capacity === undefined) {
+    capacity$2 = length === 0 ? 8 : _M0FPB21capacity__for__length(length);
+  } else {
+    const _Some = capacity;
+    const _capacity = _Some;
+    capacity$2 = _M0MPC13int3Int3max(_capacity, _M0FPB21capacity__for__length(length));
+  }
+  const m = _M0FPB8new__mapGsRPB5ArrayGsEE(capacity$2);
+  const _bind$2 = arr.end - arr.start | 0;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind$2) {
+      const e = arr.buf[arr.start + _ | 0];
+      _M0MPB3Map3setGsRPB5ArrayGsEE(m, e._0, e._1);
       _tmp = _ + 1 | 0;
       continue;
     } else {
@@ -4885,6 +5457,31 @@ function _M0MPB3Map3MapGiRP211localreview4amqp13StreamPendingE(arr, capacity) {
   }
   return m;
 }
+function _M0MPB3Map3getGsRPB5ArrayGsEE(self, key) {
+  const hash = _M0IPC16string6StringPB4Hash4hash(key);
+  let _tmp = 0;
+  let _tmp$2 = hash & self.capacity_mask;
+  while (true) {
+    const i = _tmp;
+    const idx = _tmp$2;
+    const _bind$2 = self.entries[idx];
+    if (_bind$2 === undefined) {
+      return _M0DTPC16option6OptionGRPB5ArrayGsEE4None__;
+    } else {
+      const _Some = _bind$2;
+      const _entry = _Some;
+      if (_entry.hash === hash && _entry.key === key) {
+        return new _M0DTPC16option6OptionGRPB5ArrayGsEE4Some(_entry.value);
+      }
+      if (i > _entry.psl) {
+        return _M0DTPC16option6OptionGRPB5ArrayGsEE4None__;
+      }
+      _tmp = i + 1 | 0;
+      _tmp$2 = (idx + 1 | 0) & self.capacity_mask;
+      continue;
+    }
+  }
+}
 function _M0MPB3Map3getGsRP211localreview4amqp7SessionE(self, key) {
   const hash = _M0IPC16string6StringPB4Hash4hash(key);
   let _tmp = 0;
@@ -5086,6 +5683,31 @@ function _M0MPB3Map3getGsRPB4JsonE(self, key) {
   }
 }
 function _M0MPB3Map8containsGsRP211localreview4amqp7SessionE(self, key) {
+  const hash = _M0IPC16string6StringPB4Hash4hash(key);
+  let _tmp = 0;
+  let _tmp$2 = hash & self.capacity_mask;
+  while (true) {
+    const i = _tmp;
+    const idx = _tmp$2;
+    const _bind$2 = self.entries[idx];
+    if (_bind$2 === undefined) {
+      return false;
+    } else {
+      const _Some = _bind$2;
+      const _entry = _Some;
+      if (_entry.hash === hash && _entry.key === key) {
+        return true;
+      }
+      if (i > _entry.psl) {
+        return false;
+      }
+      _tmp = i + 1 | 0;
+      _tmp$2 = (idx + 1 | 0) & self.capacity_mask;
+      continue;
+    }
+  }
+}
+function _M0MPB3Map8containsGsRPB5ArrayGsEE(self, key) {
   const hash = _M0IPC16string6StringPB4Hash4hash(key);
   let _tmp = 0;
   let _tmp$2 = hash & self.capacity_mask;
@@ -5700,10 +6322,10 @@ function _M0MPB3Map6lengthGiRP211localreview4amqp7PendingE(self) {
 function _M0MPB3Map6lengthGiRP211localreview4amqp13StreamPendingE(self) {
   return self.size;
 }
-function _M0MPB3Map9is__emptyGiRP211localreview4amqp7PendingE(self) {
+function _M0MPB3Map9is__emptyGsRPB4JsonE(self) {
   return self.size === 0;
 }
-function _M0MPB3Map9is__emptyGsRPB4JsonE(self) {
+function _M0MPB3Map9is__emptyGiRP211localreview4amqp7PendingE(self) {
   return self.size === 0;
 }
 function _M0MPB3Map9is__emptyGiRP211localreview4amqp13StreamPendingE(self) {
@@ -5850,6 +6472,23 @@ function _M0MPC15array5Array3mapGUsRP211localreview4amqp12ArgumentKindERPB4JsonE
   }
   return arr;
 }
+function _M0MPC15array5Array3mapGsRPB4JsonE(self, f) {
+  const arr = new Array(self.length);
+  const _bind$2 = self.length;
+  let _tmp = 0;
+  while (true) {
+    const i = _tmp;
+    if (i < _bind$2) {
+      const v = self[i];
+      arr[i] = f(v);
+      _tmp = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return arr;
+}
 function _M0MPC15array5Array3mapGzsE(self, f) {
   const arr = new Array(self.length);
   const _bind$2 = self.length;
@@ -5958,23 +6597,6 @@ function _M0MPC15array5Array3mapGRPB4JsonRP211localreview4amqp14AuthenticationEH
     }
   }
   return new _M0DTPC16result6ResultGRPB5ArrayGRP211localreview4amqp14AuthenticationERPC15error5ErrorE2Ok(arr);
-}
-function _M0MPC15array5Array3mapGsRPB4JsonE(self, f) {
-  const arr = new Array(self.length);
-  const _bind$2 = self.length;
-  let _tmp = 0;
-  while (true) {
-    const i = _tmp;
-    if (i < _bind$2) {
-      const v = self[i];
-      arr[i] = f(v);
-      _tmp = i + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  return arr;
 }
 function _M0MPC15array5Array3mapGUsRP211localreview4amqp8ArgumentERPC15debug4ReprE(self, f) {
   const arr = new Array(self.length);
@@ -6188,29 +6810,14 @@ function _M0MPC15array5Array3mapGRP211localreview4amqp10FieldValueRPC15debug4Rep
   }
   return arr;
 }
-function _M0IPC15array5ArrayPB6ToJson8to__jsonGRPB4JsonE(self) {
-  return new _M0DTPB4Json5Array(_M0MPC15array5Array3mapGRPB4JsonRPB4JsonE(self, (x) => _M0IPC14json4JsonPB6ToJson8to__json(x)));
-}
 function _M0IPC15array5ArrayPB6ToJson8to__jsonGsE(self) {
   return new _M0DTPB4Json5Array(_M0MPC15array5Array3mapGsRPB4JsonE(self, (x) => _M0IPC16string6StringPB6ToJson8to__json(x)));
 }
+function _M0IPC15array5ArrayPB6ToJson8to__jsonGRPB4JsonE(self) {
+  return new _M0DTPB4Json5Array(_M0MPC15array5Array3mapGRPB4JsonRPB4JsonE(self, (x) => _M0IPC14json4JsonPB6ToJson8to__json(x)));
+}
 function _M0MPB4Iter10size__hintGsE(self) {
   return self.size_hint;
-}
-function _M0MPB4Iter3anyGRPC16string10StringViewE(self, f) {
-  while (true) {
-    const _bind$2 = _M0MPB4Iter4nextGUsRP211localreview4amqp12ArgumentKindEE(self);
-    if (_bind$2 === undefined) {
-      return false;
-    } else {
-      const _Some = _bind$2;
-      const _x = _Some;
-      if (f(_x)) {
-        return true;
-      }
-      continue;
-    }
-  }
 }
 function _M0MPB4Iter3anyGcE(self, f) {
   while (true) {
@@ -6227,9 +6834,39 @@ function _M0MPB4Iter3anyGcE(self, f) {
     }
   }
 }
+function _M0MPB4Iter3anyGyE(self, f) {
+  while (true) {
+    const _bind$2 = _M0MPB4Iter4nextGyE(self);
+    if (_bind$2 === -1) {
+      return false;
+    } else {
+      const _Some = _bind$2;
+      const _x = _Some;
+      if (f(_x)) {
+        return true;
+      }
+      continue;
+    }
+  }
+}
+function _M0MPB4Iter3anyGRPC16string10StringViewE(self, f) {
+  while (true) {
+    const _bind$2 = _M0MPB4Iter4nextGRPC16string10StringViewE(self);
+    if (_bind$2 === undefined) {
+      return false;
+    } else {
+      const _Some = _bind$2;
+      const _x = _Some;
+      if (f(_x)) {
+        return true;
+      }
+      continue;
+    }
+  }
+}
 function _M0MPB4Iter11find__firstGUsRP211localreview4amqp12ArgumentKindEE(self, f) {
   while (true) {
-    const _bind$2 = _M0MPB4Iter4nextGUsRP211localreview4amqp12ArgumentKindEE(self);
+    const _bind$2 = _M0MPB4Iter4nextGRPC16string10StringViewE(self);
     if (_bind$2 === undefined) {
       return undefined;
     } else {
@@ -6246,10 +6883,10 @@ function _M0MPB4Iter4iterGsE(self) {
   return self;
 }
 function _M0MPB5Iter24nextGsRPB4JsonE(self) {
-  return _M0MPB4Iter4nextGUsRP211localreview4amqp12ArgumentKindEE(self);
+  return _M0MPB4Iter4nextGRPC16string10StringViewE(self);
 }
 function _M0MPB5Iter24nextGisE(self) {
-  return _M0MPB4Iter4nextGUsRP211localreview4amqp12ArgumentKindEE(self);
+  return _M0MPB4Iter4nextGRPC16string10StringViewE(self);
 }
 function _M0MPC14byte4Byte9to__int64(self) {
   return BigInt.asUintN(64, BigInt(self));
@@ -6271,7 +6908,7 @@ function _M0MPC15bytes5Bytes12view_2einner(self, start, end) {
     const _bind$2 = end$2 - start | 0;
     return new _M0TPC15bytes9BytesView(self, start, start + _bind$2 | 0);
   } else {
-    return _M0FPC15abort5abortGRPB4JsonE("Invalid index for View");
+    return _M0FPC15abort5abortGRPC16string10StringViewE("Invalid index for View");
   }
 }
 function _M0IPC16string6StringPB4Hash4hash(self) {
@@ -6636,6 +7273,19 @@ function _M0MPC15bytes9BytesView9to__array(self) {
   const len = self.end - self.start | 0;
   return _M0MPC15array5Array44unsafe__make__and__blit__from__fixed_2einnerGyE(_M0MPC15bytes9BytesView4data(self), len, len, _M0MPC15bytes9BytesView13start__offset(self), 0);
 }
+function _M0MPC15bytes5Bytes4iter(self) {
+  const i = new _M0TPB8MutLocalGiE(0);
+  const len = self.length;
+  return _M0MPB4Iter3newGyE(() => {
+    if (i.val < len) {
+      const c = self[i.val];
+      i.val = i.val + 1 | 0;
+      return c;
+    } else {
+      return -1;
+    }
+  }, len);
+}
 function _M0MPC15array5Array28unsafe__truncate__to__lengthGRP211localreview4amqp14AuthenticationE(self, new_len) {
   _M0MPB7JSArray11set__length(self, new_len);
 }
@@ -6654,10 +7304,10 @@ function _M0MPC15array5Array6appendGsE(self, other) {
     return;
   }
 }
-function _M0MPC15array5Array9is__emptyGyE(self) {
+function _M0MPC15array5Array9is__emptyGRPB4JsonE(self) {
   return self.length === 0;
 }
-function _M0MPC15array5Array9is__emptyGRPB4JsonE(self) {
+function _M0MPC15array5Array9is__emptyGyE(self) {
   return self.length === 0;
 }
 function _M0MPC15array5Array11unsafe__popGRPC14json10WriteFrameE(self) {
@@ -6817,7 +7467,7 @@ function _M0MPC15array5Array10push__iterGsE(self, iter) {
     _M0MPC15array5Array17reserve__capacityGsE(self, self.length + _n | 0);
   }
   while (true) {
-    const _bind$3 = _M0MPB4Iter4nextGUsRP211localreview4amqp12ArgumentKindEE(iter);
+    const _bind$3 = _M0MPB4Iter4nextGRPC16string10StringViewE(iter);
     if (_bind$3 === undefined) {
       return;
     } else {
@@ -8574,14 +9224,14 @@ function _M0FPC28internal7strconv25check__and__consume__base(view, base) {
 function _M0FPC28internal7strconv10range__errGuE() {
   return new _M0DTPC16result6ResultGuRPB7FailureE3Err(new _M0DTPC15error5Error48moonbitlang_2fcore_2fbuiltin_2eFailure_2eFailure(_M0FPC28internal7strconv15range__err__str));
 }
-function _M0FPC28internal7strconv11syntax__errGuE() {
-  return new _M0DTPC16result6ResultGuRPB7FailureE3Err(new _M0DTPC15error5Error48moonbitlang_2fcore_2fbuiltin_2eFailure_2eFailure(_M0FPC28internal7strconv16syntax__err__str));
-}
 function _M0FPC28internal7strconv11syntax__errGiE() {
   return new _M0DTPC16result6ResultGiRPB7FailureE3Err(new _M0DTPC15error5Error48moonbitlang_2fcore_2fbuiltin_2eFailure_2eFailure(_M0FPC28internal7strconv16syntax__err__str));
 }
-function _M0FPC28internal7strconv11syntax__errGmE() {
-  return new _M0DTPC16result6ResultGmRPB7FailureE3Err(new _M0DTPC15error5Error48moonbitlang_2fcore_2fbuiltin_2eFailure_2eFailure(_M0FPC28internal7strconv16syntax__err__str));
+function _M0FPC28internal7strconv11syntax__errGuE() {
+  return new _M0DTPC16result6ResultGuRPB7FailureE3Err(new _M0DTPC15error5Error48moonbitlang_2fcore_2fbuiltin_2eFailure_2eFailure(_M0FPC28internal7strconv16syntax__err__str));
+}
+function _M0FPC28internal7strconv11syntax__errGlE() {
+  return new _M0DTPC16result6ResultGlRPB7FailureE3Err(new _M0DTPC15error5Error48moonbitlang_2fcore_2fbuiltin_2eFailure_2eFailure(_M0FPC28internal7strconv16syntax__err__str));
 }
 function _M0FPC28internal7strconv11syntax__errGdE() {
   return new _M0DTPC16result6ResultGdRPB7FailureE3Err(new _M0DTPC15error5Error48moonbitlang_2fcore_2fbuiltin_2eFailure_2eFailure(_M0FPC28internal7strconv16syntax__err__str));
@@ -8815,10 +9465,10 @@ function _M0FPC28internal7strconv21parse__uint64_2einner(str, base) {
       }
       return new _M0DTPC16result6ResultGmRPC15error5ErrorE2Ok(_tmp$2);
     } else {
-      return _M0FPC28internal7strconv11syntax__errGmE();
+      return _M0FPC28internal7strconv11syntax__errGlE();
     }
   } else {
-    return _M0FPC28internal7strconv11syntax__errGmE();
+    return _M0FPC28internal7strconv11syntax__errGlE();
   }
 }
 function _M0EPC16string10StringViewPC28internal7strconv12fold__digitsGmE(self, init, f) {
@@ -9519,10 +10169,10 @@ function _M0FPC28internal7strconv20parse__int64_2einner(str, base) {
       }
       return new _M0DTPC16result6ResultGlRPC15error5ErrorE2Ok(_tmp);
     } else {
-      return _M0FPC28internal7strconv11syntax__errGmE();
+      return _M0FPC28internal7strconv11syntax__errGlE();
     }
   } else {
-    return _M0FPC28internal7strconv11syntax__errGmE();
+    return _M0FPC28internal7strconv11syntax__errGlE();
   }
 }
 function _M0FPC28internal7strconv17check__underscore(str) {
@@ -10201,7 +10851,7 @@ function _M0FPC28internal7strconv26parse__decimal__from__view(str) {
           }
           break _L$4;
         }
-        const _bind$2 = _M0FPC28internal7strconv11syntax__errGmE();
+        const _bind$2 = _M0FPC28internal7strconv11syntax__errGlE();
         if (_bind$2.$tag === 1) {
           const _ok = _bind$2;
           rest$3 = _ok._0;
@@ -10214,10 +10864,10 @@ function _M0FPC28internal7strconv26parse__decimal__from__view(str) {
       _M0MPC28internal7strconv7Decimal4trim(d);
       return new _M0DTPC16result6ResultGRPC28internal7strconv7DecimalRPC15error5ErrorE2Ok(d);
     } else {
-      return _M0FPC28internal7strconv11syntax__errGmE();
+      return _M0FPC28internal7strconv11syntax__errGlE();
     }
   } else {
-    return _M0FPC28internal7strconv11syntax__errGmE();
+    return _M0FPC28internal7strconv11syntax__errGlE();
   }
 }
 function _M0FPC28internal7strconv20parse__decimal__priv(str) {
@@ -11961,7 +12611,7 @@ function _M0MPC14json12ParseContext13parse__value2(ctx, tok, remaining_available
       }
     }
   }
-  return new _M0DTPC16result6ResultGRPB4JsonRPC14json10ParseErrorE2Ok(_M0FPC15abort5abortGRPB4JsonE("unreachable"));
+  return new _M0DTPC16result6ResultGRPB4JsonRPC14json10ParseErrorE2Ok(_M0FPC15abort5abortGRPC16string10StringViewE("unreachable"));
 }
 function _M0MPC14json12ParseContext12parse__array(ctx, remaining_available_depth) {
   if (remaining_available_depth <= 0) {
@@ -12261,7 +12911,7 @@ function _M0MPC14json4Json17stringify_2einner(self, escape_slash, indent, replac
           const _Object = _x;
           const _iterator = _Object._0;
           const _first = _Object._1;
-          const _bind$2 = _M0MPB4Iter4nextGUsRP211localreview4amqp12ArgumentKindEE(_iterator);
+          const _bind$2 = _M0MPB4Iter4nextGRPC16string10StringViewE(_iterator);
           if (_bind$2 === undefined) {
             depth = depth - 1 | 0;
             _M0MPC15array5Array3popGRPC14json10WriteFrameE(stack);
@@ -12537,92 +13187,92 @@ function _M0IPC16uint646UInt64PC14json8FromJson10from__json(json, path) {
     return _M0FPC14json13decode__errorGmE(path, "UInt64::from_json: expected number in string representation");
   }
 }
-function _M0IP211localreview4amqp8ArgumentPC15debug5Debug8to__repr(_x_622) {
-  let _arg_630;
+function _M0IP211localreview4amqp8ArgumentPC15debug5Debug8to__repr(_x_727) {
+  let _arg_735;
   _L: {
-    let _arg_629;
+    let _arg_734;
     _L$2: {
-      let _arg_628;
+      let _arg_733;
       _L$3: {
-        let _arg_627;
+        let _arg_732;
         _L$4: {
-          let _arg_626;
+          let _arg_731;
           _L$5: {
-            let _arg_625;
+            let _arg_730;
             _L$6: {
-              let _arg_624;
+              let _arg_729;
               _L$7: {
-                let _arg_623;
+                let _arg_728;
                 _L$8: {
-                  switch (_x_622.$tag) {
+                  switch (_x_727.$tag) {
                     case 0: {
-                      const _Bit = _x_622;
-                      const _$42$arg_623 = _Bit._0;
-                      _arg_623 = _$42$arg_623;
+                      const _Bit = _x_727;
+                      const _$42$arg_728 = _Bit._0;
+                      _arg_728 = _$42$arg_728;
                       break _L$8;
                     }
                     case 1: {
-                      const _Octet = _x_622;
-                      const _$42$arg_624 = _Octet._0;
-                      _arg_624 = _$42$arg_624;
+                      const _Octet = _x_727;
+                      const _$42$arg_729 = _Octet._0;
+                      _arg_729 = _$42$arg_729;
                       break _L$7;
                     }
                     case 2: {
-                      const _Short = _x_622;
-                      const _$42$arg_625 = _Short._0;
-                      _arg_625 = _$42$arg_625;
+                      const _Short = _x_727;
+                      const _$42$arg_730 = _Short._0;
+                      _arg_730 = _$42$arg_730;
                       break _L$6;
                     }
                     case 3: {
-                      const _Long = _x_622;
-                      const _$42$arg_626 = _Long._0;
-                      _arg_626 = _$42$arg_626;
+                      const _Long = _x_727;
+                      const _$42$arg_731 = _Long._0;
+                      _arg_731 = _$42$arg_731;
                       break _L$5;
                     }
                     case 4: {
-                      const _LongLong = _x_622;
-                      const _$42$arg_627 = _LongLong._0;
-                      _arg_627 = _$42$arg_627;
+                      const _LongLong = _x_727;
+                      const _$42$arg_732 = _LongLong._0;
+                      _arg_732 = _$42$arg_732;
                       break _L$4;
                     }
                     case 5: {
-                      const _ShortString = _x_622;
-                      const _$42$arg_628 = _ShortString._0;
-                      _arg_628 = _$42$arg_628;
+                      const _ShortString = _x_727;
+                      const _$42$arg_733 = _ShortString._0;
+                      _arg_733 = _$42$arg_733;
                       break _L$3;
                     }
                     case 6: {
-                      const _LongString = _x_622;
-                      const _$42$arg_629 = _LongString._0;
-                      _arg_629 = _$42$arg_629;
+                      const _LongString = _x_727;
+                      const _$42$arg_734 = _LongString._0;
+                      _arg_734 = _$42$arg_734;
                       break _L$2;
                     }
                     default: {
-                      const _Table = _x_622;
-                      const _$42$arg_630 = _Table._0;
-                      _arg_630 = _$42$arg_630;
+                      const _Table = _x_727;
+                      const _$42$arg_735 = _Table._0;
+                      _arg_735 = _$42$arg_735;
                       break _L;
                     }
                   }
                 }
-                return _M0MPC15debug4Repr4ctor("Bit", [{ _0: undefined, _1: _M0IPC14bool4BoolPC15debug5Debug8to__repr(_arg_623) }]);
+                return _M0MPC15debug4Repr4ctor("Bit", [{ _0: undefined, _1: _M0IPC14bool4BoolPC15debug5Debug8to__repr(_arg_728) }]);
               }
-              return _M0MPC15debug4Repr4ctor("Octet", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_624) }]);
+              return _M0MPC15debug4Repr4ctor("Octet", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_729) }]);
             }
-            return _M0MPC15debug4Repr4ctor("Short", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_625) }]);
+            return _M0MPC15debug4Repr4ctor("Short", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_730) }]);
           }
-          return _M0MPC15debug4Repr4ctor("Long", [{ _0: undefined, _1: _M0IPC14uint4UIntPC15debug5Debug8to__repr(_arg_626) }]);
+          return _M0MPC15debug4Repr4ctor("Long", [{ _0: undefined, _1: _M0IPC14uint4UIntPC15debug5Debug8to__repr(_arg_731) }]);
         }
-        return _M0MPC15debug4Repr4ctor("LongLong", [{ _0: undefined, _1: _M0IPC16uint646UInt64PC15debug5Debug8to__repr(_arg_627) }]);
+        return _M0MPC15debug4Repr4ctor("LongLong", [{ _0: undefined, _1: _M0IPC16uint646UInt64PC15debug5Debug8to__repr(_arg_732) }]);
       }
-      return _M0MPC15debug4Repr4ctor("ShortString", [{ _0: undefined, _1: _M0IPC16string6StringPC15debug5Debug8to__repr(_arg_628) }]);
+      return _M0MPC15debug4Repr4ctor("ShortString", [{ _0: undefined, _1: _M0IPC16string6StringPC15debug5Debug8to__repr(_arg_733) }]);
     }
-    return _M0MPC15debug4Repr4ctor("LongString", [{ _0: undefined, _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_arg_629) }]);
+    return _M0MPC15debug4Repr4ctor("LongString", [{ _0: undefined, _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_arg_734) }]);
   }
-  return _M0MPC15debug4Repr4ctor("Table", [{ _0: undefined, _1: _M0IPC15array5ArrayPC15debug5Debug8to__reprGUsRP211localreview4amqp10FieldValueEE(_arg_630) }]);
+  return _M0MPC15debug4Repr4ctor("Table", [{ _0: undefined, _1: _M0IPC15array5ArrayPC15debug5Debug8to__reprGUsRP211localreview4amqp10FieldValueEE(_arg_735) }]);
 }
-function _M0IP211localreview4amqp12ArgumentKindPC15debug5Debug8to__repr(_x_576) {
-  switch (_x_576) {
+function _M0IP211localreview4amqp12ArgumentKindPC15debug5Debug8to__repr(_x_681) {
+  switch (_x_681) {
     case 0: {
       return _M0MPC15debug4Repr4ctor("BitKind", []);
     }
@@ -12649,59 +13299,59 @@ function _M0IP211localreview4amqp12ArgumentKindPC15debug5Debug8to__repr(_x_576) 
     }
   }
 }
-function _M0IP211localreview4amqp12ArgumentKindPB2Eq5equal(_x_572, _x_573) {
-  switch (_x_572) {
+function _M0IP211localreview4amqp12ArgumentKindPB2Eq5equal(_x_677, _x_678) {
+  switch (_x_677) {
     case 0: {
-      if (_x_573 === 0) {
+      if (_x_678 === 0) {
         return true;
       } else {
         return false;
       }
     }
     case 1: {
-      if (_x_573 === 1) {
+      if (_x_678 === 1) {
         return true;
       } else {
         return false;
       }
     }
     case 2: {
-      if (_x_573 === 2) {
+      if (_x_678 === 2) {
         return true;
       } else {
         return false;
       }
     }
     case 3: {
-      if (_x_573 === 3) {
+      if (_x_678 === 3) {
         return true;
       } else {
         return false;
       }
     }
     case 4: {
-      if (_x_573 === 4) {
+      if (_x_678 === 4) {
         return true;
       } else {
         return false;
       }
     }
     case 5: {
-      if (_x_573 === 5) {
+      if (_x_678 === 5) {
         return true;
       } else {
         return false;
       }
     }
     case 6: {
-      if (_x_573 === 6) {
+      if (_x_678 === 6) {
         return true;
       } else {
         return false;
       }
     }
     default: {
-      if (_x_573 === 7) {
+      if (_x_678 === 7) {
         return true;
       } else {
         return false;
@@ -12709,151 +13359,151 @@ function _M0IP211localreview4amqp12ArgumentKindPB2Eq5equal(_x_572, _x_573) {
     }
   }
 }
-function _M0IP211localreview4amqp10FrameErrorPC15debug5Debug8to__reprGRP211localreview4amqp10FrameErrorE(_x_562) {
-  let _arg_563;
+function _M0IP211localreview4amqp10FrameErrorPC15debug5Debug8to__reprGRP211localreview4amqp10FrameErrorE(_x_667) {
+  let _arg_668;
   _L: {
-    const _Invalid = _x_562;
-    const _$42$arg_563 = _Invalid._0;
-    _arg_563 = _$42$arg_563;
+    const _Invalid = _x_667;
+    const _$42$arg_668 = _Invalid._0;
+    _arg_668 = _$42$arg_668;
     break _L;
   }
-  return _M0MPC15debug4Repr4ctor("Invalid", [{ _0: undefined, _1: _M0IPC16string6StringPC15debug5Debug8to__repr(_arg_563) }]);
+  return _M0MPC15debug4Repr4ctor("Invalid", [{ _0: undefined, _1: _M0IPC16string6StringPC15debug5Debug8to__repr(_arg_668) }]);
 }
-function _M0IP211localreview4amqp7ContentPC15debug5Debug8to__repr(_x_458) {
-  const _bind$2 = [{ _0: "channel", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_458.channel) }, { _0: "method_payload", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_458.method_payload) }, { _0: "header", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_458.header) }, { _0: "body", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_458.body) }];
+function _M0IP211localreview4amqp7ContentPC15debug5Debug8to__repr(_x_563) {
+  const _bind$2 = [{ _0: "channel", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_563.channel) }, { _0: "method_payload", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_563.method_payload) }, { _0: "header", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_563.header) }, { _0: "body", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_563.body) }];
   return _M0MPC15debug4Repr6record(_M0MPB3Map3MapGsRPC15debug4ReprE(new _M0TPB9ArrayViewGUsRPC15debug4ReprEE(_bind$2, 0, 4), undefined));
 }
-function _M0IP211localreview4amqp10FieldValuePC15debug5Debug8to__repr(_x_418) {
-  let _arg_435;
+function _M0IP211localreview4amqp10FieldValuePC15debug5Debug8to__repr(_x_523) {
+  let _arg_540;
   _L: {
-    let _arg_434;
+    let _arg_539;
     _L$2: {
-      let _arg_433;
+      let _arg_538;
       _L$3: {
-        let _arg_432;
+        let _arg_537;
         _L$4: {
-          let _arg_431;
+          let _arg_536;
           _L$5: {
-            let _arg_429;
-            let _arg_430;
+            let _arg_534;
+            let _arg_535;
             _L$6: {
-              let _arg_428;
+              let _arg_533;
               _L$7: {
-                let _arg_427;
+                let _arg_532;
                 _L$8: {
-                  let _arg_426;
+                  let _arg_531;
                   _L$9: {
-                    let _arg_425;
+                    let _arg_530;
                     _L$10: {
-                      let _arg_424;
+                      let _arg_529;
                       _L$11: {
-                        let _arg_423;
+                        let _arg_528;
                         _L$12: {
-                          let _arg_422;
+                          let _arg_527;
                           _L$13: {
-                            let _arg_421;
+                            let _arg_526;
                             _L$14: {
-                              let _arg_420;
+                              let _arg_525;
                               _L$15: {
-                                let _arg_419;
+                                let _arg_524;
                                 _L$16: {
-                                  switch (_x_418.$tag) {
+                                  switch (_x_523.$tag) {
                                     case 0: {
-                                      const _Boolean = _x_418;
-                                      const _$42$arg_419 = _Boolean._0;
-                                      _arg_419 = _$42$arg_419;
+                                      const _Boolean = _x_523;
+                                      const _$42$arg_524 = _Boolean._0;
+                                      _arg_524 = _$42$arg_524;
                                       break _L$16;
                                     }
                                     case 1: {
-                                      const _Signed8 = _x_418;
-                                      const _$42$arg_420 = _Signed8._0;
-                                      _arg_420 = _$42$arg_420;
+                                      const _Signed8 = _x_523;
+                                      const _$42$arg_525 = _Signed8._0;
+                                      _arg_525 = _$42$arg_525;
                                       break _L$15;
                                     }
                                     case 2: {
-                                      const _Unsigned8 = _x_418;
-                                      const _$42$arg_421 = _Unsigned8._0;
-                                      _arg_421 = _$42$arg_421;
+                                      const _Unsigned8 = _x_523;
+                                      const _$42$arg_526 = _Unsigned8._0;
+                                      _arg_526 = _$42$arg_526;
                                       break _L$14;
                                     }
                                     case 3: {
-                                      const _Signed16 = _x_418;
-                                      const _$42$arg_422 = _Signed16._0;
-                                      _arg_422 = _$42$arg_422;
+                                      const _Signed16 = _x_523;
+                                      const _$42$arg_527 = _Signed16._0;
+                                      _arg_527 = _$42$arg_527;
                                       break _L$13;
                                     }
                                     case 4: {
-                                      const _Unsigned16 = _x_418;
-                                      const _$42$arg_423 = _Unsigned16._0;
-                                      _arg_423 = _$42$arg_423;
+                                      const _Unsigned16 = _x_523;
+                                      const _$42$arg_528 = _Unsigned16._0;
+                                      _arg_528 = _$42$arg_528;
                                       break _L$12;
                                     }
                                     case 5: {
-                                      const _Signed32 = _x_418;
-                                      const _$42$arg_424 = _Signed32._0;
-                                      _arg_424 = _$42$arg_424;
+                                      const _Signed32 = _x_523;
+                                      const _$42$arg_529 = _Signed32._0;
+                                      _arg_529 = _$42$arg_529;
                                       break _L$11;
                                     }
                                     case 6: {
-                                      const _Unsigned32 = _x_418;
-                                      const _$42$arg_425 = _Unsigned32._0;
-                                      _arg_425 = _$42$arg_425;
+                                      const _Unsigned32 = _x_523;
+                                      const _$42$arg_530 = _Unsigned32._0;
+                                      _arg_530 = _$42$arg_530;
                                       break _L$10;
                                     }
                                     case 7: {
-                                      const _Signed64 = _x_418;
-                                      const _$42$arg_426 = _Signed64._0;
-                                      _arg_426 = _$42$arg_426;
+                                      const _Signed64 = _x_523;
+                                      const _$42$arg_531 = _Signed64._0;
+                                      _arg_531 = _$42$arg_531;
                                       break _L$9;
                                     }
                                     case 8: {
-                                      const _Float32Bits = _x_418;
-                                      const _$42$arg_427 = _Float32Bits._0;
-                                      _arg_427 = _$42$arg_427;
+                                      const _Float32Bits = _x_523;
+                                      const _$42$arg_532 = _Float32Bits._0;
+                                      _arg_532 = _$42$arg_532;
                                       break _L$8;
                                     }
                                     case 9: {
-                                      const _Float64Bits = _x_418;
-                                      const _$42$arg_428 = _Float64Bits._0;
-                                      _arg_428 = _$42$arg_428;
+                                      const _Float64Bits = _x_523;
+                                      const _$42$arg_533 = _Float64Bits._0;
+                                      _arg_533 = _$42$arg_533;
                                       break _L$7;
                                     }
                                     case 10: {
-                                      const _Decimal = _x_418;
-                                      const _$42$arg_429 = _Decimal._0;
-                                      const _$42$arg_430 = _Decimal._1;
-                                      _arg_429 = _$42$arg_429;
-                                      _arg_430 = _$42$arg_430;
+                                      const _Decimal = _x_523;
+                                      const _$42$arg_534 = _Decimal._0;
+                                      const _$42$arg_535 = _Decimal._1;
+                                      _arg_534 = _$42$arg_534;
+                                      _arg_535 = _$42$arg_535;
                                       break _L$6;
                                     }
                                     case 11: {
-                                      const _LongString = _x_418;
-                                      const _$42$arg_431 = _LongString._0;
-                                      _arg_431 = _$42$arg_431;
+                                      const _LongString = _x_523;
+                                      const _$42$arg_536 = _LongString._0;
+                                      _arg_536 = _$42$arg_536;
                                       break _L$5;
                                     }
                                     case 12: {
-                                      const _ByteArray = _x_418;
-                                      const _$42$arg_432 = _ByteArray._0;
-                                      _arg_432 = _$42$arg_432;
+                                      const _ByteArray = _x_523;
+                                      const _$42$arg_537 = _ByteArray._0;
+                                      _arg_537 = _$42$arg_537;
                                       break _L$4;
                                     }
                                     case 13: {
-                                      const _Timestamp = _x_418;
-                                      const _$42$arg_433 = _Timestamp._0;
-                                      _arg_433 = _$42$arg_433;
+                                      const _Timestamp = _x_523;
+                                      const _$42$arg_538 = _Timestamp._0;
+                                      _arg_538 = _$42$arg_538;
                                       break _L$3;
                                     }
                                     case 14: {
-                                      const _ArrayValue = _x_418;
-                                      const _$42$arg_434 = _ArrayValue._0;
-                                      _arg_434 = _$42$arg_434;
+                                      const _ArrayValue = _x_523;
+                                      const _$42$arg_539 = _ArrayValue._0;
+                                      _arg_539 = _$42$arg_539;
                                       break _L$2;
                                     }
                                     case 15: {
-                                      const _TableValue = _x_418;
-                                      const _$42$arg_435 = _TableValue._0;
-                                      _arg_435 = _$42$arg_435;
+                                      const _TableValue = _x_523;
+                                      const _$42$arg_540 = _TableValue._0;
+                                      _arg_540 = _$42$arg_540;
                                       break _L;
                                     }
                                     default: {
@@ -12861,40 +13511,40 @@ function _M0IP211localreview4amqp10FieldValuePC15debug5Debug8to__repr(_x_418) {
                                     }
                                   }
                                 }
-                                return _M0MPC15debug4Repr4ctor("Boolean", [{ _0: undefined, _1: _M0IPC14bool4BoolPC15debug5Debug8to__repr(_arg_419) }]);
+                                return _M0MPC15debug4Repr4ctor("Boolean", [{ _0: undefined, _1: _M0IPC14bool4BoolPC15debug5Debug8to__repr(_arg_524) }]);
                               }
-                              return _M0MPC15debug4Repr4ctor("Signed8", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_420) }]);
+                              return _M0MPC15debug4Repr4ctor("Signed8", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_525) }]);
                             }
-                            return _M0MPC15debug4Repr4ctor("Unsigned8", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_421) }]);
+                            return _M0MPC15debug4Repr4ctor("Unsigned8", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_526) }]);
                           }
-                          return _M0MPC15debug4Repr4ctor("Signed16", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_422) }]);
+                          return _M0MPC15debug4Repr4ctor("Signed16", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_527) }]);
                         }
-                        return _M0MPC15debug4Repr4ctor("Unsigned16", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_423) }]);
+                        return _M0MPC15debug4Repr4ctor("Unsigned16", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_528) }]);
                       }
-                      return _M0MPC15debug4Repr4ctor("Signed32", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_424) }]);
+                      return _M0MPC15debug4Repr4ctor("Signed32", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_529) }]);
                     }
-                    return _M0MPC15debug4Repr4ctor("Unsigned32", [{ _0: undefined, _1: _M0IPC14uint4UIntPC15debug5Debug8to__repr(_arg_425) }]);
+                    return _M0MPC15debug4Repr4ctor("Unsigned32", [{ _0: undefined, _1: _M0IPC14uint4UIntPC15debug5Debug8to__repr(_arg_530) }]);
                   }
-                  return _M0MPC15debug4Repr4ctor("Signed64", [{ _0: undefined, _1: _M0IPC15int645Int64PC15debug5Debug8to__repr(_arg_426) }]);
+                  return _M0MPC15debug4Repr4ctor("Signed64", [{ _0: undefined, _1: _M0IPC15int645Int64PC15debug5Debug8to__repr(_arg_531) }]);
                 }
-                return _M0MPC15debug4Repr4ctor("Float32Bits", [{ _0: undefined, _1: _M0IPC14uint4UIntPC15debug5Debug8to__repr(_arg_427) }]);
+                return _M0MPC15debug4Repr4ctor("Float32Bits", [{ _0: undefined, _1: _M0IPC14uint4UIntPC15debug5Debug8to__repr(_arg_532) }]);
               }
-              return _M0MPC15debug4Repr4ctor("Float64Bits", [{ _0: undefined, _1: _M0IPC16uint646UInt64PC15debug5Debug8to__repr(_arg_428) }]);
+              return _M0MPC15debug4Repr4ctor("Float64Bits", [{ _0: undefined, _1: _M0IPC16uint646UInt64PC15debug5Debug8to__repr(_arg_533) }]);
             }
-            return _M0MPC15debug4Repr4ctor("Decimal", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_429) }, { _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_430) }]);
+            return _M0MPC15debug4Repr4ctor("Decimal", [{ _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_534) }, { _0: undefined, _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_arg_535) }]);
           }
-          return _M0MPC15debug4Repr4ctor("LongString", [{ _0: undefined, _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_arg_431) }]);
+          return _M0MPC15debug4Repr4ctor("LongString", [{ _0: undefined, _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_arg_536) }]);
         }
-        return _M0MPC15debug4Repr4ctor("ByteArray", [{ _0: undefined, _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_arg_432) }]);
+        return _M0MPC15debug4Repr4ctor("ByteArray", [{ _0: undefined, _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_arg_537) }]);
       }
-      return _M0MPC15debug4Repr4ctor("Timestamp", [{ _0: undefined, _1: _M0IPC16uint646UInt64PC15debug5Debug8to__repr(_arg_433) }]);
+      return _M0MPC15debug4Repr4ctor("Timestamp", [{ _0: undefined, _1: _M0IPC16uint646UInt64PC15debug5Debug8to__repr(_arg_538) }]);
     }
-    return _M0MPC15debug4Repr4ctor("ArrayValue", [{ _0: undefined, _1: _M0IPC15array5ArrayPC15debug5Debug8to__reprGRP211localreview4amqp10FieldValueE(_arg_434) }]);
+    return _M0MPC15debug4Repr4ctor("ArrayValue", [{ _0: undefined, _1: _M0IPC15array5ArrayPC15debug5Debug8to__reprGRP211localreview4amqp10FieldValueE(_arg_539) }]);
   }
-  return _M0MPC15debug4Repr4ctor("TableValue", [{ _0: undefined, _1: _M0IPC15array5ArrayPC15debug5Debug8to__reprGUsRP211localreview4amqp10FieldValueEE(_arg_435) }]);
+  return _M0MPC15debug4Repr4ctor("TableValue", [{ _0: undefined, _1: _M0IPC15array5ArrayPC15debug5Debug8to__reprGUsRP211localreview4amqp10FieldValueEE(_arg_540) }]);
 }
-function _M0IP211localreview4amqp5FramePC15debug5Debug8to__repr(_x_344) {
-  const _bind$2 = [{ _0: "kind", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_344.kind) }, { _0: "channel", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_344.channel) }, { _0: "payload", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_344.payload) }];
+function _M0IP211localreview4amqp5FramePC15debug5Debug8to__repr(_x_449) {
+  const _bind$2 = [{ _0: "kind", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_449.kind) }, { _0: "channel", _1: _M0IPC13int3IntPC15debug5Debug8to__repr(_x_449.channel) }, { _0: "payload", _1: _M0IPC15bytes5BytesPC15debug5Debug8to__repr(_x_449.payload) }];
   return _M0MPC15debug4Repr6record(_M0MPB3Map3MapGsRPC15debug4ReprE(new _M0TPB9ArrayViewGUsRPC15debug4ReprEE(_bind$2, 0, 3), undefined));
 }
 function _M0MP211localreview4amqp10WireWriter3new() {
@@ -13116,6 +13766,892 @@ function _M0FP211localreview4amqp12body__frames(channel, body, max_frame_size) {
   }
   return new _M0DTPC16result6ResultGRPB5ArrayGRP211localreview4amqp5FrameERP211localreview4amqp10FrameErrorE2Ok(frames);
 }
+function _M0FP211localreview4amqp8uri__hex(c) {
+  const c$2 = c;
+  return c$2 >= 48 && c$2 <= 57 ? c$2 - 48 | 0 : c$2 >= 65 && c$2 <= 70 ? c$2 - 55 | 0 : c$2 >= 97 && c$2 <= 102 ? c$2 - 87 | 0 : -1;
+}
+function _M0FP211localreview4amqp15uri__unreserved(c) {
+  return c >= 65 && c <= 90 || (c >= 97 && c <= 122 || (c >= 48 && c <= 57 || (_M0IPC14byte4BytePB2Eq5equal(c, 45) || (_M0IPC14byte4BytePB2Eq5equal(c, 95) || (_M0IPC14byte4BytePB2Eq5equal(c, 46) || _M0IPC14byte4BytePB2Eq5equal(c, 126))))));
+}
+function _M0FP211localreview4amqp15uri__host__byte(c) {
+  if (_M0FP211localreview4amqp15uri__unreserved(c)) {
+    return true;
+  } else {
+    const _bind$2 = _M0IPC14char4CharPB4Show10to__string(c);
+    return _M0MPC16string6String8contains("!$&'()*+,;=:[]<>\"", new _M0TPC16string10StringView(_bind$2, 0, _bind$2.length));
+  }
+}
+function _M0FP211localreview4amqp11uri__decode(text, mode) {
+  const bytes = _M0FPC28encoding4utf814encode_2einner(new _M0TPC16string10StringView(text, 0, text.length), false);
+  const out = [];
+  const i = new _M0TPB8MutLocalGiE(0);
+  while (true) {
+    if (i.val < bytes.length) {
+      const _tmp = i.val;
+      const c = _tmp >>> 0 < bytes.length ? bytes[_tmp] : $oob();
+      if (_M0IPC14byte4BytePB2Eq5equal(c, 37)) {
+        if ((i.val + 2 | 0) >= bytes.length) {
+          return new _M0DTPC16result6ResultGsRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid URI escape"));
+        }
+        const _tmp$2 = i.val + 1 | 0;
+        const a = _M0FP211localreview4amqp8uri__hex(_tmp$2 >>> 0 < bytes.length ? bytes[_tmp$2] : $oob());
+        const _tmp$3 = i.val + 2 | 0;
+        const b = _M0FP211localreview4amqp8uri__hex(_tmp$3 >>> 0 < bytes.length ? bytes[_tmp$3] : $oob());
+        if (a < 0 || b < 0) {
+          return new _M0DTPC16result6ResultGsRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid URI escape"));
+        }
+        const value = (a << 4 | b) & 255;
+        if (mode === 2 && (value < 128 && value !== 37) || mode === 3 && (value !== 37 && (value !== 32 && !_M0FP211localreview4amqp15uri__host__byte(value)))) {
+          return new _M0DTPC16result6ResultGsRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid URI host escape"));
+        }
+        _M0MPC15array5Array4pushGyE(out, value);
+        i.val = i.val + 3 | 0;
+      } else {
+        if (mode >= 2 && (c < 128 && !_M0FP211localreview4amqp15uri__host__byte(c))) {
+          return new _M0DTPC16result6ResultGsRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid URI host"));
+        }
+        _M0MPC15array5Array4pushGyE(out, mode === 1 && _M0IPC14byte4BytePB2Eq5equal(c, 43) ? 32 : c);
+        i.val = i.val + 1 | 0;
+      }
+      continue;
+    } else {
+      break;
+    }
+  }
+  let _try_err;
+  _L: {
+    const _bind$2 = _M0MPC15bytes5Bytes11from__array(new _M0TPB9ArrayViewGyE(out, 0, out.length));
+    const _bind$3 = _M0FPC28encoding4utf814decode_2einner(new _M0TPC15bytes9BytesView(_bind$2, 0, _bind$2.length), false);
+    let _tmp;
+    if (_bind$3.$tag === 1) {
+      const _ok = _bind$3;
+      _tmp = _ok._0;
+    } else {
+      const _err = _bind$3;
+      _try_err = _err._0;
+      break _L;
+    }
+    return new _M0DTPC16result6ResultGsRP211localreview4amqp10FrameErrorE2Ok(_tmp);
+  }
+  return new _M0DTPC16result6ResultGsRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid URI UTF-8"));
+}
+function _M0FP211localreview4amqp11uri__number(text, signed) {
+  const bytes = _M0FPC28encoding4utf814encode_2einner(new _M0TPC16string10StringView(text, 0, text.length), false);
+  const start = signed && (bytes.length > 0 && (_M0IPC14byte4BytePB2Eq5equal(0 >>> 0 < bytes.length ? bytes[0] : $oob(), 43) || _M0IPC14byte4BytePB2Eq5equal(0 >>> 0 < bytes.length ? bytes[0] : $oob(), 45))) ? 1 : 0;
+  if (start === bytes.length) {
+    return new _M0DTPC16result6ResultGlRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid URI integer"));
+  }
+  const _bind$2 = bytes.length;
+  let _tmp = start;
+  while (true) {
+    const i = _tmp;
+    if (i < _bind$2) {
+      if ((i >>> 0 < bytes.length ? bytes[i] : $oob()) < 48 || (i >>> 0 < bytes.length ? bytes[i] : $oob()) > 57) {
+        return new _M0DTPC16result6ResultGlRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid URI integer"));
+      }
+      _tmp = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  let _try_err;
+  _L: {
+    const _bind$3 = _M0FPC28internal7strconv20parse__int64_2einner(new _M0TPC16string10StringView(text, 0, text.length), 10);
+    let _tmp$2;
+    if (_bind$3.$tag === 1) {
+      const _ok = _bind$3;
+      _tmp$2 = _ok._0;
+    } else {
+      const _err = _bind$3;
+      _try_err = _err._0;
+      break _L;
+    }
+    return new _M0DTPC16result6ResultGlRP211localreview4amqp10FrameErrorE2Ok(_tmp$2);
+  }
+  return new _M0DTPC16result6ResultGlRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("URI integer out of range"));
+}
+function _M0FP211localreview4amqp9uri__ipv6(text) {
+  let address;
+  let a;
+  let zone;
+  _L: {
+    _L$2: {
+      const _bind$2 = "%";
+      const _bind$3 = _M0MPC16string6String11split__once(text, new _M0TPC16string10StringView(_bind$2, 0, _bind$2.length));
+      if (_bind$3 === undefined) {
+        address = text;
+      } else {
+        const _Some = _bind$3;
+        const _x = _Some;
+        const _a = _x._0;
+        const _zone = _x._1;
+        a = _a;
+        zone = _zone;
+        break _L$2;
+      }
+      break _L;
+    }
+    if (_M0MPC16string10StringView9is__empty(zone)) {
+      return false;
+    } else {
+      address = _M0MPC16string10StringView9to__owned(a);
+    }
+  }
+  const _bind$2 = "::";
+  const halves = _M0MPB4Iter9to__arrayGRPC16string10StringViewE(_M0MPC16string6String5split(address, new _M0TPC16string10StringView(_bind$2, 0, _bind$2.length)));
+  if (halves.length > 2) {
+    return false;
+  }
+  const groups = [];
+  const _bind$3 = halves.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind$3) {
+      const half = halves[_];
+      if (!_M0MPC16string10StringView9is__empty(half)) {
+        const _tmp$2 = _M0MPC16string10StringView9to__owned(half);
+        const _bind$4 = ":";
+        const _it = _M0MPC16string6String5split(_tmp$2, new _M0TPC16string10StringView(_bind$4, 0, _bind$4.length));
+        while (true) {
+          let group;
+          _L$2: {
+            const _bind$5 = _M0MPB4Iter4nextGRPC16string10StringViewE(_it);
+            if (_bind$5 === undefined) {
+              break;
+            } else {
+              const _Some = _bind$5;
+              const _group = _Some;
+              group = _group;
+              break _L$2;
+            }
+          }
+          _M0MPC15array5Array4pushGRP211localreview4amqp8ArgumentE(groups, _M0MPC16string10StringView9to__owned(group));
+          continue;
+        }
+      }
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  const count = new _M0TPB8MutLocalGiE(0);
+  const _bind$4 = 0;
+  const _bind$5 = groups.length;
+  let _tmp$2 = _bind$4;
+  while (true) {
+    const i = _tmp$2;
+    if (i < _bind$5) {
+      const group = _M0MPC15array5Array2atGRPB4JsonE(groups, i);
+      const _bind$6 = ".";
+      if (_M0MPC16string6String8contains(group, new _M0TPC16string10StringView(_bind$6, 0, _bind$6.length))) {
+        if (i !== (groups.length - 1 | 0) || !_M0MPC16string6String11has__suffix(address, new _M0TPC16string10StringView(group, 0, group.length))) {
+          return false;
+        }
+        const _bind$7 = ".";
+        const parts = _M0MPB4Iter9to__arrayGRPC16string10StringViewE(_M0MPC16string6String5split(group, new _M0TPC16string10StringView(_bind$7, 0, _bind$7.length)));
+        if (parts.length !== 4) {
+          return false;
+        }
+        const _bind$8 = parts.length;
+        let _tmp$3 = 0;
+        while (true) {
+          const _ = _tmp$3;
+          if (_ < _bind$8) {
+            const part = parts[_];
+            if (_M0MPC16string10StringView9is__empty(part) || (_M0MPC16string10StringView6length(part) > 3 || _M0MPC16string10StringView6length(part) > 1 && _M0IPC16uint166UInt16PB2Eq5equal(_M0MPC16string10StringView2at(part, 0), 48))) {
+              return false;
+            }
+            let n;
+            let _try_err;
+            _L$2: {
+              _L$3: {
+                const _bind$9 = _M0FP211localreview4amqp11uri__number(_M0MPC16string10StringView9to__owned(part), false);
+                if (_bind$9.$tag === 1) {
+                  const _ok = _bind$9;
+                  n = _ok._0;
+                } else {
+                  const _err = _bind$9;
+                  _try_err = _err._0;
+                  break _L$3;
+                }
+                break _L$2;
+              }
+              return false;
+            }
+            if (BigInt.asIntN(64, n) > BigInt.asIntN(64, 255n)) {
+              return false;
+            }
+            _tmp$3 = _ + 1 | 0;
+            continue;
+          } else {
+            break;
+          }
+        }
+        count.val = count.val + 2 | 0;
+      } else {
+        if (_M0MPC16string6String9is__empty(group) || (group.length > 4 || _M0MPB4Iter3anyGyE(_M0MPC15bytes5Bytes4iter(_M0FPC28encoding4utf814encode_2einner(new _M0TPC16string10StringView(group, 0, group.length), false)), (c) => _M0FP211localreview4amqp8uri__hex(c) < 0))) {
+          return false;
+        }
+        count.val = count.val + 1 | 0;
+      }
+      _tmp$2 = i + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return halves.length === 2 ? count.val < 8 : count.val === 8;
+}
+function _M0FP211localreview4amqp10parse__uri(input) {
+  if (input.length > 65536 || _M0FPC28encoding4utf814encode_2einner(new _M0TPC16string10StringView(input, 0, input.length), false).length > 65536) {
+    return new _M0DTPC16result6ResultGRP211localreview4amqp3URIRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("URI exceeds 64 KiB"));
+  }
+  if (_M0MPB4Iter3anyGcE(_M0MPC16string6String4iter(input), (c) => c <= 32 || c === 127)) {
+    return new _M0DTPC16result6ResultGRP211localreview4amqp3URIRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid URI whitespace or control"));
+  }
+  let base;
+  let fragment;
+  _L: {
+    let a;
+    let b;
+    _L$2: {
+      const _bind$2 = "#";
+      const _bind$3 = _M0MPC16string6String11split__once(input, new _M0TPC16string10StringView(_bind$2, 0, _bind$2.length));
+      if (_bind$3 === undefined) {
+        base = input;
+        fragment = "";
+        break _L;
+      } else {
+        const _Some = _bind$3;
+        const _x = _Some;
+        const _a = _x._0;
+        const _b = _x._1;
+        a = _a;
+        b = _b;
+        break _L$2;
+      }
+    }
+    base = _M0MPC16string10StringView9to__owned(a);
+    fragment = _M0MPC16string10StringView9to__owned(b);
+    break _L;
+  }
+  const _bind$2 = _M0FP211localreview4amqp11uri__decode(fragment, 0);
+  if (_bind$2.$tag === 1) {
+    const _ok = _bind$2;
+    _ok._0;
+  } else {
+    return _bind$2;
+  }
+  let address;
+  let query;
+  _L$2: {
+    let a;
+    let b;
+    _L$3: {
+      const _bind$3 = "?";
+      const _bind$4 = _M0MPC16string6String11split__once(base, new _M0TPC16string10StringView(_bind$3, 0, _bind$3.length));
+      if (_bind$4 === undefined) {
+        address = base;
+        query = "";
+        break _L$2;
+      } else {
+        const _Some = _bind$4;
+        const _x = _Some;
+        const _a = _x._0;
+        const _b = _x._1;
+        a = _a;
+        b = _b;
+        break _L$3;
+      }
+    }
+    address = _M0MPC16string10StringView9to__owned(a);
+    query = _M0MPC16string10StringView9to__owned(b);
+    break _L$2;
+  }
+  let scheme;
+  let rest;
+  _L$3: {
+    let a;
+    let b;
+    _L$4: {
+      const _bind$3 = ":";
+      const _bind$4 = _M0MPC16string6String11split__once(address, new _M0TPC16string10StringView(_bind$3, 0, _bind$3.length));
+      if (_bind$4 === undefined) {
+        return new _M0DTPC16result6ResultGRP211localreview4amqp3URIRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("missing AMQP URI scheme"));
+      } else {
+        const _Some = _bind$4;
+        const _x = _Some;
+        const _a = _x._0;
+        const _b = _x._1;
+        a = _a;
+        b = _b;
+        break _L$4;
+      }
+    }
+    scheme = _M0MPC16string10StringView9to__owned(_M0MPC16string10StringView9to__lower(a));
+    rest = _M0MPC16string10StringView9to__owned(b);
+    break _L$3;
+  }
+  if (_M0IP016_24default__implPB2Eq10not__equalGsE(scheme, "amqp") && _M0IP016_24default__implPB2Eq10not__equalGsE(scheme, "amqps")) {
+    return new _M0DTPC16result6ResultGRP211localreview4amqp3URIRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid AMQP URI scheme"));
+  }
+  const authority = new _M0TPB8MutLocalGsE("");
+  const path = new _M0TPB8MutLocalGsE("");
+  const _bind$3 = "//";
+  if (_M0MPC16string6String11has__prefix(rest, new _M0TPC16string10StringView(_bind$3, 0, _bind$3.length))) {
+    const tail = _M0MPC16string10StringView9to__owned(_M0MPC16string6String11sub_2einner(rest, 2, undefined));
+    let i;
+    _L$4: {
+      _L$5: {
+        const _bind$4 = "/";
+        const _bind$5 = _M0MPC16string6String4find(tail, new _M0TPC16string10StringView(_bind$4, 0, _bind$4.length));
+        if (_bind$5 === undefined) {
+          authority.val = tail;
+        } else {
+          const _Some = _bind$5;
+          const _i = _Some;
+          i = _i;
+          break _L$5;
+        }
+        break _L$4;
+      }
+      authority.val = _M0MPC16string10StringView9to__owned(_M0MPC16string6String11sub_2einner(tail, 0, i));
+      path.val = _M0MPC16string10StringView9to__owned(_M0MPC16string6String11sub_2einner(tail, i, undefined));
+    }
+  } else {
+    const _bind$4 = "/";
+    if (_M0MPC16string6String11has__prefix(rest, new _M0TPC16string10StringView(_bind$4, 0, _bind$4.length))) {
+      path.val = rest;
+    }
+  }
+  const host_port = new _M0TPB8MutLocalGsE(authority.val);
+  const username = new _M0TPB8MutLocalGsE("guest");
+  const password = new _M0TPB8MutLocalGsE("guest");
+  let i;
+  _L$4: {
+    _L$5: {
+      const _tmp = authority.val;
+      const _bind$4 = "@";
+      const _bind$5 = _M0MPC16string6String9rev__find(_tmp, new _M0TPC16string10StringView(_bind$4, 0, _bind$4.length));
+      if (_bind$5 === undefined) {
+      } else {
+        const _Some = _bind$5;
+        const _i = _Some;
+        i = _i;
+        break _L$5;
+      }
+      break _L$4;
+    }
+    const user = _M0MPC16string10StringView9to__owned(_M0MPC16string6String11sub_2einner(authority.val, 0, i));
+    if (_M0MPB4Iter3anyGyE(_M0MPC15bytes5Bytes4iter(_M0FPC28encoding4utf814encode_2einner(new _M0TPC16string10StringView(user, 0, user.length), false)), (c) => {
+      let _tmp;
+      if (_M0FP211localreview4amqp15uri__unreserved(c)) {
+        _tmp = true;
+      } else {
+        const _bind$4 = _M0IPC14char4CharPB4Show10to__string(c);
+        _tmp = _M0MPC16string6String8contains("!$&'()*+,;=:%@", new _M0TPC16string10StringView(_bind$4, 0, _bind$4.length));
+      }
+      return !_tmp;
+    })) {
+      return new _M0DTPC16result6ResultGRP211localreview4amqp3URIRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid URI user information"));
+    }
+    host_port.val = _M0MPC16string10StringView9to__owned(_M0MPC16string6String11sub_2einner(authority.val, i + 1 | 0, undefined));
+    let a;
+    let b;
+    _L$6: {
+      _L$7: {
+        const _bind$4 = ":";
+        const _bind$5 = _M0MPC16string6String11split__once(user, new _M0TPC16string10StringView(_bind$4, 0, _bind$4.length));
+        if (_bind$5 === undefined) {
+          const _bind$6 = _M0FP211localreview4amqp11uri__decode(user, 0);
+          let _tmp;
+          if (_bind$6.$tag === 1) {
+            const _ok = _bind$6;
+            _tmp = _ok._0;
+          } else {
+            return _bind$6;
+          }
+          username.val = _tmp;
+        } else {
+          const _Some = _bind$5;
+          const _x = _Some;
+          const _a = _x._0;
+          const _b = _x._1;
+          a = _a;
+          b = _b;
+          break _L$7;
+        }
+        break _L$6;
+      }
+      const _bind$4 = _M0FP211localreview4amqp11uri__decode(_M0MPC16string10StringView9to__owned(a), 0);
+      let _tmp;
+      if (_bind$4.$tag === 1) {
+        const _ok = _bind$4;
+        _tmp = _ok._0;
+      } else {
+        return _bind$4;
+      }
+      username.val = _tmp;
+      const _bind$5 = _M0FP211localreview4amqp11uri__decode(_M0MPC16string10StringView9to__owned(b), 0);
+      let _tmp$2;
+      if (_bind$5.$tag === 1) {
+        const _ok = _bind$5;
+        _tmp$2 = _ok._0;
+      } else {
+        return _bind$5;
+      }
+      password.val = _tmp$2;
+    }
+  }
+  const host = new _M0TPB8MutLocalGsE(host_port.val);
+  const port_text = new _M0TPB8MutLocalGsE("");
+  const _tmp = host_port.val;
+  const _bind$4 = "[";
+  if (_M0MPC16string6String11has__prefix(_tmp, new _M0TPC16string10StringView(_bind$4, 0, _bind$4.length))) {
+    let end;
+    const _tmp$2 = host_port.val;
+    const _bind$5 = "]";
+    const _bind$6 = _M0MPC16string6String9rev__find(_tmp$2, new _M0TPC16string10StringView(_bind$5, 0, _bind$5.length));
+    if (_bind$6 === undefined) {
+      return new _M0DTPC16result6ResultGRP211localreview4amqp3URIRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("unclosed URI IP literal"));
+    } else {
+      const _Some = _bind$6;
+      const _i = _Some;
+      end = _i;
+    }
+    const suffix = _M0MPC16string10StringView9to__owned(_M0MPC16string6String11sub_2einner(host_port.val, end + 1 | 0, undefined));
+    if (!_M0MPC16string6String9is__empty(suffix)) {
+      const _bind$7 = ":";
+      if (!_M0MPC16string6String11has__prefix(suffix, new _M0TPC16string10StringView(_bind$7, 0, _bind$7.length))) {
+        return new _M0DTPC16result6ResultGRP211localreview4amqp3URIRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid URI port"));
+      }
+      port_text.val = _M0MPC16string10StringView9to__owned(_M0MPC16string6String11sub_2einner(suffix, 1, undefined));
+    }
+    const encoded = _M0MPC16string10StringView9to__owned(_M0MPC16string6String11sub_2einner(host_port.val, 1, end));
+    let _tmp$3;
+    let i$2;
+    _L$5: {
+      _L$6: {
+        const _bind$7 = "%25";
+        const _bind$8 = _M0MPC16string6String4find(encoded, new _M0TPC16string10StringView(_bind$7, 0, _bind$7.length));
+        if (_bind$8 === undefined) {
+          const _bind$9 = _M0FP211localreview4amqp11uri__decode(encoded, 2);
+          if (_bind$9.$tag === 1) {
+            const _ok = _bind$9;
+            _tmp$3 = _ok._0;
+          } else {
+            return _bind$9;
+          }
+        } else {
+          const _Some = _bind$8;
+          const _i = _Some;
+          i$2 = _i;
+          break _L$6;
+        }
+        break _L$5;
+      }
+      const _bind$7 = _M0FP211localreview4amqp11uri__decode(_M0MPC16string10StringView9to__owned(_M0MPC16string6String11sub_2einner(encoded, 0, i$2)), 2);
+      let _tmp$4;
+      if (_bind$7.$tag === 1) {
+        const _ok = _bind$7;
+        _tmp$4 = _ok._0;
+      } else {
+        return _bind$7;
+      }
+      const _tmp$5 = _tmp$4;
+      const _bind$8 = _M0FP211localreview4amqp11uri__decode(_M0MPC16string10StringView9to__owned(_M0MPC16string6String11sub_2einner(encoded, i$2, undefined)), 3);
+      let _tmp$6;
+      if (_bind$8.$tag === 1) {
+        const _ok = _bind$8;
+        _tmp$6 = _ok._0;
+      } else {
+        return _bind$8;
+      }
+      _tmp$3 = `${_tmp$5}${_tmp$6}`;
+    }
+    host.val = _tmp$3;
+    if (!_M0FP211localreview4amqp9uri__ipv6(host.val)) {
+      return new _M0DTPC16result6ResultGRP211localreview4amqp3URIRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid URI IPv6 literal"));
+    }
+  } else {
+    let i$2;
+    _L$5: {
+      _L$6: {
+        const _tmp$2 = host_port.val;
+        const _bind$5 = ":";
+        const _bind$6 = _M0MPC16string6String9rev__find(_tmp$2, new _M0TPC16string10StringView(_bind$5, 0, _bind$5.length));
+        if (_bind$6 === undefined) {
+        } else {
+          const _Some = _bind$6;
+          const _i = _Some;
+          i$2 = _i;
+          break _L$6;
+        }
+        break _L$5;
+      }
+      host.val = _M0MPC16string10StringView9to__owned(_M0MPC16string6String11sub_2einner(host_port.val, 0, i$2));
+      port_text.val = _M0MPC16string10StringView9to__owned(_M0MPC16string6String11sub_2einner(host_port.val, i$2 + 1 | 0, undefined));
+    }
+    const _bind$5 = _M0FP211localreview4amqp11uri__decode(host.val, 2);
+    let _tmp$2;
+    if (_bind$5.$tag === 1) {
+      const _ok = _bind$5;
+      _tmp$2 = _ok._0;
+    } else {
+      return _bind$5;
+    }
+    host.val = _tmp$2;
+  }
+  const port = new _M0TPB8MutLocalGiE(scheme === "amqps" ? 5671 : 5672);
+  if (!_M0MPC16string6String9is__empty(port_text.val)) {
+    const _bind$5 = _M0FP211localreview4amqp11uri__number(port_text.val, false);
+    let number;
+    if (_bind$5.$tag === 1) {
+      const _ok = _bind$5;
+      number = _ok._0;
+    } else {
+      return _bind$5;
+    }
+    if (BigInt.asIntN(64, number) > BigInt.asIntN(64, 2147483647n)) {
+      return new _M0DTPC16result6ResultGRP211localreview4amqp3URIRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("URI port out of range"));
+    }
+    port.val = Number(BigInt.asIntN(32, number)) | 0;
+  }
+  if (_M0MPC16string6String9is__empty(host.val)) {
+    host.val = "localhost";
+  }
+  const _bind$5 = _M0FP211localreview4amqp11uri__decode(path.val, 0);
+  let decoded_path;
+  if (_bind$5.$tag === 1) {
+    const _ok = _bind$5;
+    decoded_path = _ok._0;
+  } else {
+    return _bind$5;
+  }
+  const vhost = new _M0TPB8MutLocalGsE("/");
+  const _bind$6 = "/";
+  if (_M0MPC16string6String11has__prefix(decoded_path, new _M0TPC16string10StringView(_bind$6, 0, _bind$6.length))) {
+    let offset;
+    let _tmp$2;
+    if (_M0MPC16string6String9is__empty(host_port.val)) {
+      const _bind$7 = "///";
+      _tmp$2 = _M0MPC16string6String11has__prefix(decoded_path, new _M0TPC16string10StringView(_bind$7, 0, _bind$7.length));
+    } else {
+      _tmp$2 = false;
+    }
+    if (_tmp$2) {
+      offset = 3;
+    } else {
+      offset = 1;
+    }
+    if (decoded_path.length > offset) {
+      vhost.val = _M0MPC16string10StringView9to__owned(_M0MPC16string6String11sub_2einner(decoded_path, offset, undefined));
+    }
+  } else {
+    if (!_M0MPC16string6String9is__empty(decoded_path)) {
+      vhost.val = decoded_path;
+    }
+  }
+  const _bind$7 = [];
+  const values = _M0MPB3Map3MapGsRPB5ArrayGsEE(new _M0TPB9ArrayViewGUsRPB5ArrayGsEEE(_bind$7, 0, 0), undefined);
+  const _bind$8 = "&";
+  const _it = _M0MPC16string6String5split(query, new _M0TPC16string10StringView(_bind$8, 0, _bind$8.length));
+  while (true) {
+    let pair;
+    _L$5: {
+      const _bind$9 = _M0MPB4Iter4nextGRPC16string10StringViewE(_it);
+      if (_bind$9 === undefined) {
+        break;
+      } else {
+        const _Some = _bind$9;
+        const _pair = _Some;
+        pair = _pair;
+        break _L$5;
+      }
+    }
+    let _tmp$2;
+    if (_M0MPC16string10StringView9is__empty(pair)) {
+      _tmp$2 = true;
+    } else {
+      const _bind$9 = ";";
+      _tmp$2 = _M0MPC16string10StringView8contains(pair, new _M0TPC16string10StringView(_bind$9, 0, _bind$9.length));
+    }
+    if (_tmp$2) {
+      continue;
+    }
+    let key;
+    let value;
+    _L$6: {
+      let a;
+      let b;
+      _L$7: {
+        const _tmp$3 = _M0MPC16string10StringView9to__owned(pair);
+        const _bind$9 = "=";
+        const _bind$10 = _M0MPC16string6String11split__once(_tmp$3, new _M0TPC16string10StringView(_bind$9, 0, _bind$9.length));
+        if (_bind$10 === undefined) {
+          key = _M0MPC16string10StringView9to__owned(pair);
+          value = "";
+          break _L$6;
+        } else {
+          const _Some = _bind$10;
+          const _x = _Some;
+          const _a = _x._0;
+          const _b = _x._1;
+          a = _a;
+          b = _b;
+          break _L$7;
+        }
+      }
+      key = _M0MPC16string10StringView9to__owned(a);
+      value = _M0MPC16string10StringView9to__owned(b);
+      break _L$6;
+    }
+    let _try_err;
+    _L$7: {
+      _L$8: {
+        const _bind$9 = _M0FP211localreview4amqp11uri__decode(key, 1);
+        let key$2;
+        if (_bind$9.$tag === 1) {
+          const _ok = _bind$9;
+          key$2 = _ok._0;
+        } else {
+          const _err = _bind$9;
+          _try_err = _err._0;
+          break _L$8;
+        }
+        const _bind$10 = _M0FP211localreview4amqp11uri__decode(value, 1);
+        let value$2;
+        if (_bind$10.$tag === 1) {
+          const _ok = _bind$10;
+          value$2 = _ok._0;
+        } else {
+          const _err = _bind$10;
+          _try_err = _err._0;
+          break _L$8;
+        }
+        let previous;
+        _L$9: {
+          _L$10: {
+            const _bind$11 = _M0MPB3Map3getGsRPB5ArrayGsEE(values, key$2);
+            if (_bind$11.$tag === 1) {
+              const _Some = _bind$11;
+              const _previous = _Some._0;
+              previous = _previous;
+              break _L$10;
+            } else {
+              _M0MPB3Map3setGsRPB5ArrayGsEE(values, key$2, [value$2]);
+            }
+            break _L$9;
+          }
+          _M0MPC15array5Array4pushGRP211localreview4amqp8ArgumentE(previous, value$2);
+        }
+        break _L$7;
+      }
+    }
+    continue;
+  }
+  const first = (key) => {
+    let items;
+    _L$5: {
+      const _bind$9 = _M0MPB3Map3getGsRPB5ArrayGsEE(values, key);
+      if (_bind$9.$tag === 1) {
+        const _Some = _bind$9;
+        const _items = _Some._0;
+        items = _items;
+        break _L$5;
+      } else {
+        return "";
+      }
+    }
+    return _M0MPC15array5Array2atGRPB4JsonE(items, 0);
+  };
+  let heartbeat_seconds;
+  if (_M0MPB3Map8containsGsRPB5ArrayGsEE(values, "heartbeat")) {
+    const _bind$9 = _M0FP211localreview4amqp11uri__number(first("heartbeat"), true);
+    if (_bind$9.$tag === 1) {
+      const _ok = _bind$9;
+      heartbeat_seconds = _ok._0;
+    } else {
+      return _bind$9;
+    }
+  } else {
+    heartbeat_seconds = undefined;
+  }
+  let connection_timeout;
+  if (_M0MPB3Map8containsGsRPB5ArrayGsEE(values, "connection_timeout")) {
+    const _bind$9 = _M0FP211localreview4amqp11uri__number(first("connection_timeout"), true);
+    if (_bind$9.$tag === 1) {
+      const _ok = _bind$9;
+      connection_timeout = _ok._0;
+    } else {
+      return _bind$9;
+    }
+  } else {
+    connection_timeout = 0n;
+  }
+  let channel_max;
+  if (_M0MPB3Map8containsGsRPB5ArrayGsEE(values, "channel_max")) {
+    const _bind$9 = _M0FP211localreview4amqp11uri__number(first("channel_max"), false);
+    if (_bind$9.$tag === 1) {
+      const _ok = _bind$9;
+      channel_max = _ok._0;
+    } else {
+      return _bind$9;
+    }
+  } else {
+    channel_max = 0n;
+  }
+  if (BigInt.asIntN(64, channel_max) > BigInt.asIntN(64, 65535n)) {
+    return new _M0DTPC16result6ResultGRP211localreview4amqp3URIRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("URI channel_max out of range"));
+  }
+  return new _M0DTPC16result6ResultGRP211localreview4amqp3URIRP211localreview4amqp10FrameErrorE2Ok(new _M0TP211localreview4amqp3URI(scheme, host.val, port.val, username.val, password.val, vhost.val, first("certfile"), first("cacertfile"), first("keyfile"), first("server_name_indication"), _M0MPC16option6Option10unwrap__orGRPB5ArrayGsEE(_M0MPB3Map3getGsRPB5ArrayGsEE(values, "auth_mechanism"), []), heartbeat_seconds, connection_timeout, Number(BigInt.asIntN(32, channel_max)) | 0));
+}
+function _M0FP211localreview4amqp11uri__escape(text, mode) {
+  const out = _M0MPB13StringBuilder21StringBuilder_2einner(0);
+  const hex = $bytes_literal$1;
+  const _bind$2 = _M0FPC28encoding4utf814encode_2einner(new _M0TPC16string10StringView(text, 0, text.length), false);
+  const _bind$3 = _bind$2.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind$3) {
+      const c = _bind$2[_];
+      let literal;
+      if (_M0FP211localreview4amqp15uri__unreserved(c)) {
+        literal = true;
+      } else {
+        let _tmp$2;
+        let _tmp$3;
+        if (mode === 1) {
+          const _bind$4 = _M0IPC14char4CharPB4Show10to__string(c);
+          _tmp$3 = _M0MPC16string6String8contains("$&+,;=", new _M0TPC16string10StringView(_bind$4, 0, _bind$4.length));
+        } else {
+          _tmp$3 = false;
+        }
+        if (_tmp$3) {
+          _tmp$2 = true;
+        } else {
+          let _tmp$4;
+          let _tmp$5;
+          if (mode === 2) {
+            const _bind$4 = _M0IPC14char4CharPB4Show10to__string(c);
+            _tmp$5 = _M0MPC16string6String8contains("$&+,/:;=@", new _M0TPC16string10StringView(_bind$4, 0, _bind$4.length));
+          } else {
+            _tmp$5 = false;
+          }
+          if (_tmp$5) {
+            _tmp$4 = true;
+          } else {
+            _tmp$4 = mode === 3 && _M0FP211localreview4amqp15uri__host__byte(c);
+          }
+          _tmp$2 = _tmp$4;
+        }
+        literal = _tmp$2;
+      }
+      if (literal) {
+        _M0IPB13StringBuilderPB6Logger11write__char(out, c);
+      } else {
+        if (mode === 0 && _M0IPC14byte4BytePB2Eq5equal(c, 32)) {
+          _M0IPB13StringBuilderPB6Logger11write__char(out, 43);
+        } else {
+          _M0IPB13StringBuilderPB6Logger11write__char(out, 37);
+          const _tmp$2 = c >> 4;
+          _M0IPB13StringBuilderPB6Logger11write__char(out, _tmp$2 >>> 0 < hex.length ? hex[_tmp$2] : $oob());
+          const _tmp$3 = c & 15;
+          _M0IPB13StringBuilderPB6Logger11write__char(out, _tmp$3 >>> 0 < hex.length ? hex[_tmp$3] : $oob());
+        }
+      }
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return _M0MPB13StringBuilder10to__string(out);
+}
+function _M0MP211localreview4amqp3URI6format(self, redact) {
+  const out = _M0MPB13StringBuilder21StringBuilder_2einner(0);
+  _M0IPB13StringBuilderPB6Logger13write__string(out, `${self.scheme}://`);
+  if (_M0IP016_24default__implPB2Eq10not__equalGsE(self.username, "guest") || _M0IP016_24default__implPB2Eq10not__equalGsE(self.password, "guest")) {
+    _M0IPB13StringBuilderPB6Logger13write__string(out, _M0FP211localreview4amqp11uri__escape(self.username, 1));
+    if (_M0IP016_24default__implPB2Eq10not__equalGsE(self.password, "guest")) {
+      _M0IPB13StringBuilderPB6Logger13write__string(out, `:${redact ? "xxxxx" : _M0FP211localreview4amqp11uri__escape(self.password, 1)}`);
+    }
+    _M0IPB13StringBuilderPB6Logger11write__char(out, 64);
+  }
+  let host;
+  const _tmp = self.host;
+  const _bind$2 = ":";
+  if (_M0MPC16string6String8contains(_tmp, new _M0TPC16string10StringView(_bind$2, 0, _bind$2.length))) {
+    host = `[${self.host}]`;
+  } else {
+    host = self.host;
+  }
+  _M0IPB13StringBuilderPB6Logger13write__string(out, _M0FP211localreview4amqp11uri__escape(host, 3));
+  if (self.port !== (self.scheme === "amqps" ? 5671 : 5672)) {
+    _M0IPB13StringBuilderPB6Logger13write__string(out, `:${_M0MPC13int3Int18to__string_2einner(self.port, 10)}`);
+  }
+  let path;
+  if (self.vhost === "/") {
+    path = "/";
+  } else {
+    const _tmp$2 = self.vhost;
+    const _bind$3 = " ";
+    if (_M0MPC16string6String8contains(_tmp$2, new _M0TPC16string10StringView(_bind$3, 0, _bind$3.length))) {
+      path = _M0FP211localreview4amqp11uri__escape(self.vhost, 2);
+    } else {
+      path = _M0FP211localreview4amqp11uri__escape(self.vhost, 0);
+    }
+  }
+  let _tmp$2;
+  if (!_M0MPC16string6String9is__empty(path)) {
+    const _bind$3 = "/";
+    _tmp$2 = !_M0MPC16string6String11has__prefix(path, new _M0TPC16string10StringView(_bind$3, 0, _bind$3.length));
+  } else {
+    _tmp$2 = false;
+  }
+  if (_tmp$2) {
+    _M0IPB13StringBuilderPB6Logger11write__char(out, 47);
+  }
+  _M0IPB13StringBuilderPB6Logger13write__string(out, path);
+  const separator = new _M0TPB8MutLocalGsE("?");
+  const _bind$3 = [{ _0: "cacertfile", _1: self.ca_cert_file }, { _0: "certfile", _1: self.cert_file }, { _0: "keyfile", _1: self.key_file }, { _0: "server_name_indication", _1: self.server_name }];
+  const _bind$4 = _bind$3.length;
+  let _tmp$3 = 0;
+  while (true) {
+    const _ = _tmp$3;
+    if (_ < _bind$4) {
+      const _foreach_element = _bind$3[_];
+      let key;
+      let value;
+      _L: {
+        const _key = _foreach_element._0;
+        const _value = _foreach_element._1;
+        key = _key;
+        value = _value;
+        break _L;
+      }
+      if (!_M0MPC16string6String9is__empty(value)) {
+        _M0IPB13StringBuilderPB6Logger13write__string(out, `${separator.val}${key}=${_M0FP211localreview4amqp11uri__escape(value, 0)}`);
+        separator.val = "&";
+      }
+      _tmp$3 = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return _M0MPB13StringBuilder10to__string(out);
+}
+function _M0MP211localreview4amqp3URI10to__string(self) {
+  return _M0MP211localreview4amqp3URI6format(self, false);
+}
+function _M0MP211localreview4amqp3URI8redacted(self) {
+  return _M0MP211localreview4amqp3URI6format(self, true);
+}
 function _M0FP211localreview4amqp16check__mechanism(mechanism) {
   if (_M0MPC16string6String9is__empty(mechanism) || (mechanism.length > 255 || _M0MPB4Iter3anyGcE(_M0MPC16string6String4iter(mechanism), (c) => c < 33 || c > 126))) {
     return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("invalid SASL mechanism"));
@@ -13151,8 +14687,453 @@ function _M0MP211localreview4amqp14Authentication5plain(username, password) {
   const _bind$3 = `\u0000${username}\u0000${password}`;
   return _M0MP211localreview4amqp14Authentication6custom("PLAIN", _M0FPC28encoding4utf814encode_2einner(new _M0TPC16string10StringView(_bind$3, 0, _bind$3.length), false));
 }
+function _M0FP211localreview4amqp12checked__int(value, low, high) {
+  if (value < low || value > high) {
+    return new _M0DTPC16result6ResultGmRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("integer field out of range"));
+  }
+  return new _M0DTPC16result6ResultGmRP211localreview4amqp10FrameErrorE2Ok(BigInt.asUintN(64, BigInt(value)));
+}
+function _M0FP211localreview4amqp12write__table(w, entries, depth) {
+  const _bind$2 = _M0MP211localreview4amqp10WireWriter4node(w, depth);
+  if (_bind$2.$tag === 1) {
+    const _ok = _bind$2;
+    _ok._0;
+  } else {
+    return _bind$2;
+  }
+  const start = w.bytes.length;
+  const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 0n, 4);
+  if (_bind$3.$tag === 1) {
+    const _ok = _bind$3;
+    _ok._0;
+  } else {
+    return _bind$3;
+  }
+  const _bind$4 = entries.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind$4) {
+      const _foreach_element = entries[_];
+      let key;
+      let value;
+      _L: {
+        const _key = _foreach_element._0;
+        const _value = _foreach_element._1;
+        key = _key;
+        value = _value;
+        break _L;
+      }
+      const _bind$5 = _M0MP211localreview4amqp10WireWriter8shortstr(w, key);
+      if (_bind$5.$tag === 1) {
+        const _ok = _bind$5;
+        _ok._0;
+      } else {
+        return _bind$5;
+      }
+      const _bind$6 = _M0FP211localreview4amqp12write__field(w, value, depth + 1 | 0);
+      if (_bind$6.$tag === 1) {
+        const _ok = _bind$6;
+        _ok._0;
+      } else {
+        return _bind$6;
+      }
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE2Ok(_M0MP211localreview4amqp10WireWriter11patch__size(w, start));
+}
+function _M0FP211localreview4amqp12write__field(w, value, depth) {
+  const _bind$2 = _M0MP211localreview4amqp10WireWriter4node(w, depth);
+  if (_bind$2.$tag === 1) {
+    const _ok = _bind$2;
+    _ok._0;
+  } else {
+    return _bind$2;
+  }
+  let values;
+  _L: {
+    let entries;
+    _L$2: {
+      let v;
+      _L$3: {
+        let v$2;
+        _L$4: {
+          let v$3;
+          _L$5: {
+            let scale;
+            let coefficient;
+            _L$6: {
+              let v$4;
+              _L$7: {
+                let v$5;
+                _L$8: {
+                  let v$6;
+                  _L$9: {
+                    let v$7;
+                    _L$10: {
+                      let v$8;
+                      _L$11: {
+                        let v$9;
+                        _L$12: {
+                          let v$10;
+                          _L$13: {
+                            let v$11;
+                            _L$14: {
+                              let v$12;
+                              _L$15: {
+                                let v$13;
+                                _L$16: {
+                                  switch (value.$tag) {
+                                    case 0: {
+                                      const _Boolean = value;
+                                      const _v = _Boolean._0;
+                                      v$13 = _v;
+                                      break _L$16;
+                                    }
+                                    case 1: {
+                                      const _Signed8 = value;
+                                      const _v$2 = _Signed8._0;
+                                      v$12 = _v$2;
+                                      break _L$15;
+                                    }
+                                    case 2: {
+                                      const _Unsigned8 = value;
+                                      const _v$3 = _Unsigned8._0;
+                                      v$11 = _v$3;
+                                      break _L$14;
+                                    }
+                                    case 3: {
+                                      const _Signed16 = value;
+                                      const _v$4 = _Signed16._0;
+                                      v$10 = _v$4;
+                                      break _L$13;
+                                    }
+                                    case 4: {
+                                      const _Unsigned16 = value;
+                                      const _v$5 = _Unsigned16._0;
+                                      v$9 = _v$5;
+                                      break _L$12;
+                                    }
+                                    case 5: {
+                                      const _Signed32 = value;
+                                      const _v$6 = _Signed32._0;
+                                      v$8 = _v$6;
+                                      break _L$11;
+                                    }
+                                    case 6: {
+                                      const _Unsigned32 = value;
+                                      const _v$7 = _Unsigned32._0;
+                                      v$7 = _v$7;
+                                      break _L$10;
+                                    }
+                                    case 7: {
+                                      const _Signed64 = value;
+                                      const _v$8 = _Signed64._0;
+                                      v$6 = _v$8;
+                                      break _L$9;
+                                    }
+                                    case 8: {
+                                      const _Float32Bits = value;
+                                      const _v$9 = _Float32Bits._0;
+                                      v$5 = _v$9;
+                                      break _L$8;
+                                    }
+                                    case 9: {
+                                      const _Float64Bits = value;
+                                      const _v$10 = _Float64Bits._0;
+                                      v$4 = _v$10;
+                                      break _L$7;
+                                    }
+                                    case 10: {
+                                      const _Decimal = value;
+                                      const _scale = _Decimal._0;
+                                      const _coefficient = _Decimal._1;
+                                      scale = _scale;
+                                      coefficient = _coefficient;
+                                      break _L$6;
+                                    }
+                                    case 11: {
+                                      const _LongString = value;
+                                      const _v$11 = _LongString._0;
+                                      v$3 = _v$11;
+                                      break _L$5;
+                                    }
+                                    case 12: {
+                                      const _ByteArray = value;
+                                      const _v$12 = _ByteArray._0;
+                                      v$2 = _v$12;
+                                      break _L$4;
+                                    }
+                                    case 13: {
+                                      const _Timestamp = value;
+                                      const _v$13 = _Timestamp._0;
+                                      v = _v$13;
+                                      break _L$3;
+                                    }
+                                    case 16: {
+                                      return _M0MP211localreview4amqp10WireWriter4uint(w, 86n, 1);
+                                    }
+                                    case 15: {
+                                      const _TableValue = value;
+                                      const _entries = _TableValue._0;
+                                      entries = _entries;
+                                      break _L$2;
+                                    }
+                                    default: {
+                                      const _ArrayValue = value;
+                                      const _values = _ArrayValue._0;
+                                      values = _values;
+                                      break _L;
+                                    }
+                                  }
+                                }
+                                const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 116n, 1);
+                                if (_bind$3.$tag === 1) {
+                                  const _ok = _bind$3;
+                                  _ok._0;
+                                } else {
+                                  return _bind$3;
+                                }
+                                return _M0MP211localreview4amqp10WireWriter4uint(w, v$13 ? 1n : 0n, 1);
+                              }
+                              const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 98n, 1);
+                              if (_bind$3.$tag === 1) {
+                                const _ok = _bind$3;
+                                _ok._0;
+                              } else {
+                                return _bind$3;
+                              }
+                              const _bind$4 = _M0FP211localreview4amqp12checked__int(v$12, -128, 127);
+                              let _tmp;
+                              if (_bind$4.$tag === 1) {
+                                const _ok = _bind$4;
+                                _tmp = _ok._0;
+                              } else {
+                                return _bind$4;
+                              }
+                              return _M0MP211localreview4amqp10WireWriter4uint(w, _tmp, 1);
+                            }
+                            const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 66n, 1);
+                            if (_bind$3.$tag === 1) {
+                              const _ok = _bind$3;
+                              _ok._0;
+                            } else {
+                              return _bind$3;
+                            }
+                            const _bind$4 = _M0FP211localreview4amqp12checked__int(v$11, 0, 255);
+                            let _tmp;
+                            if (_bind$4.$tag === 1) {
+                              const _ok = _bind$4;
+                              _tmp = _ok._0;
+                            } else {
+                              return _bind$4;
+                            }
+                            return _M0MP211localreview4amqp10WireWriter4uint(w, _tmp, 1);
+                          }
+                          const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 115n, 1);
+                          if (_bind$3.$tag === 1) {
+                            const _ok = _bind$3;
+                            _ok._0;
+                          } else {
+                            return _bind$3;
+                          }
+                          const _bind$4 = _M0FP211localreview4amqp12checked__int(v$10, -32768, 32767);
+                          let _tmp;
+                          if (_bind$4.$tag === 1) {
+                            const _ok = _bind$4;
+                            _tmp = _ok._0;
+                          } else {
+                            return _bind$4;
+                          }
+                          return _M0MP211localreview4amqp10WireWriter4uint(w, _tmp, 2);
+                        }
+                        const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 117n, 1);
+                        if (_bind$3.$tag === 1) {
+                          const _ok = _bind$3;
+                          _ok._0;
+                        } else {
+                          return _bind$3;
+                        }
+                        const _bind$4 = _M0FP211localreview4amqp12checked__int(v$9, 0, 65535);
+                        let _tmp;
+                        if (_bind$4.$tag === 1) {
+                          const _ok = _bind$4;
+                          _tmp = _ok._0;
+                        } else {
+                          return _bind$4;
+                        }
+                        return _M0MP211localreview4amqp10WireWriter4uint(w, _tmp, 2);
+                      }
+                      const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 73n, 1);
+                      if (_bind$3.$tag === 1) {
+                        const _ok = _bind$3;
+                        _ok._0;
+                      } else {
+                        return _bind$3;
+                      }
+                      return _M0MP211localreview4amqp10WireWriter4uint(w, BigInt.asUintN(64, BigInt(v$8)), 4);
+                    }
+                    const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 105n, 1);
+                    if (_bind$3.$tag === 1) {
+                      const _ok = _bind$3;
+                      _ok._0;
+                    } else {
+                      return _bind$3;
+                    }
+                    return _M0MP211localreview4amqp10WireWriter4uint(w, _M0MPC14uint4UInt10to__uint64(v$7), 4);
+                  }
+                  const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 108n, 1);
+                  if (_bind$3.$tag === 1) {
+                    const _ok = _bind$3;
+                    _ok._0;
+                  } else {
+                    return _bind$3;
+                  }
+                  return _M0MP211localreview4amqp10WireWriter4uint(w, v$6, 8);
+                }
+                const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 102n, 1);
+                if (_bind$3.$tag === 1) {
+                  const _ok = _bind$3;
+                  _ok._0;
+                } else {
+                  return _bind$3;
+                }
+                return _M0MP211localreview4amqp10WireWriter4uint(w, _M0MPC14uint4UInt10to__uint64(v$5), 4);
+              }
+              const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 100n, 1);
+              if (_bind$3.$tag === 1) {
+                const _ok = _bind$3;
+                _ok._0;
+              } else {
+                return _bind$3;
+              }
+              return _M0MP211localreview4amqp10WireWriter4uint(w, v$4, 8);
+            }
+            const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 68n, 1);
+            if (_bind$3.$tag === 1) {
+              const _ok = _bind$3;
+              _ok._0;
+            } else {
+              return _bind$3;
+            }
+            const _bind$4 = _M0FP211localreview4amqp12checked__int(scale, 0, 255);
+            let _tmp;
+            if (_bind$4.$tag === 1) {
+              const _ok = _bind$4;
+              _tmp = _ok._0;
+            } else {
+              return _bind$4;
+            }
+            const _bind$5 = _M0MP211localreview4amqp10WireWriter4uint(w, _tmp, 1);
+            if (_bind$5.$tag === 1) {
+              const _ok = _bind$5;
+              _ok._0;
+            } else {
+              return _bind$5;
+            }
+            return _M0MP211localreview4amqp10WireWriter4uint(w, BigInt.asUintN(64, BigInt(coefficient)), 4);
+          }
+          const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 83n, 1);
+          if (_bind$3.$tag === 1) {
+            const _ok = _bind$3;
+            _ok._0;
+          } else {
+            return _bind$3;
+          }
+          return _M0MP211localreview4amqp10WireWriter7longstr(w, v$3);
+        }
+        const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 120n, 1);
+        if (_bind$3.$tag === 1) {
+          const _ok = _bind$3;
+          _ok._0;
+        } else {
+          return _bind$3;
+        }
+        return _M0MP211localreview4amqp10WireWriter7longstr(w, v$2);
+      }
+      const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 84n, 1);
+      if (_bind$3.$tag === 1) {
+        const _ok = _bind$3;
+        _ok._0;
+      } else {
+        return _bind$3;
+      }
+      return _M0MP211localreview4amqp10WireWriter4uint(w, v, 8);
+    }
+    const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 70n, 1);
+    if (_bind$3.$tag === 1) {
+      const _ok = _bind$3;
+      _ok._0;
+    } else {
+      return _bind$3;
+    }
+    return _M0FP211localreview4amqp12write__table(w, entries, depth);
+  }
+  const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 65n, 1);
+  if (_bind$3.$tag === 1) {
+    const _ok = _bind$3;
+    _ok._0;
+  } else {
+    return _bind$3;
+  }
+  const start = w.bytes.length;
+  const _bind$4 = _M0MP211localreview4amqp10WireWriter4uint(w, 0n, 4);
+  if (_bind$4.$tag === 1) {
+    const _ok = _bind$4;
+    _ok._0;
+  } else {
+    return _bind$4;
+  }
+  const _bind$5 = values.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind$5) {
+      const item = values[_];
+      const _bind$6 = _M0FP211localreview4amqp12write__field(w, item, depth + 1 | 0);
+      if (_bind$6.$tag === 1) {
+        const _ok = _bind$6;
+        _ok._0;
+      } else {
+        return _bind$6;
+      }
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE2Ok(_M0MP211localreview4amqp10WireWriter11patch__size(w, start));
+}
+function _M0FP211localreview4amqp13encode__table(entries) {
+  const w = _M0MP211localreview4amqp10WireWriter3new();
+  const _bind$2 = _M0FP211localreview4amqp12write__table(w, entries, 0);
+  if (_bind$2.$tag === 1) {
+    const _ok = _bind$2;
+    _ok._0;
+  } else {
+    return _bind$2;
+  }
+  const _bind$3 = w.bytes;
+  return new _M0DTPC16result6ResultGzRP211localreview4amqp10FrameErrorE2Ok(_M0MPC15bytes5Bytes11from__array(new _M0TPB9ArrayViewGyE(_bind$3, 0, _bind$3.length)));
+}
+function _M0MP211localreview4amqp14Authentication8amqplain(username, password) {
+  const _bind$2 = _M0FP211localreview4amqp13encode__table([{ _0: "LOGIN", _1: new _M0DTP211localreview4amqp10FieldValue10LongString(_M0FPC28encoding4utf814encode_2einner(new _M0TPC16string10StringView(username, 0, username.length), false)) }, { _0: "PASSWORD", _1: new _M0DTP211localreview4amqp10FieldValue10LongString(_M0FPC28encoding4utf814encode_2einner(new _M0TPC16string10StringView(password, 0, password.length), false)) }]);
+  let table;
+  if (_bind$2.$tag === 1) {
+    const _ok = _bind$2;
+    table = _ok._0;
+  } else {
+    return _bind$2;
+  }
+  return _M0MP211localreview4amqp14Authentication6custom("AMQPLAIN", _M0MPC15bytes9BytesView9to__owned(_M0MPC15bytes5Bytes12view_2einner(table, 4, undefined)));
+}
 function _M0FP211localreview4amqp16protocol__header() {
-  return $bytes_literal$1;
+  return $bytes_literal$2;
 }
 function _M0MP211localreview4amqp9Assembler11new_2einner(max_body, strict_methods) {
   if (max_body < 0 || max_body > 16777216) {
@@ -13660,428 +15641,6 @@ function _M0FP211localreview4amqp12method__spec(class_id, method_id) {
     }
   }
   return undefined;
-}
-function _M0FP211localreview4amqp12checked__int(value, low, high) {
-  if (value < low || value > high) {
-    return new _M0DTPC16result6ResultGmRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("integer field out of range"));
-  }
-  return new _M0DTPC16result6ResultGmRP211localreview4amqp10FrameErrorE2Ok(BigInt.asUintN(64, BigInt(value)));
-}
-function _M0FP211localreview4amqp12write__table(w, entries, depth) {
-  const _bind$2 = _M0MP211localreview4amqp10WireWriter4node(w, depth);
-  if (_bind$2.$tag === 1) {
-    const _ok = _bind$2;
-    _ok._0;
-  } else {
-    return _bind$2;
-  }
-  const start = w.bytes.length;
-  const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 0n, 4);
-  if (_bind$3.$tag === 1) {
-    const _ok = _bind$3;
-    _ok._0;
-  } else {
-    return _bind$3;
-  }
-  const _bind$4 = entries.length;
-  let _tmp = 0;
-  while (true) {
-    const _ = _tmp;
-    if (_ < _bind$4) {
-      const _foreach_element = entries[_];
-      let key;
-      let value;
-      _L: {
-        const _key = _foreach_element._0;
-        const _value = _foreach_element._1;
-        key = _key;
-        value = _value;
-        break _L;
-      }
-      const _bind$5 = _M0MP211localreview4amqp10WireWriter8shortstr(w, key);
-      if (_bind$5.$tag === 1) {
-        const _ok = _bind$5;
-        _ok._0;
-      } else {
-        return _bind$5;
-      }
-      const _bind$6 = _M0FP211localreview4amqp12write__field(w, value, depth + 1 | 0);
-      if (_bind$6.$tag === 1) {
-        const _ok = _bind$6;
-        _ok._0;
-      } else {
-        return _bind$6;
-      }
-      _tmp = _ + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE2Ok(_M0MP211localreview4amqp10WireWriter11patch__size(w, start));
-}
-function _M0FP211localreview4amqp12write__field(w, value, depth) {
-  const _bind$2 = _M0MP211localreview4amqp10WireWriter4node(w, depth);
-  if (_bind$2.$tag === 1) {
-    const _ok = _bind$2;
-    _ok._0;
-  } else {
-    return _bind$2;
-  }
-  let values;
-  _L: {
-    let entries;
-    _L$2: {
-      let v;
-      _L$3: {
-        let v$2;
-        _L$4: {
-          let v$3;
-          _L$5: {
-            let scale;
-            let coefficient;
-            _L$6: {
-              let v$4;
-              _L$7: {
-                let v$5;
-                _L$8: {
-                  let v$6;
-                  _L$9: {
-                    let v$7;
-                    _L$10: {
-                      let v$8;
-                      _L$11: {
-                        let v$9;
-                        _L$12: {
-                          let v$10;
-                          _L$13: {
-                            let v$11;
-                            _L$14: {
-                              let v$12;
-                              _L$15: {
-                                let v$13;
-                                _L$16: {
-                                  switch (value.$tag) {
-                                    case 0: {
-                                      const _Boolean = value;
-                                      const _v = _Boolean._0;
-                                      v$13 = _v;
-                                      break _L$16;
-                                    }
-                                    case 1: {
-                                      const _Signed8 = value;
-                                      const _v$2 = _Signed8._0;
-                                      v$12 = _v$2;
-                                      break _L$15;
-                                    }
-                                    case 2: {
-                                      const _Unsigned8 = value;
-                                      const _v$3 = _Unsigned8._0;
-                                      v$11 = _v$3;
-                                      break _L$14;
-                                    }
-                                    case 3: {
-                                      const _Signed16 = value;
-                                      const _v$4 = _Signed16._0;
-                                      v$10 = _v$4;
-                                      break _L$13;
-                                    }
-                                    case 4: {
-                                      const _Unsigned16 = value;
-                                      const _v$5 = _Unsigned16._0;
-                                      v$9 = _v$5;
-                                      break _L$12;
-                                    }
-                                    case 5: {
-                                      const _Signed32 = value;
-                                      const _v$6 = _Signed32._0;
-                                      v$8 = _v$6;
-                                      break _L$11;
-                                    }
-                                    case 6: {
-                                      const _Unsigned32 = value;
-                                      const _v$7 = _Unsigned32._0;
-                                      v$7 = _v$7;
-                                      break _L$10;
-                                    }
-                                    case 7: {
-                                      const _Signed64 = value;
-                                      const _v$8 = _Signed64._0;
-                                      v$6 = _v$8;
-                                      break _L$9;
-                                    }
-                                    case 8: {
-                                      const _Float32Bits = value;
-                                      const _v$9 = _Float32Bits._0;
-                                      v$5 = _v$9;
-                                      break _L$8;
-                                    }
-                                    case 9: {
-                                      const _Float64Bits = value;
-                                      const _v$10 = _Float64Bits._0;
-                                      v$4 = _v$10;
-                                      break _L$7;
-                                    }
-                                    case 10: {
-                                      const _Decimal = value;
-                                      const _scale = _Decimal._0;
-                                      const _coefficient = _Decimal._1;
-                                      scale = _scale;
-                                      coefficient = _coefficient;
-                                      break _L$6;
-                                    }
-                                    case 11: {
-                                      const _LongString = value;
-                                      const _v$11 = _LongString._0;
-                                      v$3 = _v$11;
-                                      break _L$5;
-                                    }
-                                    case 12: {
-                                      const _ByteArray = value;
-                                      const _v$12 = _ByteArray._0;
-                                      v$2 = _v$12;
-                                      break _L$4;
-                                    }
-                                    case 13: {
-                                      const _Timestamp = value;
-                                      const _v$13 = _Timestamp._0;
-                                      v = _v$13;
-                                      break _L$3;
-                                    }
-                                    case 16: {
-                                      return _M0MP211localreview4amqp10WireWriter4uint(w, 86n, 1);
-                                    }
-                                    case 15: {
-                                      const _TableValue = value;
-                                      const _entries = _TableValue._0;
-                                      entries = _entries;
-                                      break _L$2;
-                                    }
-                                    default: {
-                                      const _ArrayValue = value;
-                                      const _values = _ArrayValue._0;
-                                      values = _values;
-                                      break _L;
-                                    }
-                                  }
-                                }
-                                const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 116n, 1);
-                                if (_bind$3.$tag === 1) {
-                                  const _ok = _bind$3;
-                                  _ok._0;
-                                } else {
-                                  return _bind$3;
-                                }
-                                return _M0MP211localreview4amqp10WireWriter4uint(w, v$13 ? 1n : 0n, 1);
-                              }
-                              const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 98n, 1);
-                              if (_bind$3.$tag === 1) {
-                                const _ok = _bind$3;
-                                _ok._0;
-                              } else {
-                                return _bind$3;
-                              }
-                              const _bind$4 = _M0FP211localreview4amqp12checked__int(v$12, -128, 127);
-                              let _tmp;
-                              if (_bind$4.$tag === 1) {
-                                const _ok = _bind$4;
-                                _tmp = _ok._0;
-                              } else {
-                                return _bind$4;
-                              }
-                              return _M0MP211localreview4amqp10WireWriter4uint(w, _tmp, 1);
-                            }
-                            const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 66n, 1);
-                            if (_bind$3.$tag === 1) {
-                              const _ok = _bind$3;
-                              _ok._0;
-                            } else {
-                              return _bind$3;
-                            }
-                            const _bind$4 = _M0FP211localreview4amqp12checked__int(v$11, 0, 255);
-                            let _tmp;
-                            if (_bind$4.$tag === 1) {
-                              const _ok = _bind$4;
-                              _tmp = _ok._0;
-                            } else {
-                              return _bind$4;
-                            }
-                            return _M0MP211localreview4amqp10WireWriter4uint(w, _tmp, 1);
-                          }
-                          const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 115n, 1);
-                          if (_bind$3.$tag === 1) {
-                            const _ok = _bind$3;
-                            _ok._0;
-                          } else {
-                            return _bind$3;
-                          }
-                          const _bind$4 = _M0FP211localreview4amqp12checked__int(v$10, -32768, 32767);
-                          let _tmp;
-                          if (_bind$4.$tag === 1) {
-                            const _ok = _bind$4;
-                            _tmp = _ok._0;
-                          } else {
-                            return _bind$4;
-                          }
-                          return _M0MP211localreview4amqp10WireWriter4uint(w, _tmp, 2);
-                        }
-                        const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 117n, 1);
-                        if (_bind$3.$tag === 1) {
-                          const _ok = _bind$3;
-                          _ok._0;
-                        } else {
-                          return _bind$3;
-                        }
-                        const _bind$4 = _M0FP211localreview4amqp12checked__int(v$9, 0, 65535);
-                        let _tmp;
-                        if (_bind$4.$tag === 1) {
-                          const _ok = _bind$4;
-                          _tmp = _ok._0;
-                        } else {
-                          return _bind$4;
-                        }
-                        return _M0MP211localreview4amqp10WireWriter4uint(w, _tmp, 2);
-                      }
-                      const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 73n, 1);
-                      if (_bind$3.$tag === 1) {
-                        const _ok = _bind$3;
-                        _ok._0;
-                      } else {
-                        return _bind$3;
-                      }
-                      return _M0MP211localreview4amqp10WireWriter4uint(w, BigInt.asUintN(64, BigInt(v$8)), 4);
-                    }
-                    const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 105n, 1);
-                    if (_bind$3.$tag === 1) {
-                      const _ok = _bind$3;
-                      _ok._0;
-                    } else {
-                      return _bind$3;
-                    }
-                    return _M0MP211localreview4amqp10WireWriter4uint(w, _M0MPC14uint4UInt10to__uint64(v$7), 4);
-                  }
-                  const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 108n, 1);
-                  if (_bind$3.$tag === 1) {
-                    const _ok = _bind$3;
-                    _ok._0;
-                  } else {
-                    return _bind$3;
-                  }
-                  return _M0MP211localreview4amqp10WireWriter4uint(w, v$6, 8);
-                }
-                const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 102n, 1);
-                if (_bind$3.$tag === 1) {
-                  const _ok = _bind$3;
-                  _ok._0;
-                } else {
-                  return _bind$3;
-                }
-                return _M0MP211localreview4amqp10WireWriter4uint(w, _M0MPC14uint4UInt10to__uint64(v$5), 4);
-              }
-              const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 100n, 1);
-              if (_bind$3.$tag === 1) {
-                const _ok = _bind$3;
-                _ok._0;
-              } else {
-                return _bind$3;
-              }
-              return _M0MP211localreview4amqp10WireWriter4uint(w, v$4, 8);
-            }
-            const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 68n, 1);
-            if (_bind$3.$tag === 1) {
-              const _ok = _bind$3;
-              _ok._0;
-            } else {
-              return _bind$3;
-            }
-            const _bind$4 = _M0FP211localreview4amqp12checked__int(scale, 0, 255);
-            let _tmp;
-            if (_bind$4.$tag === 1) {
-              const _ok = _bind$4;
-              _tmp = _ok._0;
-            } else {
-              return _bind$4;
-            }
-            const _bind$5 = _M0MP211localreview4amqp10WireWriter4uint(w, _tmp, 1);
-            if (_bind$5.$tag === 1) {
-              const _ok = _bind$5;
-              _ok._0;
-            } else {
-              return _bind$5;
-            }
-            return _M0MP211localreview4amqp10WireWriter4uint(w, BigInt.asUintN(64, BigInt(coefficient)), 4);
-          }
-          const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 83n, 1);
-          if (_bind$3.$tag === 1) {
-            const _ok = _bind$3;
-            _ok._0;
-          } else {
-            return _bind$3;
-          }
-          return _M0MP211localreview4amqp10WireWriter7longstr(w, v$3);
-        }
-        const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 120n, 1);
-        if (_bind$3.$tag === 1) {
-          const _ok = _bind$3;
-          _ok._0;
-        } else {
-          return _bind$3;
-        }
-        return _M0MP211localreview4amqp10WireWriter7longstr(w, v$2);
-      }
-      const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 84n, 1);
-      if (_bind$3.$tag === 1) {
-        const _ok = _bind$3;
-        _ok._0;
-      } else {
-        return _bind$3;
-      }
-      return _M0MP211localreview4amqp10WireWriter4uint(w, v, 8);
-    }
-    const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 70n, 1);
-    if (_bind$3.$tag === 1) {
-      const _ok = _bind$3;
-      _ok._0;
-    } else {
-      return _bind$3;
-    }
-    return _M0FP211localreview4amqp12write__table(w, entries, depth);
-  }
-  const _bind$3 = _M0MP211localreview4amqp10WireWriter4uint(w, 65n, 1);
-  if (_bind$3.$tag === 1) {
-    const _ok = _bind$3;
-    _ok._0;
-  } else {
-    return _bind$3;
-  }
-  const start = w.bytes.length;
-  const _bind$4 = _M0MP211localreview4amqp10WireWriter4uint(w, 0n, 4);
-  if (_bind$4.$tag === 1) {
-    const _ok = _bind$4;
-    _ok._0;
-  } else {
-    return _bind$4;
-  }
-  const _bind$5 = values.length;
-  let _tmp = 0;
-  while (true) {
-    const _ = _tmp;
-    if (_ < _bind$5) {
-      const item = values[_];
-      const _bind$6 = _M0FP211localreview4amqp12write__field(w, item, depth + 1 | 0);
-      if (_bind$6.$tag === 1) {
-        const _ok = _bind$6;
-        _ok._0;
-      } else {
-        return _bind$6;
-      }
-      _tmp = _ + 1 | 0;
-      continue;
-    } else {
-      break;
-    }
-  }
-  return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE2Ok(_M0MP211localreview4amqp10WireWriter11patch__size(w, start));
 }
 function _M0FP211localreview4amqp15write__argument(w, kind, value) {
   _L: {
@@ -15524,7 +17083,7 @@ function _M0MP211localreview4amqp7Session14auth__response(self, response) {
   if (response.length > 1048576) {
     return new _M0DTPC16result6ResultGuRP211localreview4amqp10FrameErrorE3Err(new _M0DTPC15error5Error41localreview_2famqp_2eFrameError_2eInvalid("SASL response exceeds 1 MiB"));
   }
-  const _bind$2 = _M0MP211localreview4amqp7Session4emit(self, "connection.start-ok", [new _M0DTP211localreview4amqp8Argument5Table([{ _0: "product", _1: new _M0DTP211localreview4amqp10FieldValue10LongString($bytes_literal$2) }, { _0: "capabilities", _1: new _M0DTP211localreview4amqp10FieldValue10TableValue([{ _0: "publisher_confirms", _1: new _M0DTP211localreview4amqp10FieldValue7Boolean(true) }, { _0: "consumer_cancel_notify", _1: new _M0DTP211localreview4amqp10FieldValue7Boolean(true) }, { _0: "connection.blocked", _1: new _M0DTP211localreview4amqp10FieldValue7Boolean(true) }, { _0: "basic.nack", _1: new _M0DTP211localreview4amqp10FieldValue7Boolean(true) }]) }]), new _M0DTP211localreview4amqp8Argument11ShortString(self.selected_auth), new _M0DTP211localreview4amqp8Argument10LongString(response), new _M0DTP211localreview4amqp8Argument11ShortString(self.locale)], 0);
+  const _bind$2 = _M0MP211localreview4amqp7Session4emit(self, "connection.start-ok", [new _M0DTP211localreview4amqp8Argument5Table([{ _0: "product", _1: new _M0DTP211localreview4amqp10FieldValue10LongString($bytes_literal$3) }, { _0: "capabilities", _1: new _M0DTP211localreview4amqp10FieldValue10TableValue([{ _0: "publisher_confirms", _1: new _M0DTP211localreview4amqp10FieldValue7Boolean(true) }, { _0: "consumer_cancel_notify", _1: new _M0DTP211localreview4amqp10FieldValue7Boolean(true) }, { _0: "connection.blocked", _1: new _M0DTP211localreview4amqp10FieldValue7Boolean(true) }, { _0: "basic.nack", _1: new _M0DTP211localreview4amqp10FieldValue7Boolean(true) }]) }]), new _M0DTP211localreview4amqp8Argument11ShortString(self.selected_auth), new _M0DTP211localreview4amqp8Argument10LongString(response), new _M0DTP211localreview4amqp8Argument11ShortString(self.locale)], 0);
   if (_bind$2.$tag === 1) {
     const _ok = _bind$2;
     _ok._0;
@@ -16547,18 +18106,6 @@ function _M0MP211localreview4amqp7Session13publish__body(self, channel, data) {
 function _M0MP211localreview4amqp7Content13basic__header(self) {
   return _M0MP211localreview4amqp11BasicHeader6decode(new _M0TP211localreview4amqp5Frame(2, self.channel, self.header));
 }
-function _M0FP211localreview4amqp13encode__table(entries) {
-  const w = _M0MP211localreview4amqp10WireWriter3new();
-  const _bind$2 = _M0FP211localreview4amqp12write__table(w, entries, 0);
-  if (_bind$2.$tag === 1) {
-    const _ok = _bind$2;
-    _ok._0;
-  } else {
-    return _bind$2;
-  }
-  const _bind$3 = w.bytes;
-  return new _M0DTPC16result6ResultGzRP211localreview4amqp10FrameErrorE2Ok(_M0MPC15bytes5Bytes11from__array(new _M0TPB9ArrayViewGyE(_bind$3, 0, _bind$3.length)));
-}
 function _M0MP211localreview4amqp14Authentication8deferred(mechanism) {
   const _bind$2 = _M0FP211localreview4amqp16check__mechanism(mechanism);
   if (_bind$2.$tag === 1) {
@@ -16569,19 +18116,8 @@ function _M0MP211localreview4amqp14Authentication8deferred(mechanism) {
   }
   return new _M0DTPC16result6ResultGRP211localreview4amqp14AuthenticationRP211localreview4amqp10FrameErrorE2Ok(new _M0TP211localreview4amqp14Authentication(mechanism, undefined));
 }
-function _M0MP211localreview4amqp14Authentication8amqplain(username, password) {
-  const _bind$2 = _M0FP211localreview4amqp13encode__table([{ _0: "LOGIN", _1: new _M0DTP211localreview4amqp10FieldValue10LongString(_M0FPC28encoding4utf814encode_2einner(new _M0TPC16string10StringView(username, 0, username.length), false)) }, { _0: "PASSWORD", _1: new _M0DTP211localreview4amqp10FieldValue10LongString(_M0FPC28encoding4utf814encode_2einner(new _M0TPC16string10StringView(password, 0, password.length), false)) }]);
-  let table;
-  if (_bind$2.$tag === 1) {
-    const _ok = _bind$2;
-    table = _ok._0;
-  } else {
-    return _bind$2;
-  }
-  return _M0MP211localreview4amqp14Authentication6custom("AMQPLAIN", _M0MPC15bytes9BytesView9to__owned(_M0MPC15bytes5Bytes12view_2einner(table, 4, undefined)));
-}
 function _M0MP211localreview4amqp14Authentication8external() {
-  return new _M0TP211localreview4amqp14Authentication("EXTERNAL", $bytes_literal$3);
+  return new _M0TP211localreview4amqp14Authentication("EXTERNAL", $bytes_literal$4);
 }
 function _M0MP211localreview4amqp7Session23respond__authentication(self, response) {
   if (_M0IP016_24default__implPB2Eq10not__equalGsE(self.state, "authenticate")) {
@@ -16591,6 +18127,58 @@ function _M0MP211localreview4amqp7Session23respond__authentication(self, respons
 }
 function _M0MP211localreview4amqp7Session25authentication__mechanism(self) {
   return self.selected_auth;
+}
+function _M0FP411localreview4amqp3cmd3web10uri__parse(input) {
+  let _try_err;
+  _L: {
+    const _bind$2 = _M0FP211localreview4amqp10parse__uri(input);
+    let uri;
+    if (_bind$2.$tag === 1) {
+      const _ok = _bind$2;
+      uri = _ok._0;
+    } else {
+      const _err = _bind$2;
+      _try_err = _err._0;
+      break _L;
+    }
+    let heartbeat;
+    let value;
+    _L$2: {
+      _L$3: {
+        const _bind$3 = uri.heartbeat_seconds;
+        if (_bind$3 === undefined) {
+          heartbeat = _M0MPC14json4Json4null();
+        } else {
+          const _Some = _bind$3;
+          const _value = _Some;
+          value = _value;
+          break _L$3;
+        }
+        break _L$2;
+      }
+      heartbeat = _M0IPC16string6StringPB6ToJson8to__json(_M0MPC15int645Int6418to__string_2einner(value, 10));
+    }
+    let ns;
+    let value$2;
+    _L$3: {
+      _L$4: {
+        const _bind$3 = uri.heartbeat_seconds;
+        if (_bind$3 === undefined) {
+          ns = _M0MPC14json4Json4null();
+        } else {
+          const _Some = _bind$3;
+          const _value = _Some;
+          value$2 = _value;
+          break _L$4;
+        }
+        break _L$3;
+      }
+      ns = _M0IPC16string6StringPB6ToJson8to__json(_M0MPC15int645Int6418to__string_2einner(BigInt.asUintN(64, value$2 * 1000000000n), 10));
+    }
+    const _bind$3 = [{ _0: "ok", _1: _M0MPC14json4Json7boolean(true) }, { _0: "scheme", _1: _M0IPC16string6StringPB6ToJson8to__json(uri.scheme) }, { _0: "host", _1: _M0IPC16string6StringPB6ToJson8to__json(uri.host) }, { _0: "port", _1: _M0IPC13int3IntPB6ToJson8to__json(uri.port) }, { _0: "username", _1: _M0IPC16string6StringPB6ToJson8to__json(uri.username) }, { _0: "password", _1: _M0IPC16string6StringPB6ToJson8to__json(uri.password) }, { _0: "vhost", _1: _M0IPC16string6StringPB6ToJson8to__json(uri.vhost) }, { _0: "certFile", _1: _M0IPC16string6StringPB6ToJson8to__json(uri.cert_file) }, { _0: "keyFile", _1: _M0IPC16string6StringPB6ToJson8to__json(uri.key_file) }, { _0: "caCertFile", _1: _M0IPC16string6StringPB6ToJson8to__json(uri.ca_cert_file) }, { _0: "serverName", _1: _M0IPC16string6StringPB6ToJson8to__json(uri.server_name) }, { _0: "authMechanism", _1: _M0IPC15array5ArrayPB6ToJson8to__jsonGsE(uri.auth_mechanism) }, { _0: "heartbeatSeconds", _1: heartbeat }, { _0: "heartbeatNs", _1: ns }, { _0: "connectionTimeout", _1: _M0IPC16string6StringPB6ToJson8to__json(_M0MPC15int645Int6418to__string_2einner(uri.connection_timeout, 10)) }, { _0: "channelMax", _1: _M0IPC13int3IntPB6ToJson8to__json(uri.channel_max) }, { _0: "canonical", _1: _M0IPC16string6StringPB6ToJson8to__json(_M0MP211localreview4amqp3URI10to__string(uri)) }, { _0: "redacted", _1: _M0IPC16string6StringPB6ToJson8to__json(_M0MP211localreview4amqp3URI8redacted(uri)) }];
+    return _M0MPC14json4Json17stringify_2einner(_M0MPC14json4Json6object(_M0MPB3Map3MapGsRPB4JsonE(new _M0TPB9ArrayViewGUsRPB4JsonEE(_bind$3, 0, 18), undefined)), false, 0, undefined);
+  }
+  return "ERROR: invalid AMQP URI";
 }
 function _M0FP411localreview4amqp3cmd3web7session(key) {
   return _M0MPC16option6Option16unwrap__or__elseGRP211localreview4amqp7SessionEHRPB7Failure(_M0MPB3Map3getGsRP211localreview4amqp7SessionE(_M0FP411localreview4amqp3cmd3web8sessions, key), () => new _M0DTPC16result6ResultGRP211localreview4amqp7SessionRPB7FailureE3Err(new _M0DTPC15error5Error48moonbitlang_2fcore_2fbuiltin_2eFailure_2eFailure("unknown session")));
@@ -18813,5 +20401,5 @@ function _M0FP411localreview4amqp3cmd3web23session__auth__response(key, response
 }
 (() => {
 })();
-export { _M0FP411localreview4amqp3cmd3web13session__open as session_open, _M0FP411localreview4amqp3cmd3web13session__drop as session_drop, _M0FP411localreview4amqp3cmd3web13session__feed as session_feed, _M0FP411localreview4amqp3cmd3web13session__send as session_send, _M0FP411localreview4amqp3cmd3web23session__publish__flags as session_publish_flags, _M0FP411localreview4amqp3cmd3web16session__publish as session_publish, _M0FP411localreview4amqp3cmd3web18session__heartbeat as session_heartbeat, _M0FP411localreview4amqp3cmd3web15session__finish as session_finish, _M0FP411localreview4amqp3cmd3web30session__publish__start__flags as session_publish_start_flags, _M0FP411localreview4amqp3cmd3web23session__publish__start as session_publish_start, _M0FP411localreview4amqp3cmd3web22session__publish__body as session_publish_body, _M0FP411localreview4amqp3cmd3web13inspect__wire as inspect_wire, _M0FP411localreview4amqp3cmd3web3run as run, _M0FP411localreview4amqp3cmd3web7schemas as schemas, _M0FP411localreview4amqp3cmd3web19session__open__auth as session_open_auth, _M0FP411localreview4amqp3cmd3web27session__open__stream__auth as session_open_stream_auth, _M0FP411localreview4amqp3cmd3web23session__auth__response as session_auth_response }
+export { _M0FP411localreview4amqp3cmd3web10uri__parse as uri_parse, _M0FP411localreview4amqp3cmd3web13session__open as session_open, _M0FP411localreview4amqp3cmd3web13session__drop as session_drop, _M0FP411localreview4amqp3cmd3web13session__feed as session_feed, _M0FP411localreview4amqp3cmd3web13session__send as session_send, _M0FP411localreview4amqp3cmd3web23session__publish__flags as session_publish_flags, _M0FP411localreview4amqp3cmd3web16session__publish as session_publish, _M0FP411localreview4amqp3cmd3web18session__heartbeat as session_heartbeat, _M0FP411localreview4amqp3cmd3web15session__finish as session_finish, _M0FP411localreview4amqp3cmd3web30session__publish__start__flags as session_publish_start_flags, _M0FP411localreview4amqp3cmd3web23session__publish__start as session_publish_start, _M0FP411localreview4amqp3cmd3web22session__publish__body as session_publish_body, _M0FP411localreview4amqp3cmd3web13inspect__wire as inspect_wire, _M0FP411localreview4amqp3cmd3web3run as run, _M0FP411localreview4amqp3cmd3web7schemas as schemas, _M0FP411localreview4amqp3cmd3web19session__open__auth as session_open_auth, _M0FP411localreview4amqp3cmd3web27session__open__stream__auth as session_open_stream_auth, _M0FP411localreview4amqp3cmd3web23session__auth__response as session_auth_response }
 //# sourceMappingURL=web.js.map

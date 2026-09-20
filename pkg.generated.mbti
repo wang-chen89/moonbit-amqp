@@ -22,6 +22,8 @@ pub fn method_spec(Int, Int) -> MethodSpec?
 
 pub fn method_spec_by_name(String) -> MethodSpec?
 
+pub fn parse_uri(String) -> URI raise FrameError
+
 pub fn protocol_header() -> Bytes
 
 // Errors
@@ -165,6 +167,27 @@ pub(all) enum SessionEvent {
   ChannelClosed(Int, Int, String)
   Closed(Int, String)
 } derive(Eq, @debug.Debug)
+
+pub struct URI {
+  scheme : String
+  host : String
+  port : Int
+  username : String
+  password : String
+  vhost : String
+  cert_file : String
+  ca_cert_file : String
+  key_file : String
+  server_name : String
+  auth_mechanism : Array[String]
+  heartbeat_seconds : Int64?
+  connection_timeout : Int64
+  channel_max : Int
+}
+pub fn URI::amqplain_auth(Self) -> Authentication raise FrameError
+pub fn URI::plain_auth(Self) -> Authentication raise FrameError
+pub fn URI::redacted(Self) -> String
+pub fn URI::to_string(Self) -> String
 
 // Type aliases
 

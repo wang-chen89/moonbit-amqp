@@ -52,6 +52,8 @@ try {
   if ($LASTEXITCODE -ne 0) {throw 'client recovery fixtures failed'}
   node tools/test-authentication.mjs
   if ($LASTEXITCODE -ne 0) {throw 'authentication fixtures failed'}
+  node tools/test-uri.mjs
+  if ($LASTEXITCODE -ne 0) {throw 'URI connection fixtures failed'}
   node tools/test-secret-update.mjs
   if ($LASTEXITCODE -ne 0) {throw 'credential update fixtures failed'}
   node tools/test-autodelete.mjs

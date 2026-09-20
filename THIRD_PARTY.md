@@ -64,3 +64,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 0.9 单通道恢复参考固定 Go 提交的 [recoverConnectionTopology](https://github.com/rabbitmq/amqp091-go/blob/a0195c6baf35db642d13651cb28938f899062e7c/connection.go) 与 [Channel.Reconnect](https://github.com/rabbitmq/amqp091-go/blob/a0195c6baf35db642d13651cb28938f899062e7c/channel.go)。本地只读核对后用未修改原库执行两个边界；新适配器不复制其算法。本实现的跨通道依赖图改进与原库差异明确记录。
+
+
+0.17 URI 行为参照同一固定 Go 提交的 uri.go、connection.go 及 Go 1.26 net/url；MoonBit 解析器和 Node 适配器为本地实现。对照输入包含 uri_test.go 中 22 条协议规格矩阵（上游版权 Sean Treadway/SoundCloud 与 VMware，BSD-2-Clause，完整许可保留在 `spec/amqp091-go-URI-LICENSE`），其余输入和调用程序为原创。固定原库和 Go 标准库没有作为运行期代码或二进制分发。规范化/资源与字节字符串差异独立披露于 URI.md。
