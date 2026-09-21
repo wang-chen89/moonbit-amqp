@@ -3,7 +3,7 @@ import {once} from 'node:events';
 import fs from 'node:fs';
 import {sourceSnapshot,assertSourceUnchanged} from './evidence-source.mjs';
 import {connect} from './client.mjs';
-import {fixture,method,ack,cat,u16,u32,short,delay,deliver} from './recovery-peer.mjs';
+import {fixture,method,ack,cat,u16,u32,short,delay,deliver,until} from './recovery-peer.mjs';
 const tests=[];
 const sources=sourceSnapshot(['authentication.mbt','cmd/web/authentication.mbt','tools/authentication.mjs','tools/client.mjs','tools/recovery.mjs','tools/recovery-channel.mjs','tools/recovery-state.mjs','tools/recovery-peer.mjs','tools/test-recovery.mjs','web/engine.mjs']);
 const event=(target,name)=>once(target,name,{signal:AbortSignal.timeout(5000)});
@@ -37,8 +37,8 @@ await test('deliveries received during recovery wait for readiness and stale tag
  const c=await open(config),ch=await c.openChannel(),values=[];
  await ch.declareQueue('q');await ch.qos(1);
  await ch.consume('q',m=>{if(m){assert.equal(c.state,'open');assert.equal(ch.state,'open');values.push(m);ch.ack(m.args['delivery-tag']);}},{consumerTag:'consumer'});
- await delay(30);assert.equal(values.length,1);const oldTag=values[0].args['delivery-tag'];
- await reconnect(c,state);await delay(30);assert.equal(values.length,2);
+ await until(()=>values.length===1);const oldTag=values[0].args['delivery-tag'];
+ await reconnect(c,state);await until(()=>values.length===2);
  assert(BigInt(values[1].args['delivery-tag'])>BigInt(oldTag));
  assert.throws(()=>ch.ack(oldTag),/Stale/);assert.throws(()=>ch.nack(oldTag),/Stale/);assert.throws(()=>ch.reject(oldTag),/Stale/);
  const sent=state.methods.filter(m=>m.peer===2&&m.cls===60&&m.id===80);assert.equal(sent.length,1);assert.equal(sent[0].args.readBigUInt64BE(0),1n);
@@ -151,7 +151,7 @@ await test('skipping a failed consumer restores earlier subscriptions after reop
 }},async({open,state})=>{
  const c=await open(config),ch=await c.openChannel(),messages=[];await ch.declareQueue('q');
  await ch.consume('q',m=>{if(m)messages.push(m);},{consumerTag:'good'});await ch.consume('q',()=>{},{consumerTag:'bad'});
- await reconnect(c,state);await delay(20);assert.equal(messages.length,1);assert.equal(messages[0].body.toString(),'survives');ch.ack(messages[0].args['delivery-tag']);
+ await reconnect(c,state);await until(()=>messages.length===1);assert.equal(messages[0].body.toString(),'survives');ch.ack(messages[0].args['delivery-tag']);
 }));
 await test('broker consumer cancellation removes its recovery entry',()=>fixture({},async({open,state})=>{
  const c=await open(config),ch=await c.openChannel(),messages=[];await ch.declareQueue('q');await ch.consume('q',m=>messages.push(m),{consumerTag:'gone'});
