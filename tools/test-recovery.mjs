@@ -41,7 +41,7 @@ await test('deliveries received during recovery wait for readiness and stale tag
  await reconnect(c,state);await until(()=>values.length===2);
  assert(BigInt(values[1].args['delivery-tag'])>BigInt(oldTag));
  assert.throws(()=>ch.ack(oldTag),/Stale/);assert.throws(()=>ch.nack(oldTag),/Stale/);assert.throws(()=>ch.reject(oldTag),/Stale/);
- const sent=state.methods.filter(m=>m.peer===2&&m.cls===60&&m.id===80);assert.equal(sent.length,1);assert.equal(sent[0].args.readBigUInt64BE(0),1n);
+ await until(()=>state.methods.some(m=>m.peer===2&&m.cls===60&&m.id===80));const sent=state.methods.filter(m=>m.peer===2&&m.cls===60&&m.id===80);assert.equal(sent.length,1);assert.equal(sent[0].args.readBigUInt64BE(0),1n);
 }));
 await test('unconfirmed publications reject and are not silently republished after recovery',()=>fixture({onMessage:(m,s,state)=>{if(s.peerId>1)s.write(ack(m.ch,1));}},async({open,state})=>{
  const c=await open(config),ch=await c.openChannel();await ch.confirmSelect();
