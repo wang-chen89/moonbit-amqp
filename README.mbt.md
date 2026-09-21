@@ -30,4 +30,4 @@ test "outbound body frames respect negotiated full frame size" {
 }
 ```
 
-0.4 另提供 64 种方法参数、字段表、Basic 属性和 Session 会话 API；Node 宿主包含 TCP/TLS、RPC、心跳与消息确认。完整流程见 README.md、codec_test.mbt、session_test.mbt。已有 RabbitMQ 4.0.5 实测；尚缺自动恢复、更多认证、流式大消息与生产规模验证。
+MoonBit 核心提供方法参数、字段表、Basic 属性和 Session 会话 API；Node 宿主提供 TCP/TLS、RPC、心跳、消息确认、自动恢复、多种认证及流式消息收发。恢复不自动重发旧消息或重放旧正文源，完整生产规模验证仍未完成。各功能的使用方式、实测范围和剩余限制见 [README.md](README.md) 与 [FEATURES.md](FEATURES.md)。
