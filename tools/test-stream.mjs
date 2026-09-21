@@ -88,7 +88,7 @@ await test('flow reply and server consumer cancellation wait behind the current 
  const c=await open(),ch=await c.openChannel();await ch.consume('q',()=>{},{consumerTag:'consumer'});await ch.confirmSelect();
  await ch.publishStream('','q',(async function*(){yield Buffer.from('a');await delay(40);yield Buffer.from('b');})(),2);
  await until(()=>state.events.some(e=>e.cls===60&&e.id===31));assert.equal(c.closed,false);await assert.rejects(ch.publish('','q','blocked'),/blocked/);
- const flowed=event(c,'flow');[...state.sockets][0].write(method(ch.id,20,20,Buffer.from([1])));await flowed;await ch.publish('','q','resumed');
+ const flowed=event(ch,'flow');[...state.sockets][0].write(method(ch.id,20,20,Buffer.from([1])));await flowed;await ch.publish('','q','resumed');
 }));
 await test('broker channel close during source wait preserves healthy sibling',()=>fixture({onHeader:(m,s)=>s.write(method(m.ch,20,40,u16(404),short('gone'),u16(60),u16(40)))},async({open,state})=>{
  const c=await open(),a=await c.openChannel(),b=await c.openChannel();let returned=0;const source={[Symbol.asyncIterator](){return {next:()=>new Promise(()=>{}),return:()=>{returned++;return {done:true};}};}};
