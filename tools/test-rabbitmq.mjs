@@ -7,6 +7,7 @@ import {sourceSnapshot,assertSourceUnchanged} from './evidence-source.mjs';
 import fs from 'node:fs/promises';
 import net from 'node:net';
 import {connect} from './client.mjs';
+import {until} from './recovery-peer.mjs';
 const sources=sourceSnapshot(['authentication.mbt','cmd/web/authentication.mbt','tools/authentication.mjs','session.mbt','cmd/web/session.mbt','tools/client.mjs','tools/broker.mjs','web/engine.mjs','tools/rabbitmq-reference.py','tools/test-rabbitmq.mjs']);
 
 const root = process.env.RABBITMQ_ROOT;
@@ -103,7 +104,7 @@ try {
   await run('server consumer cancel notification after queue deletion', async () => {
     const q=await b.declareQueue('',{exclusive:true}); const got=[];
     const tag=await b.consume(q.queue,m=>got.push(m)); const cancelled=once(b,'cancel');
-    await a.deleteQueue(q.queue); assert.equal((await cancelled)[0],tag); await delay(20); assert.deepEqual(got,[null]);
+    await a.deleteQueue(q.queue); assert.equal((await cancelled)[0],tag); await until(()=>got.length===1); assert.deepEqual(got,[null]);
   });
   const exchange='codex_'+Date.now();
   await run('exchange declare bind route unbind delete', async () => {

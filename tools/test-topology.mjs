@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {once} from 'node:events';
-import {fixture,delay,method,u16,short} from './recovery-peer.mjs';
+import {fixture,until,method,u16,short} from './recovery-peer.mjs';
 import {sourceSnapshot,assertSourceUnchanged} from './evidence-source.mjs';
 const sources=sourceSnapshot(['tools/client.mjs','tools/recovery-state.mjs','tools/recovery.mjs','tools/recovery-channel.mjs','tools/recovery-peer.mjs','tools/test-topology.mjs','web/engine.mjs']);
 const tests=[],config={recovery:{maxRetries:3,retryDelay:5,retryJitter:0},timeout:700};
@@ -47,7 +47,7 @@ await test('anonymous queue keys and cross-channel bindings follow newly assigne
  const c=await open(config),a=await c.openChannel(),b=await c.openChannel();await a.declareExchange('e');const {queue}=await a.declareQueue('',{exclusive:true});await b.bindQueue(queue,'e');const before=a.topologyConfiguration();await cut(c,state);const now=a.topologyConfiguration();assert.equal(now.queues[queue],undefined);const current=c.resolveQueue(queue);assert.equal(now.queues[current].declaredName,'');assert.equal(now.queues[current].actualName,current);assert.equal(b.topologyConfiguration().bindings[0].queue,current);assert(before.queues[queue]);await c.close();
 });
 await test('topology query does not publish unacknowledged or failed declarations', {onMethod(e,s,state){if(e.cls===50&&e.id===10&&!state.held){state.held=e;state.socket=s;return true;}}},async({open,state})=>{
- const c=await open(config),a=await c.openChannel();const pending=a.declareQueue('pending');await delay(15);assert.deepEqual(a.topologyConfiguration().queues,{});const e=state.held;state.socket.write(method(e.ch,50,11,short('pending'),Buffer.alloc(8)));await pending;assert(a.topologyConfiguration().queues.pending);await assert.rejects(a.declareExchange('bad','direct',{arguments:{['x'.repeat(256)]:true}}));assert.equal(a.topologyConfiguration().exchanges.bad,undefined);await c.close();
+ const c=await open(config),a=await c.openChannel();const pending=a.declareQueue('pending');await until(()=>state.held);assert.deepEqual(a.topologyConfiguration().queues,{});const e=state.held;state.socket.write(method(e.ch,50,11,short('pending'),Buffer.alloc(8)));await pending;assert(a.topologyConfiguration().queues.pending);await assert.rejects(a.declareExchange('bad','direct',{arguments:{['x'.repeat(256)]:true}}));assert.equal(a.topologyConfiguration().exchanges.bad,undefined);await c.close();
 });
 await test('passive probes leave tracked declarations unchanged',{},async({open})=>{
  const c=await open(config),a=await c.openChannel();await a.declareQueue('q',{durable:true});await a.declareQueue('q',{passive:true});await a.declareQueue('untracked',{passive:true});await a.declareExchange('untracked','direct',{passive:true});assert.equal(a.topologyConfiguration().queues.q.durable,true);assert.equal(a.topologyConfiguration().queues.untracked,undefined);assert.deepEqual(a.topologyConfiguration().exchanges,{});await c.close();

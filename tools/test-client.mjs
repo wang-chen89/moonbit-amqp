@@ -7,6 +7,7 @@ import fs from 'node:fs/promises';
 import {sourceSnapshot,assertSourceUnchanged} from './evidence-source.mjs';
 import {connect} from './client.mjs';
 import * as core from '../web/engine.mjs';
+import {until} from './recovery-peer.mjs';
 const sources=sourceSnapshot(['authentication.mbt','cmd/web/authentication.mbt','tools/authentication.mjs','session.mbt', 'cmd/web/session.mbt', 'tools/client.mjs', 'web/engine.mjs', 'tools/test-client.mjs']);
 
 const tests=[], cat=(...parts)=>Buffer.concat(parts), u16=n=>{const b=Buffer.alloc(2);b.writeUInt16BE(n);return b;}, u32=n=>{const b=Buffer.alloc(4);b.writeUInt32BE(n);return b;};
@@ -89,7 +90,7 @@ await test('premature EOF with partial message rejects get',()=>fixture({onMetho
 }},async({open})=>{const c=await open(),ch=await c.openChannel();await assert.rejects(ch.get('q'),/incomplete/);assert.equal(c.closed,true);}));
 await test('connection close rejects RPC and acknowledges peer',()=>fixture({onMethod:(e,s)=>{
   if(e.cls===50){s.write(method(0,10,50,u16(320),short('shutdown'),u16(0),u16(0)));return true;}
-}},async({open,state})=>{const c=await open(),ch=await c.openChannel();await assert.rejects(ch.declareQueue(),/320/);await delay(30);assert.ok(state.methods.some(e=>e.cls===10&&e.id===51));}));
+}},async({open,state})=>{const c=await open(),ch=await c.openChannel();await assert.rejects(ch.declareQueue(),/320/);await until(()=>state.methods.some(e=>e.cls===10&&e.id===51));assert.ok(state.methods.some(e=>e.cls===10&&e.id===51));}));
 await test('out-of-order single and cumulative publisher confirmations',()=>fixture({onMessage:(m,s,state)=>{
   if(state.messages.length===3)s.write(cat(ack(m.ch,2),ack(m.ch,3,true)));
 }},async({open})=>{const c=await open(),ch=await c.openChannel();await ch.confirmSelect();const result=await Promise.all([ch.publish('','q','a'),ch.publish('','q','b'),ch.publish('','q','c')]);assert.deepEqual(result.map(x=>x.deliveryTag),[1n,2n,3n]);}));

@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import {once} from 'node:events';
 import {connect,Connection,parseURI} from './client.mjs';
 import {connectionOptions} from './uri.mjs';
-import {fixture,delay} from './recovery-peer.mjs';
+import {fixture,delay,until} from './recovery-peer.mjs';
 import {sourceSnapshot,assertSourceUnchanged} from './evidence-source.mjs';
 const sources=sourceSnapshot(['tools/client.mjs','tools/authentication.mjs','tools/recovery.mjs','tools/recovery-peer.mjs','tools/test-uri.mjs','web/engine.mjs']);
 const tests=[];
@@ -44,9 +44,14 @@ for(const entry of ['function','static','constructor','object'])await test(entry
   if(entry==='object')c=await connect({...options,uri});
   if(entry==='constructor'){
    c=new Connection({...options,uri});
-   // Constructor historically starts asynchronously; use an ordinary protocol operation after the peer handshake.
-   for(let i=0;i<100&&!state.methods.some(e=>e.cls===10&&e.id===40);i++)await delay(5);
-   await delay(5);
+   // Constructor starts asynchronously and exposes no ready promise. Probe an
+   // ordinary RPC; only the known pre-handshake rejection may be retried.
+   await until(()=>state.methods.some(e=>e.cls===10&&e.id===40));
+   const deadline=Date.now()+4000;
+   for(;;){
+    try{const channel=await c.openChannel();await channel.close();break;}
+    catch(error){if(!/connection is not ready/.test(error.message)||Date.now()>=deadline)throw error;await delay(5);}
+   }
   }
   assert.deepEqual(startResponse(state.methods.find(e=>e.cls===10&&e.id===11)),{mechanism:'PLAIN',responseHex:Buffer.from('\0u/\0p+@').toString('hex')});
   const open=state.methods.find(e=>e.cls===10&&e.id===40);assert.equal(open.args.subarray(1,1+open.args[0]).toString(),'/space +/');
