@@ -1,5 +1,13 @@
 > 2026-09-21 后续修复：[小消息发送与当前对照](BUFFERED-PUBLISH.md)。下文保留旧版测量范围。
 
+## 获取与验证入口
+
+公开源码：[github.com/wang-chen89/moonbit-amqp](https://github.com/wang-chen89/moonbit-amqp)；MoonBit 模块名为 `wang-chen89/amqp`。
+
+从源码运行：`git clone https://github.com/wang-chen89/moonbit-amqp.git` 后进入该目录，按下文和 [TESTING.md](TESTING.md) 安装所需工具。仓库公开不等于已在 Mooncakes 发布，不承诺 `moon add` 当前可用。
+
+查看 [GitHub Actions](https://github.com/wang-chen89/moonbit-amqp/actions) 时请核对 run 的 commit SHA；历史 evidence、旧 ZIP 与本地测试不能替代当前提交的 CI 结果。下文保留各版本的验证范围和兼容性限制。
+
 # AMQP 0-9-1 编解码与消息客户端
 
 本地候选版 **0.24.0**。MoonBit 实现帧/方法/属性编解码、连接认证协商和通道状态机；Node.js 提供 TCP/TLS、RPC、心跳和消息发布/消费宿主。仓库独立，当前仅供本地审查。
@@ -35,7 +43,7 @@ for frame in frames {
 assembler.finish()
 ```
 
-该调用流程由 `codec_test.mbt` 的完整消息测试验证。安装时的导入名为 `localreview/amqp`；正式发布前由用户确定命名空间。
+该调用流程由 `codec_test.mbt` 的完整消息测试验证。安装时的导入名为 `wang-chen89/amqp`；正式发布前由用户确定命名空间。
 
 - `method_names` / `method_spec_by_name` 给出完整方法名、参数顺序和类型。包含 connection、channel、exchange、queue、basic、tx、confirm，以及 XML 中的 RabbitMQ 扩展。
 - `Method::encode/decode` 验证参数类型、数量、长度及连接/普通通道区分。连接方法必须使用通道 0；其它方法必须使用非零通道。
@@ -365,4 +373,4 @@ Node 字段表用普通对象，支持 boolean、signed int32、字符串、null
 
 参考：[RabbitMQ 规格](https://www.rabbitmq.com/docs/specification)、[amqp091-go](https://github.com/rabbitmq/amqp091-go)。Pika 仅是独立验证工具，无运行期依赖。
 
-本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，0.24 本地增量归档另附同提交 ZIP/bundle；历史合集未更新。未上传、未发布、未添加远程仓库。
+> 历史开发记录（以下发布/归档状态不代表当前仓库；当前入口见文首）：本仓库是后续开发的主目录。历史 ZIP、Git bundle 与合集清单是之前的审查快照，0.24 本地增量归档另附同提交 ZIP/bundle；历史合集未更新。未上传、未发布、未添加远程仓库。
