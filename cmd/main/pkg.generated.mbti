@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "localreview/amqp/cmd/main"
+package "wang-chen89/amqp/cmd/main"
 
 // Values
 

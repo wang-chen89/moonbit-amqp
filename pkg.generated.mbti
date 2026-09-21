@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "localreview/amqp"
+package "wang-chen89/amqp"
 
 import {
   "moonbitlang/core/debug",

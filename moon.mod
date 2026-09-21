@@ -1,4 +1,4 @@
-name = "localreview/amqp"
+name = "wang-chen89/amqp"
 
 version = "0.24.0"
 
