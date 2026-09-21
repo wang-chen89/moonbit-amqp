@@ -4,7 +4,7 @@ import net from 'node:net';
 import {Duplex} from 'node:stream';
 import {once,getEventListeners} from 'node:events';
 import {open as openStream} from './client.mjs';
-import {fixture,method,frame,u16,u32,u64,short,cat,delay} from './recovery-peer.mjs';
+import {fixture,method,frame,u16,u32,u64,short,cat,delay,until} from './recovery-peer.mjs';
 import {sourceSnapshot,assertSourceUnchanged} from './evidence-source.mjs';
 const sources=sourceSnapshot(['tools/client.mjs','tools/recovery.mjs','tools/close-deadline.mjs','tools/outbound.mjs','tools/recovery-peer.mjs','tools/test-close-deadline.mjs','web/engine.mjs']);
 const tests=[],timings=[],recovery={maxRetries:2,retryDelay:5,retryJitter:0};
@@ -43,8 +43,8 @@ await test('deadline close flushes sent publication bytes without waiting for un
  const c=await open(),ch=await c.openChannel();await ch.confirmSelect();const handle=await ch.publishWithDeferredConfirm('','q','no acknowledgement');await c.closeDeadline(Date.now()+400);assert.equal(await handle.wait(),false);assert.equal(state.messages[0].body.toString(),'no acknowledgement');assert(c.closed);
 });
 await test('deadline interrupts stalled streamed publication and closes its owned source',{},async({open})=>{
- const c=await open({timeout:3000}),ch=await c.openChannel();let returned=false;const source={async next(){return new Promise(()=>{});},return(){returned=true;return {done:true};},[Symbol.asyncIterator](){return this;}};
- const publishing=assert.rejects(ch.publishStream('','q',source,10),/deadline|closed/);await delay(10);await assert.rejects(c.closeDeadline(Date.now()+50),timeout);await publishing;await delay(0);assert(returned);assert(c.closed&&ch.closed);
+ const c=await open({timeout:3000}),ch=await c.openChannel();let returned=false,started=false;const source={async next(){started=true;return new Promise(()=>{});},return(){returned=true;return {done:true};},[Symbol.asyncIterator](){return this;}};
+ const publishing=assert.rejects(ch.publishStream('','q',source,10),/deadline|closed/);await until(()=>started);await assert.rejects(c.closeDeadline(Date.now()+50),timeout);await publishing;await until(()=>returned);assert(returned);assert(c.closed&&ch.closed);
 });
 await test('closing a partially received stream rejects its completion and frees the connection', {onMethod(e,s){if(e.cls===60&&e.id===20)setImmediate(()=>s.write(cat(method(e.ch,60,60,short('waiting'),u64(1),Buffer.from([0]),short(''),short('q')),frame(2,e.ch,cat(u16(60),u16(0),u64(100),u16(0))))));if(e.cls===10&&e.id===50)return true;}},async({open})=>{
  const c=await open({streamBodies:true,timeout:3000}),ch=await c.openChannel();let got;const incoming=new Promise(r=>got=r);await ch.consume('q',got,{consumerTag:'waiting'});const message=await incoming;const rejected=assert.rejects(message.completed,/deadline|closed/);await assert.rejects(c.closeDeadline(Date.now()+50),timeout);await rejected;assert(c.closed);

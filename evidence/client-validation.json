@@ -1,5 +1,5 @@
 {
-  "at": "2026-09-20T16:25:51.779Z",
+  "at": "2026-09-21T14:15:34.279Z",
   "node": "v24.11.0",
   "passed": 18,
   "tests": [
@@ -49,6 +49,6 @@
     "cmd/web/session.mbt": "77a46d26771f0f9afc04283bcf301353985c1f61e159b357d5fd20642e9ab5fb",
     "tools/client.mjs": "9c4e865856262321cad5579fd71524d04ebfa57be4919e32c74398b2337c51f9",
     "web/engine.mjs": "50dbb50240e56a92b2a9316f3f7a43c1a4c6768bb87d173cd3bd5953cbc5033e",
-    "tools/test-client.mjs": "1edcef349e9a593ca0b27ba965472f661933c511abdeb4d96df02c5df97aa480"
+    "tools/test-client.mjs": "17948753da1363af45f10e0a8e9eee69a76223f1a8eb1ef30a147458003f836a"
   }
 }

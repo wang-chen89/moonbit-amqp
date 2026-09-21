@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {once,getEventListeners} from 'node:events';
 import {DefaultTopologyRecovery} from './client.mjs';
-import {fixture,delay,method,u16,short,deliver} from './recovery-peer.mjs';
+import {fixture,delay,method,u16,short,deliver,until} from './recovery-peer.mjs';
 import {sourceSnapshot,assertSourceUnchanged} from './evidence-source.mjs';
 const sources=sourceSnapshot(['tools/client.mjs','tools/topology-strategy.mjs','tools/recovery-peer.mjs','tools/test-topology-strategy.mjs','web/engine.mjs']);
 const tests=[],base={maxRetries:2,retryDelay:2,retryJitter:0},event=(target,name)=>once(target,name,{signal:AbortSignal.timeout(4000)});
@@ -23,7 +23,7 @@ await test('replacement suppresses built-in declarations and consumers while pre
 await test('bound method snapshot delegates once and restores consumers across two losses',{},async({open,state})=>{
  const strategy={calls:0,async recoverTopology(ctx){this.calls++;assert(Object.isFrozen(ctx)&&Object.isFrozen(ctx.channels));const a=ctx.restoreDefault(),b=ctx.restoreDefault();assert.equal(a,b);return a;}};
  const c=await open(opts(strategy)),ch=await c.openChannel(),messages=[];await ch.declareQueue('restore');await ch.consume('restore',m=>messages.push(m.body.toString()),{consumerTag:'restored',noAck:true});strategy.recoverTopology=()=>{throw Error('replacement must not run');};
- for(let i=0;i<2;i++){await cut(c,state);deliver([...state.sockets].at(-1),ch._raw.id,1,'restored','ok'+i);for(let j=0;messages.length<=i&&j<30;j++)await delay(5);}
+ for(let i=0;i<2;i++){await cut(c,state);deliver([...state.sockets].at(-1),ch._raw.id,1,'restored','ok'+i);await until(()=>messages.length>i);}
  assert.equal(strategy.calls,2);assert.deepEqual(messages,['ok0','ok1']);assert.equal(state.methods.filter(e=>e.cls===60&&e.id===20).length,3);assert.equal(c.recoveryConfig.hasCustomTopologyRecovery,true);
 });
 await test('custom channel operations can declare dynamic topology without replaying tracked entries',{},async({open,state})=>{
@@ -31,7 +31,7 @@ await test('custom channel operations can declare dynamic topology without repla
 });
 await test('custom declarations and subscriptions remain tracked for the next default recovery',{},async({open,state})=>{
  let calls=0;const messages=[];const c=await open(opts({async recoverTopology(ctx){if(++calls===1){await ctx.channels[0].declareQueue('added');await ctx.channels[0].consume('added',m=>messages.push(m.body.toString()),{consumerTag:'added',noAck:true});return;}return ctx.restoreDefault();}})),ch=await c.openChannel();
- for(let i=0;i<2;i++){await cut(c,state);deliver([...state.sockets].at(-1),ch._raw.id,1,'added','added-'+i);for(let j=0;messages.length<=i&&j<30;j++)await delay(5);}
+ for(let i=0;i<2;i++){await cut(c,state);deliver([...state.sockets].at(-1),ch._raw.id,1,'added','added-'+i);await until(()=>messages.length>i);}
  assert.deepEqual(messages,['added-0','added-1']);assert(c.topologyConfiguration().queues.added);assert.equal(state.methods.filter(e=>e.cls===60&&e.id===20).length,2);
 });
 await test('unreturned scoped operations finish before readiness and do not unlock outside application calls', {onMethod(e,s){if(e.peer===2&&e.cls===50&&e.id===10){setTimeout(()=>s.write(method(e.ch,50,11,short('operation'),Buffer.alloc(8))),70);return true;}}},async({open,state})=>{
@@ -61,8 +61,8 @@ await test('transport loss interrupts a stalled strategy and the next attempt ca
 await test('closing one channel interrupts its strategy and leaves the sibling usable',{},async({open})=>{
  const entered=gate();let ctx;const c=await open(opts({recoverTopology(x){ctx=x;entered.release();return new Promise(()=>{});}})),ch=await c.openChannel(),sibling=await c.openChannel();const joining=assert.rejects(ch.reconnect());await entered.promise;await ch.close();await joining;assert(ctx.signal.aborted);await sibling.get('still-open');assert.equal(c.state,'open');
 });
-await test('readiness joins default restoration even if the callback omits its promise', {onMethod(e,s){if(e.peer===2&&e.cls===50&&e.id===10){setTimeout(()=>s.write(method(e.ch,50,11,short('held'),Buffer.alloc(8))),60);return true;}}},async({open,state})=>{
- let invoked=false;const c=await open(opts({recoverTopology(ctx){ctx.restoreDefault();invoked=true;}})),ch=await c.openChannel();await ch.declareQueue('held');const ready=cut(c,state);await delay(25);assert(invoked);assert.equal(c.state,'reconnecting');await ready;assert.equal(ch.state,'open');
+await test('readiness joins default restoration even if the callback omits its promise', {onMethod(e,s,state){if(e.peer===2&&e.cls===50&&e.id===10){state.held={e,s};return true;}}},async({open,state})=>{
+ let invoked=false;const c=await open(opts({recoverTopology(ctx){ctx.restoreDefault();invoked=true;}})),ch=await c.openChannel();await ch.declareQueue('held');const ready=cut(c,state);await until(()=>state.held);assert(invoked);assert.equal(c.state,'reconnecting');const {e,s}=state.held;s.write(method(e.ch,50,11,short('held'),Buffer.alloc(8)));await ready;assert.equal(ch.state,'open');
 });
 await test('unreturned default failure cannot be mistaken for successful recovery', {onMethod(e,s){if(e.peer>1&&e.cls===50&&e.id===10){s.write(method(e.ch,20,40,u16(406),short('cannot declare'),u16(50),u16(10)));return true;}}},async({open,state})=>{
  const c=await open(opts({recoverTopology(ctx){ctx.restoreDefault();}},{onTopologyError:()=>false})),ch=await c.openChannel();await ch.declareQueue('bad');const end=event(c,'close');[...state.sockets][0].destroy();await end;assert(c.closed&&ch.closed);assert.equal(state.accepted,3);

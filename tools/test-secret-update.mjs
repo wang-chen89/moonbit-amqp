@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {once} from 'node:events';
-import {fixture,method,u16,short,delay,cat} from './recovery-peer.mjs';
+import {fixture,method,u16,short,until,cat} from './recovery-peer.mjs';
 import {sourceSnapshot,assertSourceUnchanged} from './evidence-source.mjs';
 const sources=sourceSnapshot(['session.mbt','tools/client.mjs','tools/recovery.mjs','tools/authentication.mjs','tools/test-secret-update.mjs','tools/recovery-peer.mjs','web/engine.mjs']);
 const tests=[];async function test(name,action){await action();tests.push(name);console.log('PASS '+name);}
@@ -35,8 +35,8 @@ await test('server rejection preserves its reply code and terminates the pending
  if(update(e)){s.write(method(0,10,50,u16(530),short('credential refused'),u16(10),u16(70)));return true;}
 }},async({open})=>{const c=await open();await assert.rejects(c.updateSecret('invalid'),error=>error.code===530);assert(c.closed);}));
 await test('connection close and signal cancellation both release a pending credential update',async()=>{
- for(const mode of ['close','abort'])await fixture({onMethod:e=>update(e)},async({open})=>{
-  const controller=new AbortController(),c=await open({signal:controller.signal});const pending=assert.rejects(c.updateSecret('pending'));await delay(10);
+ for(const mode of ['close','abort'])await fixture({onMethod:e=>update(e)},async({open,state})=>{
+  const controller=new AbortController(),c=await open({signal:controller.signal});const pending=assert.rejects(c.updateSecret('pending'));await until(()=>state.methods.some(update));
   if(mode==='close')await c.close();else controller.abort(Error('cancelled'));
   await pending;assert(c.closed);await assert.rejects(c.updateSecret('later'),/closed/);
  });

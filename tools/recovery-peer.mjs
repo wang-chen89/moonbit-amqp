@@ -74,6 +74,7 @@ async function fixture(options, action) {
   finally{for(const c of connections)c.destroy();for(const s of sockets)s.destroy();await new Promise(r=>server.close(r));}
 }
 export {fixture,method,frame,ack,cat,u16,u32,u64,short,long,delay};
+export async function until(check,timeout=4000){const t0=Date.now();while(!check()){if(Date.now()-t0>timeout)throw Error('Fixture condition timeout');await delay(5);}}
 export function deliver(socket,ch,tag,consumerTag,body='message') {
  body=Buffer.from(body);
  socket.write(cat(method(ch,60,60,short(consumerTag),u64(tag),Buffer.from([0]),short(''),short('queue')),

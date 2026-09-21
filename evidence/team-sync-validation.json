@@ -1,0 +1,112 @@
+{
+  "utc": "2026-09-21T14:17:53.173925+00:00",
+  "scope": "Targeted independent TCP fixtures for timing-only test repairs; no runtime change.",
+  "checks": [
+    {
+      "command": [
+        "node",
+        "tools/test-uri.mjs"
+      ],
+      "exitCode": 0,
+      "output": "PASS URI parser returns frozen records and explicit credential redaction\nPASS URI normalization distinguishes URI and existing object defaults\nPASS URI transport rejects invalid ranges and mechanisms before opening a socket\nPASS URI TCP authentication retains explicit opt-in and early cancellation\nPASS function entry sends exact decoded credentials and vhost\nPASS static entry sends exact decoded credentials and vhost\nPASS constructor entry sends exact decoded credentials and vhost\nPASS object entry sends exact decoded credentials and vhost\nPASS URI heartbeat overrides options while nonempty vhost and channel limits win\nPASS URI repeated SASL candidates use client order and explicit SASL overrides the URI\nPASS URI authentication identifiers are case insensitive like upstream DialConfig\nPASS URI connection_timeout drives handshake expiry\nPASS URI TLS override ignores URI file parameters and snapshots its property object\nPASS URI recovery retains decoded endpoint credentials and ignores later caller mutation\n14 URI connection fixture groups passed\n"
+    }
+  ],
+  "realBrokerRerun": false,
+  "remoteCIRun": false,
+  "priorAttempt": {
+    "utc": "2026-09-21T14:17:33.903381+00:00",
+    "scope": "Targeted independent TCP fixtures for timing-only test repairs; no runtime change.",
+    "checks": [
+      {
+        "command": [
+          "node",
+          "tools/test-uri.mjs"
+        ],
+        "exitCode": 1,
+        "output": "PASS URI parser returns frozen records and explicit credential redaction\nPASS URI normalization distinguishes URI and existing object defaults\nPASS URI transport rejects invalid ranges and mechanisms before opening a socket\nPASS URI TCP authentication retains explicit opt-in and early cancellation\nPASS function entry sends exact decoded credentials and vhost\nPASS static entry sends exact decoded credentials and vhost\nfile:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/client.mjs:260\r\n    while(this.#socket.writableNeedDrain){\r\n                       ^\r\n\r\nTypeError: Cannot read properties of undefined (reading 'writableNeedDrain')\r\n    at #writable (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/client.mjs:260:24)\r\n    at #publishWrites.run.signal (file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/client.mjs:269:66)\r\n    at file:///C:/Users/uiwcv/Documents/Codex/2026-09-10/ban/outputs/repos/moonbit-amqp/tools/outbound.mjs:37:128\r\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\r\n\r\nNode.js v24.11.0\r\n"
+      }
+    ],
+    "realBrokerRerun": false,
+    "remoteCIRun": false,
+    "priorAttempt": {
+      "utc": "2026-09-21T14:15:38.866473+00:00",
+      "scope": "Targeted independent TCP fixtures for timing-only test repairs; no runtime change.",
+      "checks": [
+        {
+          "command": [
+            "node",
+            "tools/test-stream.mjs"
+          ],
+          "exitCode": 0,
+          "output": "PASS buffered publication boundaries preserve binary content, caller snapshots and confirm order\nPASS pre-aborted waits observe later input rejection and queue close suppresses deferred work\nPASS 12 MiB lazy binary source hashes correctly using negotiated 4096 byte frames\nPASS buffered publish above the previous 1 MiB limit snapshots caller bytes\nPASS slow reader backpressure bounds socket buffers and producer read-ahead\nPASS same-channel body, ack, buffered publication and RPC retain call order\nPASS waiting source does not block another channel and confirm timeout begins after body\nPASS invalid metadata and sizes never consume a confirm sequence or close connection\nPASS short source rejects and closes incomplete connection\nPASS long source rejects and closes incomplete connection\nPASS non-byte chunk rejects and closes incomplete connection\nPASS source exception rejects and closes incomplete connection\nPASS source progress timeout rejects and closes incomplete connection\nPASS queued abort never opens its source and leaves later confirmation sequence intact\nPASS abort after header rejects queued operations and calls iterator return\nPASS per-channel buffered queue cap rejects without sequence gaps\nPASS flow reply and server consumer cancellation wait behind the current body\nPASS broker channel close during source wait preserves healthy sibling\nPASS interrupted recoverable stream is rejected once and never replayed\nPASS graceful connection close drains prior publications and fire-and-forget acknowledgements\nPASS stalled socket drain times out and closes the partial connection\nPASS broker closure cancels queued channel work before its numeric id is reused\nPASS bounded operation queue allows graceful draining when at capacity\n23 streaming fixture groups passed\n"
+        },
+        {
+          "command": [
+            "node",
+            "tools/test-recovery.mjs"
+          ],
+          "exitCode": 0,
+          "output": "PASS recovery configuration validation precedes connection creation\nPASS ordered cross-channel topology and server-named queue aliases survive repeated disconnects\nPASS deliveries received during recovery wait for readiness and stale tags never reach new channel\nPASS unconfirmed publications reject and are not silently republished after recovery\nPASS soft channel error recovers that channel without disconnecting a healthy sibling\nPASS deleted topology, unbound routes and cancelled consumers are not resurrected\nPASS transient mode preserves subscriptions but skips durable declarations\nPASS disabled topology still restores channel QoS and transaction mode\nPASS skippable topology failure reopens channel before restoring remaining entities\nPASS topology error callback can refuse skipping and exhaust retry budget\nPASS connection failure during topology replay retries the complete recovery sequence\nPASS explicit close cancels retry delay without creating another socket\nPASS AbortSignal cancels a reconnect handshake and releases the wait\nPASS ready wait cancellation is local and callback errors do not stop recovery listeners\nPASS topology stores an independent argument snapshot and enforces a bounded registry\nPASS pending non-idempotent RPC rejects instead of being replayed after reconnect\nPASS failure of the last topology entity still leaves a usable reopened channel\nPASS skipping a failed consumer restores earlier subscriptions after reopening its channel\nPASS broker consumer cancellation removes its recovery entry\nPASS closing a channel during connection recovery cannot resurrect or leak the opening channel\nPASS connection recovery supersedes an older channel retry without a duplicate open\nPASS server-named queue aliases also work for later passive declarations\nPASS closing connection from a channel ready listener cannot resurrect it\nPASS closing connection from stateChange suppresses stale readiness notifications\nPASS a channel recovery notification permits a new topology RPC\n25 recovery fixture groups passed\n"
+        },
+        {
+          "command": [
+            "node",
+            "tools/test-client.mjs"
+          ],
+          "exitCode": 0,
+          "output": "PASS configuration rejects plaintext by default and invalid numeric values\nPASS fragmented handshake and graceful close\nPASS handshake timeout destroys socket\nPASS abort during handshake\nPASS RPC timeout rejects all channels and closes connection\nPASS abort terminates pending RPC\nPASS premature EOF with partial message rejects get\nPASS connection close rejects RPC and acknowledges peer\nPASS out-of-order single and cumulative publisher confirmations\nPASS publisher nack rejects only affected publish\nPASS future confirmation tag fails closed\nPASS unconfirmed publish timeout closes connection\nPASS missing broker heartbeat fails idle connection\nPASS bad frame terminator fails pending request\nPASS oversized frame rejected from header without waiting for body\nPASS invalid local publish leaves confirmation sequence usable\nPASS broker blocked event prevents publishing until unblocked\nPASS session bridge malformed table does not throw outside error result\nClient fixtures: 18 passed\n"
+        },
+        {
+          "command": [
+            "node",
+            "tools/test-autodelete.mjs"
+          ],
+          "exitCode": 0,
+          "output": "PASS last consumer cancellation forgets the queue and full exchange chain before reconnect\nPASS consumer tags are channel scoped and all channels participate in last-consumer tracking\nPASS never-consumed queues and never-bound exchanges survive no-op cancellation and unbind\nPASS argument-distinct bindings and bindings from other channels retain their source until the last removal\nPASS exchange unbinding removes only the auto-delete source, preserving an unbound destination\nPASS explicit deletion cascades through a cyclic exchange graph without recursive looping\nPASS failed deletion does not erase the desired topology\nPASS a pending cross-channel consumer prevents premature auto-deletion before its acknowledgement\nPASS a pending binding prevents the last acknowledged unbind from prematurely deleting its source\nPASS explicit channel close forgets its last auto-delete consumer and channel-owned declarations\nPASS broker cancellation cascades and repeated cancellation cannot resurrect records\nPASS server-named queue aliases are removed after cancellation following recovery\nPASS consumer acknowledgement immediately followed by broker cancellation cannot leave a stale recovery consumer\n13 auto-delete fixture groups passed\n"
+        },
+        {
+          "command": [
+            "node",
+            "tools/test-connection-strategy.mjs"
+          ],
+          "exitCode": 0,
+          "output": "PASS invalid connection strategy fails before opening transport\nPASS no-op policy receives both connection and channel loss without automatic redial\nPASS manual reconnect after a no-op decision restores the original channel and consumer\nPASS asynchronous decision delays recovery and uses the bound method snapshot\nPASS default delegate restores repeatedly and each physical loss has one notification per resource\nPASS channel no-op retains topology and a sibling stays usable until manual reconnect\nPASS default channel strategy reopens only the failed channel\nPASS connection decision may close permanently and settle all cancellation observers\nPASS channel policy can discard its channel without closing the connection\nPASS throwing policy reports callbackError and leaves manual recovery available\nPASS closing cancels a hung decision and revokes late actions\nPASS external reconnect supersedes a delayed policy without a second dial\nPASS connection loss supersedes an earlier pending single-channel decision\nPASS default exhaustion runs the policy once and cancels retained resources\nPASS application close and failed initial handshake do not invoke recovery policy\nPASS in-band topology errors do not cause redundant custom channel recovery\nPASS completed no-op contexts expire while the public manual API remains usable\nPASS closing from disconnected state notification prevents the queued policy from running\nPASS external abort cancels a pending decision and permanently disables recovery\nPASS all sixteen pending channel decisions cancel without runtime warnings\nPASS starting a graceful connection close cancels a pending channel policy before close-ok\nPASS default custom channel owner cleans up a fatal topology failure\n22 connection strategy fixture groups passed\n"
+        },
+        {
+          "command": [
+            "node",
+            "tools/test-topology.mjs"
+          ],
+          "exitCode": 0,
+          "output": "PASS physical connection and channel expose disabled recovery and independent empty topology\nPASS configured policy snapshots remain isolated and enabled getters reflect closing\nPASS disabled topology reports an empty configured view while connection recovery stays enabled\nPASS channel local and global views preserve independent channel QoS\nPASS duplicate declarations retain both owners and the global view deduplicates bindings\nPASS nested arguments query copies cannot alter live declarations or later recovery\nPASS cross-channel deletion and argument-specific unbind update every recorded owner\nPASS explicit channel close removes its orphan declarations and does not replay them\nPASS connection close clears live topology while already returned snapshots remain independent\nPASS anonymous queue keys and cross-channel bindings follow newly assigned names\nPASS topology query does not publish unacknowledged or failed declarations\nPASS passive probes leave tracked declarations unchanged\nPASS per-channel duplicate ownership consumes and releases bounded topology capacity\nPASS reconnecting queries expose desired topology and remain enabled until terminal close\n14 topology query fixture groups passed\n"
+        },
+        {
+          "command": [
+            "node",
+            "tools/test-topology-strategy.mjs"
+          ],
+          "exitCode": 0,
+          "output": "PASS invalid strategy fails before dialing\nPASS replacement suppresses built-in declarations and consumers while preserving channel setup\nPASS bound method snapshot delegates once and restores consumers across two losses\nPASS custom channel operations can declare dynamic topology without replaying tracked entries\nPASS custom declarations and subscriptions remain tracked for the next default recovery\nPASS unreturned scoped operations finish before readiness and do not unlock outside application calls\nPASS public default strategy respects transient mode and resolves new anonymous queue names\nPASS disabled topology never invokes a configured custom strategy\nPASS fatal custom error retries with a fresh context and cannot reuse the earlier scope\nPASS invalid results and invalid skipped entries exhaust bounded recovery\nPASS returned skipped entities reach connection and channel recovered events\nPASS close cancels an ignored strategy promise and revokes its late operations\nPASS transport loss interrupts a stalled strategy and the next attempt can recover\nPASS closing one channel interrupts its strategy and leaves the sibling usable\nPASS readiness joins default restoration even if the callback omits its promise\nPASS unreturned default failure cannot be mistaken for successful recovery\nPASS temporary scoped channels allow dynamic declarations with no tracked channels\nPASS a completed scope cannot send or open a channel and releases abort listeners\nPASS single-channel custom recovery receives only the affected channel\nPASS strategy may handle a temporary task failure and continue default restoration\nPASS strategy can catch a default failure and explicitly remove the failed channel\nPASS explicit channel strategy failure returns once and retains its usable session\nPASS automatic channel strategy failure closes only that logical channel after one pass\nPASS unreturned temporary channel failure propagates and cannot leak its channel\nPASS blocking entity-error callbacks are cancelled by closing during default restoration\n25 topology strategy fixture groups passed\n"
+        },
+        {
+          "command": [
+            "node",
+            "tools/test-close-deadline.mjs"
+          ],
+          "exitCode": 0,
+          "output": "PASS Date and Unix milliseconds close physical and recovering connections\nPASS invalid deadline values do not change state or cancellation ownership\nPASS expired deadline fails before sending the close handshake\nPASS silent peer hits the absolute deadline and settles channels and notifications\nPASS deadline can exceed ordinary connection timeout while waiting for close-ok\nPASS null disables only the close deadline and a delayed response can succeed\nPASS Date is snapshotted and caller mutation cannot shorten an in-flight deadline\nPASS far-future deadlines avoid the Node timer overflow and clear on success\nPASS deadline close flushes sent publication bytes without waiting for unreceived confirms\nPASS deadline interrupts stalled streamed publication and closes its owned source\nPASS closing a partially received stream rejects its completion and frees the connection\nPASS generic Duplex backpressure is bounded and drain listeners are removed\nPASS successful close-ok disposes an owned Duplex even when its final callback stalls\nPASS a second deadline call cannot reset the first close and ordinary close shares it\nPASS already exhausted recovery is explicitly disabled even though CloseDeadline rejects\nPASS deadline close cancels reconnect and destroys a late transport without resurrection\nPASS peer EOF during close propagates failure and leaves a single terminal state\n17 close deadline fixture groups passed\n"
+        },
+        {
+          "command": [
+            "node",
+            "tools/test-secret-update.mjs"
+          ],
+          "exitCode": 0,
+          "output": "PASS credential update transmits exact binary longstr and UTF-8 reason while ordinary channel RPC proceeds\nPASS credential replies do not emit unblocked or swallow real flow control events\nPASS overlapping credential updates reject without disturbing the accepted request\nPASS invalid local reason or oversized frame leaves the credential exchange usable\nPASS missing credential acknowledgement times out the whole connection and all pending work\nPASS server rejection preserves its reply code and terminates the pending credential exchange\nPASS connection close and signal cancellation both release a pending credential update\nPASS unrequested credential acknowledgement fails closed\nPASS disconnect during credential update rejects it without replay on the recovered connection\nPASS successful update changes only the live connection, keeping application-owned reconnect credentials\n10 credential update fixture groups passed\n"
+        }
+      ],
+      "realBrokerRerun": false,
+      "remoteCIRun": false
+    }
+  }
+}

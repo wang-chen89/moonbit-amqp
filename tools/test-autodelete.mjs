@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {once} from 'node:events';
 import fs from 'node:fs';
 import {sourceSnapshot,assertSourceUnchanged} from './evidence-source.mjs';
-import {fixture,method,short,delay} from './recovery-peer.mjs';
+import {fixture,method,short,until} from './recovery-peer.mjs';
 const sources=sourceSnapshot(['tools/client.mjs','tools/recovery.mjs','tools/recovery-channel.mjs','tools/recovery-state.mjs','tools/recovery-peer.mjs','tools/test-autodelete.mjs','web/engine.mjs']);
 const tests=[],config={recovery:{retryDelay:5,retryJitter:0,maxRetries:3},timeout:700};
 const event=(target,name)=>once(target,name,{signal:AbortSignal.timeout(5000)});
@@ -45,12 +45,12 @@ await test('failed deletion does not erase the desired topology',async({open})=>
 },{onMethod(e,s){if(e.cls===50&&e.id===40){s.write(method(e.ch,20,40,Buffer.from([1,150]),short('in use'),Buffer.from([0,50,0,40])));return true;}}});
 await test('a pending cross-channel consumer prevents premature auto-deletion before its acknowledgement',async({open,state})=>{
  const c=await open(config),a=await c.openChannel(),b=await c.openChannel();await chain(a);await a.consume('q',()=>{},{consumerTag:'old'});
- const pending=b.consume('q',()=>{},{consumerTag:'pending'});await delay(10);await a.cancel('old');assert(c.topology.queue('q'));
+ const pending=b.consume('q',()=>{},{consumerTag:'pending'});await until(()=>state.methods.some(e=>e.peer===1&&e.cls===60&&e.id===20&&e.args.includes(Buffer.from('pending'))));await a.cancel('old');assert(c.topology.queue('q'));
  socket(state).write(method(b._raw.id,60,21,short('pending')));await pending;await reconnect(c,state);assert(c.topology.queue('q'));await b.cancel('pending');empty(c);
 },{onMethod(e){if(e.peer===1&&e.cls===60&&e.id===20&&e.args.includes(Buffer.from('pending')))return true;}});
 await test('a pending binding prevents the last acknowledged unbind from prematurely deleting its source',async({open,state})=>{
  const c=await open(config),a=await c.openChannel(),b=await c.openChannel();await a.declareExchange('e','direct',{autoDelete:true});await a.declareQueue('q');await a.bindQueue('q','e','old');
- const pending=b.bindQueue('q','e','pending');await delay(10);await a.unbindQueue('q','e','old');assert(c.topology.exchanges.has('e'));
+ const pending=b.bindQueue('q','e','pending');await until(()=>state.methods.some(e=>e.peer===1&&e.cls===50&&e.id===20&&e.args.includes(Buffer.from('pending'))));await a.unbindQueue('q','e','old');assert(c.topology.exchanges.has('e'));
  socket(state).write(method(b._raw.id,50,21));await pending;await reconnect(c,state);assert(c.topology.exchanges.has('e'));await b.unbindQueue('q','e','pending');assert(!c.topology.exchanges.has('e'));
 },{onMethod(e){if(e.peer===1&&e.cls===50&&e.id===20&&e.args.includes(Buffer.from('pending')))return true;}});
 await test('explicit channel close forgets its last auto-delete consumer and channel-owned declarations',async({open,state})=>{

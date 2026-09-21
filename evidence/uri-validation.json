@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-20T15:37:55.191Z",
+  "utc": "2026-09-21T14:17:53.096Z",
   "node": "v24.11.0",
   "passed": 14,
   "tests": [
@@ -38,10 +38,10 @@
     "cmd/web/uri.mbt": "277acacb4d51d0a13e470e7132a74ffc592fc13dec72855ec2881e9ea1e7ba54",
     "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
     "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
-    "tools/client.mjs": "c4836d1c198377be1f282b365836bbe36c08a4dfe44ccc76ed15f2d20ef18c3f",
+    "tools/client.mjs": "9c4e865856262321cad5579fd71524d04ebfa57be4919e32c74398b2337c51f9",
     "tools/authentication.mjs": "0e13d85fe881e5ab277965b5891df2a38b74647f238486508ead5fe2176ceb5a",
-    "tools/recovery-peer.mjs": "ce2f414bffcb07a848143cd34c1e737340e15078f4b3f0cb25f0e829a35118fe",
-    "tools/test-uri.mjs": "603dc89af749d180e6bf416e30802d4fba9688f1872b418032fa14d5f533ad3d",
+    "tools/recovery-peer.mjs": "0bcd8bcbbfdb0a5b1c23b653af89d860870d0525aedcf34ed69f55e8376319c0",
+    "tools/test-uri.mjs": "b037cab867fc8c8fa9fc2194aea21a14b8ecf2e69625832527957f6696317780",
     "web/engine.mjs": "50dbb50240e56a92b2a9316f3f7a43c1a4c6768bb87d173cd3bd5953cbc5033e"
   },
   "scope": "Actual MoonBit URI parser and transport entry against independent TCP peer; TLS file normalization is checked here, real TLS and native broker comparison separately."

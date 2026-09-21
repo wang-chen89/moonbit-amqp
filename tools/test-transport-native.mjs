@@ -7,7 +7,7 @@ import tls from 'node:tls';
 import {spawn} from 'node:child_process';
 import {once} from 'node:events';
 import {connect,open,defaultDial} from './client.mjs';
-import {fixture,ack,delay} from './recovery-peer.mjs';
+import {fixture,ack,until} from './recovery-peer.mjs';
 import {clientProperties} from './metadata-peer.mjs';
 import {byteTransport} from './transport-peer.mjs';
 import {withRabbit,proxyTo} from './rabbitmq-harness.mjs';
@@ -33,7 +33,7 @@ async function node(request,base){
  try{
   const ch=await c.openChannel();await ch.declareQueue('transport-probe',{exclusive:true,autoDelete:true});await ch.confirmSelect();const confirmation=await ch.publish('','transport-probe','transport message');
   const body=request.Broker?(await ch.get('transport-probe',{noAck:true})).body.toString():'';
-  const result={ack:Boolean(confirmation),body,vhost:c.config.vhost,mechanism:c.authenticationMechanism,...c.limits,tls:c.tlsState.handshakeComplete};await c.close();await delay(10);
+  const result={ack:Boolean(confirmation),body,vhost:c.config.vhost,mechanism:c.authenticationMechanism,...c.limits,tls:c.tlsState.handshakeComplete};await c.close();await until(()=>stream.destroyed);
   return {calls,ok:true,dialErrorIdentity:false,result,transportClosed:stream.destroyed};
  }finally{c?.destroy();stream?.destroy();}
 }
@@ -67,7 +67,7 @@ await withRabbit(async info=>{
   try{
    c=await connect('amqps://demo:test-only@route.invalid:12345/?heartbeat=2',{timeout:5000,tls:{ca:bytes.ca,servername:'localhost'},recovery:{retryDelay:20,retryJitter:0,maxRetries:3},dial:(n,a,context)=>{signals.push(context.signal);const s=net.connect({host:'127.0.0.1',port:recoverProxy.port});sockets.push(s);return s;}});
    const ch=await c.openChannel();await ch.declareQueue('transport-recovery',{autoDelete:true});await ch.confirmSelect();await ch.publish('','transport-recovery','before');assert.equal((await ch.get('transport-recovery',{noAck:true})).body.toString(),'before');
-   const recovered=once(c,'recovered',{signal:AbortSignal.timeout(10000)});recoverProxy.cut();await recovered;assert.equal(sockets.length,2);assert(sockets[0].destroyed&&signals[0].aborted);assert.equal(c.tlsState.authorized,true);assert.equal(c.connectionInfo.generation,2);await ch.publish('','transport-recovery','after');assert.equal((await ch.get('transport-recovery',{noAck:true})).body.toString(),'after');await ch.deleteQueue('transport-recovery');await c.close();await delay(10);assert(sockets.every(s=>s.destroyed));localTests.push('custom TLS dial is reinvoked and topology confirmed publish/get recover');console.log('PASS '+localTests.at(-1));
+   const recovered=once(c,'recovered',{signal:AbortSignal.timeout(10000)});recoverProxy.cut();await recovered;assert.equal(sockets.length,2);assert(sockets[0].destroyed&&signals[0].aborted);assert.equal(c.tlsState.authorized,true);assert.equal(c.connectionInfo.generation,2);await ch.publish('','transport-recovery','after');assert.equal((await ch.get('transport-recovery',{noAck:true})).body.toString(),'after');await ch.deleteQueue('transport-recovery');await c.close();await until(()=>sockets.every(s=>s.destroyed));assert(sockets.every(s=>s.destroyed));localTests.push('custom TLS dial is reinvoked and topology confirmed publish/get recover');console.log('PASS '+localTests.at(-1));
   }finally{c?.destroy();await recoverProxy.close();}
  }finally{assert(path.dirname(directory)===os.tmpdir()&&path.basename(directory).startsWith('moonbit-transport-'));fs.rmSync(directory,{recursive:true,force:true});}
 },{authentication:true});
