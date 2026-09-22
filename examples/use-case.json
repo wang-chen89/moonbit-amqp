@@ -1,0 +1,14 @@
+{
+  "title": "诊断抓取的 AMQP 帧",
+  "scope": "离线合成 heartbeat 帧；完整发布确认/恢复的范围另见证据，不能由本例推断真实 broker 互通。",
+  "steps": [
+    {
+      "args": [
+        "tools/inspect.mjs",
+        "--hex",
+        "08000000000000ce"
+      ]
+    }
+  ],
+  "expected": "输出一条 channel 0 的 heartbeat；不连接 broker。"
+}
