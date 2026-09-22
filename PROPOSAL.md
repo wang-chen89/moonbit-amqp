@@ -1,7 +1,7 @@
 # AMQP 可靠消息发布与恢复客户端 · 修订申报草稿
 
 本项目仓库：https://github.com/wang-chen89/moonbit-amqp
-模块 / 本地版本：`wang-chen89/amqp` / `0.24.0`；许可证：MIT。
+模块 / 本地版本：`wang-chen89/amqp` / `0.24.0`；许可证：MIT AND BSD-3-Clause AND BSD-2-Clause。
 修订状态：条件复审；本轮仅本地修订，未推送或提交表单。
 
 ## 任务与选择依据
