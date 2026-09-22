@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-21T14:15:30.865Z",
+  "utc": "2026-09-22T13:14:43.093Z",
   "node": "v24.11.0",
   "passed": 23,
   "tests": [
@@ -53,7 +53,7 @@
       "writeStats": {
         "socketBufferedBytes": 0,
         "maxObservedSocketBytes": 65544,
-        "drainWaits": 389,
+        "drainWaits": 387,
         "streamingChannels": 0,
         "deferredProtocolBytes": 0
       }
@@ -86,7 +86,7 @@
     "tools/client.mjs": "9c4e865856262321cad5579fd71524d04ebfa57be4919e32c74398b2337c51f9",
     "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
     "tools/test-stream.mjs": "9e27973c495b93b5ffcfe6238328bcbf5327e4f62be7b4c8e7d5779a72b2939a",
-    "web/engine.mjs": "50dbb50240e56a92b2a9316f3f7a43c1a4c6768bb87d173cd3bd5953cbc5033e"
+    "web/engine.mjs": "95bd55c8a9b0f63176daea3562de26a1e24bcc96ef54fda9768e0239a907af51"
   },
   "scope": "Independent wire fixtures; outbound streaming only. Source-owned chunk storage excluded from sender buffer bound."
 }

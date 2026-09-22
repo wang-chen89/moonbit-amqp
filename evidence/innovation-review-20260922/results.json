@@ -1,0 +1,65 @@
+{
+  "date": "2026-09-22",
+  "project": "amqp",
+  "package": "wang-chen89/amqp",
+  "version": "0.24.0",
+  "code_base_commit_before_materials": "2a23148f5912f03617e90444f934a11ef394bf6c",
+  "core_checks": [
+    {
+      "command": [
+        "moon",
+        "test",
+        "--target",
+        "js"
+      ],
+      "exit": 0,
+      "seconds": 3.78,
+      "log": "amqp-test---target-js.log"
+    },
+    {
+      "command": [
+        "moon",
+        "test",
+        "--target",
+        "wasm-gc"
+      ],
+      "exit": 0,
+      "seconds": 1.99,
+      "log": "amqp-test---target-wasm-gc.log"
+    },
+    {
+      "command": [
+        "moon",
+        "build",
+        "--target",
+        "js"
+      ],
+      "exit": 0,
+      "seconds": 1.4,
+      "log": "amqp-build---target-js.log"
+    }
+  ],
+  "workflow_checks": [
+    {
+      "command": [
+        "node",
+        "tools/test-recovery.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.82,
+      "log": "amqp-workflow-0.log"
+    },
+    {
+      "command": [
+        "node",
+        "tools/test-stream.mjs"
+      ],
+      "exit": 0,
+      "seconds": 10.05,
+      "log": "amqp-workflow-1.log"
+    }
+  ],
+  "interpretation": "本轮独立编码的本机 TCP peer 复现断连、恢复、旧标签、12 MiB 数据散列、队列背压及部分发布失败；23 组流式检查通过。不是本轮新跑的 RabbitMQ 集群验收。",
+  "limit": "不是新协议，也不是 RabbitMQ 完整客户端等价物。断连时未确认消息可能已到达 broker，不能宣称 exactly-once；部分独立测试使用手写 TCP peer，其结果与真实 RabbitMQ 的历史报告分开。",
+  "remote_push_performed": false
+}
