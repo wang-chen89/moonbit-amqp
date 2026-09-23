@@ -1,29 +1,15 @@
-# 诊断抓取的 AMQP 帧
+# AMQP 发布结果判定与连接恢复客户端的可运行任务
 
-连接中断和发布确认交错时，应用需要知道哪些消息已确认、哪些结果未知，恢复拓扑和消费者时不能把旧 delivery tag 发送到新通道。大消息发布还需要处理背压及中途断连。
+连接中断时，区分已经确认和结果未知的任务，恢复队列/消费者后继续处理新任务，并拒绝属于旧通道的投递标签。
 
-## 输入、操作、输出
+先按 [README](README.md) 构建并准备依赖，再运行 `node examples/run-recovery-workflow.mjs`，或使用已更新的通用入口 `node examples/run-use-case.mjs`。后者只负责保存stdout和回执，不将运行器本身计为协议贡献。
 
-离线合成 heartbeat 帧；完整发布确认/恢复的范围另见证据，不能由本例推断真实 broker 互通。
+主例打开发布与消费两条通道，声明exchange、服务端命名队列、binding和QoS；第一条发布收到确认，第二条被测试端接收但在确认前断线。恢复后第二条标为unknown且不自动重发；队列别名随恢复更新；旧delivery tag被拒绝，新tag可以确认，第三条新发布获得确认。
 
-最简运行：先按 README 构建，然后 `node examples/run-use-case.mjs`。它自动创建输出目录并执行下面命令。下列 `{out}` 是运行器替换的实际目录，不是直接输入 shell 的变量；stdin 文件由运行器传递，以避免 Windows 与 POSIX 重定向差异。
+report.json包含confirmed/unknown/confirmed、automaticallyReplayed=false、oldTagRejected=true和新队列别名。
 
-```text
-node tools/inspect.mjs --hex 08000000000000ce
-```
+主例使用现有手写TCP测试端，按规范独立构造字节，不是独立RabbitMQ。未知结果故障由测试端可控注入；本轮另重跑真实RabbitMQ4.0.5恢复检查，不能据此称为集群或生产验收。
 
-观察：输出一条 channel 0 的 heartbeat；不连接 broker。
+发布Promise在断线时失败不等于消息没有送达。示例不提供持久化outbox、业务ID对账、消费幂等或exactly-once；应用自行决定是否重试。恢复受配置预算、拓扑错误和broker状态限制；生产环境和真实使用方仍未证实。
 
-每一步输出见实际目录下 `step-N.stdout.txt` / `step-N.stderr.txt`；本轮已保存回执见 `evidence/value-rework-20260922/use-case.json`。
-
-## 为什么保留这个实现
-
-需要从 MoonBit 维护协议状态、并由 JS 宿主处理可靠发布时可评估；如果项目只需现成 Node 客户端，没有必要为“原生”再造一套。
-
-承认 DDD12345-D/moon-amqp 已有编解码与 JS broker 会话，MoonMQ 已有 broker 核心。对照固定提交的文档，前者明确不提供 TLS、心跳和 confirms。本项目重点是有界流式发送、确认状态、恢复拓扑和旧 tag 拒绝，不能把所有差异都称作 MoonBit 原生网络实现。未证明对方完全不能通过二次开发实现这些任务。
-
-## 不能由样例推出的结论
-
-不是新协议，也不是 RabbitMQ 完整客户端等价物。断连时未确认消息可能已到达 broker，不能宣称 exactly-once；部分独立测试使用手写 TCP peer，其结果与真实 RabbitMQ 的历史报告分开。
-
-该样例是可修改的使用入口，不能证明存在真实用户、全部兼容或性能领先。继续投入的依据应是明确的输入或接入需求；若对接任务用既有成熟库即可完成，应优先复用而不是为保留参赛数量扩张本项目。
+完整参数、环境、失败语义及参考实现差异见 [WORKFLOW](WORKFLOW.md)。旧离线报文仍留作解析器小例子，不再作为主任务完成的唯一证据。

@@ -1,0 +1,154 @@
+{
+  "date": "2026-09-23",
+  "project": "amqp",
+  "checks": [
+    {
+      "check": "toolchain",
+      "command": [
+        "C:\\Users\\uiwcv\\Documents\\Codex\\2026-09-10\\ban\\work\\moon\\bin\\moon.exe",
+        "version",
+        "--all"
+      ],
+      "exit": 0,
+      "log": "toolchain.log"
+    },
+    {
+      "check": "node-version",
+      "command": [
+        "node",
+        "--version"
+      ],
+      "exit": 0,
+      "log": "node-version.log"
+    },
+    {
+      "check": "fmt",
+      "command": [
+        "C:\\Users\\uiwcv\\Documents\\Codex\\2026-09-10\\ban\\work\\moon\\bin\\moon.exe",
+        "fmt"
+      ],
+      "exit": 0,
+      "log": "fmt.log"
+    },
+    {
+      "check": "info",
+      "command": [
+        "C:\\Users\\uiwcv\\Documents\\Codex\\2026-09-10\\ban\\work\\moon\\bin\\moon.exe",
+        "info"
+      ],
+      "exit": 0,
+      "log": "info.log"
+    },
+    {
+      "check": "check-js",
+      "command": [
+        "C:\\Users\\uiwcv\\Documents\\Codex\\2026-09-10\\ban\\work\\moon\\bin\\moon.exe",
+        "check",
+        "--target",
+        "js"
+      ],
+      "exit": 0,
+      "log": "check-js.log"
+    },
+    {
+      "check": "test-js",
+      "command": [
+        "C:\\Users\\uiwcv\\Documents\\Codex\\2026-09-10\\ban\\work\\moon\\bin\\moon.exe",
+        "test",
+        "--target",
+        "js"
+      ],
+      "exit": 0,
+      "log": "test-js.log"
+    },
+    {
+      "check": "test-wasm-gc",
+      "command": [
+        "C:\\Users\\uiwcv\\Documents\\Codex\\2026-09-10\\ban\\work\\moon\\bin\\moon.exe",
+        "test",
+        "--target",
+        "wasm-gc"
+      ],
+      "exit": 0,
+      "log": "test-wasm-gc.log"
+    },
+    {
+      "check": "build-js",
+      "command": [
+        "C:\\Users\\uiwcv\\Documents\\Codex\\2026-09-10\\ban\\work\\moon\\bin\\moon.exe",
+        "build",
+        "--target",
+        "js"
+      ],
+      "exit": 0,
+      "log": "build-js.log"
+    },
+    {
+      "check": "main-workflow",
+      "command": [
+        "node",
+        "examples/run-recovery-workflow.mjs"
+      ],
+      "exit": 0,
+      "log": "main-workflow.log"
+    },
+    {
+      "check": "test-recovery",
+      "command": [
+        "node",
+        "tools/test-recovery.mjs"
+      ],
+      "exit": 0,
+      "log": "test-recovery.log"
+    },
+    {
+      "check": "test-stream",
+      "command": [
+        "node",
+        "tools/test-stream.mjs"
+      ],
+      "exit": 0,
+      "log": "test-stream.log"
+    },
+    {
+      "check": "test-rabbitmq-recovery",
+      "command": [
+        "node",
+        "tools/test-rabbitmq-recovery.mjs"
+      ],
+      "exit": 0,
+      "log": "test-rabbitmq-recovery.log"
+    },
+    {
+      "check": "test-demo",
+      "command": [
+        "node",
+        "tools/test-demo.mjs"
+      ],
+      "exit": 0,
+      "log": "test-demo.log"
+    },
+    {
+      "check": "test-cli",
+      "command": [
+        "node",
+        "tools/test-cli.mjs"
+      ],
+      "exit": 0,
+      "log": "test-cli.log"
+    }
+  ],
+  "sourceSha256": {
+    "web/engine.mjs": "95bd55c8a9b0f63176daea3562de26a1e24bcc96ef54fda9768e0239a907af51",
+    "tools/client.mjs": "9c4e865856262321cad5579fd71524d04ebfa57be4919e32c74398b2337c51f9",
+    "examples/run-recovery-workflow.mjs": "d3f4e6650fa673367f180827e61e3690d9293e9103b312d0fd254da771b37c4c",
+    "tools/recovery-peer.mjs": "0bcd8bcbbfdb0a5b1c23b653af89d860870d0525aedcf34ed69f55e8376319c0",
+    "tools/recovery.mjs": "359b6bf6a2967ea38198200d9a5aae9739ae7f2e4483c6971818a87250cbf417",
+    "tools/recovery-channel.mjs": "8f8b4f44e4b6c30509530a0b2e50d0f3ab49b3eec83537e72136e8750aa30810"
+  },
+  "historicalEvidencePreserved": true,
+  "remoteCIExecuted": false,
+  "published": false,
+  "productionUsersClaimed": false,
+  "scope": "Fresh core and selected related checks, not rerun of every historical validation"
+}

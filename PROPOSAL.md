@@ -1,25 +1,25 @@
-# AMQP 可靠消息发布与恢复客户端 · 修订申报草稿
+# AMQP 发布结果判定与连接恢复客户端 · 修订申报草稿
 
 本项目仓库：https://github.com/wang-chen89/moonbit-amqp
-模块 / 本地版本：`wang-chen89/amqp` / `0.24.0`；许可证：MIT AND BSD-3-Clause AND BSD-2-Clause。
-修订状态：条件复审；本轮仅本地修订，未推送或提交表单。
+模块 / 本地版本：`wang-chen89/amqp` / `0.24.1`；MIT AND BSD-3-Clause AND BSD-2-Clause。
+状态：审核结果未知，本轮预防性本地整改，未推送、发布或提交表单。
 
-## 任务与选择依据
-连接中断和发布确认交错时，应用需要知道哪些消息已确认、哪些结果未知，恢复拓扑和消费者时不能把旧 delivery tag 发送到新通道。大消息发布还需要处理背压及中途断连。
-需要从 MoonBit 维护协议状态、并由 JS 宿主处理可靠发布时可评估；如果项目只需现成 Node 客户端，没有必要为“原生”再造一套。
+## 任务与实现
+连接中断时，区分已经确认和结果未知的任务，恢复队列/消费者后继续处理新任务，并拒绝属于旧通道的投递标签。
+MoonBit处理帧、方法、属性、认证、Session和分块发布状态；Node负责TCP/TLS、流式I/O、确认Promise及重连调度。0.24.1没有新造协议层，增加的是现有公开客户端能力的可运行故障主例。
+主例打开发布与消费两条通道，声明exchange、服务端命名队列、binding和QoS；第一条发布收到确认，第二条被测试端接收但在确认前断线。恢复后第二条标为unknown且不自动重发；队列别名随恢复更新；旧delivery tag被拒绝，新tag可以确认，第三条新发布获得确认。
 
-## 已实现内容
-MoonBit 的 Session::publish_start / publish_body 管理发布状态、协商帧上限和剩余长度；认证协商、增量帧/方法/属性解析和通道状态也在 MoonBit。Node 负责 TCP/TLS、时钟、流式 I/O、确认 Promise 和重连调度。
-可复现任务：诊断抓取的 AMQP 帧；按 README 构建后运行 `node examples/run-use-case.mjs`，输入与输出见 USE-CASE.md。
-前一轮工程验证独立编码的本机 TCP peer 复现断连、恢复、旧标签、12 MiB 数据散列、队列背压及部分发布失败；23 组流式检查通过。不是前一轮工程验证新跑的 RabbitMQ 集群验收。
+## 已有生态与扩展范围
+承认DDD12345-D/moon-amqp已有MoonBit协议编解码和真实broker示例，Zcxssxx/MoonMQ已有内存broker核心。固定提交的moon-amqp文档未提供confirms、TLS和自动恢复；本项目侧重这些失败语义及有界流式传输，但没有直接基于对方代码扩展，不把协议基础、Node宿主或测试脚本称为首创。
+固定来源与检索边界见DUPLICATION.md；没有声称生态空白、真实用户、上游认可或协议算法首创。
 
-## 原创、复用与差异
-原创实现/参考来源/第三方材料许可按 README、DUPLICATION 与仓库来源说明披露；不将既有协议、算法、词库或规范发明归于本项目。
-承认 DDD12345-D/moon-amqp 已有编解码与 JS broker 会话，MoonMQ 已有 broker 核心。对照固定提交的文档，前者明确不提供 TLS、心跳和 confirms。本项目重点是有界流式发送、确认状态、恢复拓扑和旧 tag 拒绝，不能把所有差异都称作 MoonBit 原生网络实现。未证明对方完全不能通过二次开发实现这些任务。
-比较项目链接单列于 DUPLICATION.md，不作为本项目提交地址。检索范围不含完整未公开报名表，不能保证无重叠。
+## 可复现证据
+准备README/WORKFLOW中的依赖，构建后运行node examples/run-recovery-workflow.mjs。
+主例使用现有手写TCP测试端，按规范独立构造字节，不是独立RabbitMQ。未知结果故障由测试端可控注入；本轮另重跑真实RabbitMQ4.0.5恢复检查，不能据此称为集群或生产验收。
+JS140/Wasm-GC138项核心测试、恢复与23组流式宿主检查、RabbitMQ6组恢复、引擎和CLI均通过。真实broker流程包括拓扑恢复、未确认消费重投递、旧tag拒绝、事务重建和TLS重连；没有重跑全部历史原生对照或性能基准。
+report.json包含confirmed/unknown/confirmed、automaticallyReplayed=false、oldTagRejected=true和新队列别名。
 
-## 边界与剩余计划
-不是新协议，也不是 RabbitMQ 完整客户端等价物。断连时未确认消息可能已到达 broker，不能宣称 exactly-once；部分独立测试使用手写 TCP peer，其结果与真实 RabbitMQ 的历史报告分开。
-同类实现重叠；尚需由接入方确认恢复/大消息场景与宿主分工足以构成独立贡献。
-剩余计划：由对接团队核对真实表单链接、公开本轮对应提交及确认选题/换题流程；按实际接入输入补验证，避免以更多规则、测试数量或改名替代用途证据。
-交付：MoonBit 库、限定宿主入口、可运行任务、源码/来源说明及分层验证证据；不承诺自动通过初审。
+## 边界和交付
+发布Promise在断线时失败不等于消息没有送达。示例不提供持久化outbox、业务ID对账、消费幂等或exactly-once；应用自行决定是否重试。恢复受配置预算、拓扑错误和broker状态限制；生产环境和真实使用方仍未证实。
+交付MoonBit核心、Node宿主、可运行任务及原始证据；功能不等于业务采用，测试通过不代表初审通过。
+由对接团队将公开源码、报名表正文和附件同步为同一版本，避免沿用超过实现范围的旧承诺。

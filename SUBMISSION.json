@@ -1,17 +1,20 @@
 {
   "project": "amqp",
-  "title": "AMQP 可靠消息发布与恢复客户端",
+  "title": "AMQP 发布结果判定与连接恢复客户端",
   "module": "wang-chen89/amqp",
-  "version": "0.24.0",
+  "version": "0.24.1",
   "repository": "https://github.com/wang-chen89/moonbit-amqp",
-  "status": "条件复审",
-  "remainingRisk": "同类实现重叠；尚需由接入方确认恢复/大消息场景与宿主分工足以构成独立贡献。",
+  "status": "审核结果未知；本轮预防性本地整改",
+  "remainingRisk": "发布Promise在断线时失败不等于消息没有送达。示例不提供持久化outbox、业务ID对账、消费幂等或exactly-once；应用自行决定是否重试。恢复受配置预算、拓扑错误和broker状态限制；生产环境和真实使用方仍未证实。",
   "actualUsersClaimed": false,
-  "anonymousCloneVerified": true,
-  "publicHead": "010645e553e32ffcc9b419d4363db1754d367a02",
   "defaultBranch": "origin/main",
   "localChangesPublished": false,
   "proposalLines": 25,
-  "useCase": "诊断抓取的 AMQP 帧",
-  "diff": "承认 DDD12345-D/moon-amqp 已有编解码与 JS broker 会话，MoonMQ 已有 broker 核心。对照固定提交的文档，前者明确不提供 TLS、心跳和 confirms。本项目重点是有界流式发送、确认状态、恢复拓扑和旧 tag 拒绝，不能把所有差异都称作 MoonBit 原生网络实现。未证明对方完全不能通过二次开发实现这些任务。"
+  "useCase": "连接中断时，区分已经确认和结果未知的任务，恢复队列/消费者后继续处理新任务，并拒绝属于旧通道的投递标签。",
+  "diff": "承认DDD12345-D/moon-amqp已有MoonBit协议编解码和真实broker示例，Zcxssxx/MoonMQ已有内存broker核心。固定提交的moon-amqp文档未提供confirms、TLS和自动恢复；本项目侧重这些失败语义及有界流式传输，但没有直接基于对方代码扩展，不把协议基础、Node宿主或测试脚本称为首创。",
+  "historicalAnonymousClone": {
+    "date": "2026-09-22",
+    "head": "010645e553e32ffcc9b419d4363db1754d367a02",
+    "notCurrentPublicHeadClaim": true
+  }
 }

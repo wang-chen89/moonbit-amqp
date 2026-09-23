@@ -35,6 +35,7 @@ jobs:
       - run: node tools/test-consumer-cancel.mjs
       - run: node tools/test-confirmations.mjs
       - run: node tools/test-recovery.mjs
+      - run: node examples/run-recovery-workflow.mjs
       - run: node tools/test-authentication.mjs
       - run: node tools/test-secret-update.mjs
       - run: node tools/test-autodelete.mjs

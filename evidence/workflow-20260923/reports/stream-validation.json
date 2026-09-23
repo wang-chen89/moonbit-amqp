@@ -1,0 +1,92 @@
+{
+  "utc": "2026-09-23T08:38:07.491Z",
+  "node": "v24.11.0",
+  "passed": 23,
+  "tests": [
+    "buffered publication boundaries preserve binary content, caller snapshots and confirm order",
+    "pre-aborted waits observe later input rejection and queue close suppresses deferred work",
+    "12 MiB lazy binary source hashes correctly using negotiated 4096 byte frames",
+    "buffered publish above the previous 1 MiB limit snapshots caller bytes",
+    "slow reader backpressure bounds socket buffers and producer read-ahead",
+    "same-channel body, ack, buffered publication and RPC retain call order",
+    "waiting source does not block another channel and confirm timeout begins after body",
+    "invalid metadata and sizes never consume a confirm sequence or close connection",
+    "short source rejects and closes incomplete connection",
+    "long source rejects and closes incomplete connection",
+    "non-byte chunk rejects and closes incomplete connection",
+    "source exception rejects and closes incomplete connection",
+    "source progress timeout rejects and closes incomplete connection",
+    "queued abort never opens its source and leaves later confirmation sequence intact",
+    "abort after header rejects queued operations and calls iterator return",
+    "per-channel buffered queue cap rejects without sequence gaps",
+    "flow reply and server consumer cancellation wait behind the current body",
+    "broker channel close during source wait preserves healthy sibling",
+    "interrupted recoverable stream is rejected once and never replayed",
+    "graceful connection close drains prior publications and fire-and-forget acknowledgements",
+    "stalled socket drain times out and closes the partial connection",
+    "broker closure cancels queued channel work before its numeric id is reused",
+    "bounded operation queue allows graceful draining when at capacity"
+  ],
+  "observations": [
+    {
+      "name": "12 MiB fragmented",
+      "ch": 1,
+      "bytes": 12582912,
+      "frames": 3264,
+      "peer": 1,
+      "size": "12582912",
+      "header": "003c00000000000000c000008000186170706c69636174696f6e2f6f637465742d73747265616d",
+      "sha256": "b6967a4c54cdab8a16907be0774af71e5db8198045f91933ebed106ddba22dfb",
+      "seq": 1,
+      "writeStats": {
+        "socketBufferedBytes": 0,
+        "maxObservedSocketBytes": 0,
+        "drainWaits": 0,
+        "streamingChannels": 0,
+        "deferredProtocolBytes": 0
+      }
+    },
+    {
+      "name": "32 MiB paused receiver",
+      "producerBytesBeforeResume": 589824,
+      "totalBytes": 33554432,
+      "writeStats": {
+        "socketBufferedBytes": 0,
+        "maxObservedSocketBytes": 65544,
+        "drainWaits": 389,
+        "streamingChannels": 0,
+        "deferredProtocolBytes": 0
+      }
+    }
+  ],
+  "sources": {
+    "tools/evidence-source.mjs": "5b5bc6277d326cda62e39fce99dacbca21b4af52d2f16833c14eb975934596ba",
+    "tools/connection-strategy.mjs": "6278c52a2e4c83031b746ba0e869a460ce0c02b88ef882cebd7f5671ca948586",
+    "tools/topology-strategy.mjs": "48734ab45117f89e7c56220b583f4cbe8bd87bad625e4c68b2d6e61b0441a3a6",
+    "tools/close-deadline.mjs": "0277a8786a0d3eebe24084c69431232fbc0aa433cd9999ca6297c34105343768",
+    "tools/outbound.mjs": "bc9cc59a8df9669ae010138e4dd89fa801462c96f6440ed4ba48db45c7fe7f39",
+    "tools/recovery-control.mjs": "9c20dd1e5142a900c0af1d84eea338a09ab1b83ef4d12c47066f486b241e3a69",
+    "tools/recovery.mjs": "359b6bf6a2967ea38198200d9a5aae9739ae7f2e4483c6971818a87250cbf417",
+    "tools/recovery-state.mjs": "322925ae7632a2ea5241e2054fc4f8088bc9445b23757a88da75f98a9631c1ef",
+    "tools/recovery-channel.mjs": "8f8b4f44e4b6c30509530a0b2e50d0f3ab49b3eec83537e72136e8750aa30810",
+    "tools/topology-query.mjs": "26fdbf28aa2b51eb8bf1a7bfb81b1a004ef0207ae071989ab8aaaab5070493e6",
+    "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
+    "connection_metadata.mbt": "575835f99259cf2aae033f070579880762c5a812a81afbc4f52beebf1f0bd14f",
+    "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
+    "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
+    "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
+    "uri.mbt": "fb8755671ef6cc4afc4d3a51da45f3baf8df45a6ce1a9ffd3126b495d7df7d1e",
+    "cmd/web/uri.mbt": "277acacb4d51d0a13e470e7132a74ffc592fc13dec72855ec2881e9ea1e7ba54",
+    "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
+    "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
+    "session.mbt": "2e32e207bb10de94aa665c1855147c150b8dfbd203eab2d4d43515a50d55526d",
+    "publish_stream.mbt": "7bea19d02cf97ae7d24997595a0d9cc2855544a59906ad4b4ef8db88ef2e5501",
+    "publish_stream_test.mbt": "967420c566722e4a5990a68987a51144fd7031224343552ceffde5f5bca3b1f0",
+    "cmd/web/publish_stream.mbt": "78bd1662496a37dd89512596ffbc99d083fd39605dc3eeaa02fe42ffa3f7248a",
+    "tools/client.mjs": "9c4e865856262321cad5579fd71524d04ebfa57be4919e32c74398b2337c51f9",
+    "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
+    "tools/test-stream.mjs": "9e27973c495b93b5ffcfe6238328bcbf5327e4f62be7b4c8e7d5779a72b2939a",
+    "web/engine.mjs": "95bd55c8a9b0f63176daea3562de26a1e24bcc96ef54fda9768e0239a907af51"
+  },
+  "scope": "Independent wire fixtures; outbound streaming only. Source-owned chunk storage excluded from sender buffer bound."
+}
