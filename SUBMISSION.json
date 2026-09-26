@@ -5,13 +5,13 @@
   "version": "0.25.0",
   "repository": "https://github.com/wang-chen89/moonbit-amqp",
   "status": "审核结果未知；本地工程复核完成，待团队同步",
-  "remainingRisk": "发布Promise在断线时失败不等于消息没有送达。示例不提供持久化outbox、业务ID对账、消费幂等或exactly-once；应用自行决定是否重试。恢复受配置预算、拓扑错误和broker状态限制；生产环境和真实使用方仍未证实。",
+  "remainingRisk": "没有 exactly-once、自动安全重试、持久化outbox或生产集群验收",
   "actualUsersClaimed": false,
   "defaultBranch": "origin/main",
   "localChangesPublished": false,
   "proposalLines": 25,
-  "useCase": "连接中断时，区分已经确认和结果未知的任务，恢复队列/消费者后继续处理新任务，并拒绝属于旧通道的投递标签。",
-  "diff": "承认DDD12345-D/moon-amqp已有MoonBit协议编解码和真实broker示例，Zcxssxx/MoonMQ已有内存broker核心。固定提交的moon-amqp文档未提供confirms、TLS和自动恢复；本项目侧重这些失败语义及有界流式传输，但没有直接基于对方代码扩展，不把协议基础、Node宿主或测试脚本称为首创。",
+  "useCase": "发布确认、断线和连接重建时区分已确认、被拒绝与结果未知的消息",
+  "diff": "承认 moon-amqp 的协议与 broker 接入；增量是纯 MoonBit 确认账本和通道世代，不把协议或 Node 重连称为首创",
   "historicalAnonymousClone": {
     "date": "2026-09-22",
     "head": "010645e553e32ffcc9b419d4363db1754d367a02",
@@ -24,5 +24,6 @@
   "currentValidation": "evidence/ledger-20260927/LOCAL-CHECKS.json",
   "currentEvidence": "evidence/ledger-20260927/LOCAL-CHECKS.json",
   "metadataReviewedOn": "2026-09-27",
-  "currentEvidenceScope": "MoonBit confirm ledger; mixed cumulative/out-of-order bug fixed; actual RabbitMQ and native Go comparison"
+  "currentEvidenceScope": "MoonBit confirm ledger; mixed cumulative/out-of-order bug fixed; actual RabbitMQ and native Go comparison",
+  "reviewDecision": "保留并修复核心"
 }

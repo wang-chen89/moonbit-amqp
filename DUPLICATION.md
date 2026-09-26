@@ -1,3 +1,5 @@
+> 2026-09-27当前0.25.0：新增纯MoonBit ConfirmLedger负责ACK/NACK集合、通道世代及未知结果；Node继续负责网络和Promise。已修混合累计/乱序确认错误，并以RabbitMQ和原生Go参考核对。以下0.24.1描述是历史范围，当前证据见evidence/ledger-20260927。
+
 # 既有生态关系与本轮范围 · 2026-09-23
 
 承认DDD12345-D/moon-amqp已有MoonBit协议编解码和真实broker示例，Zcxssxx/MoonMQ已有内存broker核心。固定提交的moon-amqp文档未提供confirms、TLS和自动恢复；本项目侧重这些失败语义及有界流式传输，但没有直接基于对方代码扩展，不把协议基础、Node宿主或测试脚本称为首创。
