@@ -2,9 +2,9 @@
   "project": "amqp",
   "title": "AMQP 发布结果判定与连接恢复客户端",
   "module": "wang-chen89/amqp",
-  "version": "0.24.1",
+  "version": "0.25.0",
   "repository": "https://github.com/wang-chen89/moonbit-amqp",
-  "status": "审核结果未知；本轮预防性本地整改",
+  "status": "审核结果未知；本地工程复核完成，待团队同步",
   "remainingRisk": "发布Promise在断线时失败不等于消息没有送达。示例不提供持久化outbox、业务ID对账、消费幂等或exactly-once；应用自行决定是否重试。恢复受配置预算、拓扑错误和broker状态限制；生产环境和真实使用方仍未证实。",
   "actualUsersClaimed": false,
   "defaultBranch": "origin/main",
@@ -16,5 +16,13 @@
     "date": "2026-09-22",
     "head": "010645e553e32ffcc9b419d4363db1754d367a02",
     "notCurrentPublicHeadClaim": true
-  }
+  },
+  "originalSubmission": "amqp",
+  "license": "MIT AND BSD-3-Clause AND BSD-2-Clause",
+  "acceptance": "not established",
+  "remoteCIRunByThisTask": false,
+  "currentValidation": "evidence/ledger-20260927/LOCAL-CHECKS.json",
+  "currentEvidence": "evidence/ledger-20260927/LOCAL-CHECKS.json",
+  "metadataReviewedOn": "2026-09-27",
+  "currentEvidenceScope": "MoonBit confirm ledger; mixed cumulative/out-of-order bug fixed; actual RabbitMQ and native Go comparison"
 }
