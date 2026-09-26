@@ -10,6 +10,7 @@ import {SendQueue,waitFor,aborted} from './outbound.mjs';
 import {IncomingBodies} from './inbound.mjs';
 import {checkConsumerSignal,observeConsumerSignal} from './consumer-signal.mjs';
 import {createConfirmation,emitConfirmation} from './confirmations.mjs';
+import {ConfirmLedger} from './confirm-ledger.mjs';
 import {openOptions,validateTransportOptions,suppliedTLS,startTransport,finishTransportHandshake} from './transport.mjs';
 export {defaultDial} from './transport.mjs';
 export {DefaultTopologyRecovery} from './topology-strategy.mjs';
@@ -386,8 +387,7 @@ export class Connection extends EventEmitter {
 export class Channel extends EventEmitter {
   #recoveryCancellation=new RecoveryCancellation();
   #connection; #pending; #closed = false; #consumers = new Map(); #id;
-  #mode = 'normal'; #nextConfirm = 1n; #confirms = new Map();
-  #nextNotice=1n; #confirmationEvents=new Map();
+  #mode = 'normal'; #confirmLedger; #confirms = new Map();
   #sends; #sendAbort=new AbortController(); #publications=0;
   #subscriptions=new Map(); #consumerCancels=new Set(); #waitingRPC;
   constructor(connection, id) { super(); this.#connection = connection; this.#id = id; this.#sends=new SendQueue(connection.maxBufferedBytes); }
@@ -396,7 +396,7 @@ export class Channel extends EventEmitter {
   notifyRecoveryCancel() { return this.#recoveryCancellation.wait(); }
   topologyConfiguration(global=false) { if(typeof global!=='boolean')throw TypeError('Invalid topology scope');return emptyTopologyConfiguration(); }
   get closed() { return this.#closed; }
-  get nextPublishSeqNo() { return this.#nextConfirm; }
+  get nextPublishSeqNo() { return this.#confirmLedger?this.#confirmLedger.next:1n; }
   async _flushOutput(confirmations=true) { if(this.#closed)return;await this.#sends.idle();if(confirmations)await Promise.allSettled([...this.#confirms.values()].map(p=>p.promise)); }
   _rpc(name, args, expected, apply = e => e.args, automatic = false) {
     if (this.#closed) return Promise.reject(Error('Channel closed'));
@@ -452,21 +452,17 @@ export class Channel extends EventEmitter {
     }
     if (e.name === 'basic.ack' || e.name === 'basic.nack') {
       const tag = BigInt(e.args['delivery-tag']), multiple = e.args.multiple;
-      if (this.#mode !== 'confirm' || (tag >= this.#nextConfirm) || (!multiple && !this.#confirms.has(tag))) throw Error('Invalid publisher confirmation');
-      const ack=e.name==='basic.ack',last=multiple&&tag===0n?this.#nextConfirm-1n:tag;
-      for (const [seq, p] of this.#confirms) {
-        if (seq === last || (multiple && seq <= last)) {
-          clearTimeout(p.timer); this.#confirms.delete(seq);
-          p.settle(ack);
-          if (ack) p.resolve({deliveryTag: seq});
-          else p.reject(Error(`Publisher nack: ${seq}`));
-        }
+      if (this.#mode !== 'confirm') throw Error('Invalid publisher confirmation');
+      const update=this.#confirmLedger.confirm(tag,multiple,e.name==='basic.ack');
+      for (const decision of update.settled) {
+        const seq=BigInt(decision.sequence),p=this.#confirms.get(seq),ack=decision.outcome==='confirmed';
+        if(!p)throw Error('Missing publisher confirmation handle');
+        clearTimeout(p.timer);this.#confirms.delete(seq);p.settle(ack);
+        if(ack)p.resolve({deliveryTag:seq});else p.reject(Error(`Publisher nack: ${seq}`));
       }
-      if(multiple){for(let seq=this.#nextNotice;seq<=last;seq++)this.#confirmationEvents.set(seq,ack);}
-      else this.#confirmationEvents.set(tag,ack);
-      while(!this.#closed && this.#confirmationEvents.has(this.#nextNotice)) {
-        const seq=this.#nextNotice++,ack=this.#confirmationEvents.get(seq);this.#confirmationEvents.delete(seq);
-        emitConfirmation(this,Object.freeze({deliveryTag:seq,ack,generation:0}));
+      for(const decision of update.ordered) {
+        if(this.#closed)break;
+        emitConfirmation(this,Object.freeze({deliveryTag:BigInt(decision.sequence),ack:decision.outcome==='confirmed',generation:0}));
       }
     } else if (e.name === 'basic.return') {
       if(!this.emit('return', delivery(e))&&e.type==='messageStart')e.body.discard().catch(()=>{});
@@ -500,7 +496,7 @@ export class Channel extends EventEmitter {
     for(const entry of this.#subscriptions.values())this.#forgetConsumer(entry,error);
     this.#consumerCancels.clear();
     for (const p of this.#confirms.values()) { clearTimeout(p.timer); p.settle(false,error);p.reject(error); }
-    this.#confirms.clear();this.#confirmationEvents.clear(); this.#consumers.clear(); this.emit('close', error);
+    this.#confirms.clear();this.#confirmLedger?.close(); this.#consumers.clear(); this.emit('close', error);
   }
   declareQueue(queue = '', {passive = false, durable = false, exclusive = false, autoDelete = false, noWait = false, arguments: args = {}} = {}) {
     return this.#request('queue.declare', [0, queue, passive, durable, exclusive, autoDelete, noWait, args], ['queue.declare-ok'],noWait,()=>({queue,'message-count':0,'consumer-count':0}));
@@ -581,9 +577,12 @@ export class Channel extends EventEmitter {
     if(typeof noWait!=='boolean')throw TypeError('Invalid noWait');
     if (this.#mode === 'confirm') return;
     if (this.#mode !== 'normal') throw Error('Confirm and transaction modes are exclusive');
+    // Allocate before sending select; allocation failure leaves the mode normal.
+    const ledger=new ConfirmLedger();
     this.#mode = 'selecting';
-    try { await this.#request('confirm.select', [noWait], ['confirm.select-ok'],noWait,()=>{this.#mode='confirm';}, () => { this.#mode = 'confirm'; }); }
-    catch (e) { this.#mode = 'normal'; throw e; }
+    const activate=()=>{if(this.#closed){ledger.close();throw Error('Channel closed during confirm selection');}this.#confirmLedger=ledger;this.#mode='confirm';};
+    try { await this.#request('confirm.select', [noWait], ['confirm.select-ok'],noWait,activate,activate); }
+    catch (e) { ledger.close();this.#mode = 'normal'; throw e; }
   }
   async txSelect() {
     if (this.#mode === 'transaction') return;
@@ -627,12 +626,12 @@ export class Channel extends EventEmitter {
     if(typeof mandatory!=='boolean'||typeof immediate!=='boolean')return Promise.reject(TypeError('Invalid publish flags'));
     if(signal!==undefined && !(signal instanceof AbortSignal))return Promise.reject(TypeError('Invalid publication signal'));
     if(this.#closed||this.#connection.closing||this.#mode==='selecting')return Promise.reject(Error('Channel unavailable'));
-    if(this.#publications+this.#confirmationEvents.size>=1024)return Promise.reject(Error('Unconfirmed, unsequenced or queued publish limit: 1024'));
+    if(this.#publications+(this.#confirmLedger?.buffered??0)>=1024)return Promise.reject(Error('Unconfirmed, unsequenced or queued publish limit: 1024'));
     const encoded=JSON.stringify(properties),confirm=this.#mode==='confirm';let pending,seq;
     this.#publications++;
     const sending=this.#sends.run(async()=>{
       const onStart=()=>{
-        if(confirm){seq=this.#nextConfirm++;pending={...deferred(),...createConfirmation(seq)};pending.promise.catch(()=>{});this.#confirms.set(seq,pending);}
+        if(confirm){seq=this.#confirmLedger.issue();pending={...deferred(),...createConfirmation(seq)};pending.promise.catch(()=>{});this.#confirms.set(seq,pending);}
       };
       if(bufferedBody!==undefined)await this.#connection._publishBuffer(this.id,exchange,key,bufferedBody,encoded,mandatory,immediate,[this.#sendAbort.signal,signal],onStart);
       else await this.#connection._publishStream(this.id,exchange,key,source,size,encoded,mandatory,immediate,[this.#sendAbort.signal,signal],onStart);

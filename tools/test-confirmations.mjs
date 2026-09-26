@@ -4,7 +4,7 @@ import {once,getEventListeners,setMaxListeners} from 'node:events';
 import {fixture,method,ack,cat,u16,short,delay} from './channel-options-peer.mjs';
 import {gate,until} from './stream-peer.mjs';
 import {sourceSnapshot,assertSourceUnchanged} from './evidence-source.mjs';
-const sources=sourceSnapshot(['tools/client.mjs','tools/recovery.mjs','tools/recovery-channel.mjs','tools/recovery-state.mjs','tools/inbound.mjs','tools/outbound.mjs','tools/channel-options-peer.mjs','tools/nowait-peer.mjs','tools/recovery-peer.mjs','tools/stream-peer.mjs','tools/test-confirmations.mjs','web/engine.mjs']);
+const sources=sourceSnapshot(['confirm_ledger.mbt','cmd/web/confirm.mbt','tools/confirm-ledger.mjs','tools/confirmations.mjs','tools/client.mjs','tools/recovery.mjs','tools/recovery-channel.mjs','tools/recovery-state.mjs','tools/inbound.mjs','tools/outbound.mjs','tools/channel-options-peer.mjs','tools/nowait-peer.mjs','tools/recovery-peer.mjs','tools/stream-peer.mjs','tools/test-confirmations.mjs','web/engine.mjs']);
 const tests=[];
 async function test(name,fn){const timer=setTimeout(()=>{throw Error('Confirmation fixture watchdog: '+name);},20000);try{await fn();tests.push(name);console.log('PASS '+name);}finally{clearTimeout(timer);}}
 const event=(target,name)=>once(target,name,{signal:AbortSignal.timeout(8000)}),socket=state=>[...state.sockets][0];
@@ -34,6 +34,14 @@ for(const negative of [false,true])await test('cumulative '+(negative?'nack':'ac
 await test('zero-tag multiple confirmation covers all outstanding handles',()=>fixture({},async({open,state})=>{
  const {c,ch}=await confirmed(open),rows=listen(ch),handles=await Promise.all([publish(ch),publish(ch)]);socket(state).write(ack(ch.id,0,true));assert.deepEqual(await Promise.all(handles.map(h=>h.wait())),[true,true]);assert.deepEqual(rows.map(r=>r.deliveryTag),[1n,2n]);await c.close();
 }));
+await test('a cumulative opposite result preserves an individually settled out-of-order outcome',()=>fixture({},async({open,state})=>{
+ const {c,ch}=await confirmed(open),rows=listen(ch),handles=await Promise.all([publish(ch),publish(ch),publish(ch)]);
+ assert.deepEqual(handles.map(h=>h.outcome),['pending','pending','pending']);
+ socket(state).write(ack(ch.id,3));await handles[2].done;assert.equal(handles[2].outcome,'confirmed');assert.deepEqual(rows,[]);
+ socket(state).write(ack(ch.id,3,true,true));await Promise.all(handles.map(h=>h.done));
+ assert.deepEqual(handles.map(h=>h.outcome),['nacked','nacked','confirmed']);
+ assert.deepEqual(rows.map(r=>[r.deliveryTag,r.ack]),[[1n,false],[2n,false],[3n,true]]);await c.close();
+}));
 await test('wait cancellation and timeout release only their own listeners and preserve confirmation',()=>fixture({},async({open,state})=>{
  const {c,ch}=await confirmed(open),h=await publish(ch),abort=new AbortController(),reason=Error('local wait cancelled');const wait=h.wait({signal:abort.signal}),other=h.wait();
  assert.equal(getEventListeners(abort.signal,'abort').length,1);abort.abort(reason);await assert.rejects(wait,e=>e===reason);assert.equal(getEventListeners(abort.signal,'abort').length,0);
@@ -54,7 +62,7 @@ await test('channel close completes pending handles without fabricating broker n
 }));
 await test('connection destroy preserves acknowledged results and fails only unresolved handles',()=>fixture({},async({open,state})=>{
  const {c,ch}=await confirmed(open),first=await publish(ch),second=await publish(ch),rows=listen(ch);socket(state).write(ack(ch.id,2));assert.equal(await second.wait(),true);const failure=Error('test transport lost');c.destroy(failure);
- assert.equal(await first.wait(),false);assert.equal(first.error,failure);assert.equal(await second.wait(),true);assert.equal(second.error,undefined);assert.deepEqual(rows,[]);
+ assert.equal(await first.wait(),false);assert.equal(first.error,failure);assert.equal(first.outcome,'unknown');assert.equal(await second.wait(),true);assert.equal(second.outcome,'confirmed');assert.equal(second.error,undefined);assert.deepEqual(rows,[]);
 }));
 for(const invalid of ['future','duplicate'])await test(invalid+' confirmation fails closed without settling unrelated handle as acknowledged',()=>fixture({},async({open,state})=>{
  const {c,ch}=await confirmed(open),a=await publish(ch),b=await publish(ch),rows=listen(ch);
@@ -102,5 +110,5 @@ await test('single-channel recovery resets its confirms while healthy sibling se
  const next=await publish(ch);socket(state).write(ack(ch._raw.id,1));assert.equal(await next.wait(),true);assert.equal(next.generation,2);assert.equal(otherRows[0].generation,1);assert.equal(rows[0].generation,2);assert.equal(c.state,'open');await c.close();
 }));
 assertSourceUnchanged(sources);
-fs.writeFileSync(new URL('../evidence/confirmations-validation.json',import.meta.url),JSON.stringify({utc:new Date().toISOString(),node:process.version,passed:tests.length,tests,sources,scope:'Independent peer verifies deferred send/result separation, ordered notifications, cumulative and invalid confirmations, local wait cancellation/limits, shutdown, streaming, publication capacity and per-generation recovery. Real broker and native reference comparisons are separate.'},null,2)+'\n');
+fs.writeFileSync(process.env.CONFIRMATIONS_EVIDENCE??new URL('../evidence/confirmations-validation.json',import.meta.url),JSON.stringify({utc:new Date().toISOString(),node:process.version,passed:tests.length,tests,sources,scope:'Independent peer verifies deferred send/result separation, ordered notifications, cumulative and invalid confirmations, local wait cancellation/limits, shutdown, streaming, publication capacity and per-generation recovery. Real broker and native reference comparisons are separate.'},null,2)+'\n');
 console.log(`${tests.length} publisher confirmation fixture groups passed`);

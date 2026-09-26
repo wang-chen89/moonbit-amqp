@@ -1,12 +1,12 @@
 # AMQP 发布结果判定与连接恢复客户端 · 修订申报草稿
 
 本项目仓库：https://github.com/wang-chen89/moonbit-amqp
-模块 / 本地版本：`wang-chen89/amqp` / `0.24.1`；MIT AND BSD-3-Clause AND BSD-2-Clause。
+模块 / 本地版本：`wang-chen89/amqp` / `0.25.0`；MIT AND BSD-3-Clause AND BSD-2-Clause。
 状态：审核结果未知，本轮预防性本地整改，未推送、发布或提交表单。
 
 ## 任务与实现
 连接中断时，区分已经确认和结果未知的任务，恢复队列/消费者后继续处理新任务，并拒绝属于旧通道的投递标签。
-MoonBit处理帧、方法、属性、认证、Session和分块发布状态；Node负责TCP/TLS、流式I/O、确认Promise及重连调度。0.24.1没有新造协议层，增加的是现有公开客户端能力的可运行故障主例。
+MoonBit处理帧、方法、属性、认证、Session、分块发布和确认账本；Node负责TCP/TLS、流式I/O、确认Promise及重连调度。0.25.0将确认状态与顺序通知落到可复用的纯MoonBit核心，宿主实际调用同一实现。修复先单条ack再批量nack会覆盖已确认通知的问题，新增明确的unknown结果和完整UInt64序号边界。详见[确认契约](docs/CONFIRM-LEDGER.md)。
 主例打开发布与消费两条通道，声明exchange、服务端命名队列、binding和QoS；第一条发布收到确认，第二条被测试端接收但在确认前断线。恢复后第二条标为unknown且不自动重发；队列别名随恢复更新；旧delivery tag被拒绝，新tag可以确认，第三条新发布获得确认。
 
 ## 已有生态与扩展范围
@@ -15,8 +15,8 @@ MoonBit处理帧、方法、属性、认证、Session和分块发布状态；Nod
 
 ## 可复现证据
 准备README/WORKFLOW中的依赖，构建后运行node examples/run-recovery-workflow.mjs。
-主例使用现有手写TCP测试端，按规范独立构造字节，不是独立RabbitMQ。未知结果故障由测试端可控注入；本轮另重跑真实RabbitMQ4.0.5恢复检查，不能据此称为集群或生产验收。
-JS140/Wasm-GC138项核心测试、恢复与23组流式宿主检查、RabbitMQ6组恢复、引擎和CLI均通过。真实broker流程包括拓扑恢复、未确认消费重投递、旧tag拒绝、事务重建和TLS重连；没有重跑全部历史原生对照或性能基准。
+主例使用现有手写TCP测试端，按规范独立构造字节，不是独立RabbitMQ。未知结果故障由测试端可控注入；9月23日另重跑过真实RabbitMQ4.0.5恢复检查（历史基线），不能据此称为集群或生产验收。
+0.25.0当前源码已通过JS144/Wasm-GC142项核心测试、22组独立线协议端确认检查、23组发送流检查及双后端纯MoonBit例子，证据见[evidence/ledger-20260927](evidence/ledger-20260927/LOCAL-CHECKS.json)。本轮真实RabbitMQ4.0.5的9个确认/恢复场景与固定amqp091-go原生参考一致；另6条受控协议序列一致，保留2项既有差异（zero-tag与非法future-tag处理），详见[native](evidence/ledger-20260927/native.json)。9月23日恢复记录仅为历史基线。没有重跑全部历史原生对照或性能基准。
 report.json包含confirmed/unknown/confirmed、automaticallyReplayed=false、oldTagRejected=true和新队列别名。
 
 ## 边界和交付

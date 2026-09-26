@@ -12,6 +12,7 @@ options(
   link: {
     "js": {
       "exports": [
+        "confirm_ledger_call",
         "run",
         "inspect_wire",
         "schemas",

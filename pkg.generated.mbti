@@ -82,6 +82,22 @@ pub(all) struct BasicHeader {
 pub fn BasicHeader::decode(Frame) -> Self raise FrameError
 pub fn BasicHeader::encode(Self, Int, max_size? : Int) -> Frame raise FrameError
 
+pub struct ConfirmLedger {
+  // private fields
+}
+pub fn ConfirmLedger::buffered_notices(Self) -> Int
+pub fn ConfirmLedger::close(Self) -> Array[PublishDecision]
+pub fn ConfirmLedger::confirm(Self, String, UInt64, multiple~ : Bool, ack~ : Bool) -> ConfirmUpdate raise FrameError
+pub fn ConfirmLedger::issue(Self) -> PublishToken raise FrameError
+pub fn ConfirmLedger::new(String, capacity? : Int, zero_multiple_all? : Bool) -> Self raise FrameError
+pub fn ConfirmLedger::next_sequence(Self) -> UInt64?
+pub fn ConfirmLedger::pending_count(Self) -> Int
+
+pub struct ConfirmUpdate {
+  settled : Array[PublishDecision]
+  ordered : Array[PublishDecision]
+} derive(Eq, @debug.Debug)
+
 pub struct Content {
   channel : Int
   method_payload : Bytes
@@ -140,6 +156,22 @@ pub struct MethodSpec {
   name : String
   fields : Array[(String, ArgumentKind)]
   carries_content : Bool
+} derive(Eq, @debug.Debug)
+
+pub struct PublishDecision {
+  token : PublishToken
+  outcome : PublishOutcome
+} derive(Eq, @debug.Debug)
+
+pub(all) enum PublishOutcome {
+  Confirmed
+  Nacked
+  Unknown
+} derive(Eq, @debug.Debug)
+
+pub struct PublishToken {
+  epoch : String
+  sequence : UInt64
 } derive(Eq, @debug.Debug)
 
 pub struct Session {

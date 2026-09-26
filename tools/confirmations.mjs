@@ -13,6 +13,7 @@ class DeferredConfirmation {
   get done() { return this.#state.done; }
   get completed() { return this.#state.completed; }
   get acked() { return this.#state.ack; }
+  get outcome() { return this.#state.outcome; }
   get error() { return this.#state.error; }
   wait({signal,timeout}={}) {
     try {
@@ -37,10 +38,10 @@ class DeferredConfirmation {
 
 export function createConfirmation(tag) {
   let resolve;
-  const state={ack:false,completed:false,error:undefined,waiters:new Set(),done:new Promise(done=>resolve=done)};
+  const state={ack:false,outcome:'pending',completed:false,error:undefined,waiters:new Set(),done:new Promise(done=>resolve=done)};
   return {handle:new DeferredConfirmation(state,tag),settle(ack,error){
     if(state.completed)return;
-    state.ack=ack;state.completed=true;state.error=error;resolve();
+    state.ack=ack;state.outcome=error?'unknown':ack?'confirmed':'nacked';state.completed=true;state.error=error;resolve();
     for(const waiter of [...state.waiters])waiter();
   }};
 }

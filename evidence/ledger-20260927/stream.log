@@ -1,0 +1,24 @@
+PASS buffered publication boundaries preserve binary content, caller snapshots and confirm order
+PASS pre-aborted waits observe later input rejection and queue close suppresses deferred work
+PASS 12 MiB lazy binary source hashes correctly using negotiated 4096 byte frames
+PASS buffered publish above the previous 1 MiB limit snapshots caller bytes
+PASS slow reader backpressure bounds socket buffers and producer read-ahead
+PASS same-channel body, ack, buffered publication and RPC retain call order
+PASS waiting source does not block another channel and confirm timeout begins after body
+PASS invalid metadata and sizes never consume a confirm sequence or close connection
+PASS short source rejects and closes incomplete connection
+PASS long source rejects and closes incomplete connection
+PASS non-byte chunk rejects and closes incomplete connection
+PASS source exception rejects and closes incomplete connection
+PASS source progress timeout rejects and closes incomplete connection
+PASS queued abort never opens its source and leaves later confirmation sequence intact
+PASS abort after header rejects queued operations and calls iterator return
+PASS per-channel buffered queue cap rejects without sequence gaps
+PASS flow reply and server consumer cancellation wait behind the current body
+PASS broker channel close during source wait preserves healthy sibling
+PASS interrupted recoverable stream is rejected once and never replayed
+PASS graceful connection close drains prior publications and fire-and-forget acknowledgements
+PASS stalled socket drain times out and closes the partial connection
+PASS broker closure cancels queued channel work before its numeric id is reused
+PASS bounded operation queue allows graceful draining when at capacity
+23 streaming fixture groups passed

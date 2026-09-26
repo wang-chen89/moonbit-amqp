@@ -1,6 +1,6 @@
 name = "wang-chen89/amqp"
 
-version = "0.24.1"
+version = "0.25.0"
 
 license = "MIT AND BSD-3-Clause AND BSD-2-Clause"
 

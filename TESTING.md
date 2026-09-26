@@ -1,3 +1,19 @@
+# 当前验证范围 · 0.25.0 / 2026-09-27
+
+确认账本核心与Node接入的对应证据见 [LOCAL-CHECKS](evidence/ledger-20260927/LOCAL-CHECKS.json)。本轮JS144/Wasm-GC142项核心测试通过；22组独立线协议确认检查包含混合乱序/批量确认、断线unknown、重连隔离、错误标签、完整发送后返回与1024容量。另23组发送流检查、恢复主例、JS/Wasm纯核心例子通过。
+
+测试首次编译新增纯核心例子因遗漏 `main raise` 失败，修正后通过。验证脚本曾因Windows默认编码和可执行文件定位失败；均在实质检查前修复。完整日志保留在本目录，远程CI未运行。
+
+核心例子：`moon run examples/confirm_core --target wasm-gc`；宿主检查：构建并刷新引擎后 `node tools/test-confirmations.mjs`。该脚本可通过 `CONFIRMATIONS_EVIDENCE` 指定新证据路径。23组流检查见 `node tools/test-stream.mjs`。核心契约、容量与非目标见 [CONFIRM-LEDGER](docs/CONFIRM-LEDGER.md)。
+
+本轮另完成真实RabbitMQ4.0.5与固定amqp091-go原生参考的9个broker场景、6条匹配线协议序列、19个方法帧对照，2项既有行为差异明确记录在 [native.json](evidence/ledger-20260927/native.json)。覆盖普通/事务/确认发布、1MiB流、mandatory return、预取消、双通道、连接与单通道恢复。新混合确认回归使用受控peer，不声称broker实际发出该异常顺序。
+
+依赖是16个经Ubuntu元数据哈希核对后仅解包的包；没有系统安装或常驻服务。设置 `RABBITMQ_ROOT`、`WSL_DISTRO=Ubuntu-D`、`AMQP_CONFIRMATIONS_REFERENCE` 后运行 `node tools/test-confirmations-native.mjs`。解包在Windows挂载盘时冷启动较慢，本轮 `RABBITMQ_STARTUP_SECONDS=180`；默认30、允许1至300，Python与宿主超时同步。证据可通过 `CONFIRMATIONS_NATIVE_EVIDENCE` 指定新路径。一次性实例已正常退出。
+
+以下是9月23日历史基线，数字仅适用于当时源码。
+
+---
+
 # 当前验证范围 · 0.24.1 / 2026-09-23
 
 JS140/Wasm-GC138项核心测试、恢复与23组流式宿主检查、RabbitMQ6组恢复、引擎和CLI均通过。真实broker流程包括拓扑恢复、未确认消费重投递、旧tag拒绝、事务重建和TLS重连；没有重跑全部历史原生对照或性能基准。

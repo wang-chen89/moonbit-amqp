@@ -5,14 +5,16 @@ import {fileURLToPath} from 'node:url';
 import net from 'node:net';
 export async function withRabbit(action,{authentication=false,oauth=false}={}) {
  const root=process.env.RABBITMQ_ROOT;if(!root)throw Error('Set RABBITMQ_ROOT');
+ const startupSeconds=Number(process.env.RABBITMQ_STARTUP_SECONDS??30);
+ if(!Number.isInteger(startupSeconds)||startupSeconds<1||startupSeconds>300)throw Error('RABBITMQ_STARTUP_SECONDS must be an integer from 1 to 300');
  let script=fileURLToPath(new URL('./rabbitmq-reference.py',import.meta.url));
  if(process.platform==='win32')script='/mnt/'+script[0].toLowerCase()+script.slice(2).replaceAll('\\','/');
- const args=[script,root,...(authentication?['--auth']:[]),...(oauth?['--oauth']:[])];
+ const args=[script,root,`--startup-seconds=${startupSeconds}`,...(authentication?['--auth']:[]),...(oauth?['--oauth']:[])];
  const server=process.platform==='win32'?spawn('wsl',['-d',process.env.WSL_DISTRO??'Ubuntu-D','--exec','python3',...args],{windowsHide:true,stdio:['pipe','pipe','pipe']}):spawn('python3',args,{stdio:['pipe','pipe','pipe']});
  let diagnostic='',info;server.stderr.on('data',b=>diagnostic+=b);
  server.stdin.on('error',()=>{});
  const exited=once(server,'exit'),lines=createInterface({input:server.stdout});
- const startup=setTimeout(()=>server.stdin.end(),45000);
+ const startup=setTimeout(()=>server.stdin.end(),startupSeconds*1000+15000);
  try {
   for await(const line of lines)if(line.startsWith('READY ')){info=JSON.parse(line.slice(6));break;}
   clearTimeout(startup);if(!info)throw Error('RabbitMQ failed to start: '+diagnostic);

@@ -6,6 +6,8 @@ from pathlib import Path
 import base64, hashlib, json, os, shlex, signal, socket, subprocess, sys, tempfile, time
 
 root = Path(sys.argv[1]).resolve()
+startup_seconds = int(next((arg.split('=',1)[1] for arg in sys.argv[2:] if arg.startswith('--startup-seconds=')), '30'))
+if not 1 <= startup_seconds <= 300: raise ValueError('startup seconds must be between 1 and 300')
 authentication = '--auth' in sys.argv[2:]
 oauth = '--oauth' in sys.argv[2:]
 if authentication and oauth: raise ValueError('Choose one broker test profile')
@@ -102,7 +104,8 @@ log.file = false
     server = subprocess.Popen([str(rabbit)],env=env,stdout=log,stderr=log,start_new_session=True)
     try:
         ready = False
-        for _ in range(300):
+        deadline = time.monotonic() + startup_seconds
+        while time.monotonic() < deadline:
             if server.poll() is not None: break
             try:
                 with socket.create_connection(('127.0.0.1',port),timeout=.1): pass

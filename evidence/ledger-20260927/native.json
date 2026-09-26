@@ -1,0 +1,1302 @@
+{
+  "utc": "2026-09-26T19:30:08.482Z",
+  "node": "v24.11.0",
+  "wireCases": 19,
+  "wire": [
+    {
+      "scenario": "wire-normal",
+      "index": 0,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      }
+    },
+    {
+      "scenario": "wire-order",
+      "index": 0,
+      "matched": true,
+      "actual": {
+        "cls": 85,
+        "id": 10,
+        "args": "00"
+      },
+      "reference": {
+        "cls": 85,
+        "id": 10,
+        "args": "00"
+      }
+    },
+    {
+      "scenario": "wire-order",
+      "index": 1,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      }
+    },
+    {
+      "scenario": "wire-order",
+      "index": 2,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      }
+    },
+    {
+      "scenario": "wire-order",
+      "index": 3,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      }
+    },
+    {
+      "scenario": "wire-multiple",
+      "index": 0,
+      "matched": true,
+      "actual": {
+        "cls": 85,
+        "id": 10,
+        "args": "00"
+      },
+      "reference": {
+        "cls": 85,
+        "id": 10,
+        "args": "00"
+      }
+    },
+    {
+      "scenario": "wire-multiple",
+      "index": 1,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      }
+    },
+    {
+      "scenario": "wire-multiple",
+      "index": 2,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      }
+    },
+    {
+      "scenario": "wire-multiple",
+      "index": 3,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      }
+    },
+    {
+      "scenario": "wire-nack",
+      "index": 0,
+      "matched": true,
+      "actual": {
+        "cls": 85,
+        "id": 10,
+        "args": "00"
+      },
+      "reference": {
+        "cls": 85,
+        "id": 10,
+        "args": "00"
+      }
+    },
+    {
+      "scenario": "wire-nack",
+      "index": 1,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      }
+    },
+    {
+      "scenario": "wire-nack",
+      "index": 2,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      }
+    },
+    {
+      "scenario": "wire-nack",
+      "index": 3,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      }
+    },
+    {
+      "scenario": "wire-wait",
+      "index": 0,
+      "matched": true,
+      "actual": {
+        "cls": 85,
+        "id": 10,
+        "args": "00"
+      },
+      "reference": {
+        "cls": 85,
+        "id": 10,
+        "args": "00"
+      }
+    },
+    {
+      "scenario": "wire-wait",
+      "index": 1,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      }
+    },
+    {
+      "scenario": "wire-close",
+      "index": 0,
+      "matched": true,
+      "actual": {
+        "cls": 85,
+        "id": 10,
+        "args": "00"
+      },
+      "reference": {
+        "cls": 85,
+        "id": 10,
+        "args": "00"
+      }
+    },
+    {
+      "scenario": "wire-close",
+      "index": 1,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      }
+    },
+    {
+      "scenario": "wire-close",
+      "index": 2,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      }
+    },
+    {
+      "scenario": "wire-close",
+      "index": 3,
+      "matched": true,
+      "actual": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      },
+      "reference": {
+        "cls": 60,
+        "id": 40,
+        "args": "000000017100"
+      }
+    }
+  ],
+  "wireScenarioComparisons": 6,
+  "wireComparisons": [
+    {
+      "name": "wire-normal",
+      "matched": true,
+      "actual": {
+        "handleNil": true,
+        "next": 1
+      },
+      "reference": {
+        "handleNil": true,
+        "next": 1
+      },
+      "bodies": [
+        {
+          "bytes": 1,
+          "sha256": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881"
+        }
+      ]
+    },
+    {
+      "name": "wire-order",
+      "matched": true,
+      "actual": {
+        "early": [
+          false,
+          false,
+          true
+        ],
+        "acked": [
+          true,
+          false,
+          true
+        ],
+        "tags": [
+          1,
+          2,
+          3
+        ],
+        "done": [
+          true,
+          true,
+          true
+        ],
+        "next": 4,
+        "events": [
+          {
+            "tag": 1,
+            "ack": true
+          },
+          {
+            "tag": 2,
+            "ack": false
+          },
+          {
+            "tag": 3,
+            "ack": true
+          }
+        ],
+        "split": {
+          "acks": [
+            1,
+            3
+          ],
+          "nacks": [
+            2
+          ]
+        },
+        "connectionOpen": true
+      },
+      "reference": {
+        "acked": [
+          true,
+          false,
+          true
+        ],
+        "connectionOpen": true,
+        "done": [
+          true,
+          true,
+          true
+        ],
+        "early": [
+          false,
+          false,
+          true
+        ],
+        "events": [
+          {
+            "ack": true,
+            "tag": 1
+          },
+          {
+            "ack": false,
+            "tag": 2
+          },
+          {
+            "ack": true,
+            "tag": 3
+          }
+        ],
+        "next": 4,
+        "split": {
+          "acks": [
+            1,
+            3
+          ],
+          "nacks": [
+            2
+          ]
+        },
+        "tags": [
+          1,
+          2,
+          3
+        ]
+      },
+      "bodies": [
+        {
+          "bytes": 1,
+          "sha256": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881"
+        },
+        {
+          "bytes": 1,
+          "sha256": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881"
+        },
+        {
+          "bytes": 1,
+          "sha256": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881"
+        }
+      ]
+    },
+    {
+      "name": "wire-multiple",
+      "matched": true,
+      "actual": {
+        "acked": [
+          true,
+          true,
+          true
+        ],
+        "tags": [
+          1,
+          2,
+          3
+        ],
+        "done": [
+          true,
+          true,
+          true
+        ],
+        "next": 4,
+        "events": [
+          {
+            "tag": 1,
+            "ack": true
+          },
+          {
+            "tag": 2,
+            "ack": true
+          },
+          {
+            "tag": 3,
+            "ack": true
+          }
+        ],
+        "split": {
+          "acks": [
+            1,
+            2,
+            3
+          ],
+          "nacks": []
+        },
+        "connectionOpen": true
+      },
+      "reference": {
+        "acked": [
+          true,
+          true,
+          true
+        ],
+        "connectionOpen": true,
+        "done": [
+          true,
+          true,
+          true
+        ],
+        "events": [
+          {
+            "ack": true,
+            "tag": 1
+          },
+          {
+            "ack": true,
+            "tag": 2
+          },
+          {
+            "ack": true,
+            "tag": 3
+          }
+        ],
+        "next": 4,
+        "split": {
+          "acks": [
+            1,
+            2,
+            3
+          ],
+          "nacks": []
+        },
+        "tags": [
+          1,
+          2,
+          3
+        ]
+      },
+      "bodies": [
+        {
+          "bytes": 1,
+          "sha256": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881"
+        },
+        {
+          "bytes": 1,
+          "sha256": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881"
+        },
+        {
+          "bytes": 1,
+          "sha256": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881"
+        }
+      ]
+    },
+    {
+      "name": "wire-nack",
+      "matched": true,
+      "actual": {
+        "acked": [
+          false,
+          false,
+          true
+        ],
+        "tags": [
+          1,
+          2,
+          3
+        ],
+        "done": [
+          true,
+          true,
+          true
+        ],
+        "next": 4,
+        "events": [
+          {
+            "tag": 1,
+            "ack": false
+          },
+          {
+            "tag": 2,
+            "ack": false
+          },
+          {
+            "tag": 3,
+            "ack": true
+          }
+        ],
+        "split": {
+          "acks": [
+            3
+          ],
+          "nacks": [
+            1,
+            2
+          ]
+        },
+        "connectionOpen": true
+      },
+      "reference": {
+        "acked": [
+          false,
+          false,
+          true
+        ],
+        "connectionOpen": true,
+        "done": [
+          true,
+          true,
+          true
+        ],
+        "events": [
+          {
+            "ack": false,
+            "tag": 1
+          },
+          {
+            "ack": false,
+            "tag": 2
+          },
+          {
+            "ack": true,
+            "tag": 3
+          }
+        ],
+        "next": 4,
+        "split": {
+          "acks": [
+            3
+          ],
+          "nacks": [
+            1,
+            2
+          ]
+        },
+        "tags": [
+          1,
+          2,
+          3
+        ]
+      },
+      "bodies": [
+        {
+          "bytes": 1,
+          "sha256": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881"
+        },
+        {
+          "bytes": 1,
+          "sha256": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881"
+        },
+        {
+          "bytes": 1,
+          "sha256": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881"
+        }
+      ]
+    },
+    {
+      "name": "wire-wait",
+      "matched": true,
+      "actual": {
+        "cancelled": true,
+        "timedOut": true,
+        "pendingAfterWaits": true,
+        "acked": [
+          true
+        ],
+        "tags": [
+          1
+        ],
+        "done": [
+          true
+        ],
+        "next": 2,
+        "events": [
+          {
+            "tag": 1,
+            "ack": true
+          }
+        ],
+        "split": {
+          "acks": [
+            1
+          ],
+          "nacks": []
+        },
+        "connectionOpen": true
+      },
+      "reference": {
+        "acked": [
+          true
+        ],
+        "cancelled": true,
+        "connectionOpen": true,
+        "done": [
+          true
+        ],
+        "events": [
+          {
+            "ack": true,
+            "tag": 1
+          }
+        ],
+        "next": 2,
+        "pendingAfterWaits": true,
+        "split": {
+          "acks": [
+            1
+          ],
+          "nacks": []
+        },
+        "tags": [
+          1
+        ],
+        "timedOut": true
+      },
+      "bodies": [
+        {
+          "bytes": 1,
+          "sha256": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881"
+        }
+      ]
+    },
+    {
+      "name": "wire-close",
+      "matched": true,
+      "actual": {
+        "acked": [
+          false,
+          false,
+          false
+        ],
+        "tags": [
+          1,
+          2,
+          3
+        ],
+        "done": [
+          true,
+          true,
+          true
+        ],
+        "next": 4,
+        "events": [],
+        "split": {
+          "acks": [],
+          "nacks": []
+        },
+        "connectionOpen": true
+      },
+      "reference": {
+        "acked": [
+          false,
+          false,
+          false
+        ],
+        "connectionOpen": true,
+        "done": [
+          true,
+          true,
+          true
+        ],
+        "events": [],
+        "next": 4,
+        "split": {
+          "acks": [],
+          "nacks": []
+        },
+        "tags": [
+          1,
+          2,
+          3
+        ]
+      },
+      "bodies": [
+        {
+          "bytes": 1,
+          "sha256": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881"
+        },
+        {
+          "bytes": 1,
+          "sha256": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881"
+        },
+        {
+          "bytes": 1,
+          "sha256": "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881"
+        }
+      ]
+    }
+  ],
+  "passed": 9,
+  "tests": [
+    "normal",
+    "transaction",
+    "basic",
+    "stream",
+    "mandatory",
+    "pre-aborted",
+    "multi-channel",
+    "recovery",
+    "channel-recovery"
+  ],
+  "nativeComparisons": 9,
+  "comparisons": [
+    {
+      "name": "normal",
+      "matched": true,
+      "actual": {
+        "handleNil": true,
+        "body": "x",
+        "next": 1,
+        "connectionOpen": true
+      },
+      "reference": {
+        "body": "x",
+        "connectionOpen": true,
+        "handleNil": true,
+        "next": 1
+      }
+    },
+    {
+      "name": "transaction",
+      "matched": true,
+      "actual": {
+        "handleNil": true,
+        "body": "x",
+        "next": 1,
+        "connectionOpen": true
+      },
+      "reference": {
+        "body": "x",
+        "connectionOpen": true,
+        "handleNil": true,
+        "next": 1
+      }
+    },
+    {
+      "name": "basic",
+      "matched": true,
+      "actual": {
+        "acked": true,
+        "done": true,
+        "tag": 1,
+        "next": 2,
+        "bytes": 5,
+        "sha256": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+        "events": [
+          {
+            "tag": 1,
+            "ack": true
+          }
+        ],
+        "connectionOpen": true
+      },
+      "reference": {
+        "acked": true,
+        "bytes": 5,
+        "connectionOpen": true,
+        "done": true,
+        "events": [
+          {
+            "ack": true,
+            "tag": 1
+          }
+        ],
+        "next": 2,
+        "sha256": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+        "tag": 1
+      }
+    },
+    {
+      "name": "stream",
+      "matched": true,
+      "actual": {
+        "acked": true,
+        "done": true,
+        "tag": 1,
+        "next": 2,
+        "bytes": 1048576,
+        "sha256": "a91fbdfcbf30cc090d08ee10d0740e8cce3277d9dc2dcd852b114b6099746088",
+        "events": [
+          {
+            "tag": 1,
+            "ack": true
+          }
+        ],
+        "connectionOpen": true
+      },
+      "reference": {
+        "acked": true,
+        "bytes": 1048576,
+        "connectionOpen": true,
+        "done": true,
+        "events": [
+          {
+            "ack": true,
+            "tag": 1
+          }
+        ],
+        "next": 2,
+        "sha256": "a91fbdfcbf30cc090d08ee10d0740e8cce3277d9dc2dcd852b114b6099746088",
+        "tag": 1
+      }
+    },
+    {
+      "name": "mandatory",
+      "matched": true,
+      "actual": {
+        "acked": true,
+        "body": "returned",
+        "code": 312,
+        "events": [
+          {
+            "tag": 1,
+            "ack": true
+          }
+        ],
+        "connectionOpen": true
+      },
+      "reference": {
+        "acked": true,
+        "body": "returned",
+        "code": 312,
+        "connectionOpen": true,
+        "events": [
+          {
+            "ack": true,
+            "tag": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "pre-aborted",
+      "matched": true,
+      "actual": {
+        "rejected": true,
+        "handleNil": true,
+        "next": 1,
+        "empty": true,
+        "connectionOpen": true
+      },
+      "reference": {
+        "connectionOpen": true,
+        "empty": true,
+        "handleNil": true,
+        "next": 1,
+        "rejected": true
+      }
+    },
+    {
+      "name": "multi-channel",
+      "matched": true,
+      "actual": {
+        "acked": [
+          true,
+          true
+        ],
+        "tags": [
+          1,
+          1
+        ],
+        "next": [
+          2,
+          2
+        ],
+        "bodies": [
+          "first",
+          "second"
+        ],
+        "connectionOpen": true
+      },
+      "reference": {
+        "acked": [
+          true,
+          true
+        ],
+        "bodies": [
+          "first",
+          "second"
+        ],
+        "connectionOpen": true,
+        "next": [
+          2,
+          2
+        ],
+        "tags": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "name": "recovery",
+      "matched": true,
+      "actual": {
+        "before": "before",
+        "nextAfterRecovery": 1,
+        "acked": [
+          true,
+          true
+        ],
+        "tags": [
+          1,
+          1
+        ],
+        "after": "after",
+        "events": [
+          {
+            "tag": 1,
+            "ack": true
+          },
+          {
+            "tag": 1,
+            "ack": true
+          }
+        ],
+        "next": 2,
+        "connectionOpen": true
+      },
+      "reference": {
+        "acked": [
+          true,
+          true
+        ],
+        "after": "after",
+        "before": "before",
+        "connectionOpen": true,
+        "events": [
+          {
+            "ack": true,
+            "tag": 1
+          },
+          {
+            "ack": true,
+            "tag": 1
+          }
+        ],
+        "next": 2,
+        "nextAfterRecovery": 1,
+        "tags": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "name": "channel-recovery",
+      "matched": true,
+      "actual": {
+        "before": "before",
+        "nextAfterRecovery": 1,
+        "acked": [
+          true,
+          true
+        ],
+        "tags": [
+          1,
+          1
+        ],
+        "after": "after",
+        "events": [
+          {
+            "tag": 1,
+            "ack": true
+          },
+          {
+            "tag": 1,
+            "ack": true
+          }
+        ],
+        "next": 2,
+        "connectionOpen": true
+      },
+      "reference": {
+        "acked": [
+          true,
+          true
+        ],
+        "after": "after",
+        "before": "before",
+        "connectionOpen": true,
+        "events": [
+          {
+            "ack": true,
+            "tag": 1
+          },
+          {
+            "ack": true,
+            "tag": 1
+          }
+        ],
+        "next": 2,
+        "nextAfterRecovery": 1,
+        "tags": [
+          1,
+          1
+        ]
+      }
+    }
+  ],
+  "explainedDifferences": 2,
+  "differences": [
+    {
+      "name": "wire-zero",
+      "matched": false,
+      "actual": {
+        "probeAcked": [
+          true,
+          true,
+          true
+        ],
+        "probeConnectionOpen": true,
+        "acked": [
+          true,
+          true,
+          true
+        ],
+        "tags": [
+          1,
+          2,
+          3
+        ],
+        "done": [
+          true,
+          true,
+          true
+        ],
+        "next": 4,
+        "events": [
+          {
+            "tag": 1,
+            "ack": true
+          },
+          {
+            "tag": 2,
+            "ack": true
+          },
+          {
+            "tag": 3,
+            "ack": true
+          }
+        ],
+        "split": {
+          "acks": [
+            1,
+            2,
+            3
+          ],
+          "nacks": []
+        },
+        "connectionOpen": true
+      },
+      "reference": {
+        "acked": [
+          true,
+          true,
+          true
+        ],
+        "connectionOpen": true,
+        "done": [
+          true,
+          true,
+          true
+        ],
+        "events": [
+          {
+            "ack": true,
+            "tag": 1
+          },
+          {
+            "ack": true,
+            "tag": 2
+          },
+          {
+            "ack": true,
+            "tag": 3
+          }
+        ],
+        "next": 4,
+        "probeAcked": [
+          false,
+          false,
+          false
+        ],
+        "probeConnectionOpen": true,
+        "split": {
+          "acks": [
+            1,
+            2,
+            3
+          ],
+          "nacks": []
+        },
+        "tags": [
+          1,
+          2,
+          3
+        ]
+      },
+      "explanation": "Node preserves its existing tag-zero/multiple all-outstanding interpretation. The fixed Go reference leaves handles pending until the later explicit cumulative tag; the 60 ms probe and subsequent completion are recorded separately."
+    },
+    {
+      "name": "wire-future",
+      "matched": false,
+      "actual": {
+        "probeAcked": [
+          false
+        ],
+        "probeConnectionOpen": false,
+        "acked": [
+          false
+        ],
+        "tags": [
+          1
+        ],
+        "done": [
+          true
+        ],
+        "next": 2,
+        "events": [],
+        "split": {
+          "acks": [],
+          "nacks": []
+        },
+        "connectionOpen": false
+      },
+      "reference": {
+        "acked": [
+          true
+        ],
+        "connectionOpen": true,
+        "done": [
+          true
+        ],
+        "events": [
+          {
+            "ack": true,
+            "tag": 1
+          }
+        ],
+        "next": 2,
+        "probeAcked": [
+          false
+        ],
+        "probeConnectionOpen": true,
+        "split": {
+          "acks": [
+            1
+          ],
+          "nacks": []
+        },
+        "tags": [
+          1
+        ]
+      },
+      "explanation": "Node preserves fail-closed validation of a future broker confirmation tag. The fixed Go reference keeps the connection open and waits for a valid tag; the invalid-tag probe does not establish a broker-supported workflow."
+    }
+  ],
+  "observations": [
+    {
+      "mode": "recovery",
+      "generations": [
+        1,
+        2
+      ]
+    },
+    {
+      "mode": "channel-recovery",
+      "generations": [
+        1,
+        2
+      ]
+    }
+  ],
+  "sources": {
+    "tools/evidence-source.mjs": "5b5bc6277d326cda62e39fce99dacbca21b4af52d2f16833c14eb975934596ba",
+    "tools/connection-strategy.mjs": "6278c52a2e4c83031b746ba0e869a460ce0c02b88ef882cebd7f5671ca948586",
+    "tools/topology-strategy.mjs": "48734ab45117f89e7c56220b583f4cbe8bd87bad625e4c68b2d6e61b0441a3a6",
+    "tools/close-deadline.mjs": "0277a8786a0d3eebe24084c69431232fbc0aa433cd9999ca6297c34105343768",
+    "tools/outbound.mjs": "bc9cc59a8df9669ae010138e4dd89fa801462c96f6440ed4ba48db45c7fe7f39",
+    "tools/recovery-control.mjs": "9c20dd1e5142a900c0af1d84eea338a09ab1b83ef4d12c47066f486b241e3a69",
+    "tools/recovery.mjs": "359b6bf6a2967ea38198200d9a5aae9739ae7f2e4483c6971818a87250cbf417",
+    "tools/recovery-state.mjs": "322925ae7632a2ea5241e2054fc4f8088bc9445b23757a88da75f98a9631c1ef",
+    "tools/recovery-channel.mjs": "8f8b4f44e4b6c30509530a0b2e50d0f3ab49b3eec83537e72136e8750aa30810",
+    "tools/topology-query.mjs": "26fdbf28aa2b51eb8bf1a7bfb81b1a004ef0207ae071989ab8aaaab5070493e6",
+    "tools/transport.mjs": "810ae85f9c35ba33ad9949ac8111707a534da2b33ce43fb20b9457873823d5a4",
+    "connection_metadata.mbt": "575835f99259cf2aae033f070579880762c5a812a81afbc4f52beebf1f0bd14f",
+    "cmd/web/connection_metadata.mbt": "8b8f88dafa86be60982ce8bc59ffd1bbe30f2050eeb7ab2ba1aa7dcdb9c3dce8",
+    "tools/connection-metadata.mjs": "90749b71731989548dc2c493f47fbfb808edc15f36a44f259385eea94aa0d307",
+    "tools/uri.mjs": "58a57a21990d9b1f7369fdc39ca8e4a1e8e816661f244a5aa38ed49763391594",
+    "uri.mbt": "fb8755671ef6cc4afc4d3a51da45f3baf8df45a6ce1a9ffd3126b495d7df7d1e",
+    "cmd/web/uri.mbt": "277acacb4d51d0a13e470e7132a74ffc592fc13dec72855ec2881e9ea1e7ba54",
+    "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
+    "tools/confirmations.mjs": "411d45fb1e468812cc2b345691eb32654f4af9eaa4c80043bc965cd6bf354bbb",
+    "confirm_ledger.mbt": "4fc85e1b21cf1c6fd2f8b428c1d0789c03a2f34e79cfe11b5a3bf87d25bac022",
+    "cmd/web/confirm.mbt": "446a833b157b6e45813bb98f69a9ae852b5c16ed3660ee6470bce690991eacf4",
+    "tools/confirm-ledger.mjs": "463a23c16eabd01c06ac938a139d7e513db553da20e5933cd2601c4e49c1cc09",
+    "tools/client.mjs": "461683891abba9ad4aeddae714a9606d29c3a8f0cc8c452620859bfe608e0ac5",
+    "tools/inbound.mjs": "472f83ff6abb1d1516ad46254f4a90219170630bf1506bb917fd35b1688e341f",
+    "tools/confirmations-reference.go": "b36adbe12a229fa50f84c6d53f7c3d1fbe7491245c838dd8598b9746c0fb5806",
+    "tools/test-confirmations-native.mjs": "4d2cf14157de5a4a2913ef57d77a0a0948b2c2aa9ffdd85777562aa9157ddb99",
+    "tools/channel-options-peer.mjs": "c541edf7df493dc489c5fdee86cac5437868fff4bb1ed92b70432235e34842ae",
+    "tools/nowait-peer.mjs": "0b4deee8decf362d9b05d3a45ac80ce6b07d7eb89e289e7f243fc0f3e33c8028",
+    "tools/recovery-peer.mjs": "0bcd8bcbbfdb0a5b1c23b653af89d860870d0525aedcf34ed69f55e8376319c0",
+    "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
+    "tools/rabbitmq-harness.mjs": "5a458f2b1687634c30fa84352e901642dc6c0c40f7681274005a5ca61a5d9429",
+    "tools/rabbitmq-reference.py": "e99fc5fb6964c33d03fe936ed6a4b18b3236c9f626c52e8b8daede1e2b5bf69e",
+    "evidence/confirmations-reference-build.json": "e299791d1e925deb789a97d615b41140de84164948e29dbb97cccbde0082fa48",
+    "web/engine.mjs": "686ba3f063b9675c077395533ed5d668aacd11a25bafec2b4185e7d0b885cfd3"
+  },
+  "commit": "a0195c6baf35db642d13651cb28938f899062e7c",
+  "binarySha256": "3aabffbfda328e7f56dad22b89557b6731b828b4ed974514817652fdeecc40de",
+  "brokerPackages": {
+    "erlang-asn1_1%3a27.3.4.6+dfsg-1_amd64.deb": "b2d3f1a35d642727631ff138070d5a4f410bb0066f67a1efbf11ad61dc51fa6d",
+    "erlang-base_1%3a27.3.4.6+dfsg-1_amd64.deb": "8e7ababa5b1ddbe72e135faa78d15755268dfbb7cdfc25a5a8144f3e2d5754df",
+    "erlang-crypto_1%3a27.3.4.6+dfsg-1_amd64.deb": "1a2de05e72695135d4c091cbb7f74e5c291f3c763d4ced4b18e48d78a2a73d3a",
+    "erlang-eldap_1%3a27.3.4.6+dfsg-1_amd64.deb": "4c40df00f11f0b459d0d5221b167e05e2eb57f63d82a61fed61541481093aa57",
+    "erlang-inets_1%3a27.3.4.6+dfsg-1_amd64.deb": "f075fa56cd4464a63eb26d7d90d834a2b31446d9707c527029fa15915ae1f9ed",
+    "erlang-mnesia_1%3a27.3.4.6+dfsg-1_amd64.deb": "527c4881cb83a0c89e6d621adae20b4e301b8220311e59a839a443c4bf7edca6",
+    "erlang-os-mon_1%3a27.3.4.6+dfsg-1_amd64.deb": "b1cc339e3dfc237440069314dcdb082dc812cea57c1494679efbd642c22b9775",
+    "erlang-parsetools_1%3a27.3.4.6+dfsg-1_amd64.deb": "bd846ef7ca9d58f48ee54123a7138ec1812aa7aa813ebdffce21fc5fd6f45d78",
+    "erlang-public-key_1%3a27.3.4.6+dfsg-1_amd64.deb": "8cb55457e13ff6b00ff9ea80df4b13360dbb4df9c4bc1dbbbdc3ad4d9658ee8c",
+    "erlang-runtime-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "dfe9a6452a7073faf6be4e2f4ac4e5513458294d5949fa10040b77f5d522970a",
+    "erlang-snmp_1%3a27.3.4.6+dfsg-1_amd64.deb": "ce4c7681a5ee8d8c9f8fab0fc1b6297e2dab573f6991e24bc592770bd1e4cd4d",
+    "erlang-ssl_1%3a27.3.4.6+dfsg-1_amd64.deb": "f194e4197bd209a2e3b219190f545c5fa3735369b6d8e36b8616a20dac767b64",
+    "erlang-syntax-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "06a238505a33eb31b4479cdcc003719bcf37cdff8922e0496296407bcafee2f4",
+    "erlang-tools_1%3a27.3.4.6+dfsg-1_amd64.deb": "f2769fae5be10c5c7048f2d1f62c5d41c9202c016b48138b039a6887c44c4757",
+    "erlang-xmerl_1%3a27.3.4.6+dfsg-1_amd64.deb": "7480288faf6f4870a62e9de14c56cd4e6b92bebf4c26e1d35123bab10c92d1fc",
+    "libsctp1_1.0.21+dfsg-1build2_amd64.deb": "92924c463cf0e6630b1e9fd3969d45b21558f7ecbf0c9ef12c80523669f8a271",
+    "rabbitmq-server_4.0.5-10ubuntu5_all.deb": "facf754e045a705aca30b82b7728ac7b3f123d2b7f7838575b246fe0bd2ad05e"
+  },
+  "scope": "Six controlled-peer semantic sequences and nine real broker scenarios match; exact method bytes and body hashes are checked for the matching peer sequences. Tag-zero multiple and invalid future-tag handling are explicit existing client differences. Local waiter timeout does not retract a publication. No claim of full Go channel scheduling, transport context or throughput parity."
+}
