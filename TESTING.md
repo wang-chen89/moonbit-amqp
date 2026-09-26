@@ -8,7 +8,7 @@
 
 本轮另完成真实RabbitMQ4.0.5与固定amqp091-go原生参考的9个broker场景、6条匹配线协议序列、19个方法帧对照，2项既有行为差异明确记录在 [native.json](evidence/ledger-20260927/native.json)。覆盖普通/事务/确认发布、1MiB流、mandatory return、预取消、双通道、连接与单通道恢复。新混合确认回归使用受控peer，不声称broker实际发出该异常顺序。
 
-依赖是16个经Ubuntu元数据哈希核对后仅解包的包；没有系统安装或常驻服务。设置 `RABBITMQ_ROOT`、`WSL_DISTRO=Ubuntu-D`、`AMQP_CONFIRMATIONS_REFERENCE` 后运行 `node tools/test-confirmations-native.mjs`。解包在Windows挂载盘时冷启动较慢，本轮 `RABBITMQ_STARTUP_SECONDS=180`；默认30、允许1至300，Python与宿主超时同步。证据可通过 `CONFIRMATIONS_NATIVE_EVIDENCE` 指定新路径。一次性实例已正常退出。
+隔离环境由已核对的Ubuntu包解包；运行回执记录17个缓存包指纹（不代表它们全部在本次运行中被加载）。没有系统安装或常驻服务。设置 `RABBITMQ_ROOT`、`WSL_DISTRO=Ubuntu-D`、`AMQP_CONFIRMATIONS_REFERENCE` 后运行 `node tools/test-confirmations-native.mjs`。解包在Windows挂载盘时冷启动较慢，本轮 `RABBITMQ_STARTUP_SECONDS=180`；默认30、允许1至300，Python与宿主超时同步。证据可通过 `CONFIRMATIONS_NATIVE_EVIDENCE` 指定新路径。一次性实例已正常退出。
 
 以下是9月23日历史基线，数字仅适用于当时源码。
 
