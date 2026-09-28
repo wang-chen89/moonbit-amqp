@@ -1,6 +1,6 @@
 ///|
-fn streaming_session() -> Session raise {
-  let s = Session::new("demo", "test", stream_bodies=true)
+fn streaming_session() -> @amqp.Session raise {
+  let s = @amqp.Session::new("demo", "test", stream_bodies=true)
   ignore(s.take_output())
   ignore(s.feed(start_frame()))
   ignore(s.take_output())
@@ -9,7 +9,7 @@ fn streaming_session() -> Session raise {
   )
   ignore(s.take_output())
   ignore(s.feed(server_method("connection.open-ok", [ShortString("")])))
-  s.send(1, Method::new("channel.open", [ShortString("")]))
+  s.send(1, @amqp.Method::new("channel.open", [ShortString("")]))
   ignore(s.take_output())
   ignore(s.feed(server_method("channel.open-ok", [LongString(b"")], channel=1)))
   s
@@ -34,24 +34,24 @@ fn incoming_delivery(channel : Int, tag : UInt64) -> Bytes raise {
 fn incoming_header(channel : Int, size : UInt64) -> Bytes raise {
   (
     { body_size: size, properties: [("content-type", ShortString("binary"))], } :
-    BasicHeader)
+    @amqp.BasicHeader)
   .encode(channel)
   .encode()
 }
 
 ///|
 fn incoming_body(channel : Int, data : Bytes) -> Bytes raise {
-  ({ kind: 3, channel, payload: data, } : Frame).encode()
+  ({ kind: 3, channel, payload: data, } : @amqp.Frame).encode()
 }
 
 ///|
 test "stream receiver exposes uint64 metadata and fragments without whole body" {
   let s = streaming_session()
   assert_eq(s.feed(incoming_delivery(1, 9UL)), [])
-  let command = Method::decode(
-    Decoder::new().feed(incoming_delivery(1, 9UL))[0],
+  let command = @amqp.Method::decode(
+    @amqp.Decoder::new().feed(incoming_delivery(1, 9UL))[0],
   )
-  let header : BasicHeader = {
+  let header : @amqp.BasicHeader = {
     body_size: 18446744073709551615UL,
     properties: [("content-type", ShortString("binary"))],
   }
@@ -115,7 +115,7 @@ test "stream receiver rejects overruns empty fragments duplicate headers and ear
 ///|
 test "stream receiver interleaves channels and permits heartbeats" {
   let s = streaming_session()
-  s.send(2, Method::new("channel.open", [ShortString("")]))
+  s.send(2, @amqp.Method::new("channel.open", [ShortString("")]))
   ignore(s.take_output())
   ignore(s.feed(server_method("channel.open-ok", [LongString(b"")], channel=2)))
   for ch in [1, 2] {
@@ -123,7 +123,10 @@ test "stream receiver interleaves channels and permits heartbeats" {
     ignore(s.feed(incoming_header(ch, 2UL)))
   }
   assert_eq(s.feed(incoming_body(2, b"x")), [MessageData(2, b"x")])
-  assert_eq(s.feed(({ kind: 8, channel: 0, payload: b"", } : Frame).encode()), [])
+  assert_eq(
+    s.feed(({ kind: 8, channel: 0, payload: b"", } : @amqp.Frame).encode()),
+    [],
+  )
   assert_eq(s.feed(incoming_body(1, b"ab")), [
     MessageData(1, b"ab"),
     MessageEnd(1),
@@ -150,7 +153,7 @@ test "stream receiver discards closed channel state before reuse" {
     ),
   )
   ignore(s.take_output())
-  s.send(1, Method::new("channel.open", [ShortString("")]))
+  s.send(1, @amqp.Method::new("channel.open", [ShortString("")]))
   ignore(s.take_output())
   ignore(s.feed(server_method("channel.open-ok", [LongString(b"")], channel=1)))
   ignore(s.feed(incoming_delivery(1, 2UL)))

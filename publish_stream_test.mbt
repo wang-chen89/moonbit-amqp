@@ -5,8 +5,8 @@ test "streaming publication encodes full uint64 size without body allocation" {
   let out = s.take_output()
   assert_eq(out.length(), 2)
   assert_eq(
-    Method::decode(Decoder::new().feed(out[0])[0]),
-    Method::new("basic.publish", [
+    @amqp.Method::decode(@amqp.Decoder::new().feed(out[0])[0]),
+    @amqp.Method::new("basic.publish", [
       Short(0),
       ShortString(""),
       ShortString("q"),
@@ -15,11 +15,11 @@ test "streaming publication encodes full uint64 size without body allocation" {
     ]),
   )
   assert_eq(
-    BasicHeader::decode(Decoder::new().feed(out[1])[0]).body_size,
+    @amqp.BasicHeader::decode(@amqp.Decoder::new().feed(out[1])[0]).body_size,
     18446744073709551615UL,
   )
   s.publish_body(1, b"a")
-  assert_eq(Decoder::new().feed(s.take_output()[0])[0].payload, b"a")
+  assert_eq(@amqp.Decoder::new().feed(s.take_output()[0])[0].payload, b"a")
 }
 
 ///|
@@ -36,7 +36,7 @@ test "invalid stream metadata is atomic and empty body releases channel" {
   assert_eq(s.take_output(), [])
   s.publish_start(1, "", "q", 0UL)
   assert_eq(s.take_output().length(), 2)
-  s.send(1, Method::new("basic.ack", [LongLong(1UL), Bit(false)]))
+  s.send(1, @amqp.Method::new("basic.ack", [LongLong(1UL), Bit(false)]))
   assert_eq(s.take_output().length(), 1)
   assert_true(
     try {
@@ -71,7 +71,7 @@ test "stream fragments guard channel ordering and rejected lengths preserve rema
   )
   assert_true(
     try {
-      s.send(1, Method::new("basic.ack", [LongLong(1UL), Bit(false)]))
+      s.send(1, @amqp.Method::new("basic.ack", [LongLong(1UL), Bit(false)]))
       false
     } catch {
       _ => true
@@ -103,7 +103,7 @@ test "stream fragments guard channel ordering and rejected lengths preserve rema
 ///|
 test "stream frame bounds and independent channels" {
   let s = ready_session()
-  s.send(2, Method::new("channel.open", [ShortString("")]))
+  s.send(2, @amqp.Method::new("channel.open", [ShortString("")]))
   ignore(s.take_output())
   ignore(s.feed(server_method("channel.open-ok", [LongString(b"")], channel=2)))
   s.publish_start(1, "", "q", 9000UL)
@@ -179,7 +179,7 @@ test "broker channel close clears partial outgoing content before channel reuse"
     },
   )
   ignore(s.take_output())
-  s.send(1, Method::new("channel.open", [ShortString("")]))
+  s.send(1, @amqp.Method::new("channel.open", [ShortString("")]))
   ignore(s.take_output())
   ignore(s.feed(server_method("channel.open-ok", [LongString(b"")], channel=1)))
   s.publish_start(1, "", "q", 0UL)

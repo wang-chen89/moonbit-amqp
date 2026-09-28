@@ -3,23 +3,23 @@ test "credential update stays on connection channel and accepts one matching rep
   let s = ready_session()
   s.send(
     0,
-    Method::new("connection.update-secret", [
+    @amqp.Method::new("connection.update-secret", [
       LongString(b"\x00new\xff"),
       ShortString("refresh"),
     ]),
   )
-  let frame = Decoder::new().feed(s.take_output()[0])[0]
+  let frame = @amqp.Decoder::new().feed(s.take_output()[0])[0]
   assert_eq(frame.channel, 0)
-  assert_eq(Method::decode(frame).arguments, [
+  assert_eq(@amqp.Method::decode(frame).arguments, [
     LongString(b"\x00new\xff"),
     ShortString("refresh"),
   ])
   assert_eq(s.feed(server_method("connection.update-secret-ok", [])), [
-    Received(0, Method::new("connection.update-secret-ok", [])),
+    Received(0, @amqp.Method::new("connection.update-secret-ok", [])),
   ])
   s.send(
     0,
-    Method::new("connection.update-secret", [
+    @amqp.Method::new("connection.update-secret", [
       LongString(b"again"),
       ShortString(""),
     ]),
@@ -30,7 +30,7 @@ test "credential update stays on connection channel and accepts one matching rep
 ///|
 test "duplicate credential update is rejected without replacing the pending exchange" {
   let s = ready_session()
-  let command = Method::new("connection.update-secret", [
+  let command = @amqp.Method::new("connection.update-secret", [
     LongString(b"first"),
     ShortString("reason"),
   ])
@@ -69,7 +69,7 @@ test "credential update does not consume connection flow control or channel repl
   let s = ready_session()
   s.send(
     0,
-    Method::new("connection.update-secret", [
+    @amqp.Method::new("connection.update-secret", [
       LongString(b"new"),
       ShortString(""),
     ]),
@@ -77,10 +77,15 @@ test "credential update does not consume connection flow control or channel repl
   ignore(s.take_output())
   assert_eq(
     s.feed(server_method("connection.blocked", [ShortString("memory")])),
-    [Received(0, Method::new("connection.blocked", [ShortString("memory")]))],
+    [
+      Received(
+        0,
+        @amqp.Method::new("connection.blocked", [ShortString("memory")]),
+      ),
+    ],
   )
   assert_eq(s.feed(server_method("queue.purge-ok", [Long(3U)], channel=1)), [
-    Received(1, Method::new("queue.purge-ok", [Long(3U)])),
+    Received(1, @amqp.Method::new("queue.purge-ok", [Long(3U)])),
   ])
   ignore(s.feed(server_method("connection.update-secret-ok", [])))
   assert_eq(s.status(), "ready")
@@ -89,7 +94,7 @@ test "credential update does not consume connection flow control or channel repl
 ///|
 test "invalid credential update frame leaves pending state unused" {
   let s = ready_session()
-  let oversized = Method::new("connection.update-secret", [
+  let oversized = @amqp.Method::new("connection.update-secret", [
     LongString(Bytes::make(8192, b'x')),
     ShortString("reason"),
   ])
@@ -105,7 +110,7 @@ test "invalid credential update frame leaves pending state unused" {
     try {
       s.send(
         1,
-        Method::new("connection.update-secret", [
+        @amqp.Method::new("connection.update-secret", [
           LongString(b"x"),
           ShortString(""),
         ]),
@@ -117,7 +122,7 @@ test "invalid credential update frame leaves pending state unused" {
   )
   s.send(
     0,
-    Method::new("connection.update-secret", [
+    @amqp.Method::new("connection.update-secret", [
       LongString(b"valid"),
       ShortString(""),
     ]),

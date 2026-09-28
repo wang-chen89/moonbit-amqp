@@ -1,12 +1,12 @@
 ///|
 test "metadata default and custom properties have mandatory capabilities" {
-  let defaults = new_connection_properties()
+  let defaults = @amqp.new_connection_properties()
   assert_eq(defaults.length(), 3)
   defaults.clear()
-  assert_eq(new_connection_properties().length(), 3)
-  let s = Session::new("u", "p")
+  assert_eq(@amqp.new_connection_properties().length(), 3)
+  let s = @amqp.Session::new("u", "p")
   assert_eq(s.client_properties().length(), 4)
-  let custom = Session::new("u", "p", properties=[
+  let custom = @amqp.Session::new("u", "p", properties=[
     ("connection_name", LongString(b"example")),
     ("capabilities", Boolean(false)),
   ])
@@ -24,10 +24,12 @@ test "metadata default and custom properties have mandatory capabilities" {
 
 ///|
 test "metadata client property snapshots isolate nested containers and getters" {
-  let child : Array[(String, FieldValue)] = [("n", Signed32(1))]
-  let values : Array[FieldValue] = [TableValue(child)]
-  let source : Array[(String, FieldValue)] = [("nested", ArrayValue(values))]
-  let s = Session::new("u", "p", properties=source)
+  let child : Array[(String, @amqp.FieldValue)] = [("n", Signed32(1))]
+  let values : Array[@amqp.FieldValue] = [TableValue(child)]
+  let source : Array[(String, @amqp.FieldValue)] = [
+    ("nested", ArrayValue(values)),
+  ]
+  let s = @amqp.Session::new("u", "p", properties=source)
   source.clear()
   child.clear()
   values.clear()
@@ -47,7 +49,7 @@ test "metadata client property snapshots isolate nested containers and getters" 
 
 ///|
 test "metadata validates keys containers and frame bound before session use" {
-  let invalid : Array[Array[(String, FieldValue)]] = [
+  let invalid : Array[Array[(String, @amqp.FieldValue)]] = [
     [("x".repeat(256), Void)],
     [("x", Signed8(128))],
     [("x", LongString(Bytes::make(8192, b'x')))],
@@ -55,7 +57,7 @@ test "metadata validates keys containers and frame bound before session use" {
   for props in invalid {
     assert_true(
       try {
-        ignore(Session::new("u", "p", frame_max=4096, properties=props))
+        ignore(@amqp.Session::new("u", "p", frame_max=4096, properties=props))
         false
       } catch {
         _ => true
@@ -63,7 +65,7 @@ test "metadata validates keys containers and frame bound before session use" {
     )
   }
   // All supplied capability entries are replaced, even invalid values.
-  let only = Session::new("u", "p", properties=[
+  let only = @amqp.Session::new("u", "p", properties=[
     ("capabilities", Signed8(999)),
     ("capabilities", Void),
   ])
@@ -72,7 +74,7 @@ test "metadata validates keys containers and frame bound before session use" {
 
 ///|
 test "metadata before start has no invented server identity" {
-  let s = Session::new("u", "p", vhost="tenant")
+  let s = @amqp.Session::new("u", "p", vhost="tenant")
   assert_eq(s.server_properties(), [])
   assert_eq(s.server_locales(), [])
   assert_eq(s.server_version(), None)
@@ -82,8 +84,8 @@ test "metadata before start has no invented server identity" {
 
 ///|
 test "metadata server properties preserve bytes tags duplicates and locales" {
-  let s = Session::new("u", "p")
-  let props : Array[(String, FieldValue)] = [
+  let s = @amqp.Session::new("u", "p")
+  let props : Array[(String, @amqp.FieldValue)] = [
     ("product", LongString(b"peer")),
     ("duplicate", Signed32(1)),
     ("duplicate", Signed32(2)),
@@ -116,7 +118,7 @@ test "metadata server properties preserve bytes tags duplicates and locales" {
 
 ///|
 test "metadata remains queryable after broker rejects authentication" {
-  let s = Session::new("u", "p")
+  let s = @amqp.Session::new("u", "p")
   ignore(auth_reply(s, b"PLAIN"))
   ignore(
     s.feed(

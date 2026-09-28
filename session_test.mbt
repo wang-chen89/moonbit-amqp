@@ -1,10 +1,10 @@
 ///|
 fn server_method(
   name : String,
-  args : Array[Argument],
+  args : Array[@amqp.Argument],
   channel? : Int = 0,
 ) -> Bytes raise {
-  Method::new(name, args).encode(channel).encode()
+  @amqp.Method::new(name, args).encode(channel).encode()
 }
 
 ///|
@@ -19,8 +19,8 @@ fn start_frame() -> Bytes raise {
 }
 
 ///|
-fn ready_session() -> Session raise {
-  let s = Session::new("demo", "test")
+fn ready_session() -> @amqp.Session raise {
+  let s = @amqp.Session::new("demo", "test")
   ignore(s.take_output())
   ignore(s.feed(start_frame()))
   ignore(s.take_output())
@@ -29,7 +29,7 @@ fn ready_session() -> Session raise {
   )
   ignore(s.take_output())
   ignore(s.feed(server_method("connection.open-ok", [ShortString("")])))
-  s.send(1, Method::new("channel.open", [ShortString("")]))
+  s.send(1, @amqp.Method::new("channel.open", [ShortString("")]))
   ignore(s.take_output())
   ignore(s.feed(server_method("channel.open-ok", [LongString(b"")], channel=1)))
   s
@@ -37,7 +37,7 @@ fn ready_session() -> Session raise {
 
 ///|
 test "session fragmented handshake authenticates once and negotiates limits" {
-  let s = Session::new(
+  let s = @amqp.Session::new(
     "demo",
     "test",
     channel_max=20,
@@ -48,8 +48,8 @@ test "session fragmented handshake authenticates once and negotiates limits" {
   for byte in start_frame() {
     assert_eq(s.feed(Bytes::from_array([byte])), [])
   }
-  let frames = Decoder::new().feed(s.take_output()[0])
-  let auth = Method::decode(frames[0])
+  let frames = @amqp.Decoder::new().feed(s.take_output()[0])
+  let auth = @amqp.Method::decode(frames[0])
   assert_eq(auth.arguments[2], LongString(b"\x00demo\x00test"))
   assert_eq(s.take_output(), [])
   ignore(
@@ -58,11 +58,10 @@ test "session fragmented handshake authenticates once and negotiates limits" {
   assert_eq(s.limits(), (16, 8192, 4))
   let out = s.take_output()
   assert_eq(out.length(), 2)
-  assert_eq(Method::decode(Decoder::new().feed(out[0])[0]).arguments, [
-    Short(16),
-    Long(8192U),
-    Short(4),
-  ])
+  assert_eq(
+    @amqp.Method::decode(@amqp.Decoder::new().feed(out[0])[0]).arguments,
+    [Short(16), Long(8192U), Short(4)],
+  )
   assert_eq(s.feed(server_method("connection.open-ok", [ShortString("")])), [
     Ready,
   ])
@@ -70,7 +69,13 @@ test "session fragmented handshake authenticates once and negotiates limits" {
 
 ///|
 test "session zero tune settings use bounded client maxima and larger heartbeat" {
-  let s = Session::new("u", "p", channel_max=8, frame_max=4096, heartbeat=5)
+  let s = @amqp.Session::new(
+    "u",
+    "p",
+    channel_max=8,
+    frame_max=4096,
+    heartbeat=5,
+  )
   ignore(s.take_output())
   ignore(s.feed(start_frame()))
   ignore(s.take_output())
@@ -82,7 +87,7 @@ test "session zero tune settings use bounded client maxima and larger heartbeat"
 
 ///|
 test "session rejects wrong handshake and poisons state" {
-  let s = Session::new("u", "p")
+  let s = @amqp.Session::new("u", "p")
   assert_true(
     try {
       ignore(s.feed(server_method("connection.open-ok", [ShortString("")])))
@@ -105,7 +110,7 @@ test "session rejects wrong handshake and poisons state" {
 
 ///|
 test "session rejects unavailable SASL and invalid server minimum" {
-  let a = Session::new("u", "p")
+  let a = @amqp.Session::new("u", "p")
   assert_true(
     try {
       ignore(
@@ -124,7 +129,7 @@ test "session rejects unavailable SASL and invalid server minimum" {
       _ => true
     },
   )
-  let b = Session::new("u", "p")
+  let b = @amqp.Session::new("u", "p")
   ignore(b.take_output())
   ignore(b.feed(start_frame()))
   ignore(b.take_output())
@@ -147,7 +152,7 @@ test "session channel allocation state and close isolate channels" {
   let s = ready_session()
   assert_true(
     try {
-      s.send(1, Method::new("channel.open", [ShortString("")]))
+      s.send(1, @amqp.Method::new("channel.open", [ShortString("")]))
       false
     } catch {
       _ => true
@@ -155,13 +160,13 @@ test "session channel allocation state and close isolate channels" {
   )
   assert_true(
     try {
-      s.send(17, Method::new("channel.open", [ShortString("")]))
+      s.send(17, @amqp.Method::new("channel.open", [ShortString("")]))
       false
     } catch {
       _ => true
     },
   )
-  s.send(2, Method::new("channel.open", [ShortString("")]))
+  s.send(2, @amqp.Method::new("channel.open", [ShortString("")]))
   assert_true(
     try {
       s.publish(2, "", "q", b"x")
@@ -185,7 +190,7 @@ test "session channel allocation state and close isolate channels" {
   assert_eq(s.take_output().length(), 1)
   s.publish(2, "", "q", b"ok")
   assert_eq(s.take_output().length(), 3)
-  s.send(1, Method::new("channel.open", [ShortString("")]))
+  s.send(1, @amqp.Method::new("channel.open", [ShortString("")]))
 }
 
 ///|
@@ -193,7 +198,7 @@ test "session broker flow control gates publishing and responds" {
   let s = ready_session()
   ignore(s.feed(server_method("channel.flow", [Bit(false)], channel=1)))
   assert_eq(
-    Method::decode(Decoder::new().feed(s.take_output()[0])[0]).arguments,
+    @amqp.Method::decode(@amqp.Decoder::new().feed(s.take_output()[0])[0]).arguments,
     [Bit(false)],
   )
   assert_true(
@@ -222,14 +227,14 @@ test "session broker flow control gates publishing and responds" {
 ///|
 test "session get-ok emitted only when all body bytes arrive" {
   let s = ready_session()
-  let command = Method::new("basic.get-ok", [
+  let command = @amqp.Method::new("basic.get-ok", [
     LongLong(9007199254740993UL),
     Bit(false),
     ShortString(""),
     ShortString("q"),
     Long(0U),
   ])
-  let frames = content_frames(
+  let frames = @amqp.content_frames(
     command,
     1,
     [("timestamp", LongLong(18446744073709551615UL))],
@@ -267,7 +272,7 @@ test "session publish splits at negotiated envelope and rejects atomically" {
 ///|
 test "session rejects negotiated oversized frame and incomplete eof" {
   let s = ready_session()
-  let oversized : Frame = {
+  let oversized : @amqp.Frame = {
     kind: 3,
     channel: 1,
     payload: Bytes::from_array(Array::make(8185, b'x')),
@@ -297,8 +302,8 @@ test "session rejects negotiated oversized frame and incomplete eof" {
 ///|
 test "session discards in-flight content while closing channel or connection" {
   let s = ready_session()
-  let frames = content_frames(
-    Method::new("basic.deliver", [
+  let frames = @amqp.content_frames(
+    @amqp.Method::new("basic.deliver", [
       ShortString("consumer"),
       LongLong(1UL),
       Bit(false),
@@ -312,7 +317,7 @@ test "session discards in-flight content while closing channel or connection" {
   ignore(s.feed(frames[0].encode()))
   s.send(
     1,
-    Method::new("channel.close", [
+    @amqp.Method::new("channel.close", [
       Short(200),
       ShortString("bye"),
       Short(0),
@@ -327,7 +332,7 @@ test "session discards in-flight content while closing channel or connection" {
   ])
   s.send(
     0,
-    Method::new("connection.close", [
+    @amqp.Method::new("connection.close", [
       Short(200),
       ShortString("bye"),
       Short(0),
@@ -347,7 +352,7 @@ test "session simultaneous connection close acknowledges peer" {
   let s = ready_session()
   s.send(
     0,
-    Method::new("connection.close", [
+    @amqp.Method::new("connection.close", [
       Short(200),
       ShortString("bye"),
       Short(0),
@@ -367,8 +372,8 @@ test "session simultaneous connection close acknowledges peer" {
     [Closed(320, "shutdown")],
   )
   assert_eq(
-    Method::decode(Decoder::new().feed(s.take_output()[0])[0]),
-    Method::new("connection.close-ok", []),
+    @amqp.Method::decode(@amqp.Decoder::new().feed(s.take_output()[0])[0]),
+    @amqp.Method::new("connection.close-ok", []),
   )
   s.finish()
 }

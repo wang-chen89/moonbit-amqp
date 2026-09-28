@@ -28,7 +28,7 @@ test "publication flags preserve the legacy default and agree across body APIs" 
 ///|
 test "client flow and server flow have independent directions and preserve content ordering" {
   let s = ready_session()
-  s.send(1, Method::new("channel.flow", [Bit(false)]))
+  s.send(1, @amqp.Method::new("channel.flow", [Bit(false)]))
   assert_eq(s.take_output(), [
     server_method("channel.flow", [Bit(false)], channel=1),
   ])
@@ -38,7 +38,7 @@ test "client flow and server flow have independent directions and preserve conte
   ignore(s.take_output())
   assert_true(
     try {
-      s.send(1, Method::new("channel.flow", [Bit(true)]))
+      s.send(1, @amqp.Method::new("channel.flow", [Bit(true)]))
       false
     } catch {
       _ => true
@@ -47,7 +47,7 @@ test "client flow and server flow have independent directions and preserve conte
   assert_eq(s.take_output(), [])
   s.publish_body(1, b"x")
   ignore(s.take_output())
-  s.send(1, Method::new("channel.flow", [Bit(true)]))
+  s.send(1, @amqp.Method::new("channel.flow", [Bit(true)]))
   ignore(s.take_output())
   ignore(s.feed(server_method("channel.flow-ok", [Bit(true)], channel=1)))
   ignore(s.feed(server_method("channel.flow", [Bit(false)], channel=1)))

@@ -3,61 +3,77 @@
 ///|
 test "native authentication response vectors PLAIN" {
   {
-    let s = Session::with_authentication([Authentication::plain("", "")])
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::plain("", ""),
+    ])
     assert_eq(auth_reply(s, b"PLAIN").arguments[2], LongString(b"\x00\x00"))
   }
   {
-    let s = Session::with_authentication([Authentication::plain("demo", "test")])
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::plain("demo", "test"),
+    ])
     assert_eq(
       auth_reply(s, b"PLAIN").arguments[2],
       LongString(b"\x00\x64\x65\x6d\x6f\x00\x74\x65\x73\x74"),
     )
   }
   {
-    let s = Session::with_authentication([Authentication::plain("中", "密")])
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::plain("中", "密"),
+    ])
     assert_eq(
       auth_reply(s, b"PLAIN").arguments[2],
       LongString(b"\x00\xe4\xb8\xad\x00\xe5\xaf\x86"),
     )
   }
   {
-    let s = Session::with_authentication([Authentication::plain("é", "é")])
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::plain("é", "é"),
+    ])
     assert_eq(
       auth_reply(s, b"PLAIN").arguments[2],
       LongString(b"\x00\x65\xcc\x81\x00\xc3\xa9"),
     )
   }
   {
-    let s = Session::with_authentication([Authentication::plain("I­X", "a b")])
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::plain("I­X", "a b"),
+    ])
     assert_eq(
       auth_reply(s, b"PLAIN").arguments[2],
       LongString(b"\x00\x49\xc2\xad\x58\x00\x61\xc2\xa0\x62"),
     )
   }
   {
-    let s = Session::with_authentication([Authentication::plain("Ⅸ", "４")])
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::plain("Ⅸ", "４"),
+    ])
     assert_eq(
       auth_reply(s, b"PLAIN").arguments[2],
       LongString(b"\x00\xe2\x85\xa8\x00\xef\xbc\x94"),
     )
   }
   {
-    let s = Session::with_authentication([Authentication::plain("ا", "p")])
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::plain("ا", "p"),
+    ])
     assert_eq(
       auth_reply(s, b"PLAIN").arguments[2],
       LongString(b"\x00\xd8\xa7\x00\x70"),
     )
   }
   {
-    let s = Session::with_authentication([Authentication::plain("😀", "𝟘")])
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::plain("😀", "𝟘"),
+    ])
     assert_eq(
       auth_reply(s, b"PLAIN").arguments[2],
       LongString(b"\x00\xf0\x9f\x98\x80\x00\xf0\x9d\x9f\x98"),
     )
   }
   {
-    let s = Session::with_authentication([
-      Authentication::plain("\u0001x", "p\n\t"),
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::plain("\u0001x", "p\n\t"),
     ])
     assert_eq(
       auth_reply(s, b"PLAIN").arguments[2],
@@ -65,8 +81,8 @@ test "native authentication response vectors PLAIN" {
     )
   }
   {
-    let s = Session::with_authentication([
-      Authentication::plain("name x", "p x"),
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::plain("name x", "p x"),
     ])
     assert_eq(
       auth_reply(s, b"PLAIN").arguments[2],
@@ -74,8 +90,8 @@ test "native authentication response vectors PLAIN" {
     )
   }
   {
-    let s = Session::with_authentication([
-      Authentication::plain(
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::plain(
         "uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",
         "p",
       ),
@@ -87,8 +103,8 @@ test "native authentication response vectors PLAIN" {
       ),
     )
   }
-  let s = Session::with_authentication([
-    Authentication::plain(
+  let s = @amqp.Session::with_authentication([
+    @amqp.Authentication::plain(
       "u", "ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp",
     ),
   ])
@@ -103,7 +119,9 @@ test "native authentication response vectors PLAIN" {
 ///|
 test "native authentication response vectors AMQPLAIN" {
   {
-    let s = Session::with_authentication([Authentication::amqplain("", "")])
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::amqplain("", ""),
+    ])
     assert_eq(
       auth_reply(s, b"AMQPLAIN").arguments[2],
       LongString(
@@ -112,8 +130,8 @@ test "native authentication response vectors AMQPLAIN" {
     )
   }
   {
-    let s = Session::with_authentication([
-      Authentication::amqplain("demo", "test"),
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::amqplain("demo", "test"),
     ])
     assert_eq(
       auth_reply(s, b"AMQPLAIN").arguments[2],
@@ -123,8 +141,8 @@ test "native authentication response vectors AMQPLAIN" {
     )
   }
   {
-    let s = Session::with_authentication([
-      Authentication::amqplain("中", "密"),
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::amqplain("中", "密"),
     ])
     assert_eq(
       auth_reply(s, b"AMQPLAIN").arguments[2],
@@ -134,7 +152,9 @@ test "native authentication response vectors AMQPLAIN" {
     )
   }
   {
-    let s = Session::with_authentication([Authentication::amqplain("é", "é")])
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::amqplain("é", "é"),
+    ])
     assert_eq(
       auth_reply(s, b"AMQPLAIN").arguments[2],
       LongString(
@@ -143,8 +163,8 @@ test "native authentication response vectors AMQPLAIN" {
     )
   }
   {
-    let s = Session::with_authentication([
-      Authentication::amqplain("I­X", "a b"),
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::amqplain("I­X", "a b"),
     ])
     assert_eq(
       auth_reply(s, b"AMQPLAIN").arguments[2],
@@ -154,8 +174,8 @@ test "native authentication response vectors AMQPLAIN" {
     )
   }
   {
-    let s = Session::with_authentication([
-      Authentication::amqplain("Ⅸ", "４"),
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::amqplain("Ⅸ", "４"),
     ])
     assert_eq(
       auth_reply(s, b"AMQPLAIN").arguments[2],
@@ -165,7 +185,9 @@ test "native authentication response vectors AMQPLAIN" {
     )
   }
   {
-    let s = Session::with_authentication([Authentication::amqplain("ا", "p")])
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::amqplain("ا", "p"),
+    ])
     assert_eq(
       auth_reply(s, b"AMQPLAIN").arguments[2],
       LongString(
@@ -174,8 +196,8 @@ test "native authentication response vectors AMQPLAIN" {
     )
   }
   {
-    let s = Session::with_authentication([
-      Authentication::amqplain("😀", "𝟘"),
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::amqplain("😀", "𝟘"),
     ])
     assert_eq(
       auth_reply(s, b"AMQPLAIN").arguments[2],
@@ -185,8 +207,8 @@ test "native authentication response vectors AMQPLAIN" {
     )
   }
   {
-    let s = Session::with_authentication([
-      Authentication::amqplain("\u0001x", "p\n\t"),
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::amqplain("\u0001x", "p\n\t"),
     ])
     assert_eq(
       auth_reply(s, b"AMQPLAIN").arguments[2],
@@ -196,8 +218,8 @@ test "native authentication response vectors AMQPLAIN" {
     )
   }
   {
-    let s = Session::with_authentication([
-      Authentication::amqplain("name x", "p x"),
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::amqplain("name x", "p x"),
     ])
     assert_eq(
       auth_reply(s, b"AMQPLAIN").arguments[2],
@@ -207,8 +229,8 @@ test "native authentication response vectors AMQPLAIN" {
     )
   }
   {
-    let s = Session::with_authentication([
-      Authentication::amqplain(
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::amqplain(
         "uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",
         "p",
       ),
@@ -221,8 +243,8 @@ test "native authentication response vectors AMQPLAIN" {
     )
   }
   {
-    let s = Session::with_authentication([
-      Authentication::amqplain(
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::amqplain(
         "u", "ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp",
       ),
     ])
@@ -234,8 +256,8 @@ test "native authentication response vectors AMQPLAIN" {
     )
   }
   {
-    let s = Session::with_authentication([
-      Authentication::amqplain("a\u0000b", "p"),
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::amqplain("a\u0000b", "p"),
     ])
     assert_eq(
       auth_reply(s, b"AMQPLAIN").arguments[2],
@@ -244,8 +266,8 @@ test "native authentication response vectors AMQPLAIN" {
       ),
     )
   }
-  let s = Session::with_authentication([
-    Authentication::amqplain("u", "a\u0000b"),
+  let s = @amqp.Session::with_authentication([
+    @amqp.Authentication::amqplain("u", "a\u0000b"),
   ])
   assert_eq(
     auth_reply(s, b"AMQPLAIN").arguments[2],
@@ -257,7 +279,7 @@ test "native authentication response vectors AMQPLAIN" {
 
 ///|
 test "native authentication response vectors EXTERNAL" {
-  let s = Session::with_authentication([Authentication::external()])
+  let s = @amqp.Session::with_authentication([@amqp.Authentication::external()])
   assert_eq(
     auth_reply(s, b"EXTERNAL").arguments[2],
     LongString(b"\x00\x2a\x00\x2a"),
@@ -267,22 +289,22 @@ test "native authentication response vectors EXTERNAL" {
 ///|
 test "native authentication response vectors X-BINARY" {
   {
-    let s = Session::with_authentication([
-      Authentication::custom("X-BINARY", b""),
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::custom("X-BINARY", b""),
     ])
     assert_eq(auth_reply(s, b"X-BINARY").arguments[2], LongString(b""))
   }
   {
-    let s = Session::with_authentication([
-      Authentication::custom("X-BINARY", b"\x00\xff\x01\x78"),
+    let s = @amqp.Session::with_authentication([
+      @amqp.Authentication::custom("X-BINARY", b"\x00\xff\x01\x78"),
     ])
     assert_eq(
       auth_reply(s, b"X-BINARY").arguments[2],
       LongString(b"\x00\xff\x01\x78"),
     )
   }
-  let s = Session::with_authentication([
-    Authentication::custom("X-BINARY", b"\xe4\xb8\xad\xe5\xaf\x86"),
+  let s = @amqp.Session::with_authentication([
+    @amqp.Authentication::custom("X-BINARY", b"\xe4\xb8\xad\xe5\xaf\x86"),
   ])
   assert_eq(
     auth_reply(s, b"X-BINARY").arguments[2],
