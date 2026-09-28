@@ -23,3 +23,5 @@ report.json包含confirmed/unknown/confirmed、automaticallyReplayed=false、old
 发布Promise在断线时失败不等于消息没有送达。示例不提供持久化outbox、业务ID对账、消费幂等或exactly-once；应用自行决定是否重试。恢复受配置预算、拓扑错误和broker状态限制；生产环境和真实使用方仍未证实。
 交付MoonBit核心、Node宿主、可运行任务及原始证据；功能不等于业务采用，测试通过不代表初审通过。
 由对接团队将公开源码、报名表正文和附件同步为同一版本，避免沿用超过实现范围的旧承诺。
+
+**验收复现与交付状态（2026-09-28 本地）**：以 moonc 0.10.14+7d59c7ec9 通过检查、JS/Wasm-GC 测试、构建、最小样例和离线 `moon package`；公开 Git HEAD 当日可匿名读取，Mooncakes 在线版 `0.24.0` 落后于本地 `0.25.0`；新版推送、远端 CI 和发布待核对。命令与能力边界见 [README](README.md)，自动检查见 [CI](.github/workflows/ci.yml)；本地通过不代表赛事审核通过。
