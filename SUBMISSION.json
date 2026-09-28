@@ -9,7 +9,7 @@
   "actualUsersClaimed": false,
   "defaultBranch": "origin/main",
   "localChangesPublished": false,
-  "proposalLines": 25,
+  "proposalLines": 27,
   "useCase": "发布确认、断线和连接重建时区分已确认、被拒绝与结果未知的消息",
   "diff": "承认 moon-amqp 的协议与 broker 接入；增量是纯 MoonBit 确认账本和通道世代，不把协议或 Node 重连称为首创",
   "historicalAnonymousClone": {
@@ -23,7 +23,7 @@
   "remoteCIRunByThisTask": false,
   "currentValidation": "evidence/ledger-20260927/LOCAL-CHECKS.json",
   "currentEvidence": "evidence/ledger-20260927/LOCAL-CHECKS.json",
-  "metadataReviewedOn": "2026-09-27",
+  "metadataReviewedOn": "2026-09-28",
   "currentEvidenceScope": "MoonBit confirm ledger; mixed cumulative/out-of-order bug fixed; actual RabbitMQ and native Go comparison",
   "reviewDecision": "保留并修复核心"
 }
