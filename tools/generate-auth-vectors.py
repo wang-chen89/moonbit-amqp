@@ -1,6 +1,6 @@
 """Run a separately built pinned Go library; only normalize AMQPLAIN field order."""
 from pathlib import Path
-import datetime,hashlib,json,os,subprocess,sys
+import datetime,hashlib,json,os,subprocess,sys,tempfile
 repo=Path(__file__).resolve().parents[1]
 def sha(data):return hashlib.sha256(data).hexdigest()
 def canonical_table(hex_value):
@@ -21,18 +21,22 @@ def generated(cases):
         for row in cases:
             c=row['candidate']
             if c['Mechanism']!=mechanism:continue
-            if mechanism in ['PLAIN','AMQPLAIN']:a=f'Authentication::{mechanism.lower()}({literal(c["Username"])}, {literal(c["Password"])})'
-            elif mechanism=='EXTERNAL':a='Authentication::external()'
-            else:a=f'Authentication::custom("X-BINARY", {byte_literal(c["ResponseHex"])})'
-            lines+=['  {',f'    let s = Session::with_authentication([{a}])',f'    assert_eq(auth_reply(s, b"{mechanism}").arguments[2], LongString({byte_literal(row["normalizedResponseHex"])}))','  }']
+            if mechanism in ['PLAIN','AMQPLAIN']:a=f'@amqp.Authentication::{mechanism.lower()}({literal(c["Username"])}, {literal(c["Password"])})'
+            elif mechanism=='EXTERNAL':a='@amqp.Authentication::external()'
+            else:a=f'@amqp.Authentication::custom("X-BINARY", {byte_literal(c["ResponseHex"])})'
+            lines+=['  {',f'    let s = @amqp.Session::with_authentication([{a}])',f'    assert_eq(auth_reply(s, b"{mechanism}").arguments[2], LongString({byte_literal(row["normalizedResponseHex"])}))','  }']
         lines+=['}']
     return '\n'.join(lines)+'\n'
 path=repo/'evidence/auth-native-vectors.json'
 if '--check' in sys.argv:
     stored=json.loads(path.read_text(encoding='utf-8'))
-    # moon fmt changes whitespace; compare the raw generator result via moon fmt on
-    # generation only, while this guard compares a stored generated-source digest.
-    assert sha((repo/'auth_native_test.mbt').read_bytes())==stored['generatedSourceSha256']
+    with tempfile.TemporaryDirectory(prefix='amqp-auth-vectors-') as temp:
+        expected=Path(temp)/'auth_native_test.mbtx'
+        expected.write_text(generated(stored['cases']),encoding='utf-8',newline='\n')
+        subprocess.run(['moon','fmt',str(expected)],cwd=repo,check=True)
+        actual=(repo/'auth_native_test.mbt').read_bytes()
+        assert expected.read_bytes()==actual, 'generated authentication tests differ from stored native vectors'
+        assert sha(actual)==stored['generatedSourceSha256'], 'authentication source digest is stale'
     print(f"{len(stored['cases'])} stored native authentication vectors in four backend groups verified")
     sys.exit()
 binary=Path(os.environ['AMQP_AUTH_REFERENCE'])
