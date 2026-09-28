@@ -1,5 +1,5 @@
 {
-  "utc": "2026-09-22T13:14:43.093Z",
+  "utc": "2026-09-28T13:48:20.463Z",
   "node": "v24.11.0",
   "passed": 23,
   "tests": [
@@ -48,12 +48,12 @@
     },
     {
       "name": "32 MiB paused receiver",
-      "producerBytesBeforeResume": 589824,
+      "producerBytesBeforeResume": 524288,
       "totalBytes": 33554432,
       "writeStats": {
         "socketBufferedBytes": 0,
         "maxObservedSocketBytes": 65544,
-        "drainWaits": 387,
+        "drainWaits": 401,
         "streamingChannels": 0,
         "deferredProtocolBytes": 0
       }
@@ -78,15 +78,15 @@
     "uri.mbt": "fb8755671ef6cc4afc4d3a51da45f3baf8df45a6ce1a9ffd3126b495d7df7d1e",
     "cmd/web/uri.mbt": "277acacb4d51d0a13e470e7132a74ffc592fc13dec72855ec2881e9ea1e7ba54",
     "tools/consumer-signal.mjs": "4760aa01fb4365fe99bb290928199c29e5db0d8baf65491a90ccaf1c35a4a042",
-    "tools/confirmations.mjs": "ad37919deba3f7dcb5177f5984fedc3cb67d7cb8c233257fdbe0552319754b22",
+    "tools/confirmations.mjs": "411d45fb1e468812cc2b345691eb32654f4af9eaa4c80043bc965cd6bf354bbb",
     "session.mbt": "2e32e207bb10de94aa665c1855147c150b8dfbd203eab2d4d43515a50d55526d",
     "publish_stream.mbt": "7bea19d02cf97ae7d24997595a0d9cc2855544a59906ad4b4ef8db88ef2e5501",
-    "publish_stream_test.mbt": "967420c566722e4a5990a68987a51144fd7031224343552ceffde5f5bca3b1f0",
+    "publish_stream_test.mbt": "592f5ad6dff793bb781aad663f7cca80b0c54c29dcd6ccf02911d03a148a35ce",
     "cmd/web/publish_stream.mbt": "78bd1662496a37dd89512596ffbc99d083fd39605dc3eeaa02fe42ffa3f7248a",
-    "tools/client.mjs": "9c4e865856262321cad5579fd71524d04ebfa57be4919e32c74398b2337c51f9",
+    "tools/client.mjs": "461683891abba9ad4aeddae714a9606d29c3a8f0cc8c452620859bfe608e0ac5",
     "tools/stream-peer.mjs": "9ae2edaa8e7af14b7e0834a3fb159addeb9ccd23ecef370e4798fbf6b915b38c",
-    "tools/test-stream.mjs": "9e27973c495b93b5ffcfe6238328bcbf5327e4f62be7b4c8e7d5779a72b2939a",
-    "web/engine.mjs": "95bd55c8a9b0f63176daea3562de26a1e24bcc96ef54fda9768e0239a907af51"
+    "tools/test-stream.mjs": "625217313fc059950c75e607a06e2ebd4c2b9367aca9d20425b80ed0b2dc90ce",
+    "web/engine.mjs": "243cfeac6512b609aca3a6c19b89a87e1df82c292bb25bdef276b33d5ff46f8b"
   },
   "scope": "Independent wire fixtures; outbound streaming only. Source-owned chunk storage excluded from sender buffer bound."
 }

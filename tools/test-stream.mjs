@@ -43,7 +43,14 @@ await test('slow reader backpressure bounds socket buffers and producer read-ahe
  const c=await open({timeout:10000,maxBufferedBytes:MiB}),ch=await c.openChannel();await ch.confirmSelect();let produced=0;
  const source=(function*(){for(const b of chunks(32*MiB)){produced+=b.length;yield b;}})();
  const pending=ch.publishStream('','q',source,32*MiB);pending.catch(()=>{});
- await until(()=>c.writeStats.drainWaits>0);await delay(100);const held=produced;await delay(100);assert.equal(produced,held);assert(held<32*MiB);assert(c.writeStats.maxObservedSocketBytes<=MiB);
+ // A first drain wait can clear while the peer's kernel receive buffer fills.
+ // Observe a sustained producer plateau instead of assuming a fixed delay.
+ let last=produced,stableSince=Date.now();
+ await until(()=>{
+  if(produced!==last){last=produced;stableSince=Date.now();}
+  return c.writeStats.drainWaits>0&&Date.now()-stableSince>=300;
+ },6000);
+ const held=produced;await delay(150);assert.equal(produced,held);assert(held<32*MiB);assert(c.writeStats.maxObservedSocketBytes<=MiB);
  [...state.sockets][0].resume();await pending;assert.equal(state.messages[0].sha256,sha(32*MiB));observations.push({name:'32 MiB paused receiver',producerBytesBeforeResume:held,totalBytes:32*MiB,writeStats:c.writeStats});
 }));
 await test('same-channel body, ack, buffered publication and RPC retain call order',()=>fixture(confirmed,async({open,state})=>{
