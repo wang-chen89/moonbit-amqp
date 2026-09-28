@@ -54,7 +54,7 @@ moon build --target js --deny-warn
 moon package
 ```
 
-跨平台复核（2026-09-28，本地 Ubuntu-D 26.04 WSL2）：从当时的源码归档全新解包，固定 `moonc 0.10.14+7d59c7ec9` 下通过 `moon update`、`moon fmt --check`、`moon info`、严格检查、JS/Wasm-GC 测试及 JS release 构建；Node 24.21.0 跑通本仓一条宿主入口。本次补记仅修改文档，代码与 CI 未变；复核日志在本地交接包中，公开提交后的 GitHub Actions 仍须单独核对。
+跨平台复核（2026-09-28，本地 Ubuntu-D 26.04 WSL2）：从当时的源码归档全新解包，固定 `moonc 0.10.14+7d59c7ec9` 下通过 `moon update`、`moon fmt --check`、`moon info`、严格检查、JS/Wasm-GC 测试及 JS release 构建；Node 24.21.0 跑通本仓一条宿主入口。随后逐项复跑 CI 宿主步骤时，修正了流式发送测试依赖固定等待时间的断言，并使认证向量生成器适配显式 `@amqp` 调用、从固定原生参考重新生成 30 组向量及摘要；MoonBit 库实现、公开接口和 CI 配置未变。最终逐项结果及原始日志在本地交接包中，公开提交后的 GitHub Actions 仍须单独核对。
 
 本地核验：JS/Wasm-GC 核心测试、确认账本和连接恢复检查、认证向量及无 broker 主例通过；真实 RabbitMQ 对照范围见现有证据。 `moon package` 已完成离线打包预检，它不等于已发布到 Mooncakes。
 
