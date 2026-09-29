@@ -4,7 +4,7 @@
   "module": "wang-chen89/amqp",
   "version": "0.25.0",
   "repository": "https://github.com/wang-chen89/moonbit-amqp",
-  "status": "审核结果未知；本地工程复核完成，待团队同步",
+  "status": "已公开对应版号及成功 CI；本轮材料仅本地修订，赛事审核结果待核实；换题是否批准待核实",
   "remainingRisk": "没有 exactly-once、自动安全重试、持久化outbox或生产集群验收",
   "actualUsersClaimed": false,
   "defaultBranch": "origin/main",
@@ -23,7 +23,16 @@
   "remoteCIRunByThisTask": false,
   "currentValidation": "evidence/ledger-20260927/LOCAL-CHECKS.json",
   "currentEvidence": "evidence/ledger-20260927/LOCAL-CHECKS.json",
-  "metadataReviewedOn": "2026-09-28",
+  "metadataReviewedOn": "2026-09-29",
   "currentEvidenceScope": "MoonBit confirm ledger; mixed cumulative/out-of-order bug fixed; actual RabbitMQ and native Go comparison",
-  "reviewDecision": "保留并修复核心"
+  "reviewDecision": "保留并修复核心",
+  "publicRepositoryCreated": true,
+  "publicStatusCheckedOn": "2026-09-29",
+  "publishedVersion": "0.25.0",
+  "observedRemoteCiCommit": "8e17b7ea0bce065e4102b09ceea74216dca7b53e",
+  "observedRemoteCiUrl": "https://github.com/wang-chen89/moonbit-amqp/actions/runs/36435830634",
+  "observedRemoteCiConclusion": "success",
+  "currentCoreDiffersFromObservedCi": false,
+  "publishedCoreSourceComparedOn": "2026-09-29",
+  "publishedCoreSourceMatchesLocal": true
 }
